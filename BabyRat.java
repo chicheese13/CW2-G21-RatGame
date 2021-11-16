@@ -10,48 +10,26 @@
  *
  */
 
-public class BabyRat extends Rat {
-	protected final int RAT_SCORE = 10;
+public class BabyRat extends NormalRat {
+	protected final int DEFAULT_GROW_COUNT = 0;
 	protected final int BABY_RAT_SPEED = 10;
-	protected final int DEFAULT_GROW_COUNT = 10;
-	private boolean ratGender;
-	private boolean ratSterile;
-	private int growCount;
+	
+	private int growCounter;
 	
 	public BabyRat(Position position, boolean gender) {
-		this.ratGender = gender;
 		this.ratPosition = position;
-		this.ratSpeed = BABY_RAT_SPEED;
-		this.ratSterile = false;
-		this.ratHealth = RAT_HEALTH;
-		this.growCount = DEFAULT_GROW_COUNT; 
-	}
-	
-	public void ratDeath() {
-		//Level.incrimentScore(RAT_SCORE);
-	}
-	
-	public void replenishHealth() {
-		this.ratHealth = RAT_HEALTH;
-	}
-	
-	public boolean getRatGender() {
-		return this.ratGender;
-	}
-	
-	public void changeGender(boolean gender) {
 		this.ratGender = gender;
+		this.ratSterile = DEFUALT_STERILE;
+		this.ratHealth = RAT_HEALTH;
+		
+		this.growCounter = DEFAULT_GROW_COUNT;
 	}
 	
-	public boolean getSterile() {
-		return this.ratSterile;
+	public void setGrowCounter (int counter) {
+		this.growCounter = counter;
 	}
 	
-	public void becomeSterile() {
-		this.ratSterile = true;
-	}
-	
-	public int getGrowCount() {
-		return this.growCount;
+	public int getGrowCounter() {
+		return this.growCounter;
 	}
 }

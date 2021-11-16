@@ -46,5 +46,8 @@ public abstract class Rat {
 	 */
 	public int[] getRatPosition() {
 		return this.ratPosition.getPosition();
-	}	
+	}
+	
+	
+	//maybe a method for javafx, actually placing image of rat on the board.
 }
