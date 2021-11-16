@@ -3,8 +3,13 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
+ * Level.java
  * @author Lewis Ward, Luca Collicott
- * Holds all information about a level that is being played in the game
+ * @version 1.0
+ */
+
+/**
+ * Creates a board that will be used to store information on the level, such as tile, rat, and item locations.
  */
 public class Level {
 	Object[][] board;
