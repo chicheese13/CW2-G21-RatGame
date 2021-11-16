@@ -1,4 +1,9 @@
 
 public class Gas extends Item {
 
+	public Gas (int x, int y) {
+		this.setLocation(x, y);
+	}
+	
+	
 }
