@@ -46,4 +46,8 @@ public class AdultRat extends NormalRat {
 	public int getPregnancyCounter() {
 		return this.pregnancyCounter;
 	}
+	
+	public void ratDeath() {
+		//incriment score (pregnancyCounter+1 * RAT_SCORE)
+	}
 }

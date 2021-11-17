@@ -20,7 +20,7 @@ public class BabyRat extends NormalRat {
 		this.ratPosition = position;
 		this.ratGender = gender;
 		this.ratSterile = DEFUALT_STERILE;
-		this.ratHealth = RAT_HEALTH;
+		this.ratHealth = MAX_RAT_HEALTH;
 		
 		this.growCounter = DEFAULT_GROW_COUNT;
 	}
@@ -31,5 +31,9 @@ public class BabyRat extends NormalRat {
 	
 	public int getGrowCounter() {
 		return this.growCounter;
+	}
+	
+	public void ratDeath() {
+		//incriment score by RAT_SCORE
 	}
 }
