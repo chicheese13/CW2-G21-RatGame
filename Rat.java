@@ -5,6 +5,8 @@
  *
  */
 
+import javafx.scene.image.Image;
+
 /**
  * Rat is an abstract class responsible for rat health/damage, rat’s movement speed and the rat movement behaviour.
  *
@@ -27,8 +29,14 @@ public abstract class Rat {
 	 * 	Position of the rat.
 	 */
 	protected Position ratPosition;
-	
-	
+	/**
+	 * 	The image which represent the rat.
+	 */
+	protected Image ratSprite;
+	/**
+	 * 	The direction in which the rat is facing.
+	 */
+	protected char directionFacing;
 	/**
 	 * movement() is a method which handles the movement behaviour of a rat.
 	 */
@@ -83,6 +91,11 @@ public abstract class Rat {
 		this.ratHealth = this.ratHealth - damage;
 	}
 	
-	//maybe a method for javafx, actually placing image of rat on the board.
-	//maybe a method for javafx which removes the rat sprite.
+	/** Abstract method which defines what happens every tick for a rat.
+	 */
+	abstract void tick();
+	
+	public Image getSprite() {
+		return this.ratSprite;
+	}
 }
