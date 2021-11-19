@@ -62,7 +62,6 @@ public class Main extends Application {
 		
 	// Loaded images
 	private Image dirtImage;
-	private Image ratImage = new Image("Textures/baby-rat.png");
 	
 	// X and Y coordinate of player on the grid.
 	private double playerX = 1;
@@ -94,10 +93,7 @@ public class Main extends Application {
 	 * Setup the new application.
 	 * @param primaryStage The stage that is to be used for the application.
 	 */
-	public void start(Stage primaryStage) {
-		// Load images. Note we use png images with a transparent background.
-		dirtImage = new Image("dirt.png");
-		
+	public void start(Stage primaryStage) {		
 
 		// Build the GUI 
 		Pane root = buildGUI();

@@ -34,6 +34,11 @@ public abstract class Rat {
 	 */
 	protected void movement() {
 		//the move method will go here.
+		//the move method will go here.
+		int[] currentPosition = this.getRatPosition();
+		//incriment x
+		System.out.println(currentPosition[0]);
+		this.setRatPosition(currentPosition[0]+1, currentPosition[1]);
 	}
 
 	/**
