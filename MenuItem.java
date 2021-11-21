@@ -6,6 +6,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class MenuItem extends Pane {
@@ -26,7 +27,8 @@ public class MenuItem extends Pane {
         text = new Text(name);
         text.setTranslateX(5);
         text.setTranslateY(20);
-        text.setFont(text.getFont().font(14));
+        text.getFont();
+        text.setFont(Font.font(14));
         text.setFill(Color.WHITE);
 
         text.effectProperty().bind(Bindings.when(hoverProperty()).then(shadow).otherwise(blur));
