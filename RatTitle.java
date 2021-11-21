@@ -17,10 +17,16 @@ public class RatTitle extends Pane {
         getChildren().addAll(text);
     }
 
+    /**
+     * @return double
+     */
     public double getTitleWidth() {
         return text.getLayoutBounds().getWidth();
     }
 
+    /**
+     * @return double
+     */
     public double getTitleHeight() {
         return text.getLayoutBounds().getHeight();
     }

@@ -36,6 +36,9 @@ public class RatGameApp extends Application {
     private VBox menuBox = new VBox(-5);
     private Line line;
 
+    /**
+     * @return Parent
+     */
     private Parent createContent() {
         addBackground();
         addTitle();
@@ -77,6 +80,10 @@ public class RatGameApp extends Application {
         root.getChildren().add(title);
     }
 
+    /**
+     * @param x
+     * @param y
+     */
     private void addLine(double x, double y) {
         line = new Line(x, y, x, y + 300);
         line.setStrokeWidth(3);
@@ -103,6 +110,10 @@ public class RatGameApp extends Application {
         st.play();
     }
 
+    /**
+     * @param x
+     * @param y
+     */
     private void addMenu(double x, double y) {
         menuBox.setTranslateX(x);
         menuBox.setTranslateY(y);
@@ -122,6 +133,10 @@ public class RatGameApp extends Application {
         root.getChildren().add(menuBox);
     }
 
+    /**
+     * @param primaryStage
+     * @throws Exception
+     */
     public void start(Stage primaryStage) throws Exception {
         Scene scene = new Scene(createContent());
         primaryStage.setTitle("RATS menu title");
@@ -129,6 +144,9 @@ public class RatGameApp extends Application {
         primaryStage.show();
     }
 
+    /**
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }
