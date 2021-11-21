@@ -8,8 +8,8 @@ public class RatTitle extends Pane {
 
     public RatTitle(String name) {
         text = new Text(name);
-        text.setFont(text.getFont().font(20));
-        text.setFill(Color.WHITE);
+        text.setFont(text.getFont().font(40));
+        text.setFill(Color.LIGHTGRAY);
         text.setEffect(new DropShadow(30, Color.BLACK));
 
         getChildren().addAll(text);
