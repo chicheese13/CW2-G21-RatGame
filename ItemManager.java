@@ -84,8 +84,14 @@ public class ItemManager extends Application {
 		playerImage = new Image("player.png");
 		dirtImage = new Image("dirt.png");
 		iconImage = new Image("icon.png");
-		bomb = new Image("ItemPlaceholders/bomb.png");
-
+		bomb = new Image("/items/bomb.png");
+		gas = new Image("/items/gas.png");
+		poison = new Image("/items/poison.png");
+		noEntrySign = new Image("/items/noentrysign.png");
+		maleSexChanger = new Image("/items/malesexchanger.png");
+		femaleSexChanger = new Image("/items/malesexchanger.png");
+		deathRat = new Image("/items/deathrat.png");
+		
 		// Build the GUI 
 		Pane root = buildGUI();
 		
@@ -208,9 +214,9 @@ public class ItemManager extends Application {
     	// Draw an icon at the dropped location.
     	GraphicsContext gc = canvas.getGraphicsContext2D();
     	// Draw the the image so the top-left corner is where we dropped.
-    	gc.drawImage(iconImage, x, y);
+    	//gc.drawImage(iconImage, x, y);
     	// Draw the the image so the center is where we dropped.    	
-    	// gc.drawImage(iconImage, x - iconImage.getWidth() / 2.0, y - iconImage.getHeight() / 2.0);
+    	gc.drawImage(iconImage, x - iconImage.getWidth() / 2.0, y - iconImage.getHeight() / 2.0);
 	}
 	
 	/**
@@ -281,6 +287,13 @@ public class ItemManager extends Application {
 		ImageView draggableImage = new ImageView();
 		draggableImage.setImage(iconImage);
 		draggableImage.setImage(bomb);
+		draggableImage.setImage(poison);
+		draggableImage.setImage(gas);
+		draggableImage.setImage(noEntrySign);
+		draggableImage.setImage(maleSexChanger);
+		draggableImage.setImage(femaleSexChanger);
+		draggableImage.setImage(deathRat);
+		
         toolbar.getChildren().add(draggableImage);
         
         // This code setup what happens when the dragging starts on the image.
