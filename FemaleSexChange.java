@@ -7,6 +7,12 @@ public class FemaleSexChange extends Item {
 	}
 
 	
+<<<<<<< Updated upstream
 //	public void ratToF(rat)
 
+=======
+	public void ratToF() {
+		//runs rat gender change method in rat classes
+	}
+>>>>>>> Stashed changes
 }

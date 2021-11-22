@@ -8,7 +8,7 @@ public class NoEntrySign extends Item {
 		this.setLocation(x, y);
 	}
 	
-
+	// method that gets run each time a rat hits a sign
 	private void breakSign() {
 		if (ratStompsOnSign) {
 			signHealth = getSignHealth() - 20;
@@ -17,7 +17,8 @@ public class NoEntrySign extends Item {
 			}
 		}
 	}
-
+	
+	// gets the signs health
 	private int getSignHealth() {
 		
 		return signHealth;

@@ -5,5 +5,7 @@ public class Gas extends Item {
 		this.setLocation(x, y);
 	}
 	
-	
+	public void startGas () {
+		//starts gas
+	} 
 }
