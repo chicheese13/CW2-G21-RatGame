@@ -33,7 +33,7 @@ import javafx.util.Duration;
  *
  * @author Liam O'Reilly
  */
-public class Main extends Application {
+public class ItemManager extends Application {
 	// The dimensions of the window
 	private static final int WINDOW_WIDTH = 800;
 	private static final int WINDOW_HEIGHT = 500;
@@ -58,6 +58,15 @@ public class Main extends Application {
 	private Image playerImage;
 	private Image dirtImage;
 	private Image iconImage;
+	private Image bomb;
+	private Image gas;
+	private Image poison;
+	private Image noEntrySign;
+	private Image sterillisation;
+	private Image maleSexChanger;
+	private Image femaleSexChanger;
+	private Image deathRat;
+	
 	
 	// X and Y coordinate of player on the grid.
 	private int playerX = 0;
@@ -75,6 +84,7 @@ public class Main extends Application {
 		playerImage = new Image("player.png");
 		dirtImage = new Image("dirt.png");
 		iconImage = new Image("icon.png");
+		bomb = new Image("bomb.png");
 
 		// Build the GUI 
 		Pane root = buildGUI();
