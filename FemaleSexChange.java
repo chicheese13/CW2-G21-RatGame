@@ -7,6 +7,6 @@ public class FemaleSexChange extends Item {
 	}
 
 	
-	public void ratToF(rat)
+//	public void ratToF(rat)
 
 }
