@@ -84,7 +84,7 @@ public class ItemManager extends Application {
 		playerImage = new Image("player.png");
 		dirtImage = new Image("dirt.png");
 		iconImage = new Image("icon.png");
-		bomb = new Image("bomb.png");
+		bomb = new Image("ItemPlaceholders/bomb.png");
 
 		// Build the GUI 
 		Pane root = buildGUI();
@@ -280,6 +280,7 @@ public class ItemManager extends Application {
 		// Setup a draggable image.
 		ImageView draggableImage = new ImageView();
 		draggableImage.setImage(iconImage);
+		draggableImage.setImage(bomb);
         toolbar.getChildren().add(draggableImage);
         
         // This code setup what happens when the dragging starts on the image.
