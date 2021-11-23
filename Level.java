@@ -13,8 +13,9 @@ import java.util.Scanner;
  */
 public class Level {
 	Object[][] board;
-	int parTime;
+	int score;
 	double currentTime;
+	int parTime;
 	short maxRats;
 	
 	/**
