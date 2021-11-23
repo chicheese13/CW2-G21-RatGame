@@ -35,7 +35,7 @@ public class BabyRat extends NormalRat {
 	 *  @param position
 	 *  @param gender
 	 */
-	public BabyRat(Position position, boolean gender, Level currentLevel) {
+	public BabyRat(Position position, boolean gender, TestLevel currentLevel) {
 		this.objectPosition = position;
 		this.ratGender = gender;
 		this.renderSprite = BABY_RAT_SPRITE;

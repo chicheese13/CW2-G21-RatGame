@@ -58,7 +58,7 @@ public class Main extends Application {
 	private Timeline tickTimeline; 
 	
 	
-	Level testLevel = new Level();
+	TestLevel testLevel = new TestLevel();
 	//testLevel.addRenderObject(new BabyRat(new Position(2,2), false, testLevel));
 
 	

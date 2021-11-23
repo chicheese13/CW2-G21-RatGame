@@ -44,7 +44,7 @@ public abstract class Rat extends RenderObject {
 	/**
 	 * The level the rat is currently in.
 	 */
-	protected Level currentLevel;
+	protected TestLevel currentLevel;
 
 	/**
 	 * movement() is a method which handles the movement behaviour of a rat.
