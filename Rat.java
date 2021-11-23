@@ -14,7 +14,7 @@ import javafx.scene.image.Image;
  *
  */
 
-public abstract class Rat {
+public abstract class Rat extends RenderObject {
 	/**
 	 * The maximum amount of health a rat can have.
 	 */
@@ -34,11 +34,17 @@ public abstract class Rat {
 	/**
 	 * The image which represent the rat.
 	 */
-	protected Image ratSprite;
 	/**
 	 * The direction in which the rat is facing.
 	 */
 	protected char directionFacing;
+	
+	
+	//might not keep
+	/**
+	 * The level the rat is currently in.
+	 */
+	protected Level currentLevel;
 
 	/**
 	 * movement() is a method which handles the movement behaviour of a rat.
@@ -46,7 +52,7 @@ public abstract class Rat {
 	protected void movement() {
 		// the move method will go here.
 		// the move method will go here.
-		int[] currentPosition = this.getRatPosition();
+		double[] currentPosition = this.getRatPosition();
 		// incriment x
 		System.out.println(currentPosition[0]);
 		this.setRatPosition(currentPosition[0] + 1, currentPosition[1]);
@@ -68,7 +74,7 @@ public abstract class Rat {
 	 * @param x - the x coordinate of the rat.
 	 * @param y - the y coordinate of the rat.
 	 */
-	public void setRatPosition(int x, int y) {
+	public void setRatPosition(double x, double y) {
 		this.ratPosition.setPosition(x, y);
 	}
 
@@ -87,7 +93,7 @@ public abstract class Rat {
 	 * @return ratPosition - an array of consisting of the rat's x and y
 	 *         coordinates.
 	 */
-	public int[] getRatPosition() {
+	public double[] getRatPosition() {
 		return this.ratPosition.getPosition();
 	}
 
@@ -106,8 +112,4 @@ public abstract class Rat {
 	 * Abstract method which defines what happens every tick for a rat.
 	 */
 	abstract void tick();
-
-	public Image getSprite() {
-		return this.ratSprite;
-	}
 }
