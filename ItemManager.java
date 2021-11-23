@@ -107,7 +107,7 @@ public class ItemManager extends Application {
 				
 		// Register a tick method to be called periodically.
 		// Make a new timeline with one keyframe that triggers the tick method every half a second.
-		tickTimeline = new Timeline(new KeyFrame(Duration.millis(300), event -> tick()));
+		tickTimeline = new Timeline(new KeyFrame(Duration.millis(200), event -> tick()));
 		 // Loop the timeline forever
 		tickTimeline.setCycleCount(Animation.INDEFINITE);
 		// We start the timeline upon a button press.
