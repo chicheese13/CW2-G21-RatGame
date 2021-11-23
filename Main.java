@@ -57,12 +57,14 @@ public class Main extends Application {
 	// Timeline which will cause tick method to be called periodically.
 	private Timeline tickTimeline; 
 	
-	
-	Level testLevel = new Level();
-	//testLevel.addRenderObject(new BabyRat(new Position(2,2), false, testLevel));
-
-	
-	//BabyRat testRat = new BabyRat(new Position(2,2), false, testLevel);
+	//This will be fetched the level txt file, manually set for now.
+	String[][] tiles = {{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
+						{"G","P","P","P","T","T","P","P","P","T","T","P","P","P","G"},
+						{"G","G","G","P","G","G","G","G","P","G","G","P","G","P","G"},
+						{"G","P","P","P","G","G","P","P","P","G","G","P","G","P","G"},
+						{"G","P","G","G","G","G","G","G","P","G","G","P","G","P","G"},
+						{"G","P","P","P","T","T","P","P","P","T","T","P","P","P","G"},
+						{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"}};
 	
 	//fetches tile texture images.
 	private Image grass = new Image("TestTextures/grass.png");
@@ -74,7 +76,6 @@ public class Main extends Application {
 	 * @param primaryStage The stage that is to be used for the application.
 	 */
 	public void start(Stage primaryStage) {		
-		
 
 		// Build the GUI 
 		Pane root = buildGUI();
@@ -93,8 +94,6 @@ public class Main extends Application {
 		tickTimeline.play();
 		
 		// Display the scene on the stage
-		testLevel.addRenderObject(new BabyRat(new Position(2,2), false, testLevel));
-		testLevel.addRenderObject(new BabyRat(new Position(5,5), false, testLevel));
 		drawGame();
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -105,7 +104,6 @@ public class Main extends Application {
 	 * This creates a frame, with all the tiles, items and rats.
 	 */
 	public void drawGame() {
-		
 		// Get the Graphic Context of the canvas. This is what we draw on.
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		
@@ -117,25 +115,18 @@ public class Main extends Application {
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 	
 		//this goes through the tile array and generates the tile images on the canvas based on the tiles in the array.
-		for (int y = 0; y < testLevel.getTiles().length; y++) {
-			for (int x = 0; x < testLevel.getTiles()[0].length; x++) {
+		for (int y = 0; y < tiles.length; y++) {
+			for (int x = 0; x < tiles[0].length; x++) {
 				//checks what tile type it is and outputs the image for that tile, in the x and y of that tile.
-				if (testLevel.getTiles()[y][x] == "G") {
+				if (tiles[y][x] == "G") {
 					gc.drawImage(grass, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
-				} else if (testLevel.getTiles()[y][x] ==  "P") {
+				} else if (tiles[y][x] ==  "P") {
 					gc.drawImage(path, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
 				} else {
 					gc.drawImage(tunnel, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
 				}
 			}
 		}
-		
-		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
-			//System.out.println(testLevel.getRenderObjects().get(i).getSprite());
-			//gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getPosition()[0] * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getPosition()[1] * GRID_CELL_HEIGHT);
-			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getObjectPosition()[0] * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getObjectPosition()[1] * GRID_CELL_HEIGHT);
-		}
-		
 	}
 	
 	/**
@@ -170,7 +161,6 @@ public class Main extends Application {
 	}
 	        	
 	public static void main(String[] args) {
-		
 		//launches the game.
 		launch(args);
 	}
