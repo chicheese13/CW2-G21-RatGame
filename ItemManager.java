@@ -242,7 +242,7 @@ public class ItemManager extends Application {
 		// Create the toolbar content
 		
 		// Reset Player Location Button
-		Button resetPlayerLocationButton = new Button("Reset Player");
+		Button resetPlayerLocationButton = new Button("Reset Bomb");
 		toolbar.getChildren().add(resetPlayerLocationButton);
 
 		// Setup the behaviour of the button.

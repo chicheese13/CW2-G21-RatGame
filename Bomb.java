@@ -93,7 +93,12 @@ public class Bomb extends Item {
 		
 		if(tickCounter == 15) {
 			currentSprite = explode10;
+			tickCounter = 0;
 		}
+	}
+	
+	public void resetTick() {
+		tickCounter = 0;
 	}
 	
 	private void explode() {
