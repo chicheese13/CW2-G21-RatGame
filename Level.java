@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+=======
+>>>>>>> parent of 835f125 (Rendering Rats)
 
 /**
  * Level.java
@@ -12,6 +15,7 @@ import java.util.Scanner;
  * Creates a board that will be used to store information on the level, such as tile, rat, and item locations.
  */
 public class Level {
+<<<<<<< HEAD
     Object[][] board;
     int parTime;
     double currentTime;
@@ -114,3 +118,7 @@ public class Level {
         
     }*/
 }
+=======
+	// test
+}
+>>>>>>> parent of 835f125 (Rendering Rats)

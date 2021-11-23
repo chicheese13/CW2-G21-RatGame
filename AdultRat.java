@@ -76,9 +76,9 @@ public class AdultRat extends NormalRat {
 		
 		//this defines the sprite of the rat based on gender.
 		if (gender) {
-			this.renderSprite = ADULT_MALE_RAT_SPRITE;
+			this.ratSprite = ADULT_MALE_RAT_SPRITE;
 		} else {
-			this.renderSprite = ADULT_FEMALE_RAT_SPRITE;
+			this.ratSprite = ADULT_FEMALE_RAT_SPRITE;
 		}
 	}
 	
