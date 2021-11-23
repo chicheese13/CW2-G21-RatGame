@@ -285,14 +285,8 @@ public class ItemManager extends Application {
 
 		// Setup a draggable image.
 		ImageView draggableImage = new ImageView();
-		draggableImage.setImage(iconImage);
+		draggableImage.setImage(bomb);
         toolbar.getChildren().add(draggableImage);
-        
-
-        
-		
-        // This code setup what happens when the dragging starts on the image.
-        // You probably don't need to change this (unless you wish to do more advanced things).
         draggableImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent event) {
 		        // Mark the drag as started.
@@ -311,27 +305,36 @@ public class ItemManager extends Application {
 		    }
 		});
 		
-        // This code allows the canvas to receive a dragged object within its bounds.
-        // You probably don't need to change this (unless you wish to do more advanced things).
-        
-        
-        
-        
         ImageView draggableImage2 = new ImageView();
-		draggableImage2.setImage(bomb);
+		draggableImage2.setImage(gas);
         toolbar.getChildren().add(draggableImage2);
-        
-
-        
-		
-        // This code setup what happens when the dragging starts on the image.
-        // You probably don't need to change this (unless you wish to do more advanced things).
         draggableImage2.setOnDragDetected(new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent event) {
 		        // Mark the drag as started.
 		    	// We do not use the transfer mode (this can be used to indicate different forms
 		    	// of drags operations, for example, moving files or copying files).
 		    	Dragboard db = draggableImage2.startDragAndDrop(TransferMode.ANY);
+
+		    	// We have to put some content in the clipboard of the drag event.
+		    	// We do not use this, but we could use it to store extra data if we wished.
+                ClipboardContent content = new ClipboardContent();
+                content.putString("Hello");
+                db.setContent(content);
+                
+		    	// Consume the event. This means we mark it as dealt with. 
+		        event.consume();
+		    }
+		});
+        
+        ImageView draggableImage3 = new ImageView();
+		draggableImage3.setImage(poison);
+        toolbar.getChildren().add(draggableImage3);
+        draggableImage3.setOnDragDetected(new EventHandler<MouseEvent>() {
+		    public void handle(MouseEvent event) {
+		        // Mark the drag as started.
+		    	// We do not use the transfer mode (this can be used to indicate different forms
+		    	// of drags operations, for example, moving files or copying files).
+		    	Dragboard db = draggableImage3.startDragAndDrop(TransferMode.ANY);
 
 		    	// We have to put some content in the clipboard of the drag event.
 		    	// We do not use this, but we could use it to store extra data if we wished.
@@ -350,16 +353,22 @@ public class ItemManager extends Application {
             public void handle(DragEvent event) {
 		        // Mark the drag as acceptable if the source was the draggable image.
             	// (for example, we don't want to allow the user to drag things or files into our application)
-            	if (event.getGestureSource() == draggableImage2) {
+            	if (event.getGestureSource() == draggableImage) {
     		    	// Mark the drag event as acceptable by the canvas.
             		event.acceptTransferModes(TransferMode.ANY);
     		    	// Consume the event. This means we mark it as dealt with.
             		event.consume();
-            	} else if (event.getGestureSource() == draggableImage) {
+            	} else if (event.getGestureSource() == draggableImage2) {
     		    	// Mark the drag event as acceptable by the canvas.
             		event.acceptTransferModes(TransferMode.ANY);
     		    	// Consume the event. This means we mark it as dealt with.
             		event.consume();
+            	} else if (event.getGestureSource() == draggableImage3) {
+    		    	// Mark the drag event as acceptable by the canvas.
+            		event.acceptTransferModes(TransferMode.ANY);
+    		    	// Consume the event. This means we mark it as dealt with.
+            		event.consume();
+            		
             	}
             }
         });
@@ -367,16 +376,21 @@ public class ItemManager extends Application {
         // This code allows the canvas to react to a dragged object when it is finally dropped.
         // You probably don't need to change this (unless you wish to do more advanced things).
         canvas.setOnDragDropped(new EventHandler<DragEvent>() {
-            public void handle(DragEvent event) {                
+            public void handle(DragEvent event) {
             	// We call this method which is where the bulk of the behaviour takes place.
-            	if (event.getGestureSource() == draggableImage2) {
+            	if (event.getGestureSource() == draggableImage) {
     		    	// Mark the drag event as acceptable by the canvas.
             		canvasDragDroppedOccured(event,bomb);
     		    	// Consume the event. This means we mark it as dealt with.
             		event.consume();
-            	} else if (event.getGestureSource() == draggableImage) {
+            	} else if (event.getGestureSource() == draggableImage2) {
     		    	// Mark the drag event as acceptable by the canvas.
-            		canvasDragDroppedOccured(event,iconImage);
+            		canvasDragDroppedOccured(event,gas);
+    		    	// Consume the event. This means we mark it as dealt with.
+            		event.consume();
+            	} else if (event.getGestureSource() == draggableImage3) {
+    		    	// Mark the drag event as acceptable by the canvas.
+            		canvasDragDroppedOccured(event,poison);
     		    	// Consume the event. This means we mark it as dealt with.
             		event.consume();
             	}
