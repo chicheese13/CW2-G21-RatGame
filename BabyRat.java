@@ -35,12 +35,8 @@ public class BabyRat extends NormalRat {
 	 *  @param position
 	 *  @param gender
 	 */
-
 	public BabyRat(Position position, boolean gender) {
 		this.ratPosition = position;
-
-	public BabyRat(Position position, boolean gender, TestLevel currentLevel) {
-		this.objectPosition = position;
 		this.ratGender = gender;
 		this.ratSprite = BABY_RAT_SPRITE;
 		this.ratSterile = DEFUALT_STERILE;

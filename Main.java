@@ -66,12 +66,6 @@ public class Main extends Application {
 						{"G","P","P","P","T","T","P","P","P","T","T","P","P","P","G"},
 						{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"}};
 	
-	TestLevel testLevel = new TestLevel();
-	//testLevel.addRenderObject(new BabyRat(new Position(2,2), false, testLevel));
-
-	
-	//BabyRat testRat = new BabyRat(new Position(2,2), false, testLevel);
-	
 	//fetches tile texture images.
 	private Image grass = new Image("TestTextures/grass.png");
 	private Image path = new Image("TestTextures/path.png");
