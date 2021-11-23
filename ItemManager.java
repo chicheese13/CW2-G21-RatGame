@@ -58,6 +58,7 @@ public class ItemManager extends Application {
 	private Image playerImage;
 	private Image dirtImage;
 	private Image iconImage;
+	
 	private Image bomb;
 	private Image gas;
 	private Image poison;
@@ -66,7 +67,7 @@ public class ItemManager extends Application {
 	private Image maleSexChanger;
 	private Image femaleSexChanger;
 	private Image deathRat;
-	
+	Bomb testBomb = new Bomb (1,1);
 	
 	// X and Y coordinate of player on the grid.
 	private int playerX = 0;
@@ -84,7 +85,9 @@ public class ItemManager extends Application {
 		playerImage = new Image("/items/player.png");
 		dirtImage = new Image("/items/dirt.png");
 		iconImage = new Image("/items/icon.png");
+		
 		bomb = new Image("/items/bomb.png");
+
 		gas = new Image("/items/gas.png");
 		poison = new Image("/items/poison.png");
 		noEntrySign = new Image("/items/noentrysign.png");
@@ -104,7 +107,7 @@ public class ItemManager extends Application {
 				
 		// Register a tick method to be called periodically.
 		// Make a new timeline with one keyframe that triggers the tick method every half a second.
-		tickTimeline = new Timeline(new KeyFrame(Duration.millis(500), event -> tick()));
+		tickTimeline = new Timeline(new KeyFrame(Duration.millis(300), event -> tick()));
 		 // Loop the timeline forever
 		tickTimeline.setCycleCount(Animation.INDEFINITE);
 		// We start the timeline upon a button press.
@@ -160,7 +163,8 @@ public class ItemManager extends Application {
 		}
 		
 		// Draw player at current location
-		gc.drawImage(playerImage, playerX * GRID_CELL_WIDTH, playerY * GRID_CELL_HEIGHT);			
+		gc.drawImage(testBomb.getSprite(), 10, 10);
+		//gc.drawImage(playerImage, playerX * GRID_CELL_WIDTH, playerY * GRID_CELL_HEIGHT);
 	}
 	
 	/**
@@ -191,10 +195,7 @@ public class ItemManager extends Application {
 	public void tick() {
 		// Here we move the player right one cell and teleport
 		// them back to the left side when they reach the right side.
-		playerX = playerX + 1;
-		if (playerX > 11) {
-			playerX = 0;
-		}
+		testBomb.tick();
 		// We then redraw the whole canvas.
 		drawGame();
 	}
