@@ -17,13 +17,14 @@ public class Level {
 	double currentTime;
 	int parTime;
 	short maxRats;
+	String[] dataArray;
 	
 	/**
 	 * Constructor for level class. Creates board from given text file
 	 * @param fileName Name of the file that stores information on the level
 	 */
 	public Level (String fileName) {
-		String fileData = null;
+		String fileData = "";
 		File level = new File(fileName);
 		Scanner in = null;
 		
@@ -38,6 +39,9 @@ public class Level {
 			fileData = fileData + in.nextLine();
 		}
 		
+		fileData = fileData.substring(0, fileData.indexOf("."));
+		dataArray = fileData.split(",");
+		board = new Object[Integer.parseInt(dataArray[0])][Integer.parseInt(dataArray[1])];
 	}
 	
 	/**
