@@ -103,14 +103,14 @@ public class Level {
 	/**
 	 * @return All rats on the board
 	 */
-	/*public Rat[] getRats() {
-		
-	}*/
+	public Rat[] getRats() {
+		return null;
+	}
 	
 	/**
 	 * @return 
 	 */
-	/*public Item getItem() {
-		
-	}*/
+	public Item getItem() {
+		return null;
+	}
 }
