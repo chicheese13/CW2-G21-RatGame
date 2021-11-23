@@ -380,7 +380,7 @@ public class ItemManager extends Application {
     		    	// Consume the event. This means we mark it as dealt with.
             		event.consume();
             	}
-            	
+    
             	
             	// Consume the event. This means we mark it as dealt with.
             	event.consume();
