@@ -37,6 +37,14 @@ public abstract class Rat {
 	 * 	The direction in which the rat is facing.
 	 */
 	protected char directionFacing;
+	
+	
+	//might not keep
+	/**
+	 * The level the rat is currently in.
+	 */
+	protected TestLevel currentLevel;
+
 	/**
 	 * movement() is a method which handles the movement behaviour of a rat.
 	 */
