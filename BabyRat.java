@@ -24,7 +24,7 @@ public class BabyRat extends NormalRat {
 	/**
 	 * The baby rat image sprite.
 	 */
-	protected final Image BABY_RAT_SPRITE = new Image("Textures/baby-rat.png");
+	protected final Image BABY_RAT_SPRITE = new Image("TestTextures/baby-rat.png");
 	/**
 	 *  The grow counter keeps track of the baby growth.
 	 */
@@ -35,19 +35,15 @@ public class BabyRat extends NormalRat {
 	 *  @param position
 	 *  @param gender
 	 */
-<<<<<<< HEAD
 	public BabyRat(Position position, boolean gender, TestLevel currentLevel) {
 		this.objectPosition = position;
-=======
-	public BabyRat(Position position, boolean gender) {
-		this.ratPosition = position;
->>>>>>> parent of 835f125 (Rendering Rats)
 		this.ratGender = gender;
-		this.ratSprite = BABY_RAT_SPRITE;
+		this.renderSprite = BABY_RAT_SPRITE;
 		this.ratSterile = DEFUALT_STERILE;
 		this.ratHealth = MAX_RAT_HEALTH;
 		this.growCounter = DEFAULT_GROW_COUNT;
 		this.directionFacing = 'N';
+		this.currentLevel = currentLevel;
 	}
 	
 	/**
@@ -78,6 +74,5 @@ public class BabyRat extends NormalRat {
 	 */
 	public void tick() {
 		this.movement();
-	}
-	
+	}	
 }
