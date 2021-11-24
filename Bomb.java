@@ -79,10 +79,6 @@ public class Bomb extends Item {
 		}
 	}
 
-	public void resetTick() {
-		tickCounter = 0;
-	}
-
 	// Method to deal damage horizontally and vertically
 	private void explode() {
 		System.out.println("BOOM");
