@@ -1,5 +1,13 @@
-/Leaderboard.class
-/Level.class
-/Profile.class
-/Rat.class
+/Bomb.class
+/DeathRatSpawner.class
+/FemaleSexChange.class
+/Gas.class
 /Item.class
+/ItemManager.class
+/MaleSexChange.class
+/NoEntrySign.class
+/Poison.class
+/Sterilisation.class
+/ItemManager$1.class
+/ItemManager$2.class
+/ItemManager$3.class
