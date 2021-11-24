@@ -24,14 +24,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
- * Sample application that demonstrates the use of JavaFX Canvas for a Game.
- * This class is intentionally not structured very well. This is just a starting point to show
- * how to draw an image on a canvas, respond to arrow key presses, use a tick method that is
- * called periodically, and use drag and drop.
- * 
- * Do not build the whole application in one file. This file should probably remain very small.
+ * Test class for item use
  *
- * @author Liam O'Reilly
+ * @author Callum Young, Armand Dorosz
  */
 public class ItemManager extends Application {
 	// The dimensions of the window
@@ -204,6 +199,11 @@ public class ItemManager extends Application {
 	 * React when an object is dragged onto the canvas. 
 	 * @param event The drag event itself which contains data about the drag that occurred.
 	 */
+	
+	public void dropTimeLine() {
+		
+	}
+	
 	public void canvasDragDroppedOccured(DragEvent event,Image img) {
     	double x = event.getX();
         double y = event.getY();
@@ -216,7 +216,11 @@ public class ItemManager extends Application {
     	GraphicsContext gc = canvas.getGraphicsContext2D();
     	// Draw the the image so the top-left corner is where we dropped.
     	//gc.drawImage(iconImage, x, y);
-    	// Draw the the image so the center is where we dropped.    	
+    	// Draw the the image so the center is where we dropped.    
+    	dropTimeLine();
+    	
+    	 
+    	
     	gc.drawImage(img, x - img.getWidth() / 2.0, y - img.getHeight() / 2.0);
 	}
 	
