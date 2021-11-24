@@ -3,7 +3,7 @@
 import java.util.ArrayList;
 
 public class TestLevel {
-	String tiles [][] = {{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
+	private static String tilesArray [][] = {{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
 		{"G","P","P","P","T","T","P","P","P","T","T","P","P","P","G"},
 		{"G","G","G","P","G","G","G","G","P","G","G","P","G","P","G"},
 		{"G","P","P","P","G","G","P","P","P","G","G","P","G","P","G"},
@@ -17,7 +17,11 @@ public class TestLevel {
 		
 	}
 	
-	public static boolean tileAvailable (int x, int y, char direction, String[][] tiles){
+	public boolean tileAvailable (double xIn, double yIn, char direction){
+		String tiles [][] = tilesArray;
+		
+		int x = (int) Math.floor(xIn);
+		int y = (int) Math.floor(yIn);
 		
 		if (direction == 'N') {
 			if (y > 0) {
@@ -48,7 +52,7 @@ public class TestLevel {
 	} 
 	
 	public String[][] getTiles() {
-		return this.tiles;
+		return tilesArray;
 	}
 	
 	public ArrayList<RenderObject> getRenderObjects () {

@@ -37,6 +37,14 @@ public abstract class RenderObject {
 	public double[] getObjectPosition() {
 		return this.objectPosition.getPosition();
 	}
+	
+	
+	//setter for object position 
+	public void setObjectPosition(double x, double y) {
+		this.objectPosition.setPosition(x, y);
+	}
+	
+	public abstract void tick();
 }
 
 

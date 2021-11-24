@@ -84,7 +84,7 @@ public class Main extends Application {
 				
 		// Register a tick method to be called periodically.
 		// Make a new timeline with one keyframe that triggers the tick method every half a second.
-		tickTimeline = new Timeline(new KeyFrame(Duration.millis(2000), event -> tick()));
+		tickTimeline = new Timeline(new KeyFrame(Duration.millis(100), event -> tick()));
 		
 		 // Loop the timeline forever
 		tickTimeline.setCycleCount(Animation.INDEFINITE);
@@ -93,8 +93,15 @@ public class Main extends Application {
 		tickTimeline.play();
 		
 		// Display the scene on the stage
-		testLevel.addRenderObject(new BabyRat(new Position(2,2), false, testLevel));
-		testLevel.addRenderObject(new BabyRat(new Position(5,5), false, testLevel));
+		testLevel.addRenderObject(new BabyRat(new Position(1,1), false, testLevel));
+		testLevel.addRenderObject(new BabyRat(new Position(1,3), false, testLevel));
+		testLevel.addRenderObject(new BabyRat(new Position(1,2), false, testLevel));
+		testLevel.addRenderObject(new BabyRat(new Position(1,3), false, testLevel));
+		testLevel.addRenderObject(new BabyRat(new Position(1,3), false, testLevel));
+		//testLevel.addRenderObject(new BabyRat(new Position(5,5), false, testLevel));
+		
+		System.out.println(testLevel.tileAvailable(2, 1, 'N'));
+		
 		drawGame();
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -147,7 +154,9 @@ public class Main extends Application {
 	public void tick() {
 		//Here we will do the tick method for items and rats.
 		//Likely to have an array of objects which we call the tick method on.
-		
+		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
+			testLevel.getRenderObjects().get(i).tick();
+		}
 		//We then redraw the whole canvas.
 		drawGame();
 	}

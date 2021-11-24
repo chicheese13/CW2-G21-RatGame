@@ -9,7 +9,7 @@
  * Position is a class which defines a datatype Position which contains an x and y coord.
  *
  */
-//change doubles to floats when implementing smooth movement.
+//change doubles to doubles when implementing smooth movement.
 public class Position {
 	/**
 	 * the x coord for a position.

@@ -20,7 +20,7 @@ public class BabyRat extends NormalRat {
 	/**
 	 * This is the speed for a baby rat.
 	 */
-	protected final int BABY_RAT_SPEED = 10;
+	protected final double BABY_RAT_SPEED = 1;
 	/**
 	 * The baby rat image sprite.
 	 */
@@ -44,6 +44,7 @@ public class BabyRat extends NormalRat {
 		this.growCounter = DEFAULT_GROW_COUNT;
 		this.directionFacing = 'N';
 		this.currentLevel = currentLevel;
+		this.ratSpeed = BABY_RAT_SPEED;
 	}
 	
 	/**
