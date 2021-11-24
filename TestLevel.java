@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class TestLevel {
 	private static String tilesArray [][] = {{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
-		{"G","P","P","P","T","T","P","P","P","T","T","P","P","P","G"},
+		{"G","P","P","P","T","T","P","P","G","T","T","P","P","P","G"},
 		{"G","G","G","P","G","G","G","G","P","G","G","P","G","P","G"},
 		{"G","P","P","P","G","G","P","P","P","G","G","P","G","P","G"},
 		{"G","P","G","G","G","G","G","G","P","G","G","P","G","P","G"},

@@ -95,7 +95,7 @@ public class Main extends Application {
 		// Display the scene on the stage
 		testLevel.addRenderObject(new BabyRat(new Position(1,1), false, testLevel, 0.02));
 		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel, 0.01));
-		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel, 0.05));
+		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel, 0.5));
 		
 		//testLevel.addRenderObject(new BabyRat(new Position(5,5), false, testLevel));
 		
