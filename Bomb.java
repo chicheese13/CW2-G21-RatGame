@@ -4,6 +4,10 @@ import javafx.scene.image.Image;
 public class Bomb extends Item {
 
 	private Image bomb = new Image("/items/bomb.png");
+	private Image bomb4 = new Image("/items/bomb4.png");
+	private Image bomb3 = new Image("/items/bomb3.png");
+	private Image bomb2 = new Image("/items/bomb2.png");
+	private Image bomb1 = new Image("/items/bomb1.png");
 
 	private double tickCounter = 0;
 	private double delayCount = 0;
@@ -32,7 +36,25 @@ public class Bomb extends Item {
 
 	public void tick() {
 
+	
+		if (delayCount == 0) {
+			this.renderSprite = bomb4;
+		}
+		
+		if (delayCount == 1000) {
+			this.renderSprite = bomb3;
+		}
+		
+		if (delayCount == 2000) {
+			this.renderSprite = bomb2;
+		}
+		
+		if (delayCount == 3000) {
+			this.renderSprite = bomb1;
+		}
+		
 		delayCount = delayCount + 12.5;
+		
 		if (delayCount > 4000) {
 			
 			if (pictureNumber < 17) {
