@@ -24,6 +24,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import java.math.*;
 
 /**
  * Sample application that demonstrates the use of JavaFX Canvas for a Game.
@@ -73,8 +74,7 @@ public class Main extends Application {
 	 * Setup the new application.
 	 * @param primaryStage The stage that is to be used for the application.
 	 */
-	public void start(Stage primaryStage) {		
-		
+	public void start(Stage primaryStage) {
 
 		// Build the GUI 
 		Pane root = buildGUI();
@@ -84,7 +84,7 @@ public class Main extends Application {
 				
 		// Register a tick method to be called periodically.
 		// Make a new timeline with one keyframe that triggers the tick method every half a second.
-		tickTimeline = new Timeline(new KeyFrame(Duration.millis(100), event -> tick()));
+		tickTimeline = new Timeline(new KeyFrame(Duration.millis(15), event -> tick()));
 		
 		 // Loop the timeline forever
 		tickTimeline.setCycleCount(Animation.INDEFINITE);
@@ -93,14 +93,13 @@ public class Main extends Application {
 		tickTimeline.play();
 		
 		// Display the scene on the stage
-		testLevel.addRenderObject(new BabyRat(new Position(1,1), false, testLevel));
-		testLevel.addRenderObject(new BabyRat(new Position(1,3), false, testLevel));
-		testLevel.addRenderObject(new BabyRat(new Position(1,2), false, testLevel));
-		testLevel.addRenderObject(new BabyRat(new Position(1,3), false, testLevel));
-		testLevel.addRenderObject(new BabyRat(new Position(1,3), false, testLevel));
+		testLevel.addRenderObject(new BabyRat(new Position(1,1), false, testLevel, 0.02));
+		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel, 0.01));
+		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel, 0.05));
+		
 		//testLevel.addRenderObject(new BabyRat(new Position(5,5), false, testLevel));
 		
-		System.out.println(testLevel.tileAvailable(2, 1, 'N'));
+		System.out.println(testLevel.tileAvailable(0, 0, 'N'));
 		
 		drawGame();
 		primaryStage.setScene(scene);

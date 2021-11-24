@@ -41,21 +41,26 @@ public abstract class Rat extends RenderObject {
 	 */
 	protected char directionFacing;
 	
-	private int tickCounter = 0;
+	private float tickCounter = -2;
+	
+	private final int TILE_SIZE = 50;
 	
 	//might not keep
 	/**
 	 * The level the rat is currently in.
 	 */
 	protected TestLevel currentLevel;
+	
 
 	/**
 	 * movement() is a method which handles the movement behaviour of a rat.
 	 */
 	
 	protected void movement() {
-		//movement here
+		//for smooth movement we need 
+		double tickLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
 		
+		//movement here
 		//for better general performance we can use a timer to detect when a rat has moved a full tile before doing
 		//any tile processing, so when it moves 0.02px it doesn't do path finding until the position is an a full number
 		//and not a decimal
@@ -69,9 +74,11 @@ public abstract class Rat extends RenderObject {
 		//checks if the current position has a remainder, if not then we know it's moved a full tile so it's time to check
 		//the availavle directions.
 		//System.out.println(this.getObjectPosition()[0]);
-		
-		System.out.println(this.getObjectPosition()[0]);
-		if (this.getObjectPosition()[0] % 1 == 0 && this.getObjectPosition()[0] % 1 == 0) {
+		tickCounter++;
+		//System.out.println(tickCounter);
+		if (tickCounter == tickLimit || tickCounter == -1) {
+			System.out.println(this.getObjectPosition()[0] + " " +  this.getObjectPosition()[1]);
+			tickCounter = 0;
 			System.out.println("TEST");
 			//algorithm to for movement behaviour
 			boolean front = false;
@@ -133,7 +140,7 @@ public abstract class Rat extends RenderObject {
 			}
 		}	
 		//check the direction the rat is facing and incriment position based on that.
-		System.out.println(this.directionFacing);
+		//System.out.println(this.directionFacing);
 		if (this.directionFacing == 'N') {
 			//minus y
 			this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1] - this.ratSpeed);
@@ -147,8 +154,6 @@ public abstract class Rat extends RenderObject {
 			//minus x
 			this.setObjectPosition(this.getObjectPosition()[0] - this.ratSpeed, this.getObjectPosition()[1]);
 		}
-		
-		
 	}
 	
 	

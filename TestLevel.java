@@ -20,8 +20,8 @@ public class TestLevel {
 	public boolean tileAvailable (double xIn, double yIn, char direction){
 		String tiles [][] = tilesArray;
 		
-		int x = (int) Math.floor(xIn);
-		int y = (int) Math.floor(yIn);
+		int x = (int) Math.round(xIn);
+		int y = (int) Math.round(yIn);
 		
 		if (direction == 'N') {
 			if (y > 0) {
