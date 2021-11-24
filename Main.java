@@ -37,7 +37,7 @@ import javafx.util.Duration;
  */
 public class Main extends Application {
 	// The dimensions of the window
-	private static final int GRID_WIDTH = 15;
+	private static final int GRID_WIDTH = 20;
 	private static final int GRID_HEIGHT = 7;
 
 	private static final int GRID_CELL_WIDTH = 50;
@@ -84,7 +84,7 @@ public class Main extends Application {
 				
 		// Register a tick method to be called periodically.
 		// Make a new timeline with one keyframe that triggers the tick method every half a second.
-		tickTimeline = new Timeline(new KeyFrame(Duration.millis(100), event -> tick()));
+		tickTimeline = new Timeline(new KeyFrame(Duration.millis(15), event -> tick()));
 		
 		 // Loop the timeline forever
 		tickTimeline.setCycleCount(Animation.INDEFINITE);
