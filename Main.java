@@ -88,6 +88,7 @@ public class Main extends Application {
 		maleSexChanger = new Image("/items/malesexchanger.png");
 		femaleSexChanger = new Image("/items/malesexchanger.png");
 		deathRat = new Image("/items/deathrat.png");
+		bomb = new Image("/items/bomb.png");
 
 		// Build the GUI 
 		Pane root = buildGUI();
@@ -218,30 +219,12 @@ public class Main extends Application {
 		toolbar.setPadding(new Insets(10, 10, 10, 10)); 
 		root.setBottom(toolbar);
 		
-		ImageView draggableImage = new ImageView();
-		draggableImage.setImage(bomb);
-        toolbar.getChildren().add(draggableImage);
-        draggableImage.setOnDragDetected(new EventHandler<MouseEvent>() {
-		    public void handle(MouseEvent event) {
-		        // Mark the drag as started.
-		    	// We do not use the transfer mode (this can be used to indicate different forms
-		    	// of drags operations, for example, moving files or copying files).
-		    	Dragboard db = draggableImage.startDragAndDrop(TransferMode.ANY);
-
-		    	// We have to put some content in the clipboard of the drag event.
-		    	// We do not use this, but we could use it to store extra data if we wished.
-                ClipboardContent content = new ClipboardContent();
-                content.putString("Hello");
-                db.setContent(content);
-                
-		    	// Consume the event. This means we mark it as dealt with. 
-		        event.consume();
-		    }
-		});
+		
 		
         ImageView draggableImage2 = new ImageView();
 		draggableImage2.setImage(gas);
         toolbar.getChildren().add(draggableImage2);
+        
         draggableImage2.setOnDragDetected(new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent event) {
 		        // Mark the drag as started.
@@ -260,9 +243,32 @@ public class Main extends Application {
 		    }
 		});
         
+        ImageView draggableImage = new ImageView();
+		draggableImage.setImage(bomb);
+        toolbar.getChildren().add(draggableImage);
+        
+        draggableImage.setOnDragDetected(new EventHandler<MouseEvent>() {
+		    public void handle(MouseEvent event) {
+		        // Mark the drag as started.
+		    	// We do not use the transfer mode (this can be used to indicate different forms
+		    	// of drags operations, for example, moving files or copying files).
+		    	Dragboard db = draggableImage.startDragAndDrop(TransferMode.ANY);
+
+		    	// We have to put some content in the clipboard of the drag event.
+		    	// We do not use this, but we could use it to store extra data if we wished.
+                ClipboardContent content = new ClipboardContent();
+                content.putString("Hello");
+                db.setContent(content);
+                
+		    	// Consume the event. This means we mark it as dealt with. 
+		        event.consume();
+		    }
+		});
+        
         ImageView draggableImage3 = new ImageView();
 		draggableImage3.setImage(poison);
         toolbar.getChildren().add(draggableImage3);
+        
         draggableImage3.setOnDragDetected(new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent event) {
 		        // Mark the drag as started.
