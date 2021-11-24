@@ -4,17 +4,15 @@ import javafx.scene.image.Image;
 public class Bomb extends Item {
 
 	private Image bomb = new Image("/items/bomb.png");
-	private Image bomb4 = new Image("/items/bomb4.png");
-	private Image bomb3 = new Image("/items/bomb3.png");
-	private Image bomb2 = new Image("/items/bomb2.png");
-	private Image bomb1 = new Image("/items/bomb1.png");
+	
+	private final int NUMBER_OF_BOMB_FRAMES = 17;
+	private final int EXPLOSION_FRAME = 6;
 
 	private double tickCounter = 0;
 	private double delayCount = 0;
 	private int frameTime = 0;
 	private int pictureNumber = 1;
-	private final int NUMBER_OF_BOMB_FRAMES = 17;
-	private final int EXPLOSION_FRAME = 6;
+	private int delayedPictureNumber = 4;
 
 	private TestLevel currentLevel;
 
@@ -57,23 +55,21 @@ public class Bomb extends Item {
 
 		return bomb;
 	}
+	
+	private Image loadDelayImage(int delayedPictureNumber) {
+
+		Image delayBomb = new Image("/delayed_bomb_images/bomb" + String.valueOf(delayedPictureNumber) + ".png");
+
+		return delayBomb;
+	}
 
 	public void tick() {
 
-		if (delayCount == 0) {
-			this.renderSprite = bomb4;
-		}
-
-		if (delayCount == 1000) {
-			this.renderSprite = bomb3;
-		}
-
-		if (delayCount == 2000) {
-			this.renderSprite = bomb2;
-		}
-
-		if (delayCount == 3000) {
-			this.renderSprite = bomb1;
+		if (delayCount % 1000 == 0) {
+			this.renderSprite = loadDelayImage(delayedPictureNumber);
+			if (delayedPictureNumber > 1) {
+				delayedPictureNumber--;
+			}
 		}
 
 		delayCount = delayCount + 12.5;
