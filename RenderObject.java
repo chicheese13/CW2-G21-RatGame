@@ -37,6 +37,8 @@ public abstract class RenderObject {
 	public double[] getObjectPosition() {
 		return this.objectPosition.getPosition();
 	}
+	
+	public abstract void tick();
 }
 
 

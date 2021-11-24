@@ -147,7 +147,9 @@ public class Main extends Application {
 	public void tick() {
 		//Here we will do the tick method for items and rats.
 		//Likely to have an array of objects which we call the tick method on.
-		
+		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
+			testLevel.getRenderObjects().get(i).tick();
+		}
 		//We then redraw the whole canvas.
 		drawGame();
 	}
