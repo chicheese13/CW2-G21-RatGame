@@ -24,6 +24,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import java.lang.Math;
 
 /**
  * Sample application that demonstrates the use of JavaFX Canvas for a Game.
@@ -153,11 +154,14 @@ public class Main extends Application {
 			// gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(),
 			// testLevel.getRenderObjects().get(i).getPosition()[0] * GRID_CELL_WIDTH,
 			// testLevel.getRenderObjects().get(i).getPosition()[1] * GRID_CELL_HEIGHT);
-			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(),
-					(testLevel.getRenderObjects().get(i).getObjectPosition()[0] * GRID_CELL_WIDTH)
-							- (testLevel.getRenderObjects().get(i).getSprite().getWidth()) / 2,
-					(testLevel.getRenderObjects().get(i).getObjectPosition()[1] * GRID_CELL_HEIGHT)
-							- (testLevel.getRenderObjects().get(i).getSprite().getHeight()) / 2);
+			
+			double x = ((testLevel.getRenderObjects().get(i).getObjectPosition()[0] * GRID_CELL_WIDTH)
+					);
+			
+			double y = ((testLevel.getRenderObjects().get(i).getObjectPosition()[1] * GRID_CELL_HEIGHT)
+					);
+			
+			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), x, y);
 		}
 
 	}
@@ -195,14 +199,14 @@ public class Main extends Application {
 	}
 
 	public void bombDropOccured(DragEvent event) {
-		double x = event.getX();
-		double y = event.getY();
+		double x = (Math.floor((event.getX())/50));
+		double y = (Math.floor((event.getY())/50));
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
-
-		testLevel.addRenderObject(new Bomb(new Position(x / 50, y / 50), testLevel));
+		
+		testLevel.addRenderObject(new Bomb(new Position(x, y), testLevel));
 		drawGame();
 
 	}
