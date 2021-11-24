@@ -20,14 +20,14 @@ public class Bomb extends Item {
 	private Image explode8 = new Image("/items/explode8.png");
 	private Image explode9 = new Image("/items/explode9.png");
 	private Image explode10 = new Image("/items/explode10.png");
-	
-	private Image currentSprite = bomb;
-	
-	private int tickCounter = 0;
-	
-	public Bomb (int x, int y) {
-		this.setLocation(x, y);
 		
+	private int tickCounter = 0;
+	private TestLevel currentLevel;
+	
+	public Bomb (Position objectPosition, TestLevel currentLevel) {
+		this.renderSprite = bomb;
+		this.objectPosition = objectPosition;
+		this.currentLevel = currentLevel;
 	}
 	
 	public void startTimer() {
@@ -36,64 +36,70 @@ public class Bomb extends Item {
 	}
 	
 	public void tick() {
-		this.tickCounter++;
-		if(tickCounter == 1) {
-			currentSprite = bomb1;
+		System.out.println(tickCounter);
+		this.tickCounter = this.tickCounter + 7;
+		if(tickCounter == (1 * 7)) {
+			this.renderSprite = bomb1;
 		}
-		if(tickCounter == 2) {
-			currentSprite = bomb2;
-		}
-		
-		if(tickCounter == 3) {
-			currentSprite = bomb3;
+		if(tickCounter == (2 * 7)) {
+			this.renderSprite = bomb2;
 		}
 		
-		if(tickCounter == 4) {
-			currentSprite = bomb4;
+		if(tickCounter == (3 * 7)) {
+			this.renderSprite = bomb3;
 		}
 		
-		if(tickCounter == 5) {
-			currentSprite = bomb5;
-		}
-		if(tickCounter == 6) {
-			currentSprite = explode1;
+		if(tickCounter == (4 * 7)) {
+			this.renderSprite = bomb4;
 		}
 		
-		if(tickCounter == 7) {
-			currentSprite = explode2;
+		if(tickCounter == (5 * 7)) {
+			this.renderSprite = bomb5;
+		}
+		if(tickCounter == (6 * 7)) {
+			this.renderSprite = explode1;
 		}
 		
-		if(tickCounter == 8) {
-			currentSprite = explode3;
+		if(tickCounter == (7 * 7)) {
+			this.renderSprite = explode2;
+		}
+		
+		if(tickCounter == (8 * 7)) {
+			this.renderSprite = explode3;
 		}	
 		
-		if(tickCounter == 9) {
-			currentSprite = explode4;
+		if(tickCounter == (9 * 7)) {
+			this.renderSprite = explode4;
 		}
 		
-		if(tickCounter == 10) {
-			currentSprite = explode5;
+		if(tickCounter == (10 * 7)) {
+			this.renderSprite = explode5;
 		}
 		
-		if(tickCounter == 11) {
-			currentSprite = explode6;
+		if(tickCounter == (11 * 7)) {
+			this.renderSprite = explode6;
 		}
 		
-		if(tickCounter == 12) {
-			currentSprite = explode7;
+		if(tickCounter == (12 * 7)) {
+			this.renderSprite = explode7;
 		}
 		
-		if(tickCounter == 13) {
-			currentSprite = explode8;
+		if(tickCounter == (13 * 7)) {
+			this.renderSprite = explode8;
 		}
 		
-		if(tickCounter == 14) {
-			currentSprite = explode9;
+		if(tickCounter == (14 * 7)) {
+			this.renderSprite = explode9;
 		}
 		
-		if(tickCounter == 15) {
-			currentSprite = explode10;
+		if(tickCounter == (15 * 7)) {
+			this.renderSprite = explode10;
 			tickCounter = 0;
+			for (int i = 0; i < this.currentLevel.getRenderObjects().size(); i++) {
+				if (this.currentLevel.getRenderObjects().get(i) == this) {
+					currentLevel.getRenderObjects().remove(i);
+				}
+			}
 		}
 	}
 	
@@ -107,7 +113,7 @@ public class Bomb extends Item {
 	}
 	
 	public Image getSprite() {
-		return this.currentSprite;
+		return this.renderSprite;
 	}
 
 }

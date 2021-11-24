@@ -5,5 +5,7 @@ public class Poison extends Item {
 		this.setLocation(x, y);
 	}
 	
-	
+	public void tick() {
+		
+	}
 }

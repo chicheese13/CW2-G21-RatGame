@@ -23,5 +23,9 @@ public class NoEntrySign extends Item {
 		
 		return signHealth;
 	}
+	
+	public void tick() {
+		
+	}
 
 }

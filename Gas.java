@@ -8,4 +8,8 @@ public class Gas extends Item {
 	public void startGas () {
 		//starts gas
 	} 
+	
+	public void tick() {
+		
+	}
 }

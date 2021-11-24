@@ -10,4 +10,8 @@ public class MaleSexChange extends Item {
 	public void ratToM() {
 		//runs rat gender change method in rat classes
 	}
+	
+	public void tick() {
+		
+	}
 }

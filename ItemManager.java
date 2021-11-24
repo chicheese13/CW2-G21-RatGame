@@ -62,7 +62,7 @@ public class ItemManager extends Application {
 	private Image maleSexChanger;
 	private Image femaleSexChanger;
 	private Image deathRat;
-	Bomb testBomb = new Bomb (1,1);
+	//Bomb testBomb = new Bomb (1,1);
 	
 	// X and Y coordinate of player on the grid.
 	private int playerX = 0;

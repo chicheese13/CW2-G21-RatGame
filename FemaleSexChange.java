@@ -11,4 +11,8 @@ public class FemaleSexChange extends Item {
 	public void ratToF() {
 		//runs rat gender change method in rat classes
 	}
+	
+	public void tick() {
+		
+	}
 }
