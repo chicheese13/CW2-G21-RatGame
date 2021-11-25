@@ -44,6 +44,10 @@ public abstract class RenderObject {
 		this.objectPosition.setPosition(x, y);
 	}
 	
+	public void setSprite(Image newSprite) {
+		this.renderSprite = newSprite;
+	}
+	
 	public abstract void tick();
 }
 

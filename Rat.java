@@ -45,6 +45,11 @@ public abstract class Rat extends RenderObject {
 	
 	private final int TILE_SIZE = 50;
 	
+	protected Image ratSpriteNorth;
+	protected Image ratSpriteSouth;
+	protected Image ratSpriteEast;
+	protected Image ratSpriteWest;
+	
 	//might not keep
 	/**
 	 * The level the rat is currently in.
@@ -144,15 +149,19 @@ public abstract class Rat extends RenderObject {
 		if (this.directionFacing == 'N') {
 			//minus y
 			this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1] - this.ratSpeed);
+			this.setSprite(ratSpriteNorth);
 		} else if (this.directionFacing == 'E') {
 			//plus x
 			this.setObjectPosition(this.getObjectPosition()[0] + this.ratSpeed, this.getObjectPosition()[1]);
+			this.setSprite(ratSpriteEast);
 		} else if (this.directionFacing == 'S') {
 			//plus y
 			this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1] + this.ratSpeed);
+			this.setSprite(ratSpriteSouth);
 		} else if (this.directionFacing == 'W') {
 			//minus x
 			this.setObjectPosition(this.getObjectPosition()[0] - this.ratSpeed, this.getObjectPosition()[1]);
+			this.setSprite(ratSpriteWest);
 		}
 	}
 	

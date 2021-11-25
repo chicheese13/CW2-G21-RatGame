@@ -24,7 +24,10 @@ public class BabyRat extends NormalRat {
 	/**
 	 * The baby rat image sprite.
 	 */
-	protected final Image BABY_RAT_SPRITE = new Image("TestTextures/baby-rat.png");
+	protected final Image BABY_RAT_SPRITE_EAST = new Image("TestTextures/baby-rat-east.png");
+	protected final Image BABY_RAT_SPRITE_NORTH = new Image("TestTextures/baby-rat-north.png");
+	protected final Image BABY_RAT_SPRITE_SOUTH = new Image("TestTextures/baby-rat-south.png");
+	protected final Image BABY_RAT_SPRITE_WEST = new Image("TestTextures/baby-rat-west.png");
 	/**
 	 *  The grow counter keeps track of the baby growth.
 	 */
@@ -38,7 +41,7 @@ public class BabyRat extends NormalRat {
 	public BabyRat(Position position, boolean gender, TestLevel currentLevel, double testSpeed) {
 		this.objectPosition = position;
 		this.ratGender = gender;
-		this.renderSprite = BABY_RAT_SPRITE;
+		this.renderSprite = BABY_RAT_SPRITE_EAST;
 		this.ratSterile = DEFUALT_STERILE;
 		this.ratHealth = MAX_RAT_HEALTH;
 		this.growCounter = DEFAULT_GROW_COUNT;
@@ -46,6 +49,10 @@ public class BabyRat extends NormalRat {
 		this.currentLevel = currentLevel;
 		this.ratSpeed = BABY_RAT_SPEED;
 		this.ratSpeed = testSpeed;
+		this.ratSpriteNorth = BABY_RAT_SPRITE_NORTH;
+		this.ratSpriteEast = BABY_RAT_SPRITE_EAST;
+		this.ratSpriteSouth = BABY_RAT_SPRITE_SOUTH;
+		this.ratSpriteWest = BABY_RAT_SPRITE_WEST;
 	}
 	
 	/**
