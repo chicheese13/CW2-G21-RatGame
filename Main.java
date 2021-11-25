@@ -39,7 +39,7 @@ import java.lang.Math;
  */
 public class Main extends Application {
 	// The dimensions of the window
-	private static final int GRID_WIDTH = 20;
+	private static final int GRID_WIDTH = 15;
 	private static final int GRID_HEIGHT = 7;
 
 	private static final int GRID_CELL_WIDTH = 50;
@@ -68,6 +68,7 @@ public class Main extends Application {
 	private Image grass = new Image("TestTextures/grass.png");
 	private Image path = new Image("TestTextures/path.png");
 	private Image tunnel = new Image("TestTextures/tunnel.png");
+	
 	private Image bomb;
 	private Image gas;
 	private Image poison;
@@ -154,13 +155,11 @@ public class Main extends Application {
 			// gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(),
 			// testLevel.getRenderObjects().get(i).getPosition()[0] * GRID_CELL_WIDTH,
 			// testLevel.getRenderObjects().get(i).getPosition()[1] * GRID_CELL_HEIGHT);
-			
-			double x = ((testLevel.getRenderObjects().get(i).getObjectPosition()[0] * GRID_CELL_WIDTH)
-					);
-			
-			double y = ((testLevel.getRenderObjects().get(i).getObjectPosition()[1] * GRID_CELL_HEIGHT)
-					);
-			
+
+			double x = ((testLevel.getRenderObjects().get(i).getObjectPosition()[0] * GRID_CELL_WIDTH));
+
+			double y = ((testLevel.getRenderObjects().get(i).getObjectPosition()[1] * GRID_CELL_HEIGHT));
+
 			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), x, y);
 		}
 
@@ -182,8 +181,8 @@ public class Main extends Application {
 	}
 
 	public void canvasDragDroppedOccured(DragEvent event, Image img) {
-		double x = event.getX();
-		double y = event.getY();
+		double x = (Math.floor((event.getX()) / 50));
+		double y = (Math.floor((event.getY()) / 50));
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
@@ -199,14 +198,27 @@ public class Main extends Application {
 	}
 
 	public void bombDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX())/50));
-		double y = (Math.floor((event.getY())/50));
+		double x = (Math.floor((event.getX()) / 50));
+		double y = (Math.floor((event.getY()) / 50));
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
-		
+
 		testLevel.addRenderObject(new Bomb(new Position(x, y), testLevel));
+		drawGame();
+
+	}
+	
+	public void signDropOccured(DragEvent event) {
+		double x = (Math.floor((event.getX()) / 50));
+		double y = (Math.floor((event.getY()) / 50));
+
+		// Print a string showing the location.
+		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
+		System.out.println(s);
+
+		testLevel.addRenderObject(new NoEntrySign(new Position(x, y), testLevel));
 		drawGame();
 
 	}
@@ -230,6 +242,28 @@ public class Main extends Application {
 		toolbar.setPadding(new Insets(10, 10, 10, 10));
 		root.setBottom(toolbar);
 
+		ImageView draggableImage = new ImageView();
+		draggableImage.setImage(bomb);
+		toolbar.getChildren().add(draggableImage);
+
+		draggableImage.setOnDragDetected(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent event) {
+				// Mark the drag as started.
+				// We do not use the transfer mode (this can be used to indicate different forms
+				// of drags operations, for example, moving files or copying files).
+				Dragboard db = draggableImage.startDragAndDrop(TransferMode.ANY);
+
+				// We have to put some content in the clipboard of the drag event.
+				// We do not use this, but we could use it to store extra data if we wished.
+				ClipboardContent content = new ClipboardContent();
+				content.putString("Hello");
+				db.setContent(content);
+
+				// Consume the event. This means we mark it as dealt with.
+				event.consume();
+			}
+		});
+		
 		ImageView draggableImage2 = new ImageView();
 		draggableImage2.setImage(gas);
 		toolbar.getChildren().add(draggableImage2);
@@ -252,16 +286,16 @@ public class Main extends Application {
 			}
 		});
 
-		ImageView draggableImage = new ImageView();
-		draggableImage.setImage(bomb);
-		toolbar.getChildren().add(draggableImage);
+		ImageView draggableImage3 = new ImageView();
+		draggableImage3.setImage(poison);
+		toolbar.getChildren().add(draggableImage3);
 
-		draggableImage.setOnDragDetected(new EventHandler<MouseEvent>() {
+		draggableImage3.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
 				// Mark the drag as started.
 				// We do not use the transfer mode (this can be used to indicate different forms
 				// of drags operations, for example, moving files or copying files).
-				Dragboard db = draggableImage.startDragAndDrop(TransferMode.ANY);
+				Dragboard db = draggableImage3.startDragAndDrop(TransferMode.ANY);
 
 				// We have to put some content in the clipboard of the drag event.
 				// We do not use this, but we could use it to store extra data if we wished.
@@ -273,17 +307,17 @@ public class Main extends Application {
 				event.consume();
 			}
 		});
+		
+		ImageView draggableImage4 = new ImageView();
+		draggableImage4.setImage(noEntrySign);
+		toolbar.getChildren().add(draggableImage4);
 
-		ImageView draggableImage3 = new ImageView();
-		draggableImage3.setImage(poison);
-		toolbar.getChildren().add(draggableImage3);
-
-		draggableImage3.setOnDragDetected(new EventHandler<MouseEvent>() {
+		draggableImage4.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
 				// Mark the drag as started.
 				// We do not use the transfer mode (this can be used to indicate different forms
 				// of drags operations, for example, moving files or copying files).
-				Dragboard db = draggableImage3.startDragAndDrop(TransferMode.ANY);
+				Dragboard db = draggableImage4.startDragAndDrop(TransferMode.ANY);
 
 				// We have to put some content in the clipboard of the drag event.
 				// We do not use this, but we could use it to store extra data if we wished.
@@ -320,6 +354,12 @@ public class Main extends Application {
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 
+				} else if (event.getGestureSource() == draggableImage4) {
+					// Mark the drag event as acceptable by the canvas.
+					event.acceptTransferModes(TransferMode.ANY);
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
+
 				}
 			}
 		});
@@ -344,6 +384,11 @@ public class Main extends Application {
 				} else if (event.getGestureSource() == draggableImage3) {
 					// Mark the drag event as acceptable by the canvas.
 					canvasDragDroppedOccured(event, poison);
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
+				} else if (event.getGestureSource() == draggableImage4) {
+					// Mark the drag event as acceptable by the canvas.
+					canvasDragDroppedOccured(event, sterillisation);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				}

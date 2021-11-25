@@ -28,6 +28,7 @@ public class Bomb extends Item {
 			if (pictureNumber == EXPLOSION_FRAME) {
 				explode();
 			}
+			
 			this.renderSprite = loadImage(pictureNumber);
 			if (pictureNumber < NUMBER_OF_BOMB_FRAMES) {
 				pictureNumber++;
