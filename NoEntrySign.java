@@ -32,8 +32,9 @@ public class NoEntrySign extends Item {
 			signHealth = getSignHealth() - 20;
 
 			if (pictureNumber < NUMBER_OF_SIGN_FRAMES) {
-				this.renderSprite = loadImage(pictureNumber);
 				pictureNumber++;
+				this.renderSprite = loadImage(pictureNumber);
+				
 			}
 
 			if (signHealth == 0) {

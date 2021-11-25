@@ -112,7 +112,7 @@ public class Main extends Application {
 		// Display the scene on the stage
 		// testLevel.addRenderObject(new BabyRat(new Position(2,2), false, testLevel));
 		// testLevel.addRenderObject(new BabyRat(new Position(5,5), false, testLevel));
-		testLevel.addRenderObject(new Bomb(new Position(1, 1), testLevel));
+		testLevel.addRenderObject(new NoEntrySign(new Position(1, 1), testLevel));
 		drawGame();
 		primaryStage.setScene(scene);
 		primaryStage.show();
