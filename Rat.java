@@ -36,11 +36,12 @@ public abstract class Rat extends RenderObject {
 	/**
 	 * Tick counter for tile detection in smooth movement.
 	 */
-	private float tickCounter = -2;
+	protected float tickCounter = -2;
 	/**
 	 * size of tiles, used in smooth movement.
 	 */
-	private final int TILE_SIZE = 50;
+	protected final int TILE_SIZE = 50;
+	
 	/**
 	 * rat sprites for each direction.
 	 */
@@ -58,8 +59,9 @@ public abstract class Rat extends RenderObject {
 	 * movement() is a method which handles the movement behaviour of a rat.
 	 */
 	protected void movement() {
-		//for smooth movement we need 
 		double tickLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
+		//for smooth movement we need 
+		//double tickLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
 		
 		//movement here
 		//for better general performance we can use a timer to detect when a rat has moved a full tile before doing
@@ -74,6 +76,8 @@ public abstract class Rat extends RenderObject {
 		
 		//checks if the current position has a remainder, if not then we know it's moved a full tile so it's time to check
 		//the availavle directions.
+		
+		System.out.println(this.ratSpeed);
 		
 		tickCounter++;
 		if (tickCounter == tickLimit || tickCounter == -1) {

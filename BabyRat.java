@@ -20,7 +20,7 @@ public class BabyRat extends NormalRat {
 	/**
 	 * This is the speed for a baby rat.
 	 */
-	protected final double BABY_RAT_SPEED = 0.02;
+	protected final double BABY_RAT_SPEED = 0.04;
 	/**
 	 * All baby rat sprites for each direction.
 	 */
@@ -39,20 +39,20 @@ public class BabyRat extends NormalRat {
 	 *  @param gender
 	 *  @param currentLevel
 	 */
-	public BabyRat(Position position, boolean gender, TestLevel currentLevel) {
+	public BabyRat(Position position, boolean gender, TestLevel currentLevel, char directionFacing) {
 		this.objectPosition = position;
 		this.ratGender = gender;
 		this.renderSprite = BABY_RAT_SPRITE_EAST;
 		this.ratSterile = DEFUALT_STERILE;
 		this.ratHealth = MAX_RAT_HEALTH;
 		this.growCounter = DEFAULT_GROW_COUNT;
-		this.directionFacing = 'N';
 		this.currentLevel = currentLevel;
 		this.ratSpeed = BABY_RAT_SPEED;
 		this.ratSpriteNorth = BABY_RAT_SPRITE_NORTH;
 		this.ratSpriteEast = BABY_RAT_SPRITE_EAST;
 		this.ratSpriteSouth = BABY_RAT_SPRITE_SOUTH;
 		this.ratSpriteWest = BABY_RAT_SPRITE_WEST;
+		this.directionFacing = directionFacing;
 	}
 	
 	/**
