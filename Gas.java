@@ -2,7 +2,7 @@ import javafx.scene.image.Image;
 
 public class Gas extends Item {
 
-	private Image gas = new Image("/items/gas.png");
+	private Image gas = new Image("/items/gasonlevel.png");
 
 	private TestLevel currentLevel;
 

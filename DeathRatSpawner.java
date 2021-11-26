@@ -2,7 +2,7 @@ import javafx.scene.image.Image;
 
 public class DeathRatSpawner extends Item {
  
-	private Image deathRat = new Image("/items/deathrat.png");
+	private Image deathRat = new Image("/items/deathratonlevel.png");
 
 	private TestLevel currentLevel;
 
