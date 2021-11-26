@@ -2,7 +2,7 @@ import javafx.scene.image.Image;
 
 public class Poison extends Item {
 	
-	private Image poison = new Image("/items/poison.png");
+	private Image poison = new Image("/items/poisononlevel.png");
 
 	private TestLevel currentLevel;
 
