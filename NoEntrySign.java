@@ -2,7 +2,7 @@ import javafx.scene.image.Image;
 
 public class NoEntrySign extends Item {
 
-	private Image noEntrySign = new Image("/items/noentrysign.png");
+	private Image noEntrySign = new Image("/items/noentrysignonlevel.png");
 
 	private final int NUMBER_OF_SIGN_FRAMES = 5;
 

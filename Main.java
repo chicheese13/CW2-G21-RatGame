@@ -73,7 +73,7 @@ public class Main extends Application {
 	private Image gas;
 	private Image poison;
 	private Image noEntrySign;
-	private Image sterillisation;
+	private Image sterilisation;
 	private Image maleSexChanger;
 	private Image femaleSexChanger;
 	private Image deathRat;
@@ -84,13 +84,15 @@ public class Main extends Application {
 	 * @param primaryStage The stage that is to be used for the application.
 	 */
 	public void start(Stage primaryStage) {
+		bomb = new Image("/items/bomb.png");
 		gas = new Image("/items/gas.png");
 		poison = new Image("/items/poison.png");
+		deathRat = new Image("/items/deathrat.png");
 		noEntrySign = new Image("/items/noentrysign.png");
 		maleSexChanger = new Image("/items/malesexchanger.png");
-		femaleSexChanger = new Image("/items/malesexchanger.png");
-		deathRat = new Image("/items/deathrat.png");
-		bomb = new Image("/items/bomb.png");
+		femaleSexChanger = new Image("/items/femalesexchanger.png");
+		sterilisation = new Image("/items/sterilisation.png");
+		
 
 		// Build the GUI
 		Pane root = buildGUI();
@@ -180,23 +182,6 @@ public class Main extends Application {
 		drawGame();
 	}
 
-	public void canvasDragDroppedOccured(DragEvent event, Image img) {
-		double x = (Math.floor((event.getX()) / 50));
-		double y = (Math.floor((event.getY()) / 50));
-
-		// Print a string showing the location.
-		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
-		System.out.println(s);
-
-		// Draw an icon at the dropped location.
-		GraphicsContext gc = canvas.getGraphicsContext2D();
-		// Draw the the image so the top-left corner is where we dropped.
-		// gc.drawImage(iconImage, x, y);
-		// Draw the the image so the center is where we dropped.
-
-		gc.drawImage(img, x - img.getWidth() / 2.0, y - img.getHeight() / 2.0);
-	}
-
 	public void bombDropOccured(DragEvent event) {
 		double x = (Math.floor((event.getX()) / 50));
 		double y = (Math.floor((event.getY()) / 50));
@@ -207,7 +192,6 @@ public class Main extends Application {
 
 		testLevel.addRenderObject(new Bomb(new Position(x, y), testLevel));
 		drawGame();
-
 	}
 	
 	public void gasDropOccured(DragEvent event) {
@@ -220,7 +204,6 @@ public class Main extends Application {
 
 		testLevel.addRenderObject(new Gas(new Position(x, y), testLevel));
 		drawGame();
-
 	}
 	
 	public void poisonDropOccured(DragEvent event) {
@@ -233,7 +216,6 @@ public class Main extends Application {
 
 		testLevel.addRenderObject(new Poison(new Position(x, y), testLevel));
 		drawGame();
-
 	}
 	
 	public void signDropOccured(DragEvent event) {
@@ -246,7 +228,54 @@ public class Main extends Application {
 
 		testLevel.addRenderObject(new NoEntrySign(new Position(x, y), testLevel));
 		drawGame();
+	}
+	
+	public void deathRatDropOccured(DragEvent event) {
+		double x = (Math.floor((event.getX()) / 50));
+		double y = (Math.floor((event.getY()) / 50));
 
+		// Print a string showing the location.
+		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
+		System.out.println(s);
+
+		testLevel.addRenderObject(new DeathRatSpawner(new Position(x, y), testLevel));
+		drawGame();
+	}
+	
+	public void femaleSexChangerDropOccured(DragEvent event) {
+		double x = (Math.floor((event.getX()) / 50));
+		double y = (Math.floor((event.getY()) / 50));
+
+		// Print a string showing the location.
+		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
+		System.out.println(s);
+
+		testLevel.addRenderObject(new FemaleSexChange(new Position(x, y), testLevel));
+		drawGame();
+	}
+	
+	public void maleSexChangerDropOccured(DragEvent event) {
+		double x = (Math.floor((event.getX()) / 50));
+		double y = (Math.floor((event.getY()) / 50));
+
+		// Print a string showing the location.
+		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
+		System.out.println(s);
+
+		testLevel.addRenderObject(new MaleSexChange(new Position(x, y), testLevel));
+		drawGame();
+	}
+	
+	public void sterilisationDropOccured(DragEvent event) {
+		double x = (Math.floor((event.getX()) / 50));
+		double y = (Math.floor((event.getY()) / 50));
+
+		// Print a string showing the location.
+		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
+		System.out.println(s);
+
+		testLevel.addRenderObject(new Sterilisation(new Position(x, y), testLevel));
+		drawGame();
 	}
 	
 	
@@ -357,6 +386,94 @@ public class Main extends Application {
 				event.consume();
 			}
 		});
+		
+		ImageView draggableDeathRatImage = new ImageView();
+		draggableDeathRatImage.setImage(deathRat);
+		toolbar.getChildren().add(draggableDeathRatImage);
+
+		draggableDeathRatImage.setOnDragDetected(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent event) {
+				// Mark the drag as started.
+				// We do not use the transfer mode (this can be used to indicate different forms
+				// of drags operations, for example, moving files or copying files).
+				Dragboard db = draggableDeathRatImage.startDragAndDrop(TransferMode.ANY);
+
+				// We have to put some content in the clipboard of the drag event.
+				// We do not use this, but we could use it to store extra data if we wished.
+				ClipboardContent content = new ClipboardContent();
+				content.putString("Hello");
+				db.setContent(content);
+
+				// Consume the event. This means we mark it as dealt with.
+				event.consume();
+			}
+		});
+		
+		ImageView draggableFemaleSexChangerImage = new ImageView();
+		draggableFemaleSexChangerImage.setImage(femaleSexChanger);
+		toolbar.getChildren().add(draggableFemaleSexChangerImage);
+
+		draggableFemaleSexChangerImage.setOnDragDetected(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent event) {
+				// Mark the drag as started.
+				// We do not use the transfer mode (this can be used to indicate different forms
+				// of drags operations, for example, moving files or copying files).
+				Dragboard db = draggableFemaleSexChangerImage.startDragAndDrop(TransferMode.ANY);
+
+				// We have to put some content in the clipboard of the drag event.
+				// We do not use this, but we could use it to store extra data if we wished.
+				ClipboardContent content = new ClipboardContent();
+				content.putString("Hello");
+				db.setContent(content);
+
+				// Consume the event. This means we mark it as dealt with.
+				event.consume();
+			}
+		});
+		
+		ImageView draggableMaleSexChangerImage = new ImageView();
+		draggableMaleSexChangerImage.setImage(maleSexChanger);
+		toolbar.getChildren().add(draggableMaleSexChangerImage);
+
+		draggableMaleSexChangerImage.setOnDragDetected(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent event) {
+				// Mark the drag as started.
+				// We do not use the transfer mode (this can be used to indicate different forms
+				// of drags operations, for example, moving files or copying files).
+				Dragboard db = draggableMaleSexChangerImage.startDragAndDrop(TransferMode.ANY);
+
+				// We have to put some content in the clipboard of the drag event.
+				// We do not use this, but we could use it to store extra data if we wished.
+				ClipboardContent content = new ClipboardContent();
+				content.putString("Hello");
+				db.setContent(content);
+
+				// Consume the event. This means we mark it as dealt with.
+				event.consume();
+			}
+		});
+		
+		ImageView draggableSterilisationImage = new ImageView();
+		draggableSterilisationImage.setImage(sterilisation);
+		toolbar.getChildren().add(draggableSterilisationImage);
+
+		draggableSterilisationImage.setOnDragDetected(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent event) {
+				// Mark the drag as started.
+				// We do not use the transfer mode (this can be used to indicate different forms
+				// of drags operations, for example, moving files or copying files).
+				Dragboard db = draggableSterilisationImage.startDragAndDrop(TransferMode.ANY);
+
+				// We have to put some content in the clipboard of the drag event.
+				// We do not use this, but we could use it to store extra data if we wished.
+				ClipboardContent content = new ClipboardContent();
+				content.putString("Hello");
+				db.setContent(content);
+
+				// Consume the event. This means we mark it as dealt with.
+				event.consume();
+			}
+		});
 
 		// This code allows the canvas to receive a dragged object within its bounds.
 		// You probably don't need to change this (unless you wish to do more advanced
@@ -386,7 +503,26 @@ public class Main extends Application {
 					event.acceptTransferModes(TransferMode.ANY);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
-
+				} else if (event.getGestureSource() == draggableDeathRatImage) {
+					// Mark the drag event as acceptable by the canvas.
+					event.acceptTransferModes(TransferMode.ANY);
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
+				} else if (event.getGestureSource() == draggableFemaleSexChangerImage) {
+					// Mark the drag event as acceptable by the canvas.
+					event.acceptTransferModes(TransferMode.ANY);
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
+				} else if (event.getGestureSource() == draggableMaleSexChangerImage) {
+					// Mark the drag event as acceptable by the canvas.
+					event.acceptTransferModes(TransferMode.ANY);
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
+				} else if (event.getGestureSource() == draggableSterilisationImage) {
+					// Mark the drag event as acceptable by the canvas.
+					event.acceptTransferModes(TransferMode.ANY);
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
 				}
 			}
 		});
@@ -418,10 +554,27 @@ public class Main extends Application {
 					signDropOccured(event);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
-				}
-
-				// Consume the event. This means we mark it as dealt with.
-				event.consume();
+				} else if (event.getGestureSource() == draggableDeathRatImage) {
+					// Mark the drag event as acceptable by the canvas.
+					deathRatDropOccured(event);
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
+				} else if (event.getGestureSource() == draggableFemaleSexChangerImage) {
+					// Mark the drag event as acceptable by the canvas.
+					femaleSexChangerDropOccured(event);
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
+				} else if (event.getGestureSource() == draggableMaleSexChangerImage) {
+					// Mark the drag event as acceptable by the canvas.
+					maleSexChangerDropOccured(event);
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
+				} else if (event.getGestureSource() == draggableSterilisationImage) {
+					// Mark the drag event as acceptable by the canvas.
+					sterilisationDropOccured(event);
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
+				} 
 			}
 		});
 

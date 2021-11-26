@@ -1,9 +1,16 @@
+import javafx.scene.image.Image;
 
 public class FemaleSexChange extends Item {
 	
 	
-	public FemaleSexChange (int x, int y) {
-		this.setLocation(x, y);
+	private Image femaleSexChange = new Image("/items/femalesexchangeronlevel.png");
+
+	private TestLevel currentLevel;
+
+	public FemaleSexChange(Position objectPosition, TestLevel currentLevel) {
+		this.renderSprite = femaleSexChange;
+		this.objectPosition = objectPosition;
+		this.currentLevel = currentLevel;
 	}
 
 //	public void ratToF(rat)
