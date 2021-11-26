@@ -405,12 +405,12 @@ public class Main extends Application {
 					event.consume();
 				} else if (event.getGestureSource() == draggableGasImage) {
 					// Mark the drag event as acceptable by the canvas.
-					canvasDragDroppedOccured(event, gas);
+					gasDropOccured(event);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				} else if (event.getGestureSource() == draggablePoisonImage) {
 					// Mark the drag event as acceptable by the canvas.
-					canvasDragDroppedOccured(event, poison);
+					poisonDropOccured(event);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				} else if (event.getGestureSource() == draggableSignImage) {
