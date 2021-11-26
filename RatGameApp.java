@@ -1,5 +1,3 @@
-<<<<<<<Updated upstream=======
-
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -153,6 +151,4 @@ public class RatGameApp extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-}>>>>>>>
-
-Stashed changes
+}
