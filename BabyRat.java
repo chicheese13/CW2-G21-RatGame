@@ -22,7 +22,7 @@ public class BabyRat extends NormalRat {
 	 */
 	protected final double BABY_RAT_SPEED = 0.02;
 	/**
-	 * The baby rat image sprite.
+	 * All baby rat sprites for each direction.
 	 */
 	protected final Image BABY_RAT_SPRITE_EAST = new Image("TestTextures/baby-rat-east.png");
 	protected final Image BABY_RAT_SPRITE_NORTH = new Image("TestTextures/baby-rat-north.png");
@@ -37,8 +37,9 @@ public class BabyRat extends NormalRat {
 	 *  Creates a baby rat
 	 *  @param position
 	 *  @param gender
+	 *  @param currentLevel
 	 */
-	public BabyRat(Position position, boolean gender, TestLevel currentLevel, double testSpeed) {
+	public BabyRat(Position position, boolean gender, TestLevel currentLevel) {
 		this.objectPosition = position;
 		this.ratGender = gender;
 		this.renderSprite = BABY_RAT_SPRITE_EAST;
@@ -48,7 +49,6 @@ public class BabyRat extends NormalRat {
 		this.directionFacing = 'N';
 		this.currentLevel = currentLevel;
 		this.ratSpeed = BABY_RAT_SPEED;
-		this.ratSpeed = testSpeed;
 		this.ratSpriteNorth = BABY_RAT_SPRITE_NORTH;
 		this.ratSpriteEast = BABY_RAT_SPRITE_EAST;
 		this.ratSpriteSouth = BABY_RAT_SPRITE_SOUTH;
@@ -74,8 +74,16 @@ public class BabyRat extends NormalRat {
 	 *  Method which handles the death of a rat.
 	 */
 	public void ratDeath() {
-		//incriment score by RAT_SCORE
-		//remove rat from the ArrayList
+		//incriment score by RAT_SCORE wherever the score variable is.
+		this.currentLevel.incrimentScore(RAT_SCORE);
+		//create an instance of RenderScore with desired score incriment.
+		this.currentLevel.addRenderObject(new RenderScore(this.objectPosition, RAT_SCORE, this.currentLevel));
+		//remove itself from RenderObjects array.
+		this.removeSelf();
+		
+		//play rat death sound clip.
+		SoundClip ratDeathSound = new SoundClip("rat-death-sound");
+		ratDeathSound.play();
 	}
 	
 	/**

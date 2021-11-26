@@ -3,6 +3,8 @@
 import java.util.ArrayList;
 
 public class TestLevel {
+	public int score;
+	
 	private static String tilesArray [][] = {{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
 		{"G","P","P","P","T","T","P","P","P","T","T","P","P","P","G"},
 		{"G","G","G","P","G","G","G","G","P","G","G","P","G","P","G"},
@@ -14,7 +16,11 @@ public class TestLevel {
 	ArrayList<RenderObject> renderObjectsArray = new ArrayList<RenderObject>();
 	
 	public TestLevel() {
-		
+		this.score = 0;
+	}
+	
+	public void incrimentScore(int scoreIncrease) {
+		this.score = this.score + scoreIncrease;
 	}
 	
 	public boolean tileAvailable (double xIn, double yIn, char direction){
@@ -63,7 +69,7 @@ public class TestLevel {
 		this.renderObjectsArray.add(addElement);
 	}
 	
-	public void removeRenderObject() {
-		
+	public void removeRenderObject(int index) {
+		this.renderObjectsArray.remove(index);
 	}
 }

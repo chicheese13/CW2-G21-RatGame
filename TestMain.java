@@ -39,7 +39,7 @@ public class TestMain extends Application {
 	// The dimensions of the window
 	
 	private static final int GRID_WIDTH = 15;
-	private static final int GRID_HEIGHT = 7;
+	private static final int GRID_HEIGHT = 9;
 
 	private static final int GRID_CELL_WIDTH = 50;
 	private static final int GRID_CELL_HEIGHT = 50;
@@ -59,7 +59,9 @@ public class TestMain extends Application {
 	// (in this setup) as we need to access it in different methods.
 	// We could use FXML to place code in the controller instead.
 	private Canvas canvas;
-		
+	
+	private final Image HUD_BG = new Image("Textures/hud-bg.png");
+	private final Image TEST = new Image("Textures/test.png");
 
 	
 	// X and Y coordinate of player on the grid.
@@ -76,6 +78,8 @@ public class TestMain extends Application {
 						{"G","P","G","G","G","G","G","G","P","G","G","P","G","P","G"},
 						{"G","P","P","P","T","T","P","P","P","T","T","P","P","P","G"},
 						{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"}};
+	
+	private int tickCounter = 0;
 	
 	//on the level class
 	public boolean isPath (int x, int y, char Direction) {
@@ -94,18 +98,25 @@ public class TestMain extends Application {
 	 * Setup the new application.
 	 * @param primaryStage The stage that is to be used for the application.
 	 */
+	
+	public AdultRat testRat = new AdultRat(new Position(1,1), true, false, 10, testLevel);
 	public void start(Stage primaryStage) {
 		// Load images. Note we use png images with a transparent background.
 		
-		testLevel.addRenderObject(new BabyRat(new Position(1,1), false, testLevel, 0.05));
-		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel, 0.01));
-		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel, 0.01));
-		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel, 0.01));
-		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel, 0.01));
-		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel, 0.01));
-		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel, 0.01));
-		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel, 0.01));
+		SoundClip ratDeathSound = new SoundClip("rat-death");
 		
+		//testLevel.addRenderObject(new BabyRat(new Position(1,1), false, testLevel));
+		//testLevel.addRenderObject(new BabyRat(new Position(1,1), false, testLevel));
+		//testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
+		//testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
+		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
+		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
+		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
+		
+		
+		testLevel.addRenderObject(this.testRat);
+		
+		//testLevel.addRenderObject(new RenderScore(new Position(1,1), 10, testLevel));
 		// Build the GUI 
 		Pane root = buildGUI();
 		
@@ -177,8 +188,10 @@ public class TestMain extends Application {
 				gc.drawImage(convertedLayout.getAfterList().get(i).getImage(), x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
 			}
 		}
+		
+		gc.drawImage(HUD_BG, 0 * GRID_CELL_WIDTH, 7 * GRID_CELL_HEIGHT);
+		gc.drawImage(TEST, 0 * GRID_CELL_WIDTH, 7 * GRID_CELL_HEIGHT);
 	}
-	
 	
 
 	
@@ -189,6 +202,16 @@ public class TestMain extends Application {
 	 * over them all and calling their own tick method). 
 	 */
 	public void tick() {
+		//System.out.println(testLevel.score);
+		
+		tickCounter++;
+		if (tickCounter > 333) {
+			for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
+				if (testLevel.getRenderObjects().get(i) == this.testRat) {
+					this.testRat.ratDeath();
+				}
+			}
+		}
 		//Here we will do the tick method for items and rats.
 				//Likely to have an array of objects which we call the tick method on.
 				for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {

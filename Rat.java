@@ -30,37 +30,33 @@ public abstract class Rat extends RenderObject {
 	 */
 	protected double ratSpeed;
 	/**
-	 * Position of the rat.
-	 */
-	protected Position ratPosition;
-	/**
-	 * The image which represent the rat.
-	 */
-	/**
 	 * The direction in which the rat is facing.
 	 */
 	protected char directionFacing;
-	
+	/**
+	 * Tick counter for tile detection in smooth movement.
+	 */
 	private float tickCounter = -2;
-	
+	/**
+	 * size of tiles, used in smooth movement.
+	 */
 	private final int TILE_SIZE = 50;
-	
+	/**
+	 * rat sprites for each direction.
+	 */
 	protected Image ratSpriteNorth;
 	protected Image ratSpriteSouth;
 	protected Image ratSpriteEast;
 	protected Image ratSpriteWest;
 	
-	//might not keep
 	/**
-	 * The level the rat is currently in.
+	 * Score sprites to display when a rat dies, might be multiple.
 	 */
-	protected TestLevel currentLevel;
-	
+	protected final Image SCORE_PLUS_10 = new Image("Textures/plus-ten.png");
 
 	/**
 	 * movement() is a method which handles the movement behaviour of a rat.
 	 */
-	
 	protected void movement() {
 		//for smooth movement we need 
 		double tickLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
@@ -78,14 +74,10 @@ public abstract class Rat extends RenderObject {
 		
 		//checks if the current position has a remainder, if not then we know it's moved a full tile so it's time to check
 		//the availavle directions.
-		//System.out.println(this.getObjectPosition()[0]);
+		
 		tickCounter++;
-		//System.out.println(tickCounter);
 		if (tickCounter == tickLimit || tickCounter == -1) {
-			System.out.println(this.getObjectPosition()[0] + " " +  this.getObjectPosition()[1]);
 			tickCounter = 0;
-			System.out.println("TEST");
-			//algorithm to for movement behaviour
 			boolean front = false;
 			boolean left = false;
 			boolean right = false;
@@ -94,22 +86,22 @@ public abstract class Rat extends RenderObject {
 			//get the left
 			if (this.currentLevel.tileAvailable(this.getObjectPosition()[0], this.getObjectPosition()[1], getDirection('L'))) {
 				left = true;
-				System.out.println("Left True");
+				//System.out.println("Left True");
 			}
 			//get the right
 			if (this.currentLevel.tileAvailable(this.getObjectPosition()[0], this.getObjectPosition()[1], getDirection('R'))) {
 				right = true;
-				System.out.println("Right True");
+				//System.out.println("Right True");
 			}
 			//get the behind
 			if (this.currentLevel.tileAvailable(this.getObjectPosition()[0], this.getObjectPosition()[1], getDirection('B'))) {
 				back = true;
-				System.out.println("Back True");
+				//System.out.println("Back True");
 			}
 			//get the front
 			if (this.currentLevel.tileAvailable(this.getObjectPosition()[0], this.getObjectPosition()[1], this.directionFacing)) {
 				front = true;
-				System.out.println("Front True");
+				//System.out.println("Front True");
 			}
 			//if the only available direction is back then turn and move backwards
 			if (left == false && right == false && front == false && back == true) {
@@ -132,6 +124,7 @@ public abstract class Rat extends RenderObject {
 				}
 			
 				// if there is more than one available direction then randomise the direction.
+				//if not then then get the direction at index 0.
 				if (avalDirections.size() > 1) {
 					int min = 1;
 					int max = avalDirections.size()-1;
@@ -145,33 +138,39 @@ public abstract class Rat extends RenderObject {
 			}
 		}	
 		//check the direction the rat is facing and incriment position based on that.
-		//System.out.println(this.directionFacing);
+		//also change the rat sprite based on direction.
 		if (this.directionFacing == 'N') {
 			//minus y
 			this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1] - this.ratSpeed);
-			this.setSprite(ratSpriteNorth);
+			this.setSprite(this.ratSpriteNorth);
 		} else if (this.directionFacing == 'E') {
 			//plus x
 			this.setObjectPosition(this.getObjectPosition()[0] + this.ratSpeed, this.getObjectPosition()[1]);
-			this.setSprite(ratSpriteEast);
+			this.setSprite(this.ratSpriteEast);
 		} else if (this.directionFacing == 'S') {
 			//plus y
 			this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1] + this.ratSpeed);
-			this.setSprite(ratSpriteSouth);
+			this.setSprite(this.ratSpriteSouth);
 		} else if (this.directionFacing == 'W') {
 			//minus x
 			this.setObjectPosition(this.getObjectPosition()[0] - this.ratSpeed, this.getObjectPosition()[1]);
-			this.setSprite(ratSpriteWest);
+			this.setSprite(this.ratSpriteWest);
 		}
 	}
 	
-	
+	/**
+	 * Takes in a direction e.g left and returns the direction relative to which the rat is facing.
+	 * This is used for path finding
+	 * @param direction
+	 */
 	public char getDirection(char direction) {
-		
+		//initialises default variables.
 		char left = 'N';
 		char right = 'N';
 		char back = 'N';
 		
+		//switch case which takes in the direction the rat is currently facing
+		//gets the direction which is left, right and behind.
 		switch(this.directionFacing) {
 		  case 'N':
 		    left = 'W';
@@ -195,6 +194,7 @@ public abstract class Rat extends RenderObject {
 		  	  break;
 		}
 		
+		//returns the desired the direction entered.
 		if (direction == 'L') {
 			return left;
 		} else if (direction == 'R') {
@@ -217,32 +217,12 @@ public abstract class Rat extends RenderObject {
 	}
 
 	/**
-	 * Sets the position attribute of the rat,
-	 * 
-	 * @param x - the x coordinate of the rat.
-	 * @param y - the y coordinate of the rat.
-	 */
-	public void setRatPosition(float x, float y) {
-		this.ratPosition.setPosition(x, y);
-	}
-
-	/**
 	 * Returns the attribute ratHealth.
 	 * 
 	 * @return ratHealth
 	 */
 	public int getRatHealth() {
 		return this.ratHealth;
-	}
-
-	/**
-	 * Returns the rat's current position.
-	 * 
-	 * @return ratPosition - an array of consisting of the rat's x and y
-	 *         coordinates.
-	 */
-	public double[] getRatPosition() {
-		return this.ratPosition.getPosition();
 	}
 
 	// maybe a method for takeDamage.

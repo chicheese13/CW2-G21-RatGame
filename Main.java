@@ -93,9 +93,9 @@ public class Main extends Application {
 		tickTimeline.play();
 		
 		// Display the scene on the stage
-		testLevel.addRenderObject(new BabyRat(new Position(1,1), false, testLevel, 0.02));
-		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel, 0.01));
-		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel, 0.01));
+		testLevel.addRenderObject(new BabyRat(new Position(1,1), false, testLevel));
+		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
+		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
 		
 		//testLevel.addRenderObject(new BabyRat(new Position(5,5), false, testLevel));
 		

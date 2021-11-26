@@ -39,7 +39,7 @@ public class DeathRat extends Rat {
 	 */
 	public DeathRat(Position position){
 		this.renderSprite = DEATH_RAT_SPRITE;
-		this.ratPosition = position;
+		this.objectPosition = position;
 		this.ratHealth = MAX_RAT_HEALTH;
 		this.ratSpeed = DEFAULT_DEATH_RAT_SPEED;
 		this.directionFacing = 'N';
