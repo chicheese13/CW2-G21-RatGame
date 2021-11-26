@@ -229,8 +229,12 @@ public class TestMain extends Application {
 		
 		
 
-		if (tickCounter == 245) {
+		if (tickCounter == 75) {
 			testRat.becomePregnant();
+		}
+		
+		if (tickCounter == 600) {
+			testRat.ratDeath();
 		}
 		
 		//Here we will do the tick method for items and rats.
