@@ -113,6 +113,8 @@ public class TestMain extends Application {
 		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
 		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
 		
+		testLevel.addRenderObject(new AdultRat(new Position(2,1), false, false, 10, testLevel));
+		
 		
 		testLevel.addRenderObject(this.testRat);
 		

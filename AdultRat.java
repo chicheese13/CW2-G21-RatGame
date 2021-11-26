@@ -37,6 +37,16 @@ public class AdultRat extends NormalRat {
 	protected final Image ADULT_MALE_RAT_SPRITE_SOUTH = new Image("Textures/male-rat-south.png");
 	protected final Image ADULT_MALE_RAT_SPRITE_WEST = new Image("Textures/male-rat-west.png");
 	
+	protected final Image ADULT_FEMALE_RAT_SPRITE_NORTH = new Image("Textures/female-rat-north.png");
+	protected final Image ADULT_FEMALE_RAT_SPRITE_EAST = new Image("Textures/female-rat-east.png");
+	protected final Image ADULT_FEMALE_RAT_SPRITE_SOUTH = new Image("Textures/female-rat-south.png");
+	protected final Image ADULT_FEMALE_RAT_SPRITE_WEST = new Image("Textures/female-rat-west.png");
+	
+	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_NORTH = new Image("Textures/female-rat-pregnant-north.png");
+	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_EAST = new Image("Textures/female-rat-pregnant-east.png");
+	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_SOUTH = new Image("Textures/female-rat-pregnant-south.png");
+	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_WEST = new Image("Textures/female-rat-pregnant-west.png");
+	
 	/**
 	 * The adult female rat image sprite.
 	 */
@@ -88,6 +98,11 @@ public class AdultRat extends NormalRat {
 			this.ratSpriteWest = ADULT_MALE_RAT_SPRITE_WEST;
 		} else {
 			//this.renderSprite = ADULT_FEMALE_RAT_SPRITE;
+			this.renderSprite = ADULT_FEMALE_RAT_SPRITE_EAST;
+			this.ratSpriteNorth = ADULT_FEMALE_RAT_SPRITE_NORTH;
+			this.ratSpriteEast = ADULT_FEMALE_RAT_SPRITE_EAST;
+			this.ratSpriteSouth = ADULT_FEMALE_RAT_SPRITE_SOUTH;
+			this.ratSpriteWest = ADULT_FEMALE_RAT_SPRITE_WEST;
 		}
 	}
 	
