@@ -30,12 +30,33 @@ public abstract class RenderObject {
 		return this.renderSprite;
 	}
 	
+	protected TestLevel currentLevel;
+	
 	/**
 	 * getter for position
 	 * splits into x and y array instead of just a position object.
 	 */
 	public double[] getObjectPosition() {
 		return this.objectPosition.getPosition();
+	}
+	
+	//setter for object position 
+	public void setObjectPosition(double x, double y) {
+		this.objectPosition.setPosition(x, y);
+	}
+	
+	public void setSprite(Image newSprite) {
+		this.renderSprite = newSprite;
+	}
+	
+	public void removeSelf() {
+		for (int i = 0; i < this.currentLevel.getRenderObjects().size(); i++) {
+			if (this.currentLevel.getRenderObjects().get(i) == this) {
+				this.currentLevel.removeRenderObject(i);
+				//prematurely exits for loop as we have found what we need.
+				i = this.currentLevel.getRenderObjects().size();
+			}
+		}
 	}
 	
 	public abstract void tick();

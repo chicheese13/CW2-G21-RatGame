@@ -28,19 +28,23 @@ public class AdultRat extends NormalRat {
 	/**
 	 * This is the default value for the rat speed.
 	 */
-	protected final int DEFAULT_ADULT_RAT_SPEED = 5;
+	protected final double DEFAULT_ADULT_RAT_SPEED = 0.02;
 	/**
 	 * The adult male rat image sprite.
 	 */
-	protected final Image ADULT_MALE_RAT_SPRITE = new Image("Textures/baby-rat.png");
+	protected final Image ADULT_MALE_RAT_SPRITE_NORTH = new Image("Textures/male-rat-north.png");
+	protected final Image ADULT_MALE_RAT_SPRITE_EAST = new Image("Textures/male-rat-east.png");
+	protected final Image ADULT_MALE_RAT_SPRITE_SOUTH = new Image("Textures/male-rat-south.png");
+	protected final Image ADULT_MALE_RAT_SPRITE_WEST = new Image("Textures/male-rat-west.png");
+	
 	/**
 	 * The adult female rat image sprite.
 	 */
-	protected final Image ADULT_FEMALE_RAT_SPRITE = new Image("Textures/baby-rat.png");
+	//protected final Image ADULT_FEMALE_RAT_SPRITE = new Image("Textures/female-rat.png");
 	/**
 	 * The adult pregnant female rat image sprite.
 	 */
-	protected final Image PREGNANT_ADULT_FEMALE_RAT_SPRITE = new Image("Textures/baby-rat.png");
+	//protected final Image PREGNANT_ADULT_FEMALE_RAT_SPRITE = new Image("Textures/pregnant-rat.png");
 	
 	/**
 	 * Whether the rat is pregnant or not.
@@ -63,22 +67,27 @@ public class AdultRat extends NormalRat {
 	 * @param sterile
 	 * @param ratHealth
 	 */
-	public AdultRat(Position position, boolean gender, boolean sterile, int ratHealth) {
+	public AdultRat(Position position, boolean gender, boolean sterile, int ratHealth, TestLevel currentLevel) {
 		this.isPregnant = DEFAULT_PREGNANCY_VALUE;
 		this.pregnancyCounter = DEFAULT_PREGNANCY_COUNT;
 		this.cooldown = DEFAULT_COOLDOWN_VALUE;
 		this.ratSpeed = DEFAULT_ADULT_RAT_SPEED;
 		this.ratSterile = sterile;
-		this.ratPosition = position;
+		this.objectPosition = position;
 		this.ratGender = gender;
 		this.ratHealth = ratHealth;
 		this.directionFacing = 'N';
+		this.currentLevel = currentLevel;
 		
 		//this defines the sprite of the rat based on gender.
 		if (gender) {
-			this.renderSprite = ADULT_MALE_RAT_SPRITE;
+			this.renderSprite = ADULT_MALE_RAT_SPRITE_EAST;
+			this.ratSpriteNorth = ADULT_MALE_RAT_SPRITE_NORTH;
+			this.ratSpriteEast = ADULT_MALE_RAT_SPRITE_EAST;
+			this.ratSpriteSouth = ADULT_MALE_RAT_SPRITE_SOUTH;
+			this.ratSpriteWest = ADULT_MALE_RAT_SPRITE_WEST;
 		} else {
-			this.renderSprite = ADULT_FEMALE_RAT_SPRITE;
+			//this.renderSprite = ADULT_FEMALE_RAT_SPRITE;
 		}
 	}
 	
@@ -133,12 +142,19 @@ public class AdultRat extends NormalRat {
 	 */
 	public void ratDeath() {
 		//incriment score (pregnancyCounter+1 * RAT_SCORE)
+		this.currentLevel.incrimentScore((this.pregnancyCounter+1) * RAT_SCORE);
+		//create an instance of RenderScore with desired score incriment.
+		this.currentLevel.addRenderObject(new RenderScore(this.objectPosition, RAT_SCORE, this.currentLevel));
+		//remove itself from RenderObjects array.
+		SoundClip ratDeathSound = new SoundClip("rat-death-sound");
+		ratDeathSound.play();
+		this.removeSelf();
 	}
 	
 	/**
 	 *  Method which is responsible for movement, pregnancy and pregnancy cooldown.
 	 */
 	public void tick() {
-		
+		this.movement();
 	}
 }

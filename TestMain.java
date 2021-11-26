@@ -24,7 +24,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import java.math.*;
 
 /**
  * Sample application that demonstrates the use of JavaFX Canvas for a Game.
@@ -36,10 +35,11 @@ import java.math.*;
  *
  * @author Liam O'Reilly
  */
-public class Main extends Application {
+public class TestMain extends Application {
 	// The dimensions of the window
+	
 	private static final int GRID_WIDTH = 15;
-	private static final int GRID_HEIGHT = 7;
+	private static final int GRID_HEIGHT = 9;
 
 	private static final int GRID_CELL_WIDTH = 50;
 	private static final int GRID_CELL_HEIGHT = 50;
@@ -50,67 +50,101 @@ public class Main extends Application {
 	// The dimensions of the canvas
 	private static final int CANVAS_WIDTH = WINDOW_WIDTH;
 	private static final int CANVAS_HEIGHT = WINDOW_HEIGHT;
+
+	// The width and height (in pixels) of each cell that makes up the game.
+	
+	// The width of the grid in number of cells.
 	
 	// The canvas in the GUI. This needs to be a global variable
 	// (in this setup) as we need to access it in different methods.
+	// We could use FXML to place code in the controller instead.
 	private Canvas canvas;
+	
+	private final Image HUD_BG = new Image("Textures/hud-bg.png");
+	private final Image TEST = new Image("Textures/test.png");
+
+	
+	// X and Y coordinate of player on the grid.
+	private double playerX = 1;
+	private double playerY = 1;
 	
 	// Timeline which will cause tick method to be called periodically.
 	private Timeline tickTimeline; 
 	
+	String[][] tiles = {{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
+						{"G","P","P","P","T","T","P","P","P","T","T","P","P","P","G"},
+						{"G","G","G","P","G","G","G","G","P","G","G","P","G","P","G"},
+						{"G","P","P","P","G","G","P","P","P","G","G","P","G","P","G"},
+						{"G","P","G","G","G","G","G","G","P","G","G","P","G","P","G"},
+						{"G","P","P","P","T","T","P","P","P","T","T","P","P","P","G"},
+						{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"}};
 	
+	private int tickCounter = 0;
+	
+	//on the level class
+	public boolean isPath (int x, int y, char Direction) {
+		
+		return false;
+	}
+	
+	//fetch
 	TestLevel testLevel = new TestLevel();
-	//testLevel.addRenderObject(new BabyRat(new Position(2,2), false, testLevel));
-
 	
-	//BabyRat testRat = new BabyRat(new Position(2,2), false, testLevel);
 	
-	//fetches tile texture images.
-	private Image grass = new Image("TestTextures/grass.png");
-	private Image path = new Image("TestTextures/path.png");
-	private Image tunnel = new Image("TestTextures/tunnel.png");
+	ConvertLayoutToFiles convertedLayout = new ConvertLayoutToFiles(tiles);
+	RenderTile[][] renderTiles = convertedLayout.getTiles();
 	
 	/**
 	 * Setup the new application.
 	 * @param primaryStage The stage that is to be used for the application.
 	 */
+	
+	public AdultRat testRat = new AdultRat(new Position(1,1), true, false, 10, testLevel);
 	public void start(Stage primaryStage) {
-
+		// Load images. Note we use png images with a transparent background.
+		
+		SoundClip ratDeathSound = new SoundClip("rat-death");
+		
+		//testLevel.addRenderObject(new BabyRat(new Position(1,1), false, testLevel));
+		//testLevel.addRenderObject(new BabyRat(new Position(1,1), false, testLevel));
+		//testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
+		//testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
+		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
+		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
+		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
+		
+		
+		testLevel.addRenderObject(this.testRat);
+		
+		//testLevel.addRenderObject(new RenderScore(new Position(1,1), 10, testLevel));
 		// Build the GUI 
 		Pane root = buildGUI();
 		
 		// Create a scene from the GUI
 		Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 				
+		// Register an event handler for key presses.
+		// This causes the processKeyEvent method to be called each time a key is pressed.
+				
 		// Register a tick method to be called periodically.
 		// Make a new timeline with one keyframe that triggers the tick method every half a second.
-		tickTimeline = new Timeline(new KeyFrame(Duration.millis(15), event -> tick()));
-		
+		tickTimeline = new Timeline(new KeyFrame(Duration.millis(16.67), event -> tick()));
 		 // Loop the timeline forever
 		tickTimeline.setCycleCount(Animation.INDEFINITE);
-		
 		// We start the timeline upon a button press.
 		tickTimeline.play();
-		
 		// Display the scene on the stage
-		testLevel.addRenderObject(new BabyRat(new Position(1,1), false, testLevel));
-		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
-		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
-		
-		//testLevel.addRenderObject(new BabyRat(new Position(5,5), false, testLevel));
-		
-		System.out.println(testLevel.tileAvailable(0, 0, 'N'));
-		
 		drawGame();
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
 	}
 	
 	/**
 	 * Draw the game on the canvas.
-	 * This creates a frame, with all the tiles, items and rats.
 	 */
 	public void drawGame() {
+		
 		
 		// Get the Graphic Context of the canvas. This is what we draw on.
 		GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -121,28 +155,45 @@ public class Main extends Application {
 		// Set the background to gray.
 		gc.setFill(Color.GRAY);
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-	
-		//this goes through the tile array and generates the tile images on the canvas based on the tiles in the array.
-		for (int y = 0; y < testLevel.getTiles().length; y++) {
-			for (int x = 0; x < testLevel.getTiles()[0].length; x++) {
-				//checks what tile type it is and outputs the image for that tile, in the x and y of that tile.
-				if (testLevel.getTiles()[y][x] == "G") {
-					gc.drawImage(grass, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
-				} else if (testLevel.getTiles()[y][x] ==  "P") {
-					gc.drawImage(path, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
-				} else {
-					gc.drawImage(tunnel, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
-				}
+		
+		// Draw row of dirt images
+		// We multiply by the cell width and height to turn a coordinate in our grid into a pixel coordinate.
+		// We draw the row at y value 2.
+		//for (int y = 0; y < GRID_HEIGHT; y++){
+		//	for (int x = 0; x < GRID_WIDTH; x++) {
+		//		gc.drawImage(dirtImage, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);	
+		//	}
+		//}
+		
+		for (int y = 0; y < renderTiles.length; y++) {
+			for (int x = 0; x < renderTiles[y].length; x++) {
+				gc.drawImage(renderTiles[y][x].getImage(), x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
 			}
 		}
 		
+		//ArrayList for rats/items
 		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
 			//System.out.println(testLevel.getRenderObjects().get(i).getSprite());
 			//gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getPosition()[0] * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getPosition()[1] * GRID_CELL_HEIGHT);
 			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getObjectPosition()[0] * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getObjectPosition()[1] * GRID_CELL_HEIGHT);
 		}
 		
+		
+		//After list - textures which have the highest layer.
+		if (convertedLayout.getAfterList().size() > 0){
+			for (int i = 0; i < convertedLayout.getAfterList().size(); i++) {
+				double x = convertedLayout.getAfterPositionList().get(i).getPosition()[0];
+				double y = convertedLayout.getAfterPositionList().get(i).getPosition()[1];
+				
+				gc.drawImage(convertedLayout.getAfterList().get(i).getImage(), x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
+			}
+		}
+		
+		gc.drawImage(HUD_BG, 0 * GRID_CELL_WIDTH, 7 * GRID_CELL_HEIGHT);
+		gc.drawImage(TEST, 0 * GRID_CELL_WIDTH, 7 * GRID_CELL_HEIGHT);
 	}
+	
+
 	
 	/**
 	 * This method is called periodically by the tick timeline
@@ -151,12 +202,22 @@ public class Main extends Application {
 	 * over them all and calling their own tick method). 
 	 */
 	public void tick() {
-		//Here we will do the tick method for items and rats.
-		//Likely to have an array of objects which we call the tick method on.
-		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
-			testLevel.getRenderObjects().get(i).tick();
+		//System.out.println(testLevel.score);
+		
+		tickCounter++;
+		if (tickCounter > 333) {
+			for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
+				if (testLevel.getRenderObjects().get(i) == this.testRat) {
+					this.testRat.ratDeath();
+				}
+			}
 		}
-		//We then redraw the whole canvas.
+		//Here we will do the tick method for items and rats.
+				//Likely to have an array of objects which we call the tick method on.
+				for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
+					testLevel.getRenderObjects().get(i).tick();
+				}
+				//We then redraw the whole canvas.
 		drawGame();
 	}
 	
@@ -178,8 +239,7 @@ public class Main extends Application {
 	}
 	        	
 	public static void main(String[] args) {
-		
-		//launches the game.
+		//Level testLevel = new Level();
 		launch(args);
 	}
 }
