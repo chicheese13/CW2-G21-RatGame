@@ -42,6 +42,7 @@ public class Level {
 		fileData = fileData.substring(0, fileData.indexOf("."));
 		dataArray = fileData.split(",");
 		board = new Object[Integer.parseInt(dataArray[0])][Integer.parseInt(dataArray[1])];
+		
 	}
 	
 	/**
