@@ -99,7 +99,7 @@ public class TestMain extends Application {
 	 * @param primaryStage The stage that is to be used for the application.
 	 */
 	
-	public AdultRat testRat = new AdultRat(new Position(1,1), false, false, 10, testLevel);
+	public AdultRat testRat = new AdultRat(new Position(1,1), false, false, 10, 0, 'N', testLevel);
 	public void start(Stage primaryStage) {
 		// Load images. Note we use png images with a transparent background.
 		
@@ -115,30 +115,30 @@ public class TestMain extends Application {
 		
 		//testLevel.addRenderObject(new AdultRat(new Position(2,1), false, false, 10, testLevel));
 		
-		AdultRat testOne = new AdultRat(new Position(1,1), false, false, 10, testLevel);
-		testOne.becomePregnant();
-		AdultRat testTwo = new AdultRat(new Position(5,1), false, false, 10, testLevel);
-		testTwo.becomePregnant();
-		AdultRat testThree = new AdultRat(new Position(7,1), false, false, 10, testLevel);
-		testThree.becomePregnant();
-		AdultRat testFour = new AdultRat(new Position(4,1), false, false, 10, testLevel);
+		AdultRat testOne = new AdultRat(new Position(1,1), false, false, 10, 0,'N', testLevel);
+		//testOne.becomePregnant();
+		AdultRat testTwo = new AdultRat(new Position(5,1), true, false, 10, 0,'N', testLevel);
+		//testTwo.becomePregnant();
+		AdultRat testThree = new AdultRat(new Position(7,1), false, false, 10, 0,'N', testLevel);
+		//testThree.becomePregnant();
+		AdultRat testFour = new AdultRat(new Position(4,1), false, false, 10, 0,'N', testLevel);
 		testFour.becomePregnant();
 		
-		AdultRat testFive = new AdultRat(new Position(3,2), false, false, 10, testLevel);
+		AdultRat testFive = new AdultRat(new Position(3,2), false, false, 10, 0,'N', testLevel);
 		testFive.becomePregnant();
-		AdultRat testSix = new AdultRat(new Position(3,4), false, false, 10, testLevel);
+		AdultRat testSix = new AdultRat(new Position(3,4), false, false, 10, 0,'N', testLevel);
 		testSix.becomePregnant();
-		AdultRat testSeven = new AdultRat(new Position(8,2), false, false, 10, testLevel);
+		AdultRat testSeven = new AdultRat(new Position(8,2), false, false, 10, 0,'N', testLevel);
 		testSeven.becomePregnant();
-		AdultRat testEight = new AdultRat(new Position(8,4), false, false, 10, testLevel);
+		AdultRat testEight = new AdultRat(new Position(8,4), false, false, 10, 0,'N', testLevel);
 		testEight.becomePregnant();
 		
 		
 		//3 8
 		
-		testLevel.addRenderObject(testRat);
-		//testLevel.addRenderObject(testTwo);
-		//testLevel.addRenderObject(testThree);
+		//testLevel.addRenderObject(testRat);
+		testLevel.addRenderObject(testTwo);
+		testLevel.addRenderObject(testThree);
 		//testLevel.addRenderObject(testFour);
 		//testLevel.addRenderObject(testFive);
 		//testLevel.addRenderObject(testSix);
@@ -207,7 +207,15 @@ public class TestMain extends Application {
 			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getObjectPosition()[0] * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getObjectPosition()[1] * GRID_CELL_HEIGHT);
 		}
 		
-		
+		//After list - textures which have the highest layer.
+		if (convertedLayout.getAfterList().size() > 0){
+			for (int i = 0; i < convertedLayout.getAfterList().size(); i++) {
+				double x = convertedLayout.getAfterPositionList().get(i).getPosition()[0];
+				double y = convertedLayout.getAfterPositionList().get(i).getPosition()[1];
+						
+				gc.drawImage(convertedLayout.getAfterList().get(i).getImage(), x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
+			}
+		}
 	
 		
 		gc.drawImage(HUD_BG, 0 * GRID_CELL_WIDTH, 7 * GRID_CELL_HEIGHT);
@@ -225,6 +233,22 @@ public class TestMain extends Application {
 	public void tick() {
 		//System.out.println(testLevel.score);
 		
+		//collision detection
+		
+		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
+			for (int i2 = 0; i2 < testLevel.getRenderObjects().size(); i2++) {
+				if (Math.round(testLevel.getRenderObjects().get(i).getObjectPosition()[0]) == Math.round(testLevel.getRenderObjects().get(i2).getObjectPosition()[0]) && Math.round(testLevel.getRenderObjects().get(i).getObjectPosition()[1]) == Math.round(testLevel.getRenderObjects().get(i2).getObjectPosition()[1]) && testLevel.getRenderObjects().get(i) != testLevel.getRenderObjects().get(i2)) {
+					System.out.println("Collision detected");
+					if (testLevel.getRenderObjects().get(i) instanceof AdultRat
+						&& testLevel.getRenderObjects().get(i2) instanceof AdultRat) {
+						((AdultRat) testLevel.getRenderObjects().get(i)).collision(testLevel.getRenderObjects().get(i2));
+						((AdultRat) testLevel.getRenderObjects().get(i2)).collision(testLevel.getRenderObjects().get(i));
+					}
+					//tickTimeline.stop();
+				}
+			}
+		}
+		
 		tickCounter++;
 		
 		
@@ -234,7 +258,7 @@ public class TestMain extends Application {
 		}
 		
 		if (tickCounter == 600) {
-			testRat.ratDeath();
+			//testRat.ratDeath();
 		}
 		
 		//Here we will do the tick method for items and rats.

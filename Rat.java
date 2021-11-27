@@ -42,6 +42,8 @@ public abstract class Rat extends RenderObject {
 	 */
 	protected final int TILE_SIZE = 50;
 	
+	protected final double BABY_RAT_SPEED = 0.04;
+	
 	/**
 	 * rat sprites for each direction.
 	 */
@@ -77,7 +79,6 @@ public abstract class Rat extends RenderObject {
 		//checks if the current position has a remainder, if not then we know it's moved a full tile so it's time to check
 		//the availavle directions.
 		
-		System.out.println(this.ratSpeed);
 		
 		tickCounter++;
 		if (tickCounter == tickLimit || tickCounter == -1) {

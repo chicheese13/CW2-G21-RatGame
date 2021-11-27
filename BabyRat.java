@@ -17,10 +17,12 @@ public class BabyRat extends NormalRat {
 	 * This is the default value of the grow count attribute.
 	 */
 	protected final int DEFAULT_GROW_COUNT = 0;
+	
 	/**
-	 * This is the speed for a baby rat.
+	 * How many ticks until the rat grows up, 333 is around 5 seconds.
 	 */
-	protected final double BABY_RAT_SPEED = 0.04;
+	private final int GROW_COUNT_LIMIT = 5;
+
 	/**
 	 * All baby rat sprites for each direction.
 	 */
@@ -90,6 +92,27 @@ public class BabyRat extends NormalRat {
 	 *  Method which is responsible for movement and growth every tick.
 	 */
 	public void tick() {
-		this.movement();
+		double tickLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
+		
+		if (this.tickCounter == tickLimit - 1) {
+			this.growCounter++;
+		}
+		
+		if (this.growCounter == GROW_COUNT_LIMIT) {
+			this.growUp();
+		} else {
+			this.movement();
+		}
 	}	
+	
+	public void growUp() {
+		//create an adult rat 
+		//might need the baby rat's current tickCounter.
+		this.currentLevel.addRenderObject(new AdultRat(this.objectPosition, this.ratGender, this.ratSterile, this.ratHealth, this.tickCounter, this.directionFacing, this.currentLevel));
+		//remove self from array
+		this.removeSelf();
+		
+		//maybe play grow up sound
+	}
+	
 }
