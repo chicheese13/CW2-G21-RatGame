@@ -60,8 +60,8 @@ public class TestMain extends Application {
 	// We could use FXML to place code in the controller instead.
 	private Canvas canvas;
 	
-	//private final Image HUD_BG = new Image("Textures/hud-bg.png");
-	//private final Image TEST = new Image("Textures/test.png");
+	private final Image HUD_BG = new Image("Textures/hud-bg.png");
+	private final Image TEST = new Image("Textures/test.png");
 
 	
 	// X and Y coordinate of player on the grid.
@@ -218,8 +218,8 @@ public class TestMain extends Application {
 		}
 	
 		
-		//gc.drawImage(HUD_BG, 0 * GRID_CELL_WIDTH, 7 * GRID_CELL_HEIGHT);
-		//gc.drawImage(TEST, 0 * GRID_CELL_WIDTH, 7 * GRID_CELL_HEIGHT);
+		gc.drawImage(HUD_BG, 0 * GRID_CELL_WIDTH, 7 * GRID_CELL_HEIGHT);
+		gc.drawImage(TEST, 0 * GRID_CELL_WIDTH, 7 * GRID_CELL_HEIGHT);
 	}
 	
 
