@@ -12,7 +12,7 @@ import java.util.Scanner;
  * Creates a board that will be used to store information on the level, such as tile, rat, and item locations.
  */
 public class Level {
-	Object[][] board;
+	Object[][][] board;
 	int score;
 	double currentTime;
 	int parTime;
@@ -37,12 +37,25 @@ public class Level {
 		
 		while (in.hasNextLine()) {
 			fileData = fileData + in.nextLine();
-		}
+		}		
 		
 		fileData = fileData.substring(0, fileData.indexOf("."));
 		dataArray = fileData.split(",");
-		board = new Object[Integer.parseInt(dataArray[0])][Integer.parseInt(dataArray[1])];
 		
+		int x = Integer.parseInt(dataArray[0]);
+		int y = Integer.parseInt(dataArray[1]);
+		String[] tileTypes = dataArray[2].split("");
+		String[] rats = dataArray[3].split("");
+		maxRats = Short.parseShort(dataArray[4]);
+		parTime = Integer.parseInt(dataArray[5]);
+		
+		board = new Object[3][x][y];
+		
+		for(int i=0; i<y;i++) {
+			for(int j=0; j<x;j++) {
+				board[0][j][i] = tileTypes[i+j];
+			}
+		}
 	}
 	
 	/**
