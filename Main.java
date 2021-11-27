@@ -93,10 +93,15 @@ public class Main extends Application {
 		tickTimeline.play();
 		
 		// Display the scene on the stage
-		testLevel.addRenderObject(new BabyRat(new Position(1,1), false, testLevel));
-		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
-		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
+		testLevel.addRenderObject(new BabyRat(new Position(1,1), false, testLevel, 'N'));
+		testLevel.addRenderObject(new BabyRat(new Position(2,1), true, testLevel, 'N'));
 		
+		//AdultRat testRat = new AdultRat(new Position(1,1), true, false, 10, 0, 'E', testLevel);
+		//testRat.becomePregnant();
+		
+		//testLevel.addRenderObject(new AdultRat(new Position(1,1), true, false, 10, 0, 'N', testLevel));
+		//testLevel.addRenderObject(new AdultRat(new Position(3,1), false, false, 10, 0, 'N', testLevel));
+		//testLevel.addRenderObject(testRat);
 		//testLevel.addRenderObject(new BabyRat(new Position(5,5), false, testLevel));
 		
 		System.out.println(testLevel.tileAvailable(0, 0, 'N'));
@@ -156,6 +161,53 @@ public class Main extends Application {
 		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
 			testLevel.getRenderObjects().get(i).tick();
 		}
+		
+		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
+			//plus, minus x and y
+			double x = testLevel.getRenderObjects().get(i).getObjectPosition()[0];
+			double y = testLevel.getRenderObjects().get(i).getObjectPosition()[1];
+			
+			double xMinus = testLevel.getRenderObjects().get(i).getObjectPosition()[0] - 0.5;
+			double yMinus = testLevel.getRenderObjects().get(i).getObjectPosition()[1] - 0.5;
+			double xPlus = testLevel.getRenderObjects().get(i).getObjectPosition()[0] + 0.5;
+			double yPlus = testLevel.getRenderObjects().get(i).getObjectPosition()[1] + 0.5;
+			
+			boolean xCollide = false;
+			boolean yCollide = false;
+			
+			//checking if the the render objects are both rats and are not the same rat.
+			for (int i2 = 0; i2 < testLevel.getRenderObjects().size(); i2++) {
+				//testLevel.getRenderObjects().get(i).getObjectPosition()[0]
+				
+				if (testLevel.getRenderObjects().get(i) != testLevel.getRenderObjects().get(i2)
+					&& testLevel.getRenderObjects().get(i2) instanceof AdultRat
+					&& testLevel.getRenderObjects().get(i) instanceof AdultRat) {
+					
+					double compareX = testLevel.getRenderObjects().get(i2).getObjectPosition()[0];
+					double compareY = testLevel.getRenderObjects().get(i2).getObjectPosition()[1];
+					
+					if (compareX > xMinus && compareX < xPlus) {
+						xCollide = true;
+						//System.out.println("X COLLIDE");
+					}
+					
+					if (compareY > yMinus && compareY < yPlus) {
+						yCollide = true;
+						//System.out.println("Y COLLIDE");
+					}
+					
+					if (xCollide == true && yCollide == true) {
+						System.out.println("Collide");
+						((AdultRat) testLevel.getRenderObjects().get(i)).collision((AdultRat) testLevel.getRenderObjects().get(i2));
+					} else {
+						//System.out.println("");
+					}
+					
+				}
+				
+			}
+		}
+		
 		//We then redraw the whole canvas.
 		drawGame();
 	}

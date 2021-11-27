@@ -101,7 +101,7 @@ public class BabyRat extends NormalRat {
 		if (this.growCounter == GROW_COUNT_LIMIT) {
 			this.growUp();
 		} else {
-			this.movement();
+			this.movement(true);
 		}
 	}	
 	

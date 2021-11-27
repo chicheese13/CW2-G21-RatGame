@@ -60,7 +60,7 @@ public abstract class Rat extends RenderObject {
 	/**
 	 * movement() is a method which handles the movement behaviour of a rat.
 	 */
-	protected void movement() {
+	protected void movement(boolean moving) {
 		double tickLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
 		//for smooth movement we need 
 		//double tickLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
@@ -144,23 +144,29 @@ public abstract class Rat extends RenderObject {
 		}	
 		//check the direction the rat is facing and incriment position based on that.
 		//also change the rat sprite based on direction.
-		if (this.directionFacing == 'N') {
-			//minus y
-			this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1] - this.ratSpeed);
-			this.setSprite(this.ratSpriteNorth);
-		} else if (this.directionFacing == 'E') {
-			//plus x
-			this.setObjectPosition(this.getObjectPosition()[0] + this.ratSpeed, this.getObjectPosition()[1]);
-			this.setSprite(this.ratSpriteEast);
-		} else if (this.directionFacing == 'S') {
-			//plus y
-			this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1] + this.ratSpeed);
-			this.setSprite(this.ratSpriteSouth);
-		} else if (this.directionFacing == 'W') {
-			//minus x
-			this.setObjectPosition(this.getObjectPosition()[0] - this.ratSpeed, this.getObjectPosition()[1]);
-			this.setSprite(this.ratSpriteWest);
+		if (moving == true) {
+			if (this.directionFacing == 'N') {
+				//minus y
+				this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1] - this.ratSpeed);
+				this.setSprite(this.ratSpriteNorth);
+			} else if (this.directionFacing == 'E') {
+				//plus x
+				this.setObjectPosition(this.getObjectPosition()[0] + this.ratSpeed, this.getObjectPosition()[1]);
+				this.setSprite(this.ratSpriteEast);
+			} else if (this.directionFacing == 'S') {
+				//plus y
+				this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1] + this.ratSpeed);
+				this.setSprite(this.ratSpriteSouth);
+			} else if (this.directionFacing == 'W') {
+				//minus x
+				this.setObjectPosition(this.getObjectPosition()[0] - this.ratSpeed, this.getObjectPosition()[1]);
+				this.setSprite(this.ratSpriteWest);
+			}
 		}
+	}
+	
+	protected void resetTickCounter() {
+		this.tickCounter = 50;
 	}
 	
 	/**

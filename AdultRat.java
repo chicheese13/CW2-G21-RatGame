@@ -32,7 +32,7 @@ public class AdultRat extends NormalRat {
 	/**
 	 * This is the default value for the rat speed.
 	 */
-	protected final double DEFAULT_ADULT_RAT_SPEED = 0.02;
+	protected final double DEFAULT_ADULT_RAT_SPEED = 0.02 ;
 	
 	protected final double PREGNANT_FEMALE_RAT_SPEED = 0.01;
 	
@@ -307,17 +307,26 @@ public class AdultRat extends NormalRat {
 				&& this.getRatGender() != ((AdultRat) parameter).getRatGender()) {
 					//make the female rat pregnant
 					if (this.ratGender == false) {
-						this.getPregnant();
+						//this.setObjectPosition(Math.round(this.getObjectPosition()[0]), Math.round(this.getObjectPosition()[1]));
+						//((AdultRat) parameter).setObjectPosition(Math.round(((AdultRat) parameter).getObjectPosition()[0]), Math.round(((AdultRat) parameter).getObjectPosition()[1]));
+						//((AdultRat) parameter).resetTickCounter();
+						this.becomePregnant();
 						((AdultRat) parameter).setRatWait(true);
-						//((AdultRat) parameter).setWaitCounter(200);
-						//this.waitCounter = 200;
+						
 					} else {
-						//start male wait
+						//this.setObjectPosition(Math.round(this.getObjectPosition()[0]), Math.round(this.getObjectPosition()[1]));
+						//((AdultRat) parameter).setObjectPosition(Math.round(((AdultRat) parameter).getObjectPosition()[0]), Math.round(((AdultRat) parameter).getObjectPosition()[1]));
+						//((AdultRat) parameter).resetTickCounter();
+						
 						this.setRatWait(true);
-						//this.waitCounter = 200;
 						((AdultRat) parameter).becomePregnant();
+						
 					}
 			}
+		} else if (parameter instanceof Item) {
+			
+		} else if (parameter instanceof DeathRat) {
+			
 		}
 	}
 	
@@ -399,7 +408,7 @@ public class AdultRat extends NormalRat {
 		//checks if the rat is currently waiting.
 				//if it is waiting and pregnant then wait for 3 seconds and continue moving again.
 				if (this.isWaiting == false) {
-					this.movement();
+					this.movement(true);
 				} else {
 					this.waitCounter++;
 					if (this.waitCounter == 200) {
