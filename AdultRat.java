@@ -32,7 +32,7 @@ public class AdultRat extends NormalRat {
 	/**
 	 * This is the default value for the rat speed.
 	 */
-	protected final double DEFAULT_ADULT_RAT_SPEED = 0.02 ;
+	protected final double DEFAULT_ADULT_RAT_SPEED = 0.04 ;
 	
 	protected final double PREGNANT_FEMALE_RAT_SPEED = 0.01;
 	
@@ -307,19 +307,27 @@ public class AdultRat extends NormalRat {
 				&& this.getRatGender() != ((AdultRat) parameter).getRatGender()) {
 					//make the female rat pregnant
 					if (this.ratGender == false) {
-						//this.setObjectPosition(Math.round(this.getObjectPosition()[0]), Math.round(this.getObjectPosition()[1]));
-						//((AdultRat) parameter).setObjectPosition(Math.round(((AdultRat) parameter).getObjectPosition()[0]), Math.round(((AdultRat) parameter).getObjectPosition()[1]));
-						//((AdultRat) parameter).resetTickCounter();
-						this.becomePregnant();
-						((AdultRat) parameter).setRatWait(true);
-						
-					} else {
-						//this.setObjectPosition(Math.round(this.getObjectPosition()[0]), Math.round(this.getObjectPosition()[1]));
-						//((AdultRat) parameter).setObjectPosition(Math.round(((AdultRat) parameter).getObjectPosition()[0]), Math.round(((AdultRat) parameter).getObjectPosition()[1]));
-						//((AdultRat) parameter).resetTickCounter();
-						
 						this.setRatWait(true);
+						((AdultRat) parameter).setRatWait(true);
+						this.setObjectPosition(Math.round(this.getObjectPosition()[0]), Math.round(this.getObjectPosition()[1]));
+						((AdultRat) parameter).setObjectPosition(Math.round(((AdultRat) parameter).getObjectPosition()[0]), Math.round(((AdultRat) parameter).getObjectPosition()[1]));
+						((AdultRat) parameter).resetTickCounter();
+						this.becomePregnant();
+						//this.movement(false);
+						System.out.println("TESTTTTTT");
+						System.out.println(Math.round(this.getObjectPosition()[0]));
+						System.out.println(Math.round(this.getObjectPosition()[1]));
+					} else {
+						((AdultRat) parameter).setRatWait(true);
+						this.setObjectPosition(Math.round(this.getObjectPosition()[0]), Math.round(this.getObjectPosition()[1]));
+						((AdultRat) parameter).setObjectPosition(Math.round(((AdultRat) parameter).getObjectPosition()[0]), Math.round(((AdultRat) parameter).getObjectPosition()[1]));
+						((AdultRat) parameter).resetTickCounter();
+						this.setRatWait(true);
+						this.resetTickCounter();
+						//this.movement(false);
 						((AdultRat) parameter).becomePregnant();
+						System.out.println(Math.round(this.getObjectPosition()[0]));
+						System.out.println(Math.round(this.getObjectPosition()[1]));
 						
 					}
 			}

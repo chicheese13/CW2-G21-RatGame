@@ -79,7 +79,7 @@ public abstract class Rat extends RenderObject {
 		//checks if the current position has a remainder, if not then we know it's moved a full tile so it's time to check
 		//the availavle directions.
 		
-		
+		//System.out.println("test");
 		tickCounter++;
 		if (tickCounter == tickLimit || tickCounter == -1) {
 			tickCounter = 0;
@@ -144,7 +144,6 @@ public abstract class Rat extends RenderObject {
 		}	
 		//check the direction the rat is facing and incriment position based on that.
 		//also change the rat sprite based on direction.
-		if (moving == true) {
 			if (this.directionFacing == 'N') {
 				//minus y
 				this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1] - this.ratSpeed);
@@ -162,11 +161,10 @@ public abstract class Rat extends RenderObject {
 				this.setObjectPosition(this.getObjectPosition()[0] - this.ratSpeed, this.getObjectPosition()[1]);
 				this.setSprite(this.ratSpriteWest);
 			}
-		}
 	}
 	
 	protected void resetTickCounter() {
-		this.tickCounter = 50;
+		this.tickCounter = 0;
 	}
 	
 	/**

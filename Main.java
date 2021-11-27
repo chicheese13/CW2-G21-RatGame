@@ -51,6 +51,8 @@ public class Main extends Application {
 	private static final int CANVAS_WIDTH = WINDOW_WIDTH;
 	private static final int CANVAS_HEIGHT = WINDOW_HEIGHT;
 	
+	private int collisionCounter = 0;
+	
 	// The canvas in the GUI. This needs to be a global variable
 	// (in this setup) as we need to access it in different methods.
 	private Canvas canvas;
@@ -172,12 +174,14 @@ public class Main extends Application {
 			double xPlus = testLevel.getRenderObjects().get(i).getObjectPosition()[0] + 0.5;
 			double yPlus = testLevel.getRenderObjects().get(i).getObjectPosition()[1] + 0.5;
 			
-			boolean xCollide = false;
-			boolean yCollide = false;
+			
 			
 			//checking if the the render objects are both rats and are not the same rat.
 			for (int i2 = 0; i2 < testLevel.getRenderObjects().size(); i2++) {
 				//testLevel.getRenderObjects().get(i).getObjectPosition()[0]
+				
+				boolean xCollide = false;
+				boolean yCollide = false;
 				
 				if (testLevel.getRenderObjects().get(i) != testLevel.getRenderObjects().get(i2)
 					&& testLevel.getRenderObjects().get(i2) instanceof AdultRat
@@ -197,8 +201,10 @@ public class Main extends Application {
 					}
 					
 					if (xCollide == true && yCollide == true) {
-						System.out.println("Collide");
+						collisionCounter++;
+						//System.out.println(collisionCounter);
 						((AdultRat) testLevel.getRenderObjects().get(i)).collision((AdultRat) testLevel.getRenderObjects().get(i2));
+						((AdultRat) testLevel.getRenderObjects().get(i2)).collision((AdultRat) testLevel.getRenderObjects().get(i));
 					} else {
 						//System.out.println("");
 					}
