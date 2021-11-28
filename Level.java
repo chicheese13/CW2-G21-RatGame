@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 /**
  * Level.java
@@ -42,6 +43,7 @@ public class Level {
 		fileData = fileData.substring(0, fileData.indexOf("."));
 		dataArray = fileData.split(",");
 		
+		//Sets variables for each piece of data to make it easier to read
 		int x = Integer.parseInt(dataArray[0]);
 		int y = Integer.parseInt(dataArray[1]);
 		String[] tileTypes = dataArray[2].split("");
@@ -51,13 +53,31 @@ public class Level {
 		
 		board = new Object[y][x][3];
 		
+		
+		
+		//Adds tile types into correct position and sets up ArrayLists
 		int count = 0;
 		for(int i=0; i<y;i++) {
 			for(int j=0; j<x;j++) {
 				board[i][j][0] = tileTypes[count];
+				board[i][j][1] = new ArrayList<Rat>();
+				board[i][j][2] = new ArrayList<Item>();
 				count ++;
 			}
 		}
+		
+		//Adds rats in correct position
+		count = 0;
+		for(int i=0; i<y;i++) {
+			for(int j=0; j<x;j++) {
+				if (rats[count] == "M") {
+					((ArrayList<Rat>) board[i][j][1]).add(new Rat());
+				} else if (rats[count] == "F") {
+					((ArrayList<Rat>) board[i][j][1]).add(new Rat());
+				}
+				count ++;
+			}
+		}		
 	}
 	
 	/**
