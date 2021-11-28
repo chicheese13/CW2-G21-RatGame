@@ -49,11 +49,13 @@ public class Level {
 		maxRats = Short.parseShort(dataArray[4]);
 		parTime = Integer.parseInt(dataArray[5]);
 		
-		board = new Object[3][x][y];
+		board = new Object[y][x][3];
 		
+		int count = 0;
 		for(int i=0; i<y;i++) {
 			for(int j=0; j<x;j++) {
-				board[0][j][i] = tileTypes[i+j];
+				board[i][j][0] = tileTypes[count];
+				count ++;
 			}
 		}
 	}
@@ -95,7 +97,7 @@ public class Level {
 	/**
 	 * @return The board the level is being played on
 	 */
-	public Object[][] getBoard() {
+	public Object[][][] getBoard() {
 		return board;
 	}
 	
