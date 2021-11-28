@@ -9,6 +9,7 @@
 import javafx.scene.image.Image;
 import java.util.ArrayList;
 import java.util.Random;
+import java.math.BigDecimal;
 
 /**
  * Rat is an abstract class responsible for rat health/damage, rat’s movement
@@ -28,7 +29,7 @@ public abstract class Rat extends RenderObject {
 	/**
 	 * Speed of the rat.
 	 */
-	protected double ratSpeed;
+	protected BigDecimal ratSpeed;
 	/**
 	 * The direction in which the rat is facing.
 	 */
@@ -42,7 +43,7 @@ public abstract class Rat extends RenderObject {
 	 */
 	protected final int TILE_SIZE = 50;
 	
-	protected final double BABY_RAT_SPEED = 0.04;
+	protected final BigDecimal BABY_RAT_SPEED = new BigDecimal("0.04");
 	
 	/**
 	 * rat sprites for each direction.
@@ -61,7 +62,7 @@ public abstract class Rat extends RenderObject {
 	 * movement() is a method which handles the movement behaviour of a rat.
 	 */
 	protected void movement(boolean moving) {
-		double tickLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
+		//double tickLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
 		//for smooth movement we need 
 		//double tickLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
 		
@@ -80,8 +81,20 @@ public abstract class Rat extends RenderObject {
 		//the availavle directions.
 		
 		//System.out.println("test");
-		tickCounter++;
-		if (tickCounter == tickLimit || tickCounter == -1) {
+		//tickCounter++;
+		
+		//convert the BigDecimal values
+		double x = this.getObjectPosition()[0].doubleValue();
+		double y = this.getObjectPosition()[0].doubleValue();
+		
+		
+		
+		if (this.getObjectPosition()[0].stripTrailingZeros().scale() <= 0
+			&& this.getObjectPosition()[1].stripTrailingZeros().scale() <= 0) {
+			System.out.println(this.getObjectPosition()[0].doubleValue());
+			System.out.println(this.getObjectPosition()[1].doubleValue());
+			//System.out.println(x);
+			//System.out.println(y);
 			tickCounter = 0;
 			boolean front = false;
 			boolean left = false;
@@ -146,21 +159,23 @@ public abstract class Rat extends RenderObject {
 		//also change the rat sprite based on direction.
 			if (this.directionFacing == 'N') {
 				//minus y
-				this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1] - this.ratSpeed);
+				this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1].subtract(this.ratSpeed));
 				this.setSprite(this.ratSpriteNorth);
 			} else if (this.directionFacing == 'E') {
 				//plus x
-				this.setObjectPosition(this.getObjectPosition()[0] + this.ratSpeed, this.getObjectPosition()[1]);
+				this.setObjectPosition(this.getObjectPosition()[0].add(this.ratSpeed), this.getObjectPosition()[1]);
 				this.setSprite(this.ratSpriteEast);
 			} else if (this.directionFacing == 'S') {
 				//plus y
-				this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1] + this.ratSpeed);
+				this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1].add(this.ratSpeed));
 				this.setSprite(this.ratSpriteSouth);
 			} else if (this.directionFacing == 'W') {
 				//minus x
-				this.setObjectPosition(this.getObjectPosition()[0] - this.ratSpeed, this.getObjectPosition()[1]);
+				this.setObjectPosition(this.getObjectPosition()[0].subtract(this.ratSpeed), this.getObjectPosition()[1]);
 				this.setSprite(this.ratSpriteWest);
 			}
+			
+			System.out.println(this.directionFacing);
 	}
 	
 	protected void resetTickCounter() {

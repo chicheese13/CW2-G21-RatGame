@@ -95,8 +95,8 @@ public class Main extends Application {
 		tickTimeline.play();
 		
 		// Display the scene on the stage
-		testLevel.addRenderObject(new BabyRat(new Position(1,1), false, testLevel, 'N'));
-		testLevel.addRenderObject(new BabyRat(new Position(2,1), true, testLevel, 'N'));
+		testLevel.addRenderObject(new BabyRat(new Position(new BigDecimal("2"), new BigDecimal("1")), false, testLevel, 'N'));
+		//testLevel.addRenderObject(new BabyRat(new Position(2,1), true, testLevel, 'N'));
 		
 		//AdultRat testRat = new AdultRat(new Position(1,1), true, false, 10, 0, 'E', testLevel);
 		//testRat.becomePregnant();
@@ -106,7 +106,7 @@ public class Main extends Application {
 		//testLevel.addRenderObject(testRat);
 		//testLevel.addRenderObject(new BabyRat(new Position(5,5), false, testLevel));
 		
-		System.out.println(testLevel.tileAvailable(0, 0, 'N'));
+		//System.out.println(testLevel.tileAvailable(0, 0, 'N'));
 		
 		drawGame();
 		primaryStage.setScene(scene);
@@ -146,7 +146,7 @@ public class Main extends Application {
 		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
 			//System.out.println(testLevel.getRenderObjects().get(i).getSprite());
 			//gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getPosition()[0] * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getPosition()[1] * GRID_CELL_HEIGHT);
-			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getObjectPosition()[0] * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getObjectPosition()[1] * GRID_CELL_HEIGHT);
+			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getObjectPosition()[0].doubleValue() * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getObjectPosition()[1].doubleValue() * GRID_CELL_HEIGHT);
 		}
 		
 	}
@@ -166,13 +166,13 @@ public class Main extends Application {
 		
 		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
 			//plus, minus x and y
-			double x = testLevel.getRenderObjects().get(i).getObjectPosition()[0];
-			double y = testLevel.getRenderObjects().get(i).getObjectPosition()[1];
+			double x = testLevel.getRenderObjects().get(i).getObjectPosition()[0].doubleValue();
+			double y = testLevel.getRenderObjects().get(i).getObjectPosition()[1].doubleValue();
 			
-			double xMinus = testLevel.getRenderObjects().get(i).getObjectPosition()[0] - 0.5;
-			double yMinus = testLevel.getRenderObjects().get(i).getObjectPosition()[1] - 0.5;
-			double xPlus = testLevel.getRenderObjects().get(i).getObjectPosition()[0] + 0.5;
-			double yPlus = testLevel.getRenderObjects().get(i).getObjectPosition()[1] + 0.5;
+			double xMinus = testLevel.getRenderObjects().get(i).getObjectPosition()[0].doubleValue() - 0.5;
+			double yMinus = testLevel.getRenderObjects().get(i).getObjectPosition()[1].doubleValue() - 0.5;
+			double xPlus = testLevel.getRenderObjects().get(i).getObjectPosition()[0].doubleValue() + 0.5;
+			double yPlus = testLevel.getRenderObjects().get(i).getObjectPosition()[1].doubleValue() + 0.5;
 			
 			
 			
@@ -187,8 +187,8 @@ public class Main extends Application {
 					&& testLevel.getRenderObjects().get(i2) instanceof AdultRat
 					&& testLevel.getRenderObjects().get(i) instanceof AdultRat) {
 					
-					double compareX = testLevel.getRenderObjects().get(i2).getObjectPosition()[0];
-					double compareY = testLevel.getRenderObjects().get(i2).getObjectPosition()[1];
+					double compareX = testLevel.getRenderObjects().get(i2).getObjectPosition()[0].doubleValue();
+					double compareY = testLevel.getRenderObjects().get(i2).getObjectPosition()[1].doubleValue();
 					
 					if (compareX > xMinus && compareX < xPlus) {
 						xCollide = true;
