@@ -7,6 +7,7 @@
  */
 
 import javafx.scene.image.Image;
+import java.math.BigDecimal;
 
 /**
  * RenderObject defines objects which can be rendered, they all sprites and position in common.
@@ -36,12 +37,12 @@ public abstract class RenderObject {
 	 * getter for position
 	 * splits into x and y array instead of just a position object.
 	 */
-	public double[] getObjectPosition() {
+	public BigDecimal[] getObjectPosition() {
 		return this.objectPosition.getPosition();
 	}
 	
 	//setter for object position 
-	public void setObjectPosition(double x, double y) {
+	public void setObjectPosition(BigDecimal x, BigDecimal y) {
 		this.objectPosition.setPosition(x, y);
 	}
 	

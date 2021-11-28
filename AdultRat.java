@@ -9,8 +9,7 @@ import java.util.Random;
 
 import javafx.scene.image.Image;
 
-import java.math.*;
-
+import java.math.BigDecimal;
 /**
  * AdultRat is a class which initialises an instance for AdultRat.
  *
@@ -32,9 +31,9 @@ public class AdultRat extends NormalRat {
 	/**
 	 * This is the default value for the rat speed.
 	 */
-	protected final double DEFAULT_ADULT_RAT_SPEED = 0.04 ;
+	protected final BigDecimal DEFAULT_ADULT_RAT_SPEED = new BigDecimal("0.02");
 	
-	protected final double PREGNANT_FEMALE_RAT_SPEED = 0.01;
+	protected final BigDecimal PREGNANT_FEMALE_RAT_SPEED = new BigDecimal("0.01");
 	
 	/**
 	 * a boolean to determine whether or not a rat is currently waiting.
@@ -126,14 +125,9 @@ public class AdultRat extends NormalRat {
 		this.currentLevel = currentLevel;
 		
 		//works out speed difference for rats.
-		double oldLimit = TILE_SIZE / (TILE_SIZE * 0.04);
-		double newLimit = TILE_SIZE / (TILE_SIZE * DEFAULT_ADULT_RAT_SPEED);
+		//double oldLimit = TILE_SIZE / (TILE_SIZE * 0.04);
+		//double newLimit = TILE_SIZE / (TILE_SIZE * DEFAULT_ADULT_RAT_SPEED);
 		
-		if (tickIn > 0) {
-			float overwriteCounter = (float) (tickIn * (newLimit / oldLimit));
-			
-			this.tickCounter = overwriteCounter;
-		}
 		
 		//this defines the sprite of the rat based on gender.
 		if (gender) {
@@ -193,16 +187,16 @@ public class AdultRat extends NormalRat {
 		
 		
 		//need to re adjust for the speed.
-		double oldLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
-		double newLimit = TILE_SIZE / (TILE_SIZE * PREGNANT_FEMALE_RAT_SPEED);
+		//double oldLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
+		//double newLimit = TILE_SIZE / (TILE_SIZE * PREGNANT_FEMALE_RAT_SPEED);
 		
 		
 		
 		// new / old
 		
-		float overwriteCounter = (float) (this.tickCounter * (newLimit / oldLimit));
+		//float overwriteCounter = (float) (this.tickCounter * (newLimit / oldLimit));
 		
-		this.tickCounter = overwriteCounter;
+		//this.tickCounter = overwriteCounter;
 		
 		
 		this.ratSpeed = PREGNANT_FEMALE_RAT_SPEED;
@@ -292,7 +286,7 @@ public class AdultRat extends NormalRat {
 			babyRatGender = true;
 		}
 		
-		this.currentLevel.addRenderObject(new BabyRat(new Position(Math.round(this.getObjectPosition()[0]), Math.round(this.getObjectPosition()[1])), babyRatGender, this.currentLevel, this.directionFacing));
+		this.currentLevel.addRenderObject(new BabyRat(new Position(this.getObjectPosition()[0], this.getObjectPosition()[1]), babyRatGender, this.currentLevel, this.directionFacing));
 	}
 	
 	public void collision(Object parameter) {
@@ -306,30 +300,20 @@ public class AdultRat extends NormalRat {
 				&& this.getSterile() == false
 				&& this.getRatGender() != ((AdultRat) parameter).getRatGender()) {
 					//make the female rat pregnant
+					
+					
 					if (this.ratGender == false) {
-						this.setRatWait(true);
-						((AdultRat) parameter).setRatWait(true);
-						this.setObjectPosition(Math.round(this.getObjectPosition()[0]), Math.round(this.getObjectPosition()[1]));
-						((AdultRat) parameter).setObjectPosition(Math.round(((AdultRat) parameter).getObjectPosition()[0]), Math.round(((AdultRat) parameter).getObjectPosition()[1]));
-						((AdultRat) parameter).resetTickCounter();
 						this.becomePregnant();
-						//this.movement(false);
-						System.out.println("TESTTTTTT");
-						System.out.println(Math.round(this.getObjectPosition()[0]));
-						System.out.println(Math.round(this.getObjectPosition()[1]));
 					} else {
-						((AdultRat) parameter).setRatWait(true);
-						this.setObjectPosition(Math.round(this.getObjectPosition()[0]), Math.round(this.getObjectPosition()[1]));
-						((AdultRat) parameter).setObjectPosition(Math.round(((AdultRat) parameter).getObjectPosition()[0]), Math.round(((AdultRat) parameter).getObjectPosition()[1]));
-						((AdultRat) parameter).resetTickCounter();
-						this.setRatWait(true);
-						this.resetTickCounter();
-						//this.movement(false);
 						((AdultRat) parameter).becomePregnant();
-						System.out.println(Math.round(this.getObjectPosition()[0]));
-						System.out.println(Math.round(this.getObjectPosition()[1]));
-						
 					}
+					
+					this.setRatWait(true);
+					((AdultRat) parameter).setRatWait(true);
+					
+					System.out.println("POSITION");
+					System.out.println(this.getObjectPosition()[0]);
+					System.out.println(this.getObjectPosition()[1]);
 			}
 		} else if (parameter instanceof Item) {
 			
@@ -346,86 +330,7 @@ public class AdultRat extends NormalRat {
 	 *  Method which is responsible for movement, pregnancy and pregnancy cooldown.
 	 */
 	public void tick() {
-		double tickLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
-		//checks if the rat is on a mating cooldown
-		//if the countdown is finished revert the cooldown.
-		if (this.matingCooldown == true && this.cooldown > 0) {
-			this.cooldown--;
-		} else {
-			this.matingCooldown = false;
-			this.cooldown = 0;
-		}
-		
-		//if the rat is pregnancy with with more than 0 babies then give birth.
-		//give birth with 2 second intervals
-		if (isPregnant == true && isWaiting == false) {
-			if (this.pregnancyCounter > 0) {
-				//System.out.println(this.tickCounter);
-				if (this.tickCounter == tickLimit-1) {
-					this.giveBirthCooldown--;
-				} else if (this.giveBirthCooldown == 0) {
-					
-					//reset the cooldown
-					this.giveBirthCooldown = GIVE_BIRTH_INTERVAL;
-					//give birth
-					this.giveBirth();
-					//deicnriment pregnancy counter
-					this.pregnancyCounter--;
-				}
-			} else {
-				//make it unpregnant here
-				this.cooldown = MATING_COOLDOWN_INTERVAL;
-				this.matingCooldown = true;
-				//make not pregnant
-				this.isPregnant = false;
-				//reset sprites
-				
-				switch (this.directionFacing) {
-				case 'N':
-					this.renderSprite = ADULT_FEMALE_RAT_SPRITE_NORTH;
-					break;
-				case 'E':
-					this.renderSprite = ADULT_FEMALE_RAT_SPRITE_EAST;
-					break;
-				case 'S':
-					this.renderSprite = ADULT_FEMALE_RAT_SPRITE_SOUTH;
-					break;
-				case 'W':
-					this.renderSprite = ADULT_FEMALE_RAT_SPRITE_WEST;
-					break;
-				}
-				
-				this.ratSpriteNorth = ADULT_FEMALE_RAT_SPRITE_NORTH;
-				this.ratSpriteEast = ADULT_FEMALE_RAT_SPRITE_EAST;
-				this.ratSpriteSouth = ADULT_FEMALE_RAT_SPRITE_SOUTH;
-				this.ratSpriteWest = ADULT_FEMALE_RAT_SPRITE_WEST;
-				
-				double oldLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
-				double newLimit = TILE_SIZE / (TILE_SIZE * PREGNANT_FEMALE_RAT_SPEED);
-				
-				float overwriteCounter = (float) (this.tickCounter * (newLimit / oldLimit));
-				
-				this.tickCounter = overwriteCounter;
-				
-				
-				this.ratSpeed = DEFAULT_ADULT_RAT_SPEED;
-			}
-		}
-		
-		
-		//checks if the rat is currently waiting.
-				//if it is waiting and pregnant then wait for 3 seconds and continue moving again.
-				if (this.isWaiting == false) {
-					this.movement(true);
-				} else {
-					this.waitCounter++;
-					if (this.waitCounter == 200) {
-						this.waitCounter = 0;
-						//stop the wait
-						this.setRatWait(false);
-						
-					}
-				}
+		this.movement(true);
 		
 	}
 }

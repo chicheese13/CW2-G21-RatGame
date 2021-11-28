@@ -1,6 +1,7 @@
 //test level for rat & items.
 
 import java.util.ArrayList;
+import java.math.BigDecimal;
 
 public class TestLevel {
 	public int score;
@@ -23,11 +24,11 @@ public class TestLevel {
 		this.score = this.score + scoreIncrease;
 	}
 	
-	public boolean tileAvailable (double xIn, double yIn, char direction){
+	public boolean tileAvailable (BigDecimal xIn, BigDecimal yIn, char direction){
 		String tiles [][] = tilesArray;
 		
-		int x = (int) Math.round(xIn);
-		int y = (int) Math.round(yIn);
+		int x = (int) Math.round(xIn.doubleValue());
+		int y = (int) Math.round(yIn.doubleValue());
 		
 		if (direction == 'N') {
 			if (y > 0) {
