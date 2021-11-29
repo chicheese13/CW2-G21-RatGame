@@ -55,6 +55,9 @@ public class BabyRat extends NormalRat {
 		this.ratSpriteSouth = BABY_RAT_SPRITE_SOUTH;
 		this.ratSpriteWest = BABY_RAT_SPRITE_WEST;
 		this.directionFacing = directionFacing;
+		
+		System.out.println(this.getObjectPosition()[0]);
+		System.out.println(this.getObjectPosition()[1]);
 	}
 	
 	/**

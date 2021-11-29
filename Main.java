@@ -96,6 +96,7 @@ public class Main extends Application {
 		
 		// Display the scene on the stage
 		testLevel.addRenderObject(new BabyRat(new Position(new BigDecimal("2"), new BigDecimal("1")), false, testLevel, 'N'));
+		testLevel.addRenderObject(new BabyRat(new Position(new BigDecimal("6"), new BigDecimal("1")), true, testLevel, 'N'));
 		//testLevel.addRenderObject(new BabyRat(new Position(2,1), true, testLevel, 'N'));
 		
 		//AdultRat testRat = new AdultRat(new Position(1,1), true, false, 10, 0, 'E', testLevel);
@@ -160,6 +161,7 @@ public class Main extends Application {
 	public void tick() {
 		//Here we will do the tick method for items and rats.
 		//Likely to have an array of objects which we call the tick method on.
+		
 		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
 			testLevel.getRenderObjects().get(i).tick();
 		}

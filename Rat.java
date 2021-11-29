@@ -84,15 +84,12 @@ public abstract class Rat extends RenderObject {
 		//tickCounter++;
 		
 		//convert the BigDecimal values
-		double x = this.getObjectPosition()[0].doubleValue();
-		double y = this.getObjectPosition()[0].doubleValue();
 		
 		
 		
 		if (this.getObjectPosition()[0].stripTrailingZeros().scale() <= 0
 			&& this.getObjectPosition()[1].stripTrailingZeros().scale() <= 0) {
-			System.out.println(this.getObjectPosition()[0].doubleValue());
-			System.out.println(this.getObjectPosition()[1].doubleValue());
+			
 			//System.out.println(x);
 			//System.out.println(y);
 			tickCounter = 0;
@@ -175,7 +172,6 @@ public abstract class Rat extends RenderObject {
 				this.setSprite(this.ratSpriteWest);
 			}
 			
-			System.out.println(this.directionFacing);
 	}
 	
 	protected void resetTickCounter() {
