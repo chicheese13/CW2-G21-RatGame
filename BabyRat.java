@@ -100,7 +100,8 @@ public class BabyRat extends NormalRat {
 		double x = this.getObjectPosition()[0].doubleValue();
 		double y = this.getObjectPosition()[0].doubleValue();
 		
-		if (x % 1 == 0 && y % 1 == 0) {
+		if (this.getObjectPosition()[0].stripTrailingZeros().scale() <= 0
+			&& this.getObjectPosition()[1].stripTrailingZeros().scale() <= 0) {
 			this.growCounter++;
 		}
 		

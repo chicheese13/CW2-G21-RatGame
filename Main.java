@@ -162,6 +162,9 @@ public class Main extends Application {
 		//Here we will do the tick method for items and rats.
 		//Likely to have an array of objects which we call the tick method on.
 		
+		//maybe a recursive algorithm which removes collide objects from the list that have already had a comparison
+		
+		
 		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
 			testLevel.getRenderObjects().get(i).tick();
 		}
