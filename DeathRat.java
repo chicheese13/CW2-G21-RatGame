@@ -18,10 +18,10 @@ public class DeathRat extends Rat {
 	/**
 	 * The death rat image sprite.
 	 */
-	protected final Image DEATH_RAT_SPRITE_NORTH = new Image("Textures/death-rat-north.png");
-	protected final Image DEATH_RAT_SPRITE_EAST = new Image("Textures/death-rat-east.png");
-	protected final Image DEATH_RAT_SPRITE_SOUTH = new Image("Textures/death-rat-south.png");
-	protected final Image DEATH_RAT_SPRITE_WEST = new Image("Textures/death-rat-west.png");
+	protected final Image DEATH_RAT_SPRITE_NORTH = new Image("file:Textures/death-rat-north.png");
+	protected final Image DEATH_RAT_SPRITE_EAST = new Image("file:Textures/death-rat-east.png");
+	protected final Image DEATH_RAT_SPRITE_SOUTH = new Image("file:Textures/death-rat-south.png");
+	protected final Image DEATH_RAT_SPRITE_WEST = new Image("file:Textures/death-rat-west.png");
 	/**
 	 * This is the default value for the death rat speed.
 	 */
