@@ -1,14 +1,14 @@
-
-/** 
+/**
  * Rat.java
- * @version 1.0
+ * @version 2.0
  * @author Dylan Lewis, Kien Lin
  *
  */
 
-import javafx.scene.image.Image;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Random;
+import javafx.scene.image.Image;
 
 /**
  * Rat is an abstract class responsible for rat health/damage, rat’s movement
@@ -17,151 +17,127 @@ import java.util.Random;
  */
 
 public abstract class Rat extends RenderObject {
-	/**
-	 * The maximum amount of health a rat can have.
+    /**
+	 * size of tiles, used in smooth movement.
 	 */
-	protected final int MAX_RAT_HEALTH = 5;
-	/**
-	 * Health of the rat.
-	 */
-	protected int ratHealth;
+	protected final int TILE_SIZE = 50;
 	/**
 	 * Speed of the rat.
 	 */
-	protected double ratSpeed;
+	protected BigDecimal ratSpeed;
 	/**
 	 * The direction in which the rat is facing.
 	 */
 	protected char directionFacing;
+	
 	/**
-	 * Tick counter for tile detection in smooth movement.
-	 */
-	private float tickCounter = -2;
-	/**
-	 * size of tiles, used in smooth movement.
-	 */
-	private final int TILE_SIZE = 50;
-	/**
-	 * rat sprites for each direction.
+	 * All the sprites for each direction facing for the rat.
 	 */
 	protected Image ratSpriteNorth;
 	protected Image ratSpriteSouth;
 	protected Image ratSpriteEast;
 	protected Image ratSpriteWest;
-	
 	/**
-	 * Score sprites to display when a rat dies, might be multiple.
+	 * A method which checks the Rat's current position, checks all available directions it can move and chooses a random direction and set's the current
+	 * direction facing to that method.
 	 */
-	protected final Image SCORE_PLUS_10 = new Image("Textures/plus-ten.png");
-
-	/**
-	 * movement() is a method which handles the movement behaviour of a rat.
-	 */
-	protected void movement() {
-		//for smooth movement we need 
-		double tickLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
-		
-		//movement here
-		//for better general performance we can use a timer to detect when a rat has moved a full tile before doing
-		//any tile processing, so when it moves 0.02px it doesn't do path finding until the position is an a full number
-		//and not a decimal
-		
-		//e.g if x or y have a decimal then only move in the current direction
-		//if x and y have .00 then do the movement calculations.
-		//because we know the rat has moved a full tile since we last did the direction algorithm.
-		
-		//get a list of available directions
-		
-		//checks if the current position has a remainder, if not then we know it's moved a full tile so it's time to check
-		//the availavle directions.
-		
-		tickCounter++;
-		if (tickCounter == tickLimit || tickCounter == -1) {
-			tickCounter = 0;
-			boolean front = false;
-			boolean left = false;
-			boolean right = false;
-			boolean back = false;
-			
-			//get the left
-			if (this.currentLevel.tileAvailable(this.getObjectPosition()[0], this.getObjectPosition()[1], getDirection('L'))) {
-				left = true;
-				//System.out.println("Left True");
-			}
-			//get the right
-			if (this.currentLevel.tileAvailable(this.getObjectPosition()[0], this.getObjectPosition()[1], getDirection('R'))) {
-				right = true;
-				//System.out.println("Right True");
-			}
-			//get the behind
-			if (this.currentLevel.tileAvailable(this.getObjectPosition()[0], this.getObjectPosition()[1], getDirection('B'))) {
-				back = true;
-				//System.out.println("Back True");
-			}
-			//get the front
-			if (this.currentLevel.tileAvailable(this.getObjectPosition()[0], this.getObjectPosition()[1], this.directionFacing)) {
-				front = true;
-				//System.out.println("Front True");
-			}
-			//if the only available direction is back then turn and move backwards
-			if (left == false && right == false && front == false && back == true) {
-				this.directionFacing = getDirection('B');
-			} else {
-				//pick a random direction
-				ArrayList<Character> avalDirections = new ArrayList<Character>();
+	protected void pathFinding() {
+		//checks if the current position has moved a full tile
+		//we know it has moved a full tile if the decimals used for the positions no remainder.
+		if (this.getObjectPosition()[0].stripTrailingZeros().scale() <= 0
+				&& this.getObjectPosition()[1].stripTrailingZeros().scale() <= 0) {
+				boolean front = false;
+				boolean left = false;
+				boolean right = false;
+				boolean back = false;
 				
-				//add all available directions to an arraylist and pick a random one.
-				if (front) {
-					avalDirections.add('F');
+				//get the left
+				if (this.currentLevel.tileAvailable(this.getObjectPosition()[0], this.getObjectPosition()[1], getDirection('L'))) {
+					left = true;
 				}
-				
-				if (left) {
-					avalDirections.add('L');
+				//get the right
+				if (this.currentLevel.tileAvailable(this.getObjectPosition()[0], this.getObjectPosition()[1], getDirection('R'))) {
+					right = true;
 				}
-				
-				if (right) {
-					avalDirections.add('R');
+				//get the behind
+				if (this.currentLevel.tileAvailable(this.getObjectPosition()[0], this.getObjectPosition()[1], getDirection('B'))) {
+					back = true;
 				}
-			
-				// if there is more than one available direction then randomise the direction.
-				//if not then then get the direction at index 0.
-				if (avalDirections.size() > 1) {
-					int min = 1;
-					int max = avalDirections.size()-1;
-					
-					Random rand = new Random();
-					int randomIndex = (rand.nextInt(max + min) + min)-1;
-					this.directionFacing = getDirection(avalDirections.get(randomIndex));
+				//get the front
+				if (this.currentLevel.tileAvailable(this.getObjectPosition()[0], this.getObjectPosition()[1], this.directionFacing)) {
+					front = true;
+				}
+				//if the only available direction is back then turn and move backwards
+				if (left == false && right == false && front == false && back == true) {
+					this.directionFacing = getDirection('B');
 				} else {
-					this.directionFacing = getDirection(avalDirections.get(0));
+					//pick a random direction
+					ArrayList<Character> avalDirections = new ArrayList<Character>();
+					
+					//add all available directions to an arraylist and pick a random one.
+					if (front) {
+						avalDirections.add('F');
+					}
+					
+					if (left) {
+						avalDirections.add('L');
+					}
+					
+					if (right) {
+						avalDirections.add('R');
+					}
+				
+					// if there is more than one available direction then randomise the direction.
+					//if not then then get the direction at index 0.
+					if (avalDirections.size() > 1) {
+						int min = 1;
+						int max = avalDirections.size()-1;
+						
+						Random rand = new Random();
+						int randomIndex = (rand.nextInt(max + min) + min)-1;
+						this.directionFacing = getDirection(avalDirections.get(randomIndex));
+					} else if (avalDirections.size() == 1) {
+						this.directionFacing = getDirection(avalDirections.get(0));
+					}
 				}
 			}
-		}	
-		//check the direction the rat is facing and incriment position based on that.
-		//also change the rat sprite based on direction.
-		if (this.directionFacing == 'N') {
-			//minus y
-			this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1] - this.ratSpeed);
-			this.setSprite(this.ratSpriteNorth);
-		} else if (this.directionFacing == 'E') {
-			//plus x
-			this.setObjectPosition(this.getObjectPosition()[0] + this.ratSpeed, this.getObjectPosition()[1]);
-			this.setSprite(this.ratSpriteEast);
-		} else if (this.directionFacing == 'S') {
-			//plus y
-			this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1] + this.ratSpeed);
-			this.setSprite(this.ratSpriteSouth);
-		} else if (this.directionFacing == 'W') {
-			//minus x
-			this.setObjectPosition(this.getObjectPosition()[0] - this.ratSpeed, this.getObjectPosition()[1]);
-			this.setSprite(this.ratSpriteWest);
-		}
 	}
 	
 	/**
-	 * Takes in a direction e.g left and returns the direction relative to which the rat is facing.
+	 * A method which handles the movement of a rat, 
+	 * it calls the path finding method and incriment the rat's current position by it's speed in the direction it's currently facing.
+	 */
+	protected void movement() {
+		//calls the path finding method to set the current rat direction facing.
+		pathFinding();
+		
+		//check the direction the rat is facing and incriment position based on that.
+		//also change the rat sprite based on direction.
+			if (this.directionFacing == 'N') {
+				//minus y
+				this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1].subtract(this.ratSpeed));
+				this.setSprite(this.ratSpriteNorth);
+			} else if (this.directionFacing == 'E') {
+				//plus x
+				this.setObjectPosition(this.getObjectPosition()[0].add(this.ratSpeed), this.getObjectPosition()[1]);
+				this.setSprite(this.ratSpriteEast);
+			} else if (this.directionFacing == 'S') {
+				//plus y
+				this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1].add(this.ratSpeed));
+				this.setSprite(this.ratSpriteSouth);
+			} else if (this.directionFacing == 'W') {
+				//minus x
+				this.setObjectPosition(this.getObjectPosition()[0].subtract(this.ratSpeed), this.getObjectPosition()[1]);
+				this.setSprite(this.ratSpriteWest);
+			}
+			
+	}
+	
+	/**
+	 * Takes in a direction e.g left or right and returns the cardinal direction of that direction relative to direction facing.
 	 * This is used for path finding
 	 * @param direction
+	 * @return character representing a cardinal direction.
 	 */
 	public char getDirection(char direction) {
 		//initialises default variables.
@@ -205,39 +181,10 @@ public abstract class Rat extends RenderObject {
 			return this.directionFacing;
 		}
 	}
-
+	
 	/**
-	 * Sets the ratHealth attribute of the rat object.
-	 * 
-	 * @param ratHealth - the value of health you are setting the ratHealth
-	 *                  attribute to.
+	 * Abstract method for dealing with collisions.
+	 * @param object that has collided with the rat.
 	 */
-	public void setRatHealth(int ratHealth) {
-		this.ratHealth = ratHealth;
-	}
-
-	/**
-	 * Returns the attribute ratHealth.
-	 * 
-	 * @return ratHealth
-	 */
-	public int getRatHealth() {
-		return this.ratHealth;
-	}
-
-	// maybe a method for takeDamage.
-	/**
-	 * Reduces rat's health by a desired value.
-	 * 
-	 * @param damage - the value of damage that the rat is going to have taken off
-	 *               its health.
-	 */
-	public void takeDamage(int damage) {
-		this.ratHealth = this.ratHealth - damage;
-	}
-
-	/**
-	 * Abstract method which defines what happens every tick for a rat.
-	 */
-
+	abstract void collision(Object collidedObject);
 }
