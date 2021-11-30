@@ -24,7 +24,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import java.math.*;
 
 /**
  * Sample application that demonstrates the use of JavaFX Canvas for a Game.
@@ -100,7 +99,7 @@ public class TestMain extends Application {
 	 * @param primaryStage The stage that is to be used for the application.
 	 */
 	
-	public AdultRat testRat = new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, false, 10, 0, 'N', testLevel);
+	public AdultRat testRat = new AdultRat(new Position(1,1), true, false, 10, testLevel);
 	public void start(Stage primaryStage) {
 		// Load images. Note we use png images with a transparent background.
 		
@@ -110,32 +109,14 @@ public class TestMain extends Application {
 		//testLevel.addRenderObject(new BabyRat(new Position(1,1), false, testLevel));
 		//testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
 		//testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
-		//testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel, 'N'));
-		//testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel, 'N'));
-		//testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel, 'N'));
+		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
+		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
+		testLevel.addRenderObject(new BabyRat(new Position(2,1), false, testLevel));
 		
-		//testLevel.addRenderObject(new AdultRat(new Position(2,1), false, false, 10, testLevel));
-		
-		AdultRat testOne = new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, false, 10, 0,'N', testLevel);
-		AdultRat testTwo = new AdultRat(new Position(new BigDecimal("3"), new BigDecimal("1")), true, false, 10, 0,'W', testLevel);
-		//AdultRat testThree = new AdultRat(new Position(1,3), false, false, 10, 0,'E', testLevel);
-		//AdultRat testFour = new AdultRat(new Position(4,1), false, false, 10, 0,'N', testLevel);
-		//AdultRat testFive = new AdultRat(new Position(3,2), false, false, 10, 0,'N', testLevel);
-		//AdultRat testSix = new AdultRat(new Position(3,4), false, false, 10, 0,'N', testLevel);
-		//AdultRat testSeven = new AdultRat(new Position(8,2), false, false, 10, 0,'N', testLevel);
-		//AdultRat testEight = new AdultRat(new Position(8,4), false, false, 10, 0,'N', testLevel);
+		testLevel.addRenderObject(new AdultRat(new Position(2,1), false, false, 10, testLevel));
 		
 		
-		//3 8
-		
-		testLevel.addRenderObject(testRat);
-		testLevel.addRenderObject(testTwo);
-		//testLevel.addRenderObject(testThree);
-		//testLevel.addRenderObject(testFour);
-		//testLevel.addRenderObject(testFive);
-		//testLevel.addRenderObject(testSix);
-		//testLevel.addRenderObject(testSeven);
-		//testLevel.addRenderObject(testEight);
+		testLevel.addRenderObject(this.testRat);
 		
 		//testLevel.addRenderObject(new RenderScore(new Position(1,1), 10, testLevel));
 		// Build the GUI 
@@ -196,12 +177,19 @@ public class TestMain extends Application {
 		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
 			//System.out.println(testLevel.getRenderObjects().get(i).getSprite());
 			//gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getPosition()[0] * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getPosition()[1] * GRID_CELL_HEIGHT);
-			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getObjectPosition()[0].doubleValue() * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getObjectPosition()[1].doubleValue() * GRID_CELL_HEIGHT);
+			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getObjectPosition()[0] * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getObjectPosition()[1] * GRID_CELL_HEIGHT);
 		}
 		
 		
-		
-	
+		//After list - textures which have the highest layer.
+		if (convertedLayout.getAfterList().size() > 0){
+			for (int i = 0; i < convertedLayout.getAfterList().size(); i++) {
+				double x = convertedLayout.getAfterPositionList().get(i).getPosition()[0];
+				double y = convertedLayout.getAfterPositionList().get(i).getPosition()[1];
+				
+				gc.drawImage(convertedLayout.getAfterList().get(i).getImage(), x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
+			}
+		}
 		
 		gc.drawImage(HUD_BG, 0 * GRID_CELL_WIDTH, 7 * GRID_CELL_HEIGHT);
 		gc.drawImage(TEST, 0 * GRID_CELL_WIDTH, 7 * GRID_CELL_HEIGHT);
@@ -218,15 +206,14 @@ public class TestMain extends Application {
 	public void tick() {
 		//System.out.println(testLevel.score);
 		
-		//collision detection
-		
-		
-		
 		tickCounter++;
-		
-	
-	
-		
+		if (tickCounter > 333) {
+			for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
+				if (testLevel.getRenderObjects().get(i) == this.testRat) {
+					this.testRat.ratDeath();
+				}
+			}
+		}
 		//Here we will do the tick method for items and rats.
 				//Likely to have an array of objects which we call the tick method on.
 				for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
