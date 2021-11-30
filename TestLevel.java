@@ -3,31 +3,23 @@
 import java.util.ArrayList;
 
 public class TestLevel {
-	public int score;
-	
-	private static String tilesArray [][] = {{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
+	String tiles [][] = {
+		{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
 		{"G","P","P","P","T","T","P","P","P","T","T","P","P","P","G"},
 		{"G","G","G","P","G","G","G","G","P","G","G","P","G","P","G"},
 		{"G","P","P","P","G","G","P","P","P","G","G","P","G","P","G"},
 		{"G","P","G","G","G","G","G","G","P","G","G","P","G","P","G"},
 		{"G","P","P","P","T","T","P","P","P","T","T","P","P","P","G"},
-		{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"}};
+		{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"}
+		};
 	
 	ArrayList<RenderObject> renderObjectsArray = new ArrayList<RenderObject>();
 	
 	public TestLevel() {
-		this.score = 0;
-	}
-	
-	public void incrimentScore(int scoreIncrease) {
-		this.score = this.score + scoreIncrease;
-	}
-	
-	public boolean tileAvailable (double xIn, double yIn, char direction){
-		String tiles [][] = tilesArray;
 		
-		int x = (int) Math.round(xIn);
-		int y = (int) Math.round(yIn);
+	}
+	
+	public static boolean tileAvailable (int x, int y, char direction, String[][] tiles){
 		
 		if (direction == 'N') {
 			if (y > 0) {
@@ -58,7 +50,7 @@ public class TestLevel {
 	} 
 	
 	public String[][] getTiles() {
-		return tilesArray;
+		return this.tiles;
 	}
 	
 	public ArrayList<RenderObject> getRenderObjects () {
@@ -69,7 +61,7 @@ public class TestLevel {
 		this.renderObjectsArray.add(addElement);
 	}
 	
-	public void removeRenderObject(int index) {
-		this.renderObjectsArray.remove(index);
+	public void removeRenderObject() {
+		
 	}
 }
