@@ -9,6 +9,7 @@
 import javafx.scene.image.Image;
 import java.util.ArrayList;
 import java.util.Random;
+import java.math.BigDecimal;
 
 /**
  * Rat is an abstract class responsible for rat health/damage, rat’s movement
@@ -28,7 +29,7 @@ public abstract class Rat extends RenderObject {
 	/**
 	 * Speed of the rat.
 	 */
-	protected double ratSpeed;
+	protected BigDecimal ratSpeed;
 	/**
 	 * The direction in which the rat is facing.
 	 */
@@ -36,11 +37,14 @@ public abstract class Rat extends RenderObject {
 	/**
 	 * Tick counter for tile detection in smooth movement.
 	 */
-	private float tickCounter = -2;
+	protected float tickCounter = -2;
 	/**
 	 * size of tiles, used in smooth movement.
 	 */
-	private final int TILE_SIZE = 50;
+	protected final int TILE_SIZE = 50;
+	
+	protected final BigDecimal BABY_RAT_SPEED = new BigDecimal("0.04");
+	
 	/**
 	 * rat sprites for each direction.
 	 */
@@ -57,9 +61,10 @@ public abstract class Rat extends RenderObject {
 	/**
 	 * movement() is a method which handles the movement behaviour of a rat.
 	 */
-	protected void movement() {
+	protected void movement(boolean moving) {
+		//double tickLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
 		//for smooth movement we need 
-		double tickLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
+		//double tickLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
 		
 		//movement here
 		//for better general performance we can use a timer to detect when a rat has moved a full tile before doing
@@ -75,8 +80,16 @@ public abstract class Rat extends RenderObject {
 		//checks if the current position has a remainder, if not then we know it's moved a full tile so it's time to check
 		//the availavle directions.
 		
-		tickCounter++;
-		if (tickCounter == tickLimit || tickCounter == -1) {
+		//System.out.println("test");
+		//tickCounter++;
+		
+		//convert the BigDecimal values
+		
+		if (this.getObjectPosition()[0].stripTrailingZeros().scale() <= 0
+			&& this.getObjectPosition()[1].stripTrailingZeros().scale() <= 0) {
+			//System.out.print("test");
+			//System.out.println(x);
+			//System.out.println(y);
 			tickCounter = 0;
 			boolean front = false;
 			boolean left = false;
@@ -132,30 +145,35 @@ public abstract class Rat extends RenderObject {
 					Random rand = new Random();
 					int randomIndex = (rand.nextInt(max + min) + min)-1;
 					this.directionFacing = getDirection(avalDirections.get(randomIndex));
-				} else {
+				} else if (avalDirections.size() == 1) {
 					this.directionFacing = getDirection(avalDirections.get(0));
 				}
 			}
 		}	
 		//check the direction the rat is facing and incriment position based on that.
 		//also change the rat sprite based on direction.
-		if (this.directionFacing == 'N') {
-			//minus y
-			this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1] - this.ratSpeed);
-			this.setSprite(this.ratSpriteNorth);
-		} else if (this.directionFacing == 'E') {
-			//plus x
-			this.setObjectPosition(this.getObjectPosition()[0] + this.ratSpeed, this.getObjectPosition()[1]);
-			this.setSprite(this.ratSpriteEast);
-		} else if (this.directionFacing == 'S') {
-			//plus y
-			this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1] + this.ratSpeed);
-			this.setSprite(this.ratSpriteSouth);
-		} else if (this.directionFacing == 'W') {
-			//minus x
-			this.setObjectPosition(this.getObjectPosition()[0] - this.ratSpeed, this.getObjectPosition()[1]);
-			this.setSprite(this.ratSpriteWest);
-		}
+			if (this.directionFacing == 'N') {
+				//minus y
+				this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1].subtract(this.ratSpeed));
+				this.setSprite(this.ratSpriteNorth);
+			} else if (this.directionFacing == 'E') {
+				//plus x
+				this.setObjectPosition(this.getObjectPosition()[0].add(this.ratSpeed), this.getObjectPosition()[1]);
+				this.setSprite(this.ratSpriteEast);
+			} else if (this.directionFacing == 'S') {
+				//plus y
+				this.setObjectPosition(this.getObjectPosition()[0], this.getObjectPosition()[1].add(this.ratSpeed));
+				this.setSprite(this.ratSpriteSouth);
+			} else if (this.directionFacing == 'W') {
+				//minus x
+				this.setObjectPosition(this.getObjectPosition()[0].subtract(this.ratSpeed), this.getObjectPosition()[1]);
+				this.setSprite(this.ratSpriteWest);
+			}
+			
+	}
+	
+	protected void resetTickCounter() {
+		this.tickCounter = 0;
 	}
 	
 	/**
@@ -239,5 +257,7 @@ public abstract class Rat extends RenderObject {
 	/**
 	 * Abstract method which defines what happens every tick for a rat.
 	 */
-
+	
+	abstract void collision(Object collidedObject);
+	
 }

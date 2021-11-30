@@ -17,10 +17,12 @@ public class BabyRat extends NormalRat {
 	 * This is the default value of the grow count attribute.
 	 */
 	protected final int DEFAULT_GROW_COUNT = 0;
+	
 	/**
-	 * This is the speed for a baby rat.
+	 * How many ticks until the rat grows up, 999 is around 15 seconds.
 	 */
-	protected final double BABY_RAT_SPEED = 0.02;
+	private final int GROW_COUNT_LIMIT = 999;
+
 	/**
 	 * All baby rat sprites for each direction.
 	 */
@@ -39,20 +41,23 @@ public class BabyRat extends NormalRat {
 	 *  @param gender
 	 *  @param currentLevel
 	 */
-	public BabyRat(Position position, boolean gender, TestLevel currentLevel) {
+	public BabyRat(Position position, boolean gender, TestLevel currentLevel, char directionFacing) {
 		this.objectPosition = position;
 		this.ratGender = gender;
 		this.renderSprite = BABY_RAT_SPRITE_EAST;
 		this.ratSterile = DEFUALT_STERILE;
 		this.ratHealth = MAX_RAT_HEALTH;
 		this.growCounter = DEFAULT_GROW_COUNT;
-		this.directionFacing = 'N';
 		this.currentLevel = currentLevel;
 		this.ratSpeed = BABY_RAT_SPEED;
 		this.ratSpriteNorth = BABY_RAT_SPRITE_NORTH;
 		this.ratSpriteEast = BABY_RAT_SPRITE_EAST;
 		this.ratSpriteSouth = BABY_RAT_SPRITE_SOUTH;
 		this.ratSpriteWest = BABY_RAT_SPRITE_WEST;
+		this.directionFacing = directionFacing;
+		
+		System.out.println(this.getObjectPosition()[0]);
+		System.out.println(this.getObjectPosition()[1]);
 	}
 	
 	/**
@@ -89,7 +94,28 @@ public class BabyRat extends NormalRat {
 	/**
 	 *  Method which is responsible for movement and growth every tick.
 	 */
-	public void tick() {
-		this.movement();
+	public void tick() {		
+		this.growCounter++;
+		
+		if (this.growCounter > GROW_COUNT_LIMIT) {
+			this.growUp();
+		} else {
+			this.movement(true);
+		}
 	}	
+	
+	public void collision(Object collidedObject) {
+		
+	}
+	
+	public void growUp() {
+		//create an adult rat 
+		//might need the baby rat's current tickCounter.
+		this.currentLevel.addRenderObject(new AdultRat(this.objectPosition, this.ratGender, this.ratSterile, this.ratHealth, this.tickCounter, this.directionFacing, this.currentLevel));
+		//remove self from array
+		this.removeSelf();
+		
+		//maybe play grow up sound
+	}
+	
 }

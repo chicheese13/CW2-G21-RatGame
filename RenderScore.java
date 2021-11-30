@@ -16,6 +16,11 @@ public class RenderScore extends RenderObject {
 	 * Sprites for different potential scores.
 	 */
 	private Image PLUS_TEN_SPRITE = new Image("Textures/plus-ten.png");
+	private Image PLUS_TWENTY_SPRITE = new Image("Textures/plus-twenty.png");
+	private Image PLUS_THIRTY_SPRITE = new Image("Textures/plus-thirty.png");
+	private Image PLUS_FOURTY_SPRITE = new Image("Textures/plus-fourt.png");
+	private Image PLUS_FIFTY_SPRITE = new Image("Textures/plus-fifty.png");
+	private Image PLUS_SIXTY_SPRITE = new Image("Textures/plus-sixty.png");
 	
 	/**
 	 * Tick limit is the number of ticks the score will stay for, 67 is just over 1 second worth of ticks.
@@ -36,6 +41,16 @@ public class RenderScore extends RenderObject {
 		
 		if (score == 10) {
 			this.renderSprite = PLUS_TEN_SPRITE;
+		} else if (score == 20) {
+			this.renderSprite = PLUS_TWENTY_SPRITE;
+		} else if (score == 30) {
+			this.renderSprite = PLUS_THIRTY_SPRITE;
+		} else if (score == 40) {
+			this.renderSprite = PLUS_FOURTY_SPRITE;
+		} else if (score == 50) {
+			this.renderSprite = PLUS_FIFTY_SPRITE;
+		} else if (score == 60) {
+			this.renderSprite = PLUS_SIXTY_SPRITE;
 		}
 	}
 	

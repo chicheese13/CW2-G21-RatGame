@@ -10,6 +10,9 @@
  *
  */
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public abstract class NormalRat extends Rat {
 	
 	/**
@@ -73,4 +76,82 @@ public abstract class NormalRat extends Rat {
 	 *  Abstract method that needs to be implemented in the subclasses.
 	 */
 	public abstract void ratDeath();
+	
+	
+	/**
+	 * Abstract method which defines what happens every tick for a rat.
+	 */
+	
+	public Position recallibratePosition(Position position, BigDecimal newSpeed) {
+		//get the current decimal
+		//minus it from one to get the left over amount of tile
+		//divide tile by new speed
+		//if it's decimal math.ceil
+		//multiply the new speed by math.ceil value
+		//minus 1 this will get us the left over amount of tile
+		//minus the left over from the current position.
+		
+		
+		
+		
+		//get the remainder, minus it from one
+		//divide the remainder by the speed
+		//if it doesn't fit nicely then round up the remainder divided by speed and multiply
+		//minus one from the remainder divided by speed
+		//minus the remainder divided by speed to the current position
+		
+		//get the remainder
+		BigDecimal flooredX = position.getPosition()[0].setScale(0, RoundingMode.DOWN); 
+		BigDecimal flooredY = position.getPosition()[1].setScale(0, RoundingMode.DOWN); 
+		
+		BigDecimal remainderX = position.getPosition()[0].subtract(flooredX); 
+		BigDecimal remainderY = position.getPosition()[1].subtract(flooredY); 
+		
+		System.out.println("------------");
+		System.out.println(remainderX);
+		System.out.println("------------");
+		System.out.println(remainderY);
+		System.out.println("------------");
+		
+		//minus the remainder from one
+		BigDecimal leftoverTileX = new BigDecimal("1").subtract(remainderX);
+		BigDecimal leftoverTileY = new BigDecimal("1").subtract(remainderY);
+		
+		//remainder divided by speed
+		BigDecimal roundCheckX = leftoverTileX.divide(newSpeed);
+		BigDecimal roundCheckY = leftoverTileY.divide(newSpeed);
+		
+		BigDecimal newX = position.getPosition()[0];
+		BigDecimal newY = position.getPosition()[1];
+		
+		//if it doesn't fit nice
+		if (roundCheckX.stripTrailingZeros().scale() > 0) {
+			newX = flooredX.add(cleanDecimal(remainderX, newSpeed));
+		}
+		
+		if (roundCheckY.stripTrailingZeros().scale() > 0) {
+			System.out.println("DECIMAL");
+			System.out.println(leftoverTileY);
+			newY = flooredY.add(cleanDecimal(remainderY, newSpeed));
+		}
+		
+		return (new Position(newX, newY));
+	}
+	
+	public BigDecimal cleanDecimal(BigDecimal change, BigDecimal speed) {
+		//take in the decimals
+		
+		//multiply by 100 to move two decimal places to the right
+		BigDecimal multipliedChange = change.multiply(new BigDecimal("100"));
+		BigDecimal multipliedSpeed = speed.multiply(new BigDecimal("100"));
+		
+		System.out.println(multipliedChange);
+		System.out.println(multipliedSpeed);
+		
+		//divide the change by the speed, round the outcome and then multiply by speed
+		BigDecimal roundedDivision = (multipliedChange.divide(multipliedSpeed)).setScale(0, RoundingMode.HALF_UP);
+		//this rounds the change value to the nearest multiple of speed
+		BigDecimal output = (roundedDivision.multiply(multipliedSpeed)).divide(new BigDecimal("100"));
+		return (output);
+	}
 }
