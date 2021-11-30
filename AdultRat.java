@@ -90,13 +90,13 @@ public class AdultRat extends NormalRat {
 	/**
 	 * Mating interval wait
 	 */
-	private final int MATING_INTERVAL = 1000;
+	private final int MATING_WAIT_INTERVAL = 200;
 	/**
 	 * Mating cooldown interval wait
 	 */
-	private final int MATING_COOLDOWN_INTERVAL = 1000;
+	private final int MATING_COOLDOWN_INTERVAL = 335;
 	
-	private final int GIVE_BIRTH_INTERVAL = 4;
+	private final int GIVE_BIRTH_INTERVAL = 333;
 	
 	private int giveBirthCooldown;
 		
@@ -162,6 +162,7 @@ public class AdultRat extends NormalRat {
 		
 		this.pregnancyCounter = 5;
 		
+		recallibratePosition(this.objectPosition, PREGNANT_FEMALE_RAT_SPEED);
 		
 		this.setRatWait(true);
 		
@@ -198,6 +199,9 @@ public class AdultRat extends NormalRat {
 		
 		//this.tickCounter = overwriteCounter;
 		
+		
+		
+		//current position, and round it to a decimal multiple of the new speed.
 		
 		this.ratSpeed = PREGNANT_FEMALE_RAT_SPEED;
 		
@@ -326,6 +330,10 @@ public class AdultRat extends NormalRat {
 		this.waitCounter = waitTime;
 	}
 	
+	public void setWait() {
+		this.isWaiting = false;
+	}
+	
 	/**
 	 *  Method which is responsible for movement, pregnancy and pregnancy cooldown.
 	 */
@@ -340,20 +348,18 @@ public class AdultRat extends NormalRat {
 			this.cooldown = 0;
 		}
 		
+		this.giveBirthCooldown++;
+		
 		//if the rat is pregnancy with with more than 0 babies then give birth.
 		//give birth with 2 second intervals
 		if (isPregnant == true && isWaiting == false) {
 			if (this.pregnancyCounter > 0) {
-				//System.out.println(this.tickCounter);
-				if (this.getObjectPosition()[0].stripTrailingZeros().scale() <= 0
-					&& this.getObjectPosition()[1].stripTrailingZeros().scale() <= 0) {
-					this.giveBirthCooldown--;
-				} else if (this.giveBirthCooldown == 0) {
-					
+				if (this.giveBirthCooldown > GIVE_BIRTH_INTERVAL) {
+					this.giveBirthCooldown = 0;
 					//reset the cooldown
-					this.giveBirthCooldown = GIVE_BIRTH_INTERVAL;
+					//this.giveBirthCooldown = GIVE_BIRTH_INTERVAL;
 					//give birth
-					this.giveBirth();
+					//this.giveBirth();
 					//deicnriment pregnancy counter
 					this.pregnancyCounter--;
 				}
@@ -390,23 +396,24 @@ public class AdultRat extends NormalRat {
 				this.ratSpriteSouth = ADULT_FEMALE_RAT_SPRITE_SOUTH;
 				this.ratSpriteWest = ADULT_FEMALE_RAT_SPRITE_WEST;
 				
+				this.objectPosition = recallibratePosition(this.objectPosition, DEFAULT_ADULT_RAT_SPEED);
 				this.ratSpeed = DEFAULT_ADULT_RAT_SPEED;
 			}
 		}
 		
 		
 		//checks if the rat is currently waiting.
-				//if it is waiting and pregnant then wait for 3 seconds and continue moving again.
-				if (this.isWaiting == false) {
-					this.movement(true);
-				} else {
-					this.waitCounter++;
-					if (this.waitCounter == 200) {
-						this.waitCounter = 0;
-						this.setRatWait(false);
+		//if it is waiting and pregnant then wait for 3 seconds and continue moving again.
+		if (this.isWaiting == false) {
+			this.movement(true);
+		} else {
+			this.waitCounter++;
+			if (this.waitCounter == 200) {
+				this.waitCounter = 0;
+				this.setRatWait(false);
 						
-					}
-				}
+			}
+		}
 		
 	}
 }

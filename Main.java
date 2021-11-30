@@ -51,6 +51,10 @@ public class Main extends Application {
 	private static final int CANVAS_WIDTH = WINDOW_WIDTH;
 	private static final int CANVAS_HEIGHT = WINDOW_HEIGHT;
 	
+	TestLevel testLevel = new TestLevel();
+	private AdultRat testRat = new AdultRat(new Position(new BigDecimal("2"), new BigDecimal("1")), false, false, 10, 0, 'N', testLevel);
+	private AdultRat testRatTwo = new AdultRat(new Position(new BigDecimal("2"), new BigDecimal("1")), true, false, 10, 0, 'N', testLevel);
+	
 	private int collisionCounter = 0;
 	
 	// The canvas in the GUI. This needs to be a global variable
@@ -61,7 +65,7 @@ public class Main extends Application {
 	private Timeline tickTimeline; 
 	
 	
-	TestLevel testLevel = new TestLevel();
+	
 	//testLevel.addRenderObject(new BabyRat(new Position(2,2), false, testLevel));
 
 	
@@ -95,19 +99,27 @@ public class Main extends Application {
 		tickTimeline.play();
 		
 		// Display the scene on the stage
-		testLevel.addRenderObject(new BabyRat(new Position(new BigDecimal("2"), new BigDecimal("1")), false, testLevel, 'N'));
-		testLevel.addRenderObject(new BabyRat(new Position(new BigDecimal("6"), new BigDecimal("1")), true, testLevel, 'N'));
+		//testLevel.addRenderObject(new BabyRat(new Position(new BigDecimal("2"), new BigDecimal("1")), false, testLevel, 'N'));
+		//testLevel.addRenderObject(new BabyRat(new Position(new BigDecimal("6"), new BigDecimal("1")), true, testLevel, 'N'));
 		//testLevel.addRenderObject(new BabyRat(new Position(2,1), true, testLevel, 'N'));
 		
 		//AdultRat testRat = new AdultRat(new Position(1,1), true, false, 10, 0, 'E', testLevel);
 		//testRat.becomePregnant();
 		
-		//testLevel.addRenderObject(new AdultRat(new Position(1,1), true, false, 10, 0, 'N', testLevel));
+		//testLevel.addRenderObject(new AdultRat(new BigDecimal("2"), new BigDecimal("1")), true, false, 10, 0, 'N', testLevel));
 		//testLevel.addRenderObject(new AdultRat(new Position(3,1), false, false, 10, 0, 'N', testLevel));
 		//testLevel.addRenderObject(testRat);
 		//testLevel.addRenderObject(new BabyRat(new Position(5,5), false, testLevel));
 		
 		//System.out.println(testLevel.tileAvailable(0, 0, 'N'));
+		
+		//Position position, boolean gender, boolean sterile, int ratHealth, double tickIn, char direction, TestLevel currentLevel
+		
+		testLevel.addRenderObject(testRat);
+		testLevel.addRenderObject(testRatTwo);
+		
+		System.out.println("test----);");
+		System.out.println(testRat.cleanDecimal(new BigDecimal("0.69"), new BigDecimal("0.04")));
 		
 		drawGame();
 		primaryStage.setScene(scene);
@@ -158,11 +170,17 @@ public class Main extends Application {
 	 * this might cause the bad guys to move (by e.g., looping
 	 * over them all and calling their own tick method). 
 	 */
+	private int counter = 0;
 	public void tick() {
 		//Here we will do the tick method for items and rats.
 		//Likely to have an array of objects which we call the tick method on.
 		
 		//maybe a recursive algorithm which removes collide objects from the list that have already had a comparison
+		counter++;
+		
+		if (counter == 200) {
+			testRatTwo.ratDeath();
+		}
 		
 		
 		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {

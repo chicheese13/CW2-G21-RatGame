@@ -21,7 +21,7 @@ public class BabyRat extends NormalRat {
 	/**
 	 * How many ticks until the rat grows up, 333 is around 5 seconds.
 	 */
-	private final int GROW_COUNT_LIMIT = 5;
+	private final int GROW_COUNT_LIMIT = 333;
 
 	/**
 	 * All baby rat sprites for each direction.
@@ -100,12 +100,9 @@ public class BabyRat extends NormalRat {
 		double x = this.getObjectPosition()[0].doubleValue();
 		double y = this.getObjectPosition()[0].doubleValue();
 		
-		if (this.getObjectPosition()[0].stripTrailingZeros().scale() <= 0
-			&& this.getObjectPosition()[1].stripTrailingZeros().scale() <= 0) {
-			this.growCounter++;
-		}
+		this.growCounter++;
 		
-		if (this.growCounter == GROW_COUNT_LIMIT) {
+		if (this.growCounter > GROW_COUNT_LIMIT) {
 			this.growUp();
 		} else {
 			this.movement(true);

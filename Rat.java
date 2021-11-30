@@ -85,11 +85,9 @@ public abstract class Rat extends RenderObject {
 		
 		//convert the BigDecimal values
 		
-		
-		
 		if (this.getObjectPosition()[0].stripTrailingZeros().scale() <= 0
 			&& this.getObjectPosition()[1].stripTrailingZeros().scale() <= 0) {
-			
+			//System.out.print("test");
 			//System.out.println(x);
 			//System.out.println(y);
 			tickCounter = 0;
@@ -259,5 +257,4 @@ public abstract class Rat extends RenderObject {
 	/**
 	 * Abstract method which defines what happens every tick for a rat.
 	 */
-
 }
