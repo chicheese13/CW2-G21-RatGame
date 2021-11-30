@@ -182,7 +182,7 @@ public class AdultRat extends NormalRat {
 		//incriment score (pregnancyCounter+1 * RAT_SCORE)
 		this.currentLevel.incrimentScore((this.pregnancyCounter+1) * RAT_SCORE);
 		//create an instance of RenderScore with desired score incriment.
-		this.currentLevel.addRenderObject(new RenderScore(this.objectPosition, (this.pregnancyCounter+1) * RAT_SCORE, this.currentLevel));
+		//this.currentLevel.addRenderObject(new RenderScore(this.objectPosition, (this.pregnancyCounter+1) * RAT_SCORE, this.currentLevel));
 		//remove itself from RenderObjects array.
 		SoundClip ratDeathSound = new SoundClip("rat-death-sound");
 		ratDeathSound.play();
