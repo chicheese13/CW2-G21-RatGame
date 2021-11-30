@@ -30,7 +30,11 @@ public class TestLevel {
 	ArrayList<RenderObject> renderObjectsArray = new ArrayList<RenderObject>();
 	
 	public TestLevel() {
-		
+		this.score = 0;
+	}
+	
+	public void incrimentScore(int scoreIncrease) {
+		this.score = this.score + scoreIncrease;
 	}
 	
 	public boolean tileAvailable (BigDecimal xIn, BigDecimal yIn, char direction){
@@ -72,7 +76,7 @@ public class TestLevel {
 	}
 	
 	public String[][] getTiles() {
-		return this.tiles;
+		return tilesArray;
 	}
 	
 	public ArrayList<RenderObject> getRenderObjects () {
@@ -83,7 +87,7 @@ public class TestLevel {
 		this.renderObjectsArray.add(addElement);
 	}
 	
-	public void removeRenderObject() {
-		
+	public void removeRenderObject(int index) {
+		this.renderObjectsArray.remove(index);
 	}
 }
