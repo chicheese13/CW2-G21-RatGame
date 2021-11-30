@@ -27,7 +27,7 @@ public class AdultRat extends NormalRat {
 	/**
 	 * This is the default value for the cooldown attribute.
 	 */
-	protected final int DEFAULT_COOLDOWN_VALUE = 0;
+	protected final int DEFAULT_COOLDOWN_VALUE = 400;
 	/**
 	 * This is the default value for the rat speed.
 	 */
@@ -94,7 +94,7 @@ public class AdultRat extends NormalRat {
 	/**
 	 * Mating cooldown interval wait
 	 */
-	private final int MATING_COOLDOWN_INTERVAL = 335;
+	private final int MATING_COOLDOWN_INTERVAL = 1000;
 	
 	private final int GIVE_BIRTH_INTERVAL = 333;
 	
@@ -115,7 +115,7 @@ public class AdultRat extends NormalRat {
 	public AdultRat(Position position, boolean gender, boolean sterile, int ratHealth, double tickIn, char direction, TestLevel currentLevel) {
 		this.isPregnant = DEFAULT_PREGNANCY_VALUE;
 		this.pregnancyCounter = DEFAULT_PREGNANCY_COUNT;
-		this.cooldown = DEFAULT_COOLDOWN_VALUE;
+		this.cooldown = 1000;
 		this.ratSpeed = DEFAULT_ADULT_RAT_SPEED;
 		this.ratSterile = sterile;
 		this.objectPosition = position;
@@ -205,7 +205,7 @@ public class AdultRat extends NormalRat {
 		
 		this.ratSpeed = PREGNANT_FEMALE_RAT_SPEED;
 		
-		this.giveBirthCooldown = GIVE_BIRTH_INTERVAL + 1;
+		this.giveBirthCooldown = GIVE_BIRTH_INTERVAL;
 	}
 	
 	/**
@@ -293,31 +293,37 @@ public class AdultRat extends NormalRat {
 		this.currentLevel.addRenderObject(new BabyRat(new Position(new BigDecimal(Math.round(this.getObjectPosition()[0].doubleValue())), new BigDecimal(Math.round(this.getObjectPosition()[1].doubleValue()))), babyRatGender, this.currentLevel, this.directionFacing));
 	}
 	
+	public void startMatingCooldown() {
+		this.matingCooldown = true;
+	}
+	
 	public void collision(Object parameter) {
 		if (parameter instanceof AdultRat) {
 			//if the rat is not sterile and is not pregnant and is not on a mating cooldown then
 			if (((AdultRat) parameter).getSterile() == false 
 				&& ((AdultRat) parameter).getPregnant() == false
 				&& ((AdultRat) parameter).getMatingCooldown() == false
-				&& this.getMatingCooldown() == false
-				&& this.getPregnant() == false
-				&& this.getSterile() == false
-				&& this.getRatGender() != ((AdultRat) parameter).getRatGender()) {
+				&& this.matingCooldown == false
+				&& this.isPregnant == false
+				&& this.ratSterile == false
+				&& this.ratGender != ((AdultRat) parameter).getRatGender()) {
+				
 					//make the female rat pregnant
 					
 					
 					if (this.ratGender == false) {
 						this.becomePregnant();
 					} else {
+						System.out.println("MAKE PREGNANT");
+						System.out.println(this.matingCooldown);
 						((AdultRat) parameter).becomePregnant();
+						((AdultRat) parameter).startMatingCooldown();
 					}
-					
 					this.setRatWait(true);
-					((AdultRat) parameter).setRatWait(true);
-					
-					System.out.println("POSITION");
-					System.out.println(this.getObjectPosition()[0]);
-					System.out.println(this.getObjectPosition()[1]);
+					this.startMatingCooldown();
+			} else {
+				System.out.println("DONT PREGNANT");
+				System.out.println(this.matingCooldown);
 			}
 		} else if (parameter instanceof Item) {
 			
@@ -345,21 +351,22 @@ public class AdultRat extends NormalRat {
 			this.cooldown--;
 		} else {
 			this.matingCooldown = false;
-			this.cooldown = 0;
+			this.cooldown = 1000;
 		}
 		
-		this.giveBirthCooldown++;
+		
 		
 		//if the rat is pregnancy with with more than 0 babies then give birth.
 		//give birth with 2 second intervals
 		if (isPregnant == true && isWaiting == false) {
+			this.giveBirthCooldown++;
 			if (this.pregnancyCounter > 0) {
 				if (this.giveBirthCooldown > GIVE_BIRTH_INTERVAL) {
 					this.giveBirthCooldown = 0;
 					//reset the cooldown
 					//this.giveBirthCooldown = GIVE_BIRTH_INTERVAL;
 					//give birth
-					//this.giveBirth();
+					this.giveBirth();
 					//deicnriment pregnancy counter
 					this.pregnancyCounter--;
 				}

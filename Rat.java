@@ -145,7 +145,7 @@ public abstract class Rat extends RenderObject {
 					Random rand = new Random();
 					int randomIndex = (rand.nextInt(max + min) + min)-1;
 					this.directionFacing = getDirection(avalDirections.get(randomIndex));
-				} else {
+				} else if (avalDirections.size() == 1) {
 					this.directionFacing = getDirection(avalDirections.get(0));
 				}
 			}

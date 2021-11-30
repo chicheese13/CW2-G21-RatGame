@@ -24,6 +24,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import java.math.*;
 
 /**
  * Sample application that demonstrates the use of JavaFX Canvas for a Game.
@@ -99,7 +100,7 @@ public class TestMain extends Application {
 	 * @param primaryStage The stage that is to be used for the application.
 	 */
 	
-	public AdultRat testRat = new AdultRat(new Position(1,1), false, false, 10, 0, 'N', testLevel);
+	public AdultRat testRat = new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, false, 10, 0, 'N', testLevel);
 	public void start(Stage primaryStage) {
 		// Load images. Note we use png images with a transparent background.
 		
@@ -115,8 +116,8 @@ public class TestMain extends Application {
 		
 		//testLevel.addRenderObject(new AdultRat(new Position(2,1), false, false, 10, testLevel));
 		
-		AdultRat testOne = new AdultRat(new Position(1,1), false, false, 10, 0,'N', testLevel);
-		AdultRat testTwo = new AdultRat(new Position(1,2), true, false, 10, 0,'W', testLevel);
+		AdultRat testOne = new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, false, 10, 0,'N', testLevel);
+		AdultRat testTwo = new AdultRat(new Position(new BigDecimal("3"), new BigDecimal("1")), true, false, 10, 0,'W', testLevel);
 		//AdultRat testThree = new AdultRat(new Position(1,3), false, false, 10, 0,'E', testLevel);
 		//AdultRat testFour = new AdultRat(new Position(4,1), false, false, 10, 0,'N', testLevel);
 		//AdultRat testFive = new AdultRat(new Position(3,2), false, false, 10, 0,'N', testLevel);
@@ -195,7 +196,7 @@ public class TestMain extends Application {
 		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
 			//System.out.println(testLevel.getRenderObjects().get(i).getSprite());
 			//gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getPosition()[0] * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getPosition()[1] * GRID_CELL_HEIGHT);
-			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getObjectPosition()[0] * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getObjectPosition()[1] * GRID_CELL_HEIGHT);
+			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getObjectPosition()[0].doubleValue() * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getObjectPosition()[1].doubleValue() * GRID_CELL_HEIGHT);
 		}
 		
 		
@@ -219,22 +220,7 @@ public class TestMain extends Application {
 		
 		//collision detection
 		
-		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
-			for (int i2 = 0; i2 < testLevel.getRenderObjects().size(); i2++) {
-				if (Math.round(testLevel.getRenderObjects().get(i).getObjectPosition()[0]) == Math.round(testLevel.getRenderObjects().get(i2).getObjectPosition()[0]) && Math.round(testLevel.getRenderObjects().get(i).getObjectPosition()[1]) == Math.round(testLevel.getRenderObjects().get(i2).getObjectPosition()[1]) && testLevel.getRenderObjects().get(i) != testLevel.getRenderObjects().get(i2)) {
-					System.out.println("Collision detected");
-					if (testLevel.getRenderObjects().get(i) instanceof AdultRat
-						&& testLevel.getRenderObjects().get(i2) instanceof AdultRat) {
-						//set the rat location to the rounded value of x and y
-						//set the tickCounter to 0.
-						
-						((AdultRat) testLevel.getRenderObjects().get(i)).collision(testLevel.getRenderObjects().get(i2));
-						((AdultRat) testLevel.getRenderObjects().get(i2)).collision(testLevel.getRenderObjects().get(i));
-					}
-					//tickTimeline.stop();
-				}
-			}
-		}
+		
 		
 		tickCounter++;
 		

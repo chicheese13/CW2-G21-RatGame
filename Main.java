@@ -38,8 +38,8 @@ import java.math.*;
  */
 public class Main extends Application {
 	// The dimensions of the window
-	private static final int GRID_WIDTH = 15;
-	private static final int GRID_HEIGHT = 7;
+	private static final int GRID_WIDTH = 30;
+	private static final int GRID_HEIGHT = 20;
 
 	private static final int GRID_CELL_WIDTH = 50;
 	private static final int GRID_CELL_HEIGHT = 50;
@@ -99,14 +99,19 @@ public class Main extends Application {
 		tickTimeline.play();
 		
 		// Display the scene on the stage
-		//testLevel.addRenderObject(new BabyRat(new Position(new BigDecimal("2"), new BigDecimal("1")), false, testLevel, 'N'));
-		//testLevel.addRenderObject(new BabyRat(new Position(new BigDecimal("6"), new BigDecimal("1")), true, testLevel, 'N'));
+		testLevel.addRenderObject(new BabyRat(new Position(new BigDecimal("2"), new BigDecimal("1")), false, testLevel, 'N'));
+		testLevel.addRenderObject(new BabyRat(new Position(new BigDecimal("2"), new BigDecimal("1")), true, testLevel, 'N'));
+		
+		testLevel.addRenderObject(new AdultRat(new Position(new BigDecimal("4"), new BigDecimal("1")), true, false, 10, 0, 'N', testLevel));
+		testLevel.addRenderObject(new AdultRat(new Position(new BigDecimal("4"), new BigDecimal("1")), false, false, 10, 0, 'N', testLevel));
+		testLevel.addRenderObject(new AdultRat(new Position(new BigDecimal("4"), new BigDecimal("1")), false, false, 10, 0, 'N', testLevel));
+		
 		//testLevel.addRenderObject(new BabyRat(new Position(2,1), true, testLevel, 'N'));
 		
 		//AdultRat testRat = new AdultRat(new Position(1,1), true, false, 10, 0, 'E', testLevel);
 		//testRat.becomePregnant();
 		
-		//testLevel.addRenderObject(new AdultRat(new BigDecimal("2"), new BigDecimal("1")), true, false, 10, 0, 'N', testLevel));
+		//testLevel.addRenderObject(new AdultRat(new Position(new BigDecimal("2"), new BigDecimal("1"))), true, false, 10, 0, 'N', testLevel));
 		//testLevel.addRenderObject(new AdultRat(new Position(3,1), false, false, 10, 0, 'N', testLevel));
 		//testLevel.addRenderObject(testRat);
 		//testLevel.addRenderObject(new BabyRat(new Position(5,5), false, testLevel));
@@ -115,11 +120,11 @@ public class Main extends Application {
 		
 		//Position position, boolean gender, boolean sterile, int ratHealth, double tickIn, char direction, TestLevel currentLevel
 		
-		testLevel.addRenderObject(testRat);
-		testLevel.addRenderObject(testRatTwo);
+		//testLevel.addRenderObject(testRat);
+		//testLevel.addRenderObject(testRatTwo);
 		
-		System.out.println("test----);");
-		System.out.println(testRat.cleanDecimal(new BigDecimal("0.69"), new BigDecimal("0.04")));
+		//System.out.println("test----);");
+		//System.out.println(testRat.cleanDecimal(new BigDecimal("0.69"), new BigDecimal("0.04")));
 		
 		drawGame();
 		primaryStage.setScene(scene);
@@ -172,6 +177,8 @@ public class Main extends Application {
 	 */
 	private int counter = 0;
 	public void tick() {
+		
+		//System.out.println(testLevel.getRenderObjects().size());
 		//Here we will do the tick method for items and rats.
 		//Likely to have an array of objects which we call the tick method on.
 		
@@ -179,7 +186,7 @@ public class Main extends Application {
 		counter++;
 		
 		if (counter == 200) {
-			testRatTwo.ratDeath();
+			//testRatTwo.ratDeath();
 		}
 		
 		
@@ -226,8 +233,12 @@ public class Main extends Application {
 					if (xCollide == true && yCollide == true) {
 						collisionCounter++;
 						//System.out.println(collisionCounter);
+						
+						System.out.println(((AdultRat) testLevel.getRenderObjects().get(i)).getMatingCooldown());
+						System.out.println("GENDER");
+						System.out.println(((AdultRat) testLevel.getRenderObjects().get(i)).getRatGender());
 						((AdultRat) testLevel.getRenderObjects().get(i)).collision((AdultRat) testLevel.getRenderObjects().get(i2));
-						((AdultRat) testLevel.getRenderObjects().get(i2)).collision((AdultRat) testLevel.getRenderObjects().get(i));
+						//((AdultRat) testLevel.getRenderObjects().get(i2)).collision((AdultRat) testLevel.getRenderObjects().get(i));
 					} else {
 						//System.out.println("");
 					}

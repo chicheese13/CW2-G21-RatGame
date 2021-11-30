@@ -19,9 +19,9 @@ public class BabyRat extends NormalRat {
 	protected final int DEFAULT_GROW_COUNT = 0;
 	
 	/**
-	 * How many ticks until the rat grows up, 333 is around 5 seconds.
+	 * How many ticks until the rat grows up, 999 is around 15 seconds.
 	 */
-	private final int GROW_COUNT_LIMIT = 333;
+	private final int GROW_COUNT_LIMIT = 999;
 
 	/**
 	 * All baby rat sprites for each direction.
