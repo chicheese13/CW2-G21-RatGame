@@ -38,7 +38,7 @@ import java.lang.Math;
  *
  * @author Liam O'Reilly
  */
-public class Main extends Application {
+public class MainItems extends Application {
 	// The dimensions of the window
 	private static final int GRID_WIDTH = 30;
 	private static final int GRID_HEIGHT = 17;
