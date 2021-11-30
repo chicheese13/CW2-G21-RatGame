@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.math.*;
 
 public class ConvertLayoutToFiles {
 	private RenderTile[][] tiles;
@@ -137,7 +138,7 @@ public class ConvertLayoutToFiles {
 					if (isTunnel) {
 						fetchString = fetchString + "tunnel";
 						afterTiles.add(new RenderTile(fetchString+"tr.png"));
-						afterTilesPositon.add(new Position(x, y));
+						afterTilesPositon.add(new Position(new BigDecimal(x), new BigDecimal(y)));
 					}
 					
 					System.out.println(fetchString);
