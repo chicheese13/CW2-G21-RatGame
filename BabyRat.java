@@ -71,7 +71,7 @@ public class BabyRat extends NormalRat {
 		//incriment score by RAT_SCORE wherever the score variable is.
 		this.currentLevel.incrimentScore(RAT_SCORE);
 		//create an instance of RenderScore with desired score incriment.
-		this.currentLevel.addRenderObject(new RenderScore(this.objectPosition, RAT_SCORE, this.currentLevel));
+		//this.currentLevel.addRenderObject(new RenderScore(this.objectPosition, RAT_SCORE, this.currentLevel));
 		//remove itself from RenderObjects array.
 		this.removeSelf();
 		
