@@ -1,5 +1,5 @@
 
-public abstract class Item extends RenderObject {
+public class Item {
 	
 	private int locationX;
 	private int locationY;
@@ -20,6 +20,4 @@ public abstract class Item extends RenderObject {
 		this.locationX = x;
 		this.locationY = y;
 	}
-	
-	//public abstract void tick();
 }

@@ -62,7 +62,7 @@ public class ItemManager extends Application {
 	private Image maleSexChanger;
 	private Image femaleSexChanger;
 	private Image deathRat;
-	//Bomb testBomb = new Bomb (1,1);
+	Bomb testBomb = new Bomb (1,1);
 	
 	// X and Y coordinate of player on the grid.
 	private int playerX = 0;
@@ -217,7 +217,7 @@ public class ItemManager extends Application {
     	// Draw the the image so the top-left corner is where we dropped.
     	//gc.drawImage(iconImage, x, y);
     	// Draw the the image so the center is where we dropped.    
-    	
+    	dropTimeLine();
     	
     	 
     	

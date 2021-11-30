@@ -1,92 +1,113 @@
-
 import javafx.scene.image.Image;
 
 public class Bomb extends Item {
-
+	
+	
 	private Image bomb = new Image("/items/bomb.png");
+	private Image bomb1 = new Image("/items/bomb1.png");
+	private Image bomb2 = new Image("/items/bomb2.png");
+	private Image bomb3 = new Image("/items/bomb3.png");
+	private Image bomb4 = new Image("/items/bomb4.png");
+	private Image bomb5 = new Image("/items/bomb5.png");
 	
-	private final int NUMBER_OF_BOMB_FRAMES = 17;
-	private final int EXPLOSION_FRAME = 6;
-
-	private double tickCounter = 0;
-	private double delayCount = 0;
-	private int frameTime = 0;
-	private int pictureNumber = 1;
-	private int delayedPictureNumber = 4;
-
-	private TestLevel currentLevel;
-
-	public Bomb(Position objectPosition, TestLevel currentLevel) {
-		this.renderSprite = bomb;
-		this.objectPosition = objectPosition;
-		this.currentLevel = currentLevel;
+	private Image explode1 = new Image("/items/explode1.png");
+	private Image explode2 = new Image("/items/explode2.png");
+	private Image explode3 = new Image("/items/explode3.png");
+	private Image explode4 = new Image("/items/explode4.png");
+	private Image explode5 = new Image("/items/explode5.png");
+	private Image explode6 = new Image("/items/explode6.png");
+	private Image explode7 = new Image("/items/explode7.png");
+	private Image explode8 = new Image("/items/explode8.png");
+	private Image explode9 = new Image("/items/explode9.png");
+	private Image explode10 = new Image("/items/explode10.png");
+	
+	private Image currentSprite = bomb;
+	
+	private int tickCounter = 0;
+	
+	public Bomb (int x, int y) {
+		this.setLocation(x, y);
+		
 	}
-
+	
 	public void startTimer() {
-
-		if ((tickCounter == frameTime)) {
-			if (pictureNumber == EXPLOSION_FRAME) {
-				explode();
-			}
-			
-			this.renderSprite = loadImage(pictureNumber);
-			if (pictureNumber < NUMBER_OF_BOMB_FRAMES) {
-				pictureNumber++;
-			}
-		}
-
-		tickCounter = tickCounter + 100;
-
-		if (tickCounter % 100 == 0) {
-			frameTime = frameTime + 100;
-		}
-
-		if (frameTime > NUMBER_OF_BOMB_FRAMES * 100) {
-			for (int i = 0; i < this.currentLevel.getRenderObjects().size(); i++) {
-				if (this.currentLevel.getRenderObjects().get(i) == this) {
-					currentLevel.getRenderObjects().remove(i);
-				}
-			}
-		}
-	}
-
-	private Image loadImage(int pictureNumber) {
-
-		Image bomb = new Image("/bomb_images/bomb" + String.valueOf(pictureNumber) + ".png");
-
-		return bomb;
+		//after few ticks bomb explodes
+		explode();
 	}
 	
-	private Image loadDelayImage(int delayedPictureNumber) {
-
-		Image delayBomb = new Image("/delayed_bomb_images/bomb" + String.valueOf(delayedPictureNumber) + ".png");
-
-		return delayBomb;
-	}
-
 	public void tick() {
-
-		if (delayCount % 1000 == 0) {
-			this.renderSprite = loadDelayImage(delayedPictureNumber);
-			if (delayedPictureNumber > 1) {
-				delayedPictureNumber--;
-			}
+		this.tickCounter++;
+		if(tickCounter == 1) {
+			currentSprite = bomb1;
 		}
-
-		delayCount = delayCount + 12.5;
-
-		if (delayCount > 4000) {
-			startTimer();
+		if(tickCounter == 2) {
+			currentSprite = bomb2;
+		}
+		
+		if(tickCounter == 3) {
+			currentSprite = bomb3;
+		}
+		
+		if(tickCounter == 4) {
+			currentSprite = bomb4;
+		}
+		
+		if(tickCounter == 5) {
+			currentSprite = bomb5;
+		}
+		if(tickCounter == 6) {
+			currentSprite = explode1;
+		}
+		
+		if(tickCounter == 7) {
+			currentSprite = explode2;
+		}
+		
+		if(tickCounter == 8) {
+			currentSprite = explode3;
+		}	
+		
+		if(tickCounter == 9) {
+			currentSprite = explode4;
+		}
+		
+		if(tickCounter == 10) {
+			currentSprite = explode5;
+		}
+		
+		if(tickCounter == 11) {
+			currentSprite = explode6;
+		}
+		
+		if(tickCounter == 12) {
+			currentSprite = explode7;
+		}
+		
+		if(tickCounter == 13) {
+			currentSprite = explode8;
+		}
+		
+		if(tickCounter == 14) {
+			currentSprite = explode9;
+		}
+		
+		if(tickCounter == 15) {
+			currentSprite = explode10;
+			tickCounter = 0;
 		}
 	}
-
-	// Method to deal damage horizontally and vertically
+	
+	public void resetTick() {
+		tickCounter = 0;
+	}
+	
 	private void explode() {
-		System.out.println("BOOM");
+		//3x3 Tiles.getDamage();
+		Bomb disappears;
 	}
-
+	
 	public Image getSprite() {
-		return this.renderSprite;
+		return this.currentSprite;
 	}
 
 }
