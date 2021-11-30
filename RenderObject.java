@@ -1,7 +1,7 @@
 
 /** 
  * RenderObject.java
- * @version 1.0
+ * @version 2.0
  * @author Dylan Lewis, Kien Lin, Callum, Armand
  *
  */
@@ -41,15 +41,23 @@ public abstract class RenderObject {
 		return this.objectPosition.getPosition();
 	}
 	
-	//setter for object position 
+	/**
+	 * Setter of the objectPosition.
+	 */
 	public void setObjectPosition(BigDecimal x, BigDecimal y) {
 		this.objectPosition.setPosition(x, y);
 	}
 	
+	/**
+	 * Setter for renderSprite.
+	 */
 	public void setSprite(Image newSprite) {
 		this.renderSprite = newSprite;
 	}
 	
+	/**
+	 * Method for a RenderObject to remove themselves from the board.
+	 */
 	public void removeSelf() {
 		for (int i = 0; i < this.currentLevel.getRenderObjects().size(); i++) {
 			if (this.currentLevel.getRenderObjects().get(i) == this) {
@@ -60,6 +68,9 @@ public abstract class RenderObject {
 		}
 	}
 	
+	/**
+	 * Abstract method for behaviour of a render object per tick.
+	 */
 	public abstract void tick();
 }
 

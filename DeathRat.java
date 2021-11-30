@@ -1,12 +1,14 @@
-import javafx.scene.image.Image;
-import java.math.BigDecimal;
 
 /** 
  * DeathRat.java
- * @version 1.0
+ * @version 2.0
  * @author Dylan Lewis, Kien Lin
  *
  */
+
+import javafx.scene.image.Image;
+import java.math.BigDecimal;
+
 
 /**
  * DeathRat is a class which initialises an instance for DeathRat.
@@ -33,22 +35,26 @@ public class DeathRat extends Rat {
 	 */
 	protected final int WAIT_LIMIT = 133;
 	/**
+	 * The amount of kills a DeathRat can have before removing itself.
+	 */
+	private final int KILL_LIMIT = 5;
+	/**
 	 * Counter for making the rat wait.
 	 */
 	private int waitCount;
-	
-	private final int KILL_LIMIT = 5;
-	
+	/**
+	 * Counter for tracking kills.
+	 */
 	private int killCounter = 0;
 	
 	/**
 	 * Creates a death rat
 	 * @param position
+	 * @param currentLevel, the level the rat is currently on.
 	 */
 	public DeathRat(Position position, TestLevel currentLevel){
 		this.renderSprite = DEATH_RAT_SPRITE_NORTH;
 		this.objectPosition = position;
-		this.ratHealth = MAX_RAT_HEALTH;
 		this.ratSpeed = DEFAULT_DEATH_RAT_SPEED;
 		this.directionFacing = 'N';
 		this.waitCount = DEFAULT_WAIT_COUNT;
@@ -67,7 +73,7 @@ public class DeathRat extends Rat {
 			this.waitCount = this.waitCount + 1;
 		} else {
 			//move
-			this.movement(true);
+			this.movement();
 		}
 		
 		if (this.killCounter == KILL_LIMIT) {

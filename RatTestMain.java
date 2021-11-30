@@ -1,3 +1,9 @@
+/** 
+ * RatTestMain.java
+ * A class used to test the rat related classes.
+ * @author Dylan, Kien
+ */
+
 import java.util.ArrayList;
 
 import javafx.animation.Animation;
@@ -26,17 +32,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.math.*;
 
-/**
- * Sample application that demonstrates the use of JavaFX Canvas for a Game.
- * This class is intentionally not structured very well. This is just a starting point to show
- * how to draw an image on a canvas, respond to arrow key presses, use a tick method that is
- * called periodically, and use drag and drop.
- * 
- * Do not build the whole application in one file. This file should probably remain very small.
- *
- * @author Liam O'Reilly
- */
-public class Main extends Application {
+public class RatTestMain extends Application {
 	// The dimensions of the window
 	private static final int GRID_WIDTH = 30;
 	private static final int GRID_HEIGHT = 20;
@@ -52,10 +48,6 @@ public class Main extends Application {
 	private static final int CANVAS_HEIGHT = WINDOW_HEIGHT;
 	
 	TestLevel testLevel = new TestLevel();
-	private AdultRat testRat = new AdultRat(new Position(new BigDecimal("2"), new BigDecimal("1")), false, false, 10, 0, 'N', testLevel);
-	private AdultRat testRatTwo = new AdultRat(new Position(new BigDecimal("2"), new BigDecimal("1")), true, false, 10, 0, 'N', testLevel);
-	
-	private int collisionCounter = 0;
 	
 	// The canvas in the GUI. This needs to be a global variable
 	// (in this setup) as we need to access it in different methods.
@@ -63,14 +55,7 @@ public class Main extends Application {
 	
 	// Timeline which will cause tick method to be called periodically.
 	private Timeline tickTimeline; 
-	
-	
-	
-	//testLevel.addRenderObject(new BabyRat(new Position(2,2), false, testLevel));
 
-	
-	//BabyRat testRat = new BabyRat(new Position(2,2), false, testLevel);
-	
 	//fetches tile texture images.
 	private Image grass = new Image("TestTextures/grass.png");
 	private Image path = new Image("TestTextures/path.png");
@@ -103,11 +88,12 @@ public class Main extends Application {
 		testLevel.addRenderObject(new BabyRat(new Position(new BigDecimal("2"), new BigDecimal("1")), true, testLevel, 'N'));
 		
 
-		testLevel.addRenderObject(new AdultRat(new Position(new BigDecimal("4"), new BigDecimal("1")), false, false, 10, 0, 'N', testLevel));
-		testLevel.addRenderObject(new AdultRat(new Position(new BigDecimal("4"), new BigDecimal("1")), true, false, 10, 0, 'N', testLevel));
-		testLevel.addRenderObject(testRatTwo);
+		testLevel.addRenderObject(new AdultRat(new Position(new BigDecimal("4"), new BigDecimal("1")), true, false, 10, 'N', testLevel));
+		testLevel.addRenderObject(new AdultRat(new Position(new BigDecimal("4"), new BigDecimal("1")), false, false, 10, 'N', testLevel));
 
-		testLevel.addRenderObject(new AdultRat(new Position(new BigDecimal("4"), new BigDecimal("1")), false, false, 10, 0, 'N', testLevel));
+		testLevel.addRenderObject(new AdultRat(new Position(new BigDecimal("4"), new BigDecimal("1")), false, false, 10, 'N', testLevel));
+		
+		testLevel.addRenderObject(new DeathRat(new Position(new BigDecimal("7"), new BigDecimal("1")), testLevel));
 		//testLevel.addRenderObject(new DeathRat(new Position(new BigDecimal("1"), new BigDecimal("4")), testLevel));
 		
 		//testLevel.addRenderObject(new BabyRat(new Position(2,1), true, testLevel, 'N'));
@@ -182,7 +168,7 @@ public class Main extends Application {
 	private int counter = 0;
 	public void tick() {
 		
-		//System.out.println(testLevel.getRenderObjects().size());
+		System.out.println(testLevel.getRenderObjects().size());
 		//Here we will do the tick method for items and rats.
 		//Likely to have an array of objects which we call the tick method on.
 		
@@ -190,18 +176,16 @@ public class Main extends Application {
 		counter++;
 		System.out.println(testLevel.getScore());
 		if (counter == 200) {
-			testRatTwo.ratDeath();
+			//testRatTwo.ratDeath();
 		}
 		
+		//testLevel.getRenderObjects().size() = testLevel.getRenderObjects().size() - 700;
 		
 		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
 			testLevel.getRenderObjects().get(i).tick();
 		}
 		
 		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
-			//plus, minus x and y
-			double x = testLevel.getRenderObjects().get(i).getObjectPosition()[0].doubleValue();
-			double y = testLevel.getRenderObjects().get(i).getObjectPosition()[1].doubleValue();
 			
 			double xMinus = testLevel.getRenderObjects().get(i).getObjectPosition()[0].doubleValue() - 0.5;
 			double yMinus = testLevel.getRenderObjects().get(i).getObjectPosition()[1].doubleValue() - 0.5;
@@ -235,7 +219,6 @@ public class Main extends Application {
 					}
 					
 					if (xCollide == true && yCollide == true) {
-						collisionCounter++;
 						//System.out.println(collisionCounter);
 						
 						((Rat) testLevel.getRenderObjects().get(i)).collision((Rat) testLevel.getRenderObjects().get(i2));

@@ -26,26 +26,40 @@ public class AdultRat extends NormalRat {
 	 */
 	protected final int DEFAULT_PREGNANCY_COUNT = 0;
 	/**
-	 * This is the default value for the cooldown attribute.
+	 * Mating interval wait
 	 */
-	protected final int DEFAULT_COOLDOWN_VALUE = 400;
+	private final int MATING_WAIT_INTERVAL = 200;
 	/**
-	 * This is the default value for the rat speed.
+	 * Default cooldown for female rat in ticks
+	 */
+	protected final int DEFAULT_COOLDOWN_VALUE_FEMALE = 400;
+	/**
+	 * Default cooldown for a male rat in ticks
+	 */
+	protected final int DEFAULT_COOLDOWN_VALUE_MALE = DEFAULT_COOLDOWN_VALUE_FEMALE + MATING_WAIT_INTERVAL;
+	/**
+	 * This is the default value for the non pregnant adult rat speed.
 	 */
 	protected final BigDecimal DEFAULT_ADULT_RAT_SPEED = new BigDecimal("0.02");
-	
-	protected final BigDecimal PREGNANT_FEMALE_RAT_SPEED = new BigDecimal("0.01");
-	
 	/**
-	 * a boolean to determine whether or not a rat is currently waiting.
+	 * This is the default value for the pregnant adult rat speed.
 	 */
-	private boolean isWaiting = false; 
-	
+	protected final BigDecimal PREGNANT_FEMALE_RAT_SPEED = new BigDecimal("0.01");
+	/**
+	 * The maximum number of babies a pregnant rat can carry at one time.
+	 */
 	private final int MAXIMUM_PREGNANCY_COUNT = 5;
+	/**
+	 * The interval in ticks at which the pregnant female rat gives birth.
+	 */
+	private final int GIVE_BIRTH_INTERVAL = 333;
 	
 	/**
 	 * The adult male rat image sprite.
 	 */
+	protected final Image COOLDOWN_SPRITE_MALE = new Image("file:Textures/test-sprite-one.png");
+	protected final Image COOLDOWN_SPRITE_FEMALE = new Image("file:Textures/test-sprite-two.png");
+	
 	protected final Image ADULT_MALE_RAT_SPRITE_NORTH = new Image("Textures/male-rat-north.png");
 	protected final Image ADULT_MALE_RAT_SPRITE_EAST = new Image("Textures/male-rat-east.png");
 	protected final Image ADULT_MALE_RAT_SPRITE_SOUTH = new Image("Textures/male-rat-south.png");
@@ -62,14 +76,9 @@ public class AdultRat extends NormalRat {
 	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_WEST = new Image("Textures/female-rat-pregnant-west.png");
 	
 	/**
-	 * The adult female rat image sprite.
+	 * a boolean to determine whether or not a rat is currently waiting.
 	 */
-	//protected final Image ADULT_FEMALE_RAT_SPRITE = new Image("Textures/female-rat.png");
-	/**
-	 * The adult pregnant female rat image sprite.
-	 */
-	//protected final Image PREGNANT_ADULT_FEMALE_RAT_SPRITE = new Image("Textures/pregnant-rat.png");
-	
+	private boolean isWaiting = false; 
 	/**
 	 * Whether the rat is pregnant or not.
 	 */
@@ -87,17 +96,9 @@ public class AdultRat extends NormalRat {
 	 * keeps count of ticks passed.
 	 */
 	private int waitCounter = 0;
-	
-	/**
-	 * Mating interval wait
-	 */
-	//private final int MATING_WAIT_INTERVAL = 200;
 	/**
 	 * Mating cooldown interval wait
 	 */
-	private final int MATING_COOLDOWN_INTERVAL = 1000;
-	
-	private final int GIVE_BIRTH_INTERVAL = 333;
 	
 	private int giveBirthCooldown;
 		
@@ -112,11 +113,12 @@ public class AdultRat extends NormalRat {
 	 * @param gender
 	 * @param sterile
 	 * @param ratHealth
+	 * @param currentLevel, the current level in which the rat is in.
+	 * @param directionFacing, the direction in which the rat is facing at anytime.
 	 */
-	public AdultRat(Position position, boolean gender, boolean sterile, int ratHealth, double tickIn, char direction, TestLevel currentLevel) {
+	public AdultRat(Position position, boolean gender, boolean sterile, int ratHealth, char direction, TestLevel currentLevel) {
 		this.isPregnant = DEFAULT_PREGNANCY_VALUE;
 		this.pregnancyCounter = DEFAULT_PREGNANCY_COUNT;
-		this.cooldown = 1000;
 		this.ratSpeed = DEFAULT_ADULT_RAT_SPEED;
 		this.ratSterile = sterile;
 		this.objectPosition = position;
@@ -125,19 +127,16 @@ public class AdultRat extends NormalRat {
 		this.directionFacing = direction;
 		this.currentLevel = currentLevel;
 		
-		//works out speed difference for rats.
-		//double oldLimit = TILE_SIZE / (TILE_SIZE * 0.04);
-		//double newLimit = TILE_SIZE / (TILE_SIZE * DEFAULT_ADULT_RAT_SPEED);
-		
-		
 		//this defines the sprite of the rat based on gender.
 		if (gender) {
+			this.cooldown = DEFAULT_COOLDOWN_VALUE_MALE;
 			this.renderSprite = ADULT_MALE_RAT_SPRITE_EAST;
 			this.ratSpriteNorth = ADULT_MALE_RAT_SPRITE_NORTH;
 			this.ratSpriteEast = ADULT_MALE_RAT_SPRITE_EAST;
 			this.ratSpriteSouth = ADULT_MALE_RAT_SPRITE_SOUTH;
 			this.ratSpriteWest = ADULT_MALE_RAT_SPRITE_WEST;
 		} else {
+			this.cooldown = DEFAULT_COOLDOWN_VALUE_FEMALE;
 			//this.renderSprite = ADULT_FEMALE_RAT_SPRITE;
 			this.renderSprite = ADULT_FEMALE_RAT_SPRITE_EAST;
 			this.ratSpriteNorth = ADULT_FEMALE_RAT_SPRITE_NORTH;
@@ -148,63 +147,24 @@ public class AdultRat extends NormalRat {
 	}
 	
 	/**
-	 * Setter for isPregnant
-	 * @param pregnant
+	 * Become pregnant method, this makes the rat's speed slower, changes the sprite of the rat and randomises number of rats it's carrying.
 	 */
 	public void becomePregnant () {
 		this.isPregnant = true;
 		
-		//randomise number of babies for pregnancy counter
 		int min = 1;
 		int max = MAXIMUM_PREGNANCY_COUNT;
 		
 		Random rand = new Random();
-		//this.pregnancyCounter = (rand.nextInt(max + min) + min);
-		this.pregnancyCounter = 5;
-		System.out.println("Perg Counter " + this.pregnancyCounter);
+		this.pregnancyCounter = (rand.nextInt(max + min) + min);
 		recallibratePosition(this.objectPosition, PREGNANT_FEMALE_RAT_SPEED);
 		
 		this.setRatWait(true);
 		
-		switch (this.directionFacing) {
-		case 'N':
-			this.renderSprite = ADULT_FEMALE_RAT_PREGNANT_SPRITE_NORTH;
-			break;
-		case 'E':
-			this.renderSprite = ADULT_FEMALE_RAT_PREGNANT_SPRITE_EAST;
-			break;
-		case 'S':
-			this.renderSprite = ADULT_FEMALE_RAT_PREGNANT_SPRITE_SOUTH;
-			break;
-		case 'W':
-			this.renderSprite = ADULT_FEMALE_RAT_PREGNANT_SPRITE_WEST;
-			break;
-		}
+	
+		//might make a method purley for changing spirtes.
 		
-		this.ratSpriteNorth = ADULT_FEMALE_RAT_PREGNANT_SPRITE_NORTH;
-		this.ratSpriteEast = ADULT_FEMALE_RAT_PREGNANT_SPRITE_EAST;
-		this.ratSpriteSouth = ADULT_FEMALE_RAT_PREGNANT_SPRITE_SOUTH;
-		this.ratSpriteWest = ADULT_FEMALE_RAT_PREGNANT_SPRITE_WEST;
-		
-		
-		//need to re adjust for the speed.
-		//double oldLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
-		//double newLimit = TILE_SIZE / (TILE_SIZE * PREGNANT_FEMALE_RAT_SPEED);
-		
-		
-		
-		// new / old
-		
-		//float overwriteCounter = (float) (this.tickCounter * (newLimit / oldLimit));
-		
-		//this.tickCounter = overwriteCounter;
-		
-		
-		
-		//current position, and round it to a decimal multiple of the new speed.
-		
-		this.ratSpeed = PREGNANT_FEMALE_RAT_SPEED;
-		
+		//resets the give birth cooldown.
 		this.giveBirthCooldown = 0;
 	}
 	
@@ -213,37 +173,6 @@ public class AdultRat extends NormalRat {
 	 */
 	public boolean getPregnant() {
 		return this.isPregnant;
-	}
-	
-	/**
-	 * setter for cooldown
-	 * @param cooldown
-	 */
-	public void setCooldown(int cooldown) {
-		this.cooldown = cooldown;
-	}
-	
-	/**
-	 * getter for the cooldown
-	 */
-	public int getCooldown () {
-		return this.cooldown;
-	}
-	
-	/**
-	 * setter for pregnancyCounter
-	 * @param pregnancyCounter
-	 */
-	public void setPregnancyCounter(int pregnancyCounter) {
-		this.pregnancyCounter = pregnancyCounter;
-	}
-	
-	
-	/**
-	 * getter for pregnancyCounter
-	 */
-	public int getPregnancyCounter() {
-		return this.pregnancyCounter;
 	}
 	
 	/**
@@ -260,6 +189,9 @@ public class AdultRat extends NormalRat {
 		this.removeSelf();
 	}
 	
+	/**
+	 * Setter for ratWait
+	 */
 	public void setRatWait(boolean waiting) {
 		this.isWaiting = waiting;
 	}
@@ -271,6 +203,9 @@ public class AdultRat extends NormalRat {
 		return this.matingCooldown;
 	}
 	
+	/**
+	 * Method which creates an instance of BabyRat on the AdultRat's current position.
+	 */
 	public void giveBirth() {
 		//choose a random number between 0 and 1
 		//0 representing female
@@ -282,7 +217,6 @@ public class AdultRat extends NormalRat {
 		Random rand = new Random();
 		int randomGender = (rand.nextInt(max-1 + min) + min);
 		
-		System.out.println(randomGender);
 		
 		boolean babyRatGender = false;
 		
@@ -293,76 +227,95 @@ public class AdultRat extends NormalRat {
 		this.currentLevel.addRenderObject(new BabyRat(new Position(new BigDecimal(Math.round(this.getObjectPosition()[0].doubleValue())), new BigDecimal(Math.round(this.getObjectPosition()[1].doubleValue()))), babyRatGender, this.currentLevel, this.directionFacing));
 	}
 	
+	/**
+	 * Starts the mating cooldown for an AdultRat, so it can't mate with other rats whilst true.
+	 */
 	public void startMatingCooldown() {
 		this.matingCooldown = true;
 	}
 	
-	public void collision(Object parameter) {
-		if (parameter instanceof AdultRat) {
-			//if the rat is not sterile and is not pregnant and is not on a mating cooldown then
-			if (((AdultRat) parameter).getSterile() == false 
-				&& ((AdultRat) parameter).getPregnant() == false
-				&& ((AdultRat) parameter).getMatingCooldown() == false
+	/**
+	 * Takes in a rat and checks if the they are eligible to mate, returns true if both are.
+	 * @param check, an AdultRat to check.
+	 */
+	public boolean isMatabale(AdultRat check) {
+		if (check.getSterile() == false 
+				&& check.getPregnant() == false
+				&& check.getMatingCooldown() == false
 				&& this.matingCooldown == false
 				&& this.isPregnant == false
 				&& this.ratSterile == false
-				&& this.ratGender != ((AdultRat) parameter).getRatGender()) {
-				
-					//make the female rat pregnant
+				&& this.ratGender != check.getRatGender()) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Handles collisions with other AdultRats.
+	 * @param collidedRat, an AdultRat which has collided with this Rat.
+	 */
+	public void ratCollision(AdultRat collidedRat) {
+		//if the rat is not sterile and is not pregnant and is not on a mating cooldown then
+		if (isMatabale(collidedRat)) {
+			this.setObjectPosition((this.getObjectPosition()[0]).setScale(0, RoundingMode.HALF_UP),(this.getObjectPosition()[1]).setScale(0, RoundingMode.HALF_UP));
+			collidedRat.setObjectPosition((this.getObjectPosition()[0]).setScale(0, RoundingMode.HALF_UP),(this.getObjectPosition()[1]).setScale(0, RoundingMode.HALF_UP));
+			if (this.ratGender == false) {
+				this.becomePregnant();
 					
-					this.setObjectPosition((this.getObjectPosition()[0]).setScale(0, RoundingMode.HALF_UP),(this.getObjectPosition()[1]).setScale(0, RoundingMode.HALF_UP));
-					((AdultRat) parameter).setObjectPosition((this.getObjectPosition()[0]).setScale(0, RoundingMode.HALF_UP),(this.getObjectPosition()[1]).setScale(0, RoundingMode.HALF_UP));
-					if (this.ratGender == false) {
-						this.becomePregnant();
-						
-						((AdultRat) parameter).setRatWait(true);
-						((AdultRat) parameter).startMatingCooldown();
-					} else {
-						//System.out.println("MAKE PREGNANT");
-						//System.out.println(this.matingCooldown);
-						((AdultRat) parameter).becomePregnant();
-						((AdultRat) parameter).startMatingCooldown();
-					}
-					this.setRatWait(true);
-					this.startMatingCooldown();
+				collidedRat.setRatWait(true);
+				collidedRat.startMatingCooldown();
 			} else {
-				//System.out.println("DONT PREGNANT");
-				//System.out.println(this.matingCooldown);
+				collidedRat.becomePregnant();
+				this.startMatingCooldown();
 			}
+			this.setRatWait(true);
+		}
+	}
+	
+	/**
+	 * Handles a collision of Rat or Item. 
+	 */
+	public void collision(Object parameter) {
+		if (parameter instanceof AdultRat) {
+			ratCollision(((AdultRat) parameter));
 		} else if (parameter instanceof Item) {
 			
 		}
 	}
 	
-	public void setWaitCounter(int waitTime) {
-		this.waitCounter = waitTime;
-	}
-	
-	public void setWait() {
-		this.isWaiting = false;
-	}
-	
 	/**
-	 *  Method which is responsible for movement, pregnancy and pregnancy cooldown.
+	 *  Checks if the rat is on a mating cooldown, if so deincriment the cooldown
+	 *  Once the cooldown is finished reset the counter and set matingCooldown to false.
+	 *  Update the sprites.
 	 */
-	public void tick() {
-		//double tickLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
-		//checks if the rat is on a mating cooldown
-		//if the countdown is finished revert the cooldown.
+	public void mateCooldown() {
 		if (this.matingCooldown == true && this.cooldown > 0) {
 			this.cooldown--;
 		} else if (this.matingCooldown == true) {
+			if (this.ratGender == false) {
+				this.ratSpriteNorth = ADULT_FEMALE_RAT_SPRITE_NORTH;
+				this.ratSpriteEast = ADULT_FEMALE_RAT_SPRITE_EAST;
+				this.ratSpriteSouth = ADULT_FEMALE_RAT_SPRITE_SOUTH;
+				this.ratSpriteWest = ADULT_FEMALE_RAT_SPRITE_WEST;
+			} else {
+				this.ratSpriteNorth = ADULT_MALE_RAT_SPRITE_NORTH;
+				this.ratSpriteEast = ADULT_MALE_RAT_SPRITE_EAST;
+				this.ratSpriteSouth = ADULT_MALE_RAT_SPRITE_SOUTH;
+				this.ratSpriteWest = ADULT_MALE_RAT_SPRITE_WEST;
+			}
+			
 			this.matingCooldown = false;
-			this.cooldown = 1000;
+			this.cooldown = 333;
 		}
-		
-		
-		
-		//if the rat is pregnancy with with more than 0 babies then give birth.
-		//give birth with 2 second intervals
+	}
+	
+	/**
+	 *  Handles a pregnant rats pregnancy behaviour per tick, if the rat is carrying give birth at certain intervals
+	 *  Once the pregnancy is over revert back to normal rat and have a cooldown
+	 */
+	public void pregnancyTick() {
 		if (isPregnant == true && isWaiting == false) {
-			System.out.println("TESTTTTTTTTTTTTTTTTTT");
-			System.out.println(this.isWaiting);
 			this.giveBirthCooldown++;
 			if (this.pregnancyCounter > 0) {
 				if (this.giveBirthCooldown > GIVE_BIRTH_INTERVAL) {
@@ -375,9 +328,8 @@ public class AdultRat extends NormalRat {
 					this.pregnancyCounter--;
 				}
 			} else {
-				//System.out.println("UNPREGNANT");
 				//make it unpregnant here
-				this.cooldown = MATING_COOLDOWN_INTERVAL;
+				this.cooldown = DEFAULT_COOLDOWN_VALUE_FEMALE;
 				this.matingCooldown = true;
 				//make not pregnant
 				this.isPregnant = false;
@@ -385,46 +337,84 @@ public class AdultRat extends NormalRat {
 				
 				switch (this.directionFacing) {
 				case 'N':
-					System.out.println("test1");
-					this.renderSprite = ADULT_FEMALE_RAT_SPRITE_NORTH;
+					this.renderSprite = COOLDOWN_SPRITE_FEMALE;
 					break;
 				case 'E':
-					System.out.println("test2");
-					this.renderSprite = ADULT_FEMALE_RAT_SPRITE_EAST;
+					this.renderSprite = COOLDOWN_SPRITE_FEMALE;
 					break;
 				case 'S':
-					System.out.println("test3");
-					this.renderSprite = ADULT_FEMALE_RAT_SPRITE_SOUTH;
+					this.renderSprite = COOLDOWN_SPRITE_FEMALE;
 					break;
 				case 'W':
-					System.out.println("test4");
-					this.renderSprite = ADULT_FEMALE_RAT_SPRITE_WEST;
+					this.renderSprite = COOLDOWN_SPRITE_FEMALE;
 					break;
 				}
 				
-				this.ratSpriteNorth = ADULT_FEMALE_RAT_SPRITE_NORTH;
-				this.ratSpriteEast = ADULT_FEMALE_RAT_SPRITE_EAST;
-				this.ratSpriteSouth = ADULT_FEMALE_RAT_SPRITE_SOUTH;
-				this.ratSpriteWest = ADULT_FEMALE_RAT_SPRITE_WEST;
+				this.ratSpriteNorth = COOLDOWN_SPRITE_FEMALE;
+				this.ratSpriteEast = COOLDOWN_SPRITE_FEMALE;
+				this.ratSpriteSouth = COOLDOWN_SPRITE_FEMALE;
+				this.ratSpriteWest = COOLDOWN_SPRITE_FEMALE;
 				
 				this.objectPosition = recallibratePosition(this.objectPosition, DEFAULT_ADULT_RAT_SPEED);
 				this.ratSpeed = DEFAULT_ADULT_RAT_SPEED;
 			}
 		}
-		
-		
-		//checks if the rat is currently waiting.
-		//if it is waiting and pregnant then wait for 3 seconds and continue moving again.
+	}
+	
+	/**
+	 *  This handles the rat's waiting behaviour per tick
+	 *  If the rat is not waiting then it should move, else it should wait
+	 *  If the rat is a male then make the sprite a cooldown sprite, and for female make it a pregnancy sprite.
+	 */
+	public void waitTick() {
 		if (this.isWaiting == false) {
-			this.movement(true);
+			this.movement();
 		} else {
 			this.waitCounter++;
-			if (this.waitCounter == 200) {
+			if (this.waitCounter == MATING_WAIT_INTERVAL) {
 				this.waitCounter = 0;
 				this.setRatWait(false);
+				
+				if (this.ratGender) {
+					this.renderSprite = COOLDOWN_SPRITE_MALE;
+					this.ratSpriteNorth = COOLDOWN_SPRITE_MALE;
+					this.ratSpriteEast = COOLDOWN_SPRITE_MALE;
+					this.ratSpriteSouth = COOLDOWN_SPRITE_MALE;
+					this.ratSpriteWest = COOLDOWN_SPRITE_MALE;
+				} else {
+					//pregnancy
+					switch (this.directionFacing) {
+					case 'N':
+						this.renderSprite = ADULT_FEMALE_RAT_PREGNANT_SPRITE_NORTH;
+						break;
+					case 'E':
+						this.renderSprite = ADULT_FEMALE_RAT_PREGNANT_SPRITE_EAST;
+						break;
+					case 'S':
+						this.renderSprite = ADULT_FEMALE_RAT_PREGNANT_SPRITE_SOUTH;
+						break;
+					case 'W':
+						this.renderSprite = ADULT_FEMALE_RAT_PREGNANT_SPRITE_WEST;
+						break;
+					}
+					
+					this.ratSpriteNorth = ADULT_FEMALE_RAT_PREGNANT_SPRITE_NORTH;
+					this.ratSpriteEast = ADULT_FEMALE_RAT_PREGNANT_SPRITE_EAST;
+					this.ratSpriteSouth = ADULT_FEMALE_RAT_PREGNANT_SPRITE_SOUTH;
+					this.ratSpriteWest = ADULT_FEMALE_RAT_PREGNANT_SPRITE_WEST;
+					this.ratSpeed = PREGNANT_FEMALE_RAT_SPEED;
+				}
 						
 			}
 		}
-		
+	}
+	
+	/**
+	 *  Method which is responsible for movement, pregnancy and pregnancy cooldown.
+	 */
+	public void tick() {
+		mateCooldown();
+		pregnancyTick();
+		waitTick();		
 	}
 }
