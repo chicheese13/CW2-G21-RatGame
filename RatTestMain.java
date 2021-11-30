@@ -201,9 +201,7 @@ public class RatTestMain extends Application {
 				boolean xCollide = false;
 				boolean yCollide = false;
 				
-				if (testLevel.getRenderObjects().get(i) != testLevel.getRenderObjects().get(i2)
-					&& testLevel.getRenderObjects().get(i2) instanceof Rat
-					&& testLevel.getRenderObjects().get(i) instanceof Rat) {
+				if (testLevel.getRenderObjects().get(i) != testLevel.getRenderObjects().get(i2)) {
 					
 					double compareX = testLevel.getRenderObjects().get(i2).getObjectPosition()[0].doubleValue();
 					double compareY = testLevel.getRenderObjects().get(i2).getObjectPosition()[1].doubleValue();

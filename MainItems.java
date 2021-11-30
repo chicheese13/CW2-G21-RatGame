@@ -40,8 +40,8 @@ import java.lang.Math;
  */
 public class MainItems extends Application {
 	// The dimensions of the window
-	private static final int GRID_WIDTH = 15;
-	private static final int GRID_HEIGHT = 7;
+	private static final int GRID_WIDTH = 30;
+	private static final int GRID_HEIGHT = 17;
 
 	private static final int GRID_CELL_WIDTH = 50;
 	private static final int GRID_CELL_HEIGHT = 50;
