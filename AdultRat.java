@@ -159,9 +159,7 @@ public class AdultRat extends NormalRat {
 		
 		Random rand = new Random();
 		this.pregnancyCounter = (rand.nextInt(max + min) + min);
-		
-		this.pregnancyCounter = 5;
-		
+				
 		recallibratePosition(this.objectPosition, PREGNANT_FEMALE_RAT_SPEED);
 		
 		this.setRatWait(true);
@@ -253,7 +251,7 @@ public class AdultRat extends NormalRat {
 		//incriment score (pregnancyCounter+1 * RAT_SCORE)
 		this.currentLevel.incrimentScore((this.pregnancyCounter+1) * RAT_SCORE);
 		//create an instance of RenderScore with desired score incriment.
-		this.currentLevel.addRenderObject(new RenderScore(this.objectPosition, RAT_SCORE, this.currentLevel));
+		this.currentLevel.addRenderObject(new RenderScore(this.objectPosition, (this.pregnancyCounter+1) * RAT_SCORE, this.currentLevel));
 		//remove itself from RenderObjects array.
 		SoundClip ratDeathSound = new SoundClip("rat-death-sound");
 		ratDeathSound.play();
@@ -327,8 +325,6 @@ public class AdultRat extends NormalRat {
 			}
 		} else if (parameter instanceof Item) {
 			
-		} else if (parameter instanceof DeathRat) {
-			
 		}
 	}
 	
@@ -349,7 +345,7 @@ public class AdultRat extends NormalRat {
 		//if the countdown is finished revert the cooldown.
 		if (this.matingCooldown == true && this.cooldown > 0) {
 			this.cooldown--;
-		} else {
+		} else if (this.matingCooldown == true) {
 			this.matingCooldown = false;
 			this.cooldown = 1000;
 		}

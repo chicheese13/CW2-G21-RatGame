@@ -257,4 +257,7 @@ public abstract class Rat extends RenderObject {
 	/**
 	 * Abstract method which defines what happens every tick for a rat.
 	 */
+	
+	abstract void collision(Object collidedObject);
+	
 }

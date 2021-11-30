@@ -105,6 +105,7 @@ public class Main extends Application {
 		testLevel.addRenderObject(new AdultRat(new Position(new BigDecimal("4"), new BigDecimal("1")), true, false, 10, 0, 'N', testLevel));
 		testLevel.addRenderObject(new AdultRat(new Position(new BigDecimal("4"), new BigDecimal("1")), false, false, 10, 0, 'N', testLevel));
 		testLevel.addRenderObject(new AdultRat(new Position(new BigDecimal("4"), new BigDecimal("1")), false, false, 10, 0, 'N', testLevel));
+		testLevel.addRenderObject(new DeathRat(new Position(new BigDecimal("1"), new BigDecimal("4")), testLevel));
 		
 		//testLevel.addRenderObject(new BabyRat(new Position(2,1), true, testLevel, 'N'));
 		
@@ -214,8 +215,8 @@ public class Main extends Application {
 				boolean yCollide = false;
 				
 				if (testLevel.getRenderObjects().get(i) != testLevel.getRenderObjects().get(i2)
-					&& testLevel.getRenderObjects().get(i2) instanceof AdultRat
-					&& testLevel.getRenderObjects().get(i) instanceof AdultRat) {
+					&& testLevel.getRenderObjects().get(i2) instanceof Rat
+					&& testLevel.getRenderObjects().get(i) instanceof Rat) {
 					
 					double compareX = testLevel.getRenderObjects().get(i2).getObjectPosition()[0].doubleValue();
 					double compareY = testLevel.getRenderObjects().get(i2).getObjectPosition()[1].doubleValue();
@@ -234,10 +235,7 @@ public class Main extends Application {
 						collisionCounter++;
 						//System.out.println(collisionCounter);
 						
-						System.out.println(((AdultRat) testLevel.getRenderObjects().get(i)).getMatingCooldown());
-						System.out.println("GENDER");
-						System.out.println(((AdultRat) testLevel.getRenderObjects().get(i)).getRatGender());
-						((AdultRat) testLevel.getRenderObjects().get(i)).collision((AdultRat) testLevel.getRenderObjects().get(i2));
+						((Rat) testLevel.getRenderObjects().get(i)).collision((Rat) testLevel.getRenderObjects().get(i2));
 						//((AdultRat) testLevel.getRenderObjects().get(i2)).collision((AdultRat) testLevel.getRenderObjects().get(i));
 					} else {
 						//System.out.println("");

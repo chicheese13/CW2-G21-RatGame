@@ -109,6 +109,10 @@ public class BabyRat extends NormalRat {
 		}
 	}	
 	
+	public void collision(Object collidedObject) {
+		
+	}
+	
 	public void growUp() {
 		//create an adult rat 
 		//might need the baby rat's current tickCounter.
