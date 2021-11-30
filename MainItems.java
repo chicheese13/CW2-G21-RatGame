@@ -154,16 +154,9 @@ public class MainItems extends Application {
 		}
 
 		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
-			// System.out.println(testLevel.getRenderObjects().get(i).getSprite());
-			// gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(),
-			// testLevel.getRenderObjects().get(i).getPosition()[0] * GRID_CELL_WIDTH,
-			// testLevel.getRenderObjects().get(i).getPosition()[1] * GRID_CELL_HEIGHT);
-
-			BigDecimal x = ((testLevel.getRenderObjects().get(i).getObjectPosition()[0].multiply(BigDecimal.valueOf(GRID_CELL_WIDTH))));
-
-			BigDecimal y = ((testLevel.getRenderObjects().get(i).getObjectPosition()[1].multiply(BigDecimal.valueOf(GRID_CELL_HEIGHT))));
-
-			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), x.doubleValue(), y.doubleValue());
+			//System.out.println(testLevel.getRenderObjects().get(i).getSprite());
+			//gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getPosition()[0] * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getPosition()[1] * GRID_CELL_HEIGHT);
+			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getObjectPosition()[0].doubleValue() * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getObjectPosition()[1].doubleValue() * GRID_CELL_HEIGHT);
 		}
 
 	}
