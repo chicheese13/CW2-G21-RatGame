@@ -10,6 +10,7 @@ import java.util.Random;
 import javafx.scene.image.Image;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 /**
  * AdultRat is a class which initialises an instance for AdultRat.
  *
@@ -158,8 +159,9 @@ public class AdultRat extends NormalRat {
 		int max = MAXIMUM_PREGNANCY_COUNT;
 		
 		Random rand = new Random();
-		this.pregnancyCounter = (rand.nextInt(max + min) + min);
-				
+		//this.pregnancyCounter = (rand.nextInt(max + min) + min);
+		this.pregnancyCounter = 5;
+		System.out.println("Perg Counter " + this.pregnancyCounter);
 		recallibratePosition(this.objectPosition, PREGNANT_FEMALE_RAT_SPEED);
 		
 		this.setRatWait(true);
@@ -203,7 +205,7 @@ public class AdultRat extends NormalRat {
 		
 		this.ratSpeed = PREGNANT_FEMALE_RAT_SPEED;
 		
-		this.giveBirthCooldown = GIVE_BIRTH_INTERVAL;
+		this.giveBirthCooldown = 0;
 	}
 	
 	/**
@@ -308,20 +310,24 @@ public class AdultRat extends NormalRat {
 				
 					//make the female rat pregnant
 					
-					
+					this.setObjectPosition((this.getObjectPosition()[0]).setScale(0, RoundingMode.HALF_UP),(this.getObjectPosition()[1]).setScale(0, RoundingMode.HALF_UP));
+					((AdultRat) parameter).setObjectPosition((this.getObjectPosition()[0]).setScale(0, RoundingMode.HALF_UP),(this.getObjectPosition()[1]).setScale(0, RoundingMode.HALF_UP));
 					if (this.ratGender == false) {
 						this.becomePregnant();
+						
+						((AdultRat) parameter).setRatWait(true);
+						((AdultRat) parameter).startMatingCooldown();
 					} else {
-						System.out.println("MAKE PREGNANT");
-						System.out.println(this.matingCooldown);
+						//System.out.println("MAKE PREGNANT");
+						//System.out.println(this.matingCooldown);
 						((AdultRat) parameter).becomePregnant();
 						((AdultRat) parameter).startMatingCooldown();
 					}
 					this.setRatWait(true);
 					this.startMatingCooldown();
 			} else {
-				System.out.println("DONT PREGNANT");
-				System.out.println(this.matingCooldown);
+				//System.out.println("DONT PREGNANT");
+				//System.out.println(this.matingCooldown);
 			}
 		} else if (parameter instanceof Item) {
 			
@@ -355,6 +361,8 @@ public class AdultRat extends NormalRat {
 		//if the rat is pregnancy with with more than 0 babies then give birth.
 		//give birth with 2 second intervals
 		if (isPregnant == true && isWaiting == false) {
+			System.out.println("TESTTTTTTTTTTTTTTTTTT");
+			System.out.println(this.isWaiting);
 			this.giveBirthCooldown++;
 			if (this.pregnancyCounter > 0) {
 				if (this.giveBirthCooldown > GIVE_BIRTH_INTERVAL) {
@@ -367,7 +375,7 @@ public class AdultRat extends NormalRat {
 					this.pregnancyCounter--;
 				}
 			} else {
-				System.out.println("UNPREGNANT");
+				//System.out.println("UNPREGNANT");
 				//make it unpregnant here
 				this.cooldown = MATING_COOLDOWN_INTERVAL;
 				this.matingCooldown = true;

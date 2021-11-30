@@ -102,10 +102,13 @@ public class Main extends Application {
 		testLevel.addRenderObject(new BabyRat(new Position(new BigDecimal("2"), new BigDecimal("1")), false, testLevel, 'N'));
 		testLevel.addRenderObject(new BabyRat(new Position(new BigDecimal("2"), new BigDecimal("1")), true, testLevel, 'N'));
 		
+
+		testLevel.addRenderObject(new AdultRat(new Position(new BigDecimal("4"), new BigDecimal("1")), false, false, 10, 0, 'N', testLevel));
 		testLevel.addRenderObject(new AdultRat(new Position(new BigDecimal("4"), new BigDecimal("1")), true, false, 10, 0, 'N', testLevel));
+		testLevel.addRenderObject(testRatTwo);
+
 		testLevel.addRenderObject(new AdultRat(new Position(new BigDecimal("4"), new BigDecimal("1")), false, false, 10, 0, 'N', testLevel));
-		testLevel.addRenderObject(new AdultRat(new Position(new BigDecimal("4"), new BigDecimal("1")), false, false, 10, 0, 'N', testLevel));
-		testLevel.addRenderObject(new DeathRat(new Position(new BigDecimal("1"), new BigDecimal("4")), testLevel));
+		//testLevel.addRenderObject(new DeathRat(new Position(new BigDecimal("1"), new BigDecimal("4")), testLevel));
 		
 		//testLevel.addRenderObject(new BabyRat(new Position(2,1), true, testLevel, 'N'));
 		
@@ -185,9 +188,9 @@ public class Main extends Application {
 		
 		//maybe a recursive algorithm which removes collide objects from the list that have already had a comparison
 		counter++;
-		
+		System.out.println(testLevel.getScore());
 		if (counter == 200) {
-			//testRatTwo.ratDeath();
+			testRatTwo.ratDeath();
 		}
 		
 		

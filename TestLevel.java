@@ -71,6 +71,10 @@ public class TestLevel {
 		return false;
 	} 
 	
+	public int getScore() {
+		return this.score;
+	}
+	
 	public String[][] getTiles() {
 		return tilesArray;
 	}
