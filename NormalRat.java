@@ -12,7 +12,6 @@
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.math.*;
 
 public abstract class NormalRat extends Rat {
 	
@@ -136,13 +135,6 @@ public abstract class NormalRat extends Rat {
 			newY = flooredY.add(cleanDecimal(remainderY, newSpeed));
 		}
 		
-		System.out.println("--------------------");
-		System.out.println(position.getPosition()[0]);
-		System.out.println(position.getPosition()[1]);
-		System.out.println("--------------------");
-		System.out.println(newX);
-		System.out.println(newY);
-		System.out.println("--------------------");
 		return (new Position(newX, newY));
 	}
 	

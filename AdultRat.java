@@ -90,7 +90,7 @@ public class AdultRat extends NormalRat {
 	/**
 	 * Mating interval wait
 	 */
-	private final int MATING_WAIT_INTERVAL = 200;
+	//private final int MATING_WAIT_INTERVAL = 200;
 	/**
 	 * Mating cooldown interval wait
 	 */

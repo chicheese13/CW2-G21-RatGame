@@ -94,12 +94,7 @@ public class BabyRat extends NormalRat {
 	/**
 	 *  Method which is responsible for movement and growth every tick.
 	 */
-	public void tick() {
-		//double tickLimit = TILE_SIZE / (TILE_SIZE * this.ratSpeed);
-		
-		double x = this.getObjectPosition()[0].doubleValue();
-		double y = this.getObjectPosition()[0].doubleValue();
-		
+	public void tick() {		
 		this.growCounter++;
 		
 		if (this.growCounter > GROW_COUNT_LIMIT) {
