@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-
+import java.math.BigDecimal;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -39,8 +39,8 @@ import java.lang.Math;
  */
 public class MainItems extends Application {
 	// The dimensions of the window
-	private static final int GRID_WIDTH = 15;
-	private static final int GRID_HEIGHT = 7;
+	private static final int GRID_WIDTH = 30;
+	private static final int GRID_HEIGHT = 17;
 
 	private static final int GRID_CELL_WIDTH = 50;
 	private static final int GRID_CELL_HEIGHT = 50;
@@ -114,7 +114,6 @@ public class MainItems extends Application {
 		// Display the scene on the stage
 		// testLevel.addRenderObject(new BabyRat(new Position(2,2), false, testLevel));
 		// testLevel.addRenderObject(new BabyRat(new Position(5,5), false, testLevel));
-		testLevel.addRenderObject(new NoEntrySign(new Position(1, 1), testLevel));
 		drawGame();
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -158,11 +157,11 @@ public class MainItems extends Application {
 			// testLevel.getRenderObjects().get(i).getPosition()[0] * GRID_CELL_WIDTH,
 			// testLevel.getRenderObjects().get(i).getPosition()[1] * GRID_CELL_HEIGHT);
 
-			double x = ((testLevel.getRenderObjects().get(i).getObjectPosition()[0] * GRID_CELL_WIDTH));
+			BigDecimal x = ((testLevel.getRenderObjects().get(i).getObjectPosition()[0].multiply(BigDecimal.valueOf(GRID_CELL_WIDTH))));
 
-			double y = ((testLevel.getRenderObjects().get(i).getObjectPosition()[1] * GRID_CELL_HEIGHT));
+			BigDecimal y = ((testLevel.getRenderObjects().get(i).getObjectPosition()[1].multiply(BigDecimal.valueOf(GRID_CELL_HEIGHT))));
 
-			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), x, y);
+			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), x.doubleValue(), y.doubleValue());
 		}
 
 	}
@@ -190,7 +189,7 @@ public class MainItems extends Application {
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		testLevel.addRenderObject(new Bomb(new Position(x, y), testLevel));
+		testLevel.addRenderObject(new Bomb(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), testLevel));
 		drawGame();
 	}
 	
@@ -202,7 +201,7 @@ public class MainItems extends Application {
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		testLevel.addRenderObject(new Gas(new Position(x, y), testLevel));
+		testLevel.addRenderObject(new Gas(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), testLevel));
 		drawGame();
 	}
 	
@@ -214,7 +213,7 @@ public class MainItems extends Application {
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		testLevel.addRenderObject(new Poison(new Position(x, y), testLevel));
+		testLevel.addRenderObject(new Poison(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), testLevel));
 		drawGame();
 	}
 	
@@ -226,7 +225,7 @@ public class MainItems extends Application {
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		testLevel.addRenderObject(new NoEntrySign(new Position(x, y), testLevel));
+		testLevel.addRenderObject(new NoEntrySign(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), testLevel));
 		drawGame();
 	}
 	
@@ -238,7 +237,7 @@ public class MainItems extends Application {
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		testLevel.addRenderObject(new DeathRatSpawner(new Position(x, y), testLevel));
+		testLevel.addRenderObject(new DeathRatSpawner(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), testLevel));
 		drawGame();
 	}
 	
@@ -250,7 +249,7 @@ public class MainItems extends Application {
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		testLevel.addRenderObject(new FemaleSexChange(new Position(x, y), testLevel));
+		testLevel.addRenderObject(new FemaleSexChange(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), testLevel));
 		drawGame();
 	}
 	
@@ -262,7 +261,7 @@ public class MainItems extends Application {
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		testLevel.addRenderObject(new MaleSexChange(new Position(x, y), testLevel));
+		testLevel.addRenderObject(new MaleSexChange(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), testLevel));
 		drawGame();
 	}
 	
@@ -274,7 +273,7 @@ public class MainItems extends Application {
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		testLevel.addRenderObject(new Sterilisation(new Position(x, y), testLevel));
+		testLevel.addRenderObject(new Sterilisation(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), testLevel));
 		drawGame();
 	}
 	
