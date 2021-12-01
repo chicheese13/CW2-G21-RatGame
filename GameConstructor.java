@@ -180,6 +180,7 @@ public class GameConstructor extends Application {
 	 */
 	private int counter = 0;
 	public void tick() {
+
 		//We then redraw the whole canvas.
 		drawGame();
 	}
