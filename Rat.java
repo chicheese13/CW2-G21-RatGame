@@ -110,7 +110,6 @@ public abstract class Rat extends RenderObject {
 	protected void movement() {
 		//calls the path finding method to set the current rat direction facing.
 		pathFinding();
-		
 		//check the direction the rat is facing and incriment position based on that.
 		//also change the rat sprite based on direction.
 			if (this.directionFacing == 'N') {

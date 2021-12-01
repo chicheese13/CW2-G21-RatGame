@@ -108,9 +108,10 @@ public class BabyRat extends NormalRat {
 	public void growUp() {
 		//create an adult rat 
 		//might need the baby rat's current tickCounter.
-		//this.currentLevel.addRenderObject(new AdultRat(this.objectPosition, this.ratGender, this.ratSterile, this.ratHealth, this.directionFacing, this.currentLevel));
+		this.currentLevel.spawnRat(new AdultRat(this.objectPosition, this.ratGender, this.ratSterile, this.ratHealth, this.directionFacing, this.currentLevel));
 		//remove self from array
 		//this.removeSelf();
+		this.currentLevel.despawnRat(this);
 		}
 	
 }

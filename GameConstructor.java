@@ -131,6 +131,9 @@ public class GameConstructor extends Application {
 		
 		//we need to draw the rats
 		
+		for (int i = 0; i < currentLevel.getRats().size(); i++) {
+			gc.drawImage(currentLevel.getRats().get(i).getSprite(), (currentLevel.getRats().get(i).getObjectPosition()[0].doubleValue())  * GRID_CELL_WIDTH, currentLevel.getRats().get(i).getObjectPosition()[1].doubleValue() * GRID_CELL_HEIGHT);
+		}
 		
 		//we need to draw the tunnels
 		
@@ -180,7 +183,7 @@ public class GameConstructor extends Application {
 	 */
 	private int counter = 0;
 	public void tick() {
-
+		currentLevel.updateBoard();
 		//We then redraw the whole canvas.
 		drawGame();
 	}

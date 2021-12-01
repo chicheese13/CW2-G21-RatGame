@@ -21,7 +21,27 @@ public class Level {
 	short maxRats;
 	String[] dataArray;
 	
-	private String[][] tiles;
+	//private String[][] tiles;
+	private static String tiles [][] = {{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
+			{"G","P","P","P","P","P","P","P","G","G","G","G","G","G","G", "G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
+			{"G","P","G","G","T","G","G","P","G","G","G","G","P","P","P", "P","P","G","G","G","P","P","P","P","P","P","P","P","P","G"},
+			{"G","P","G","P","P","P","G","P","G","G","G","P","P","G","G", "G","P","P","G","G","P","G","G","G","G","G","G","G","P","G"},
+			{"G","P","G","P","G","P","G","P","G","G","G","P","G","G","G", "G","G","P","G","G","P","P","P","P","P","P","P","P","P","G"},
+			{"G","P","G","P","G","P","T","P","G","G","P","P","G","G","G", "G","G","P","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","P","G","P","G","P","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","P","P","P","G","P","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","T","G","G","G","P","G","G","P","P","P","P","P", "P","P","P","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","P","P","P","P","P","P","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","G","G","G","G","G","G","G","P","P","P","P","P", "P","P","P","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","P","P","G","G","G","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","G","P","G","G","G","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","G","P","P","G","G","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","G","G","P","P","G","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","G","G","G","P","P","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","G","G","G","G","P","P","P","P","T","T","T","T", "T","T","T","P","T","T","T","T","P","P","P","G","G","G","G"},
+			{"G","P","G","G","G","G","G","T","G","G","G","G","G","G","G", "G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
+			{"G","P","P","P","P","P","P","P","G","G","G","G","G","G","G", "G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
+			{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G", "G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"}};
 
 	
 	//ArrayLists for Rats & Items
@@ -50,7 +70,6 @@ public class Level {
 		
 		while (in.hasNextLine()) {
 			fileData = fileData + in.nextLine();
-			System.out.println(in.nextLine());
 		}		
 		
 		fileData = fileData.substring(0, fileData.indexOf("."));
@@ -98,10 +117,14 @@ public class Level {
 		}	
 		
 		//generate render tiles
-		//ConvertLayoutToTiles convertedLayout = new ConvertLayoutToTiles(tiles);
-		//this.renderTiles = convertedLayout.getTiles();
-		//this.renderAfterTiles = convertedLayout.getAfterList();
-		//this.renderAfterTilesPosition = convertedLayout.getAfterPositionList();
+		ConvertLayoutToTiles convertedLayout = new ConvertLayoutToTiles(tiles);
+		this.renderTiles = convertedLayout.getTiles();
+		this.renderAfterTiles = convertedLayout.getAfterList();
+		this.renderAfterTilesPosition = convertedLayout.getAfterPositionList();
+		
+		//add test rats
+		this.spawnRat(new BabyRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, this, 'N'));
+		
 	}
 	
 	public RenderTile[][] getRenderTiles() {
@@ -203,7 +226,7 @@ public class Level {
 					}
 					
 					if (xCollide == true && yCollide == true) {
-							((Rat) renderRats.get(i)).collision((Rat) renderRats.get(i2));
+						((Rat) renderRats.get(i)).collision((Rat) renderRats.get(i2));
 					}
 					
 				}
@@ -225,7 +248,15 @@ public class Level {
 	 * @param rat Rat to be added to board
 	 */
 	public void spawnRat(Rat rat) {
-		
+		renderRats.add(rat);
+	}
+	
+	public void despawnRat(Rat rat) {
+		for (int i = 0; i < renderRats.size(); i++) {
+			if (renderRats.get(i) == rat) {
+				renderRats.remove(i);
+			}
+		}
 	}
 	
 	/**
@@ -270,8 +301,8 @@ public class Level {
 	/**
 	 * @return All rats on the board
 	 */
-	public Rat[] getRats() {
-		return null;
+	public ArrayList<RenderObject> getRats() {
+		return this.renderRats;
 	}
 	
 	/**
