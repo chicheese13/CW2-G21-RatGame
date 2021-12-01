@@ -21,5 +21,4 @@ public abstract class Item extends RenderObject {
 		this.locationY = y;
 	}
 	
-	//public abstract void tick();
 }

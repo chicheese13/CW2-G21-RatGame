@@ -1,6 +1,6 @@
 import javafx.scene.image.Image;
 
-public class FemaleSexChange extends Item {
+public class FemaleSexChange extends CollideItem {
 	
 	
 	private Image femaleSexChange = new Image("/items/femalesexchangeronlevel.png");
@@ -20,6 +20,10 @@ public class FemaleSexChange extends Item {
 	}
 	
 	public void tick() {
+		
+	}
+	
+	public void collision(Object collidedObject) {
 		
 	}
 }

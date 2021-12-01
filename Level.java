@@ -123,7 +123,11 @@ public class Level {
 		this.renderAfterTilesPosition = convertedLayout.getAfterPositionList();
 		
 		//add test rats
-		this.spawnRat(new BabyRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, this, 'N'));
+		//this.spawnRat(new BabyRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, this, 'N'));
+		//this.spawnRat(new BabyRat(new Position(new BigDecimal("1"), new BigDecimal("1")), true, this, 'N'));
+		
+		//this.spawnRat(new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), true, false, 10, 'N', this));
+		this.spawnRat(new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, false, 10, 'N', this));
 		
 	}
 	
@@ -143,20 +147,19 @@ public class Level {
 		return this.tiles;
 	}
 	
+	public void spawnItem(Item spawnItem) {
+		this.renderItems.add(spawnItem);
+	}
+	
+	public ArrayList<RenderObject> getItems(){
+		return this.renderItems;
+	}
+	
 	/**
 	 * Updates board
 	 */
 	public void updateBoard() {
 		//happens every tick?
-		
-		//goes through all rats and items and does executes their tick methods
-		for (int i = 0; i < renderRats.size(); i++) {
-			renderRats.get(i).tick();
-		}
-		
-		for (int i = 0; i < renderItems.size(); i++) {
-			renderItems.get(i).tick();
-		}
 		
 		//Handles collisions between Rats and Rats
 		for (int i = 0; i < renderRats.size(); i++) {
@@ -210,7 +213,6 @@ public class Level {
 				boolean xCollide = false;
 				boolean yCollide = false;
 				
-				if (renderRats.get(i) != renderRats.get(i2)) {
 					
 					double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
 					double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
@@ -226,13 +228,24 @@ public class Level {
 					}
 					
 					if (xCollide == true && yCollide == true) {
-						((Rat) renderRats.get(i)).collision((Rat) renderRats.get(i2));
+						if (renderItems.get(i) instanceof CollideItem) {
+							System.out.println("ITEM COLLISION DETECTED");
+							((CollideItem) renderItems.get(i)).collision((Rat) renderRats.get(i2));
+						}
 					}
 					
-				}
 				
 			}
 		}
+		
+		//goes through all rats and items and does executes their tick methods
+				for (int i = 0; i < renderRats.size(); i++) {
+					renderRats.get(i).tick();
+				}
+				
+				for (int i = 0; i < renderItems.size(); i++) {
+					renderItems.get(i).tick();
+				}
 		
 	}
 	

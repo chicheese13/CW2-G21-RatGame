@@ -1,6 +1,6 @@
 import javafx.scene.image.Image;
 
-public class NoEntrySign extends Item {
+public class NoEntrySign extends CollideItem {
 
 	private Image noEntrySign = new Image("/items/noentrysignonlevel.png");
 
@@ -10,9 +10,8 @@ public class NoEntrySign extends Item {
 	public boolean ratStompsOnSign = false;
 	private int pictureNumber = 1;
 
-	private TestLevel currentLevel;
 
-	public NoEntrySign(Position objectPosition, TestLevel currentLevel) {
+	public NoEntrySign(Position objectPosition, Level currentLevel) {
 		this.renderSprite = noEntrySign;
 		this.objectPosition = objectPosition;
 		this.currentLevel = currentLevel;
@@ -27,7 +26,7 @@ public class NoEntrySign extends Item {
 
 	// method that gets run each time a rat hits a sign
 	private void breakSign() {
-		if (signHealth != 1) {
+		if (signHealth > 0) {
 
 			signHealth--;
 
@@ -37,13 +36,7 @@ public class NoEntrySign extends Item {
 			}
 
 		} else {
-
-			for (int i = 0; i < this.currentLevel.getRenderObjects().size(); i++) {
-				if (this.currentLevel.getRenderObjects().get(i) == this) {
-					currentLevel.getRenderObjects().remove(i);
-
-				}
-			}
+			
 		}
 	}
 
@@ -68,8 +61,8 @@ public class NoEntrySign extends Item {
 
 	public void collision(Object paramater) {
 		if (paramater instanceof Rat) {
-			breakSign();
 			((Rat) paramater).turnAround();
+			breakSign();
 		}
 	}
 

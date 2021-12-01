@@ -52,7 +52,7 @@ public class DeathRat extends Rat {
 	 * @param position
 	 * @param currentLevel, the level the rat is currently on.
 	 */
-	public DeathRat(Position position, TestLevel currentLevel){
+	public DeathRat(Position position, Level currentLevel){
 		this.renderSprite = DEATH_RAT_SPRITE_NORTH;
 		this.objectPosition = position;
 		this.ratSpeed = DEFAULT_DEATH_RAT_SPEED;

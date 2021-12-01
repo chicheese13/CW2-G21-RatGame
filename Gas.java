@@ -1,6 +1,6 @@
 import javafx.scene.image.Image;
 
-public class Gas extends Item {
+public class Gas extends CollideItem {
 
 	private Image gas = new Image("/items/gasonlevel.png");
 
@@ -16,6 +16,10 @@ public class Gas extends Item {
 	} 
 	
 	public void tick() {
+		
+	}
+	
+	public void collision(Object collidedObject) {
 		
 	}
 }

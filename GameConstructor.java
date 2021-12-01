@@ -127,12 +127,14 @@ public class GameConstructor extends Application {
 		}
 		
 		//we need to draw the items
-		
+		for (int i = 0; i < currentLevel.getItems().size(); i++) {
+			gc.drawImage(currentLevel.getItems().get(i).getSprite(), (currentLevel.getItems().get(i).getObjectPosition()[0].doubleValue()-offsetX)  * GRID_CELL_WIDTH, (currentLevel.getItems().get(i).getObjectPosition()[1].doubleValue()-offsetY) * GRID_CELL_HEIGHT);
+		}
 		
 		//we need to draw the rats
 		
 		for (int i = 0; i < currentLevel.getRats().size(); i++) {
-			gc.drawImage(currentLevel.getRats().get(i).getSprite(), (currentLevel.getRats().get(i).getObjectPosition()[0].doubleValue())  * GRID_CELL_WIDTH, currentLevel.getRats().get(i).getObjectPosition()[1].doubleValue() * GRID_CELL_HEIGHT);
+			gc.drawImage(currentLevel.getRats().get(i).getSprite(), (currentLevel.getRats().get(i).getObjectPosition()[0].doubleValue()-offsetX)  * GRID_CELL_WIDTH, (currentLevel.getRats().get(i).getObjectPosition()[1].doubleValue()-offsetY) * GRID_CELL_HEIGHT);
 		}
 		
 		//we need to draw the tunnels
@@ -232,7 +234,7 @@ public class GameConstructor extends Application {
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		//currentLevel.addRenderObject(new NoEntrySign(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
+		currentLevel.spawnItem(new NoEntrySign(new Position(new BigDecimal(x), new BigDecimal(y)), currentLevel));
 		//drawGame();
 	}
 	
@@ -244,7 +246,7 @@ public class GameConstructor extends Application {
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		//currentLevel.addRenderObject(new DeathRat(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
+		currentLevel.spawnRat(new DeathRat(new Position(new BigDecimal(x), new BigDecimal(y)), currentLevel));
 		//drawGame();
 	}
 	
