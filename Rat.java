@@ -187,4 +187,23 @@ public abstract class Rat extends RenderObject {
 	 * @param object that has collided with the rat.
 	 */
 	abstract void collision(Object collidedObject);
+	
+	public void turnAround() {
+		switch(this.directionFacing) {
+		  case 'N':
+		    this.directionFacing = 'S';
+		    break;
+		  case 'E':
+			  this.directionFacing = 'W';
+		    break;
+		  case 'S':
+			  this.directionFacing = 'N';
+			  break;
+		  case 'W':
+			  this.directionFacing = 'E';
+		  	  break;
+		  default:
+			  break;
+		}
+	}
 }

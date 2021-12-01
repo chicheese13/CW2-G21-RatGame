@@ -63,5 +63,11 @@ public class NoEntrySign extends Item {
 	public void tick() {
 
 	}
+	
+	public void collision(Object paramater) {
+		if (paramater instanceof Rat) {
+			((Rat) paramater).turnAround();
+		}
+	}
 
 }
