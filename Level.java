@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * Level.java
  * @author Lewis Ward, Luca Collicott
- * @version 1.0
+ * @version 1
  */
 
 /**
