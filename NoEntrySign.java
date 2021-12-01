@@ -6,7 +6,7 @@ public class NoEntrySign extends Item {
 
 	private final int NUMBER_OF_SIGN_FRAMES = 5;
 
-	public int signHealth = 100;
+	public int signHealth = 5;
 	public boolean ratStompsOnSign = false;
 	private int pictureNumber = 1;
 
@@ -20,33 +20,35 @@ public class NoEntrySign extends Item {
 
 	private Image loadImage(int pictureNumber) {
 
-		Image bomb = new Image("/noentrysign_images/noentrysign" + String.valueOf(pictureNumber) + ".png");
+		Image sign = new Image("/noentrysign_images/noentrysign" + String.valueOf(pictureNumber) + ".png");
 
-		return bomb;
+		return sign;
 	}
 
 	// method that gets run each time a rat hits a sign
 	private void breakSign() {
-		if (ratStompsOnSign()) {
+		if (signHealth != 1) {
 
-			signHealth = getSignHealth() - 20;
+			signHealth--;
 
 			if (pictureNumber < NUMBER_OF_SIGN_FRAMES) {
 				pictureNumber++;
 				this.renderSprite = loadImage(pictureNumber);
-				
 			}
 
-			if (signHealth == 0) {
-				for (int i = 0; i < this.currentLevel.getRenderObjects().size(); i++) {
-					if (this.currentLevel.getRenderObjects().get(i) == this) {
-						currentLevel.getRenderObjects().remove(i);
-					}
+		} else {
+
+			for (int i = 0; i < this.currentLevel.getRenderObjects().size(); i++) {
+				if (this.currentLevel.getRenderObjects().get(i) == this) {
+					currentLevel.getRenderObjects().remove(i);
+
 				}
 			}
 		}
 	}
-	// If rat stomps on a sign, it is being pushed back and it starts moving different direction (we need to code it)
+
+	// If rat stomps on a sign, it is being pushed back and it starts moving
+	// different direction (we need to code it)
 	public boolean ratStompsOnSign() {
 		// if (RenderObject.getObjectPosition() == Rat.getRatPosition()) {
 		// return true;
@@ -63,9 +65,10 @@ public class NoEntrySign extends Item {
 	public void tick() {
 
 	}
-	
+
 	public void collision(Object paramater) {
 		if (paramater instanceof Rat) {
+			breakSign();
 			((Rat) paramater).turnAround();
 		}
 	}
