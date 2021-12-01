@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import java.util.ArrayList;
 
 /**
  * Level.java
@@ -13,19 +12,17 @@ import java.util.ArrayList;
  * Creates a board that will be used to store information on the level, such as tile, rat, and item locations.
  */
 public class Level {
-	Object[][][] board;
-	int score;
-	double currentTime;
+	Object[][] board;
 	int parTime;
+	double currentTime;
 	short maxRats;
-	String[] dataArray;
 	
 	/**
 	 * Constructor for level class. Creates board from given text file
 	 * @param fileName Name of the file that stores information on the level
 	 */
 	public Level (String fileName) {
-		String fileData = "";
+		String fileData = null;
 		File level = new File(fileName);
 		Scanner in = null;
 		
@@ -38,46 +35,8 @@ public class Level {
 		
 		while (in.hasNextLine()) {
 			fileData = fileData + in.nextLine();
-		}		
-		
-		fileData = fileData.substring(0, fileData.indexOf("."));
-		dataArray = fileData.split(",");
-		
-		//Sets variables for each piece of data to make it easier to read
-		int x = Integer.parseInt(dataArray[0]);
-		int y = Integer.parseInt(dataArray[1]);
-		String[] tileTypes = dataArray[2].split("");
-		String[] rats = dataArray[3].split("");
-		maxRats = Short.parseShort(dataArray[4]);
-		parTime = Integer.parseInt(dataArray[5]);
-		
-		board = new Object[y][x][3];
-		
-		
-		
-		//Adds tile types into correct position and sets up ArrayLists
-		int count = 0;
-		for(int i=0; i<y;i++) {
-			for(int j=0; j<x;j++) {
-				board[i][j][0] = tileTypes[count];
-				board[i][j][1] = new ArrayList<Rat>();
-				board[i][j][2] = new ArrayList<Item>();
-				count ++;
-			}
 		}
 		
-		//Adds rats in correct position
-		count = 0;
-		for(int i=0; i<y;i++) {
-			for(int j=0; j<x;j++) {
-				if (rats[count] == "M") {
-					((ArrayList<Rat>) board[i][j][1]).add(new Rat());
-				} else if (rats[count] == "F") {
-					((ArrayList<Rat>) board[i][j][1]).add(new Rat());
-				}
-				count ++;
-			}
-		}		
 	}
 	
 	/**
@@ -117,7 +76,7 @@ public class Level {
 	/**
 	 * @return The board the level is being played on
 	 */
-	public Object[][][] getBoard() {
+	public Object[][] getBoard() {
 		return board;
 	}
 	
@@ -144,14 +103,14 @@ public class Level {
 	/**
 	 * @return All rats on the board
 	 */
-	public Rat[] getRats() {
-		return null;
-	}
+	/*public Rat[] getRats() {
+		
+	}*/
 	
 	/**
 	 * @return 
 	 */
-	public Item getItem() {
-		return null;
-	}
+	/*public Item getItem() {
+		
+	}*/
 }
