@@ -280,7 +280,7 @@ public class AdultRat extends NormalRat {
 		if (parameter instanceof AdultRat) {
 			ratCollision(((AdultRat) parameter));
 		} else if (parameter instanceof Item) {
-			
+			this.ratDeath();
 		}
 	}
 	

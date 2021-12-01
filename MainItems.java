@@ -304,6 +304,8 @@ public class MainItems extends Application {
 							((Rat) testLevel.getRenderObjects().get(i)).collision((Rat) testLevel.getRenderObjects().get(i2));
 						} else if (testLevel.getRenderObjects().get(i) instanceof NoEntrySign) {
 							((NoEntrySign) testLevel.getRenderObjects().get(i)).collision((Rat) testLevel.getRenderObjects().get(i2));
+						} else if (testLevel.getRenderObjects().get(i) instanceof Poison) {
+							((Poison) testLevel.getRenderObjects().get(i)).collision((Rat) testLevel.getRenderObjects().get(i2));
 						}
 						//((AdultRat) testLevel.getRenderObjects().get(i2)).collision((AdultRat) testLevel.getRenderObjects().get(i));
 					} else {
