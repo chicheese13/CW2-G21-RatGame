@@ -25,6 +25,7 @@ public class ConvertLayoutToFiles {
 		
 		for (int y=0; y < tileArray.length; y++) {
 			for (int x = 0; x < tileArray[y].length; x++) {
+				String fetchString;
 				System.out.println("x " + x);
 				System.out.println("y " + y);
 				boolean isBottom = false;
@@ -111,7 +112,7 @@ public class ConvertLayoutToFiles {
 				if (isGrass) {
 					returnArray[y][x] = new RenderTile("Textures/grass.png");
 				} else {
-					String fetchString = "Textures/";
+					fetchString = "Textures/";
 					String left = "left";
 					String right = "right";
 					String top = "top";
@@ -141,11 +142,10 @@ public class ConvertLayoutToFiles {
 						afterTilesPositon.add(new Position(new BigDecimal(x), new BigDecimal(y)));
 					}
 					
-					System.out.println(fetchString);
 					fetchString = fetchString + ".png";
+					System.out.println(fetchString);
 					returnArray[y][x] = new RenderTile(fetchString);
 				}
-				
 			}
 		}	
 		return returnArray;

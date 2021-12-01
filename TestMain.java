@@ -39,8 +39,8 @@ import java.math.*;
 public class TestMain extends Application {
 	// The dimensions of the window
 	
-	private static final int GRID_WIDTH = 15;
-	private static final int GRID_HEIGHT = 9;
+	private static final int GRID_WIDTH = 30;
+	private static final int GRID_HEIGHT = 20;
 
 	private static final int GRID_CELL_WIDTH = 50;
 	private static final int GRID_CELL_HEIGHT = 50;
@@ -72,13 +72,26 @@ public class TestMain extends Application {
 	// Timeline which will cause tick method to be called periodically.
 	private Timeline tickTimeline; 
 	
-	String[][] tiles = {{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
-						{"G","P","P","P","T","T","P","P","P","T","T","P","P","P","G"},
-						{"G","G","G","P","G","G","G","G","P","G","G","P","G","P","G"},
-						{"G","P","P","P","G","G","P","P","P","G","G","P","G","P","G"},
-						{"G","P","G","G","G","G","G","G","P","G","G","P","G","P","G"},
-						{"G","P","P","P","T","T","P","P","P","T","T","P","P","P","G"},
-						{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"}};
+	private static String tiles [][] = {{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
+			{"G","P","P","P","P","P","P","P","G","G","G","G","G","G","G", "G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
+			{"G","P","G","G","T","G","G","P","G","G","G","G","P","P","P", "P","P","G","G","G","P","P","P","P","P","P","P","P","P","G"},
+			{"G","P","G","P","P","P","G","P","G","G","G","P","P","G","G", "G","P","P","G","G","P","G","G","G","G","G","G","G","P","G"},
+			{"G","P","G","P","G","P","G","P","G","G","G","P","G","G","G", "G","G","P","G","G","P","P","P","P","P","P","P","P","P","G"},
+			{"G","P","G","P","G","P","T","P","G","G","P","P","G","G","G", "G","G","P","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","P","G","P","G","P","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","P","P","P","G","P","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","T","G","G","G","P","G","G","P","P","P","P","P", "P","P","P","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","P","P","P","P","P","P","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","G","G","G","G","G","G","G","P","P","P","P","P", "P","P","P","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","P","P","G","G","G","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","G","P","G","G","G","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","G","P","P","G","G","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","G","G","P","P","G","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","G","G","G","P","P","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
+			{"G","P","G","G","G","G","G","P","P","P","P","T","T","T","T", "T","T","T","P","T","T","T","T","P","P","P","G","G","G","G"},
+			{"G","P","G","G","G","G","G","T","G","G","G","G","G","G","G", "G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
+			{"G","P","P","P","P","P","P","P","G","G","G","G","G","G","G", "G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
+			{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G", "G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"}};
 	
 	private int tickCounter = 0;
 	
@@ -100,7 +113,7 @@ public class TestMain extends Application {
 	 * @param primaryStage The stage that is to be used for the application.
 	 */
 	
-	public AdultRat testRat = new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, false, 10, 0, 'N', testLevel);
+	//public AdultRat testRat = new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, false, 10, 0, 'N', testLevel);
 	public void start(Stage primaryStage) {
 		// Load images. Note we use png images with a transparent background.
 		
@@ -116,8 +129,8 @@ public class TestMain extends Application {
 		
 		//testLevel.addRenderObject(new AdultRat(new Position(2,1), false, false, 10, testLevel));
 		
-		AdultRat testOne = new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, false, 10, 0,'N', testLevel);
-		AdultRat testTwo = new AdultRat(new Position(new BigDecimal("3"), new BigDecimal("1")), true, false, 10, 0,'W', testLevel);
+		//AdultRat testOne = new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, false, 10, 0,'N', testLevel);
+		//AdultRat testTwo = new AdultRat(new Position(new BigDecimal("3"), new BigDecimal("1")), true, false, 10, 0,'W', testLevel);
 		//AdultRat testThree = new AdultRat(new Position(1,3), false, false, 10, 0,'E', testLevel);
 		//AdultRat testFour = new AdultRat(new Position(4,1), false, false, 10, 0,'N', testLevel);
 		//AdultRat testFive = new AdultRat(new Position(3,2), false, false, 10, 0,'N', testLevel);
@@ -128,8 +141,8 @@ public class TestMain extends Application {
 		
 		//3 8
 		
-		testLevel.addRenderObject(testRat);
-		testLevel.addRenderObject(testTwo);
+		//testLevel.addRenderObject(testRat);
+		//testLevel.addRenderObject(testTwo);
 		//testLevel.addRenderObject(testThree);
 		//testLevel.addRenderObject(testFour);
 		//testLevel.addRenderObject(testFive);
@@ -199,12 +212,6 @@ public class TestMain extends Application {
 			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getObjectPosition()[0].doubleValue() * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getObjectPosition()[1].doubleValue() * GRID_CELL_HEIGHT);
 		}
 		
-		
-		
-	
-		
-		gc.drawImage(HUD_BG, 0 * GRID_CELL_WIDTH, 7 * GRID_CELL_HEIGHT);
-		gc.drawImage(TEST, 0 * GRID_CELL_WIDTH, 7 * GRID_CELL_HEIGHT);
 	}
 	
 

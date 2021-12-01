@@ -3,7 +3,11 @@ public class RenderTile {
 	private Image renderImage;
 	
 	public RenderTile(String imageText) {
-		this.renderImage = new Image (imageText);
+		try {
+			this.renderImage = new Image (imageText);
+		} catch (Exception e) {
+			this.renderImage = new Image ("Textures/notfound.png");
+		}
 	}
 
 	public Image getImage() {
