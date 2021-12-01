@@ -40,12 +40,12 @@ public class RatTestMain extends Application {
 	private static final int GRID_CELL_WIDTH = 50;
 	private static final int GRID_CELL_HEIGHT = 50;
 	
-	private static final int WINDOW_WIDTH = GRID_WIDTH * GRID_CELL_WIDTH;
-	private static final int WINDOW_HEIGHT = GRID_HEIGHT * GRID_CELL_HEIGHT;
+	private static final int WINDOW_WIDTH = 1280;
+	private static final int WINDOW_HEIGHT = 720;
 
 	// The dimensions of the canvas
-	private static final int CANVAS_WIDTH = WINDOW_WIDTH;
-	private static final int CANVAS_HEIGHT = WINDOW_HEIGHT;
+	private static final int CANVAS_WIDTH = 1130;
+	private static final int CANVAS_HEIGHT = 720;
 	
 	TestLevel testLevel = new TestLevel();
 	
