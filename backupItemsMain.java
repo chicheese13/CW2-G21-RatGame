@@ -25,11 +25,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.lang.Math;
-import java.util.Scanner;
-
-import java.awt.event.KeyAdapter;
-import javax.swing.JFrame;
-import javax.swing.JTextField;
 
 /**
  * Sample application that demonstrates the use of JavaFX Canvas for a Game.
@@ -50,12 +45,12 @@ public class MainItems extends Application {
 	private static final int GRID_CELL_WIDTH = 50;
 	private static final int GRID_CELL_HEIGHT = 50;
 
-	private static final int WINDOW_WIDTH = 1250;
-	private static final int WINDOW_HEIGHT = 670;
+	private static final int WINDOW_WIDTH = GRID_WIDTH * GRID_CELL_WIDTH;
+	private static final int WINDOW_HEIGHT = GRID_HEIGHT * GRID_CELL_HEIGHT;
 
 	// The dimensions of the canvas
-	private static final int CANVAS_WIDTH = 1250;
-	private static final int CANVAS_HEIGHT = 600;
+	private static final int CANVAS_WIDTH = WINDOW_WIDTH;
+	private static final int CANVAS_HEIGHT = WINDOW_HEIGHT;
 	
 	TestLevel testLevel = new TestLevel();
 	
@@ -82,11 +77,6 @@ public class MainItems extends Application {
 	private Image maleSexChanger;
 	private Image femaleSexChanger;
 	private Image deathRat;
-	
-	
-	private int offsetX = 0;
-	private int offsetY = 0;
-	
 
 	/**
 	 * Setup the new application.
@@ -109,9 +99,7 @@ public class MainItems extends Application {
 				
 				// Create a scene from the GUI
 				Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-				
-				scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> processKeyEvent(event));
-				
+						
 				// Register a tick method to be called periodically.
 				// Make a new timeline with one keyframe that triggers the tick method every half a second.
 				tickTimeline = new Timeline(new KeyFrame(Duration.millis(15), event -> tick()));
@@ -181,13 +169,12 @@ public class MainItems extends Application {
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 	
 		//this goes through the tile array and generates the tile images on the canvas based on the tiles in the array.
-		
-		//gets the number of viewable tiles
-		for (int y = 0; y < (CANVAS_HEIGHT/50); y++) {
-			for (int x = 0; x < (CANVAS_WIDTH/50); x++) {
-				if (testLevel.getTiles()[y+offsetY][x+offsetX] == "G") {
-					gc.drawImage(grass, (x) * GRID_CELL_WIDTH, (y) * GRID_CELL_HEIGHT);
-				} else if (testLevel.getTiles()[y+offsetY][x+offsetX] ==  "P") {
+		for (int y = 0; y < testLevel.getTiles().length; y++) {
+			for (int x = 0; x < testLevel.getTiles()[0].length; x++) {
+				//checks what tile type it is and outputs the image for that tile, in the x and y of that tile.
+				if (testLevel.getTiles()[y][x] == "G") {
+					gc.drawImage(grass, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
+				} else if (testLevel.getTiles()[y][x] ==  "P") {
 					gc.drawImage(path, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
 				} else {
 					gc.drawImage(tunnel, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
@@ -195,49 +182,12 @@ public class MainItems extends Application {
 			}
 		}
 		
-		
 		for (int i = 0; i < testLevel.getRenderObjects().size(); i++) {
 			//System.out.println(testLevel.getRenderObjects().get(i).getSprite());
 			//gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getPosition()[0] * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getPosition()[1] * GRID_CELL_HEIGHT);
-			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), (testLevel.getRenderObjects().get(i).getObjectPosition()[0].doubleValue()-offsetX) * GRID_CELL_WIDTH, (testLevel.getRenderObjects().get(i).getObjectPosition()[1].doubleValue()-offsetY) * GRID_CELL_HEIGHT);
+			gc.drawImage(testLevel.getRenderObjects().get(i).getSprite(), testLevel.getRenderObjects().get(i).getObjectPosition()[0].doubleValue() * GRID_CELL_WIDTH, testLevel.getRenderObjects().get(i).getObjectPosition()[1].doubleValue() * GRID_CELL_HEIGHT);
 		}
 		
-	}	
-	
-	public void processKeyEvent(KeyEvent event) {
-		// We change the behaviour depending on the actual key that was pressed.
-		switch (event.getCode()) {			
-		    case RIGHT:
-		    	// Right key was pressed. So move the player right by one cell.
-		    	if (offsetX < (testLevel.getTiles()[0].length) - (CANVAS_WIDTH / GRID_CELL_WIDTH)) {
-		    		offsetX++;
-		    	}
-	        	break;
-		    case UP:
-		    	if (offsetY > 0) {
-		    		offsetY--;
-		    	}
-		    	break;
-		    case DOWN: 
-		    	if (offsetY < (testLevel.getTiles().length) - (CANVAS_HEIGHT / GRID_CELL_HEIGHT)) {
-		    		offsetY++;
-		    	}	
-		    	break;
-		    case LEFT:
-		    	if (offsetX > 0) {
-		    		offsetX--;
-		    	}
-		    	break;
-	        default:
-	        	// Do nothing for all other keys.
-	        	break;
-		}
-		
-		// Redraw game as the player may have moved.
-		drawGame();
-		
-		// Consume the event. This means we mark it as dealt with. This stops other GUI nodes (buttons etc) responding to it.
-		event.consume();
 	}
 	
 	/**
@@ -318,8 +268,8 @@ public class MainItems extends Application {
 	}
 
 	public void bombDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+offsetX;
-		double y = (Math.floor((event.getY()) / 50))+offsetY;
+		double x = (Math.floor((event.getX()) / 50));
+		double y = (Math.floor((event.getY()) / 50));
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
@@ -330,8 +280,8 @@ public class MainItems extends Application {
 	}
 	
 	public void gasDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+offsetX;
-		double y = (Math.floor((event.getY()) / 50))+offsetY;
+		double x = (Math.floor((event.getX()) / 50));
+		double y = (Math.floor((event.getY()) / 50));
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
@@ -342,8 +292,8 @@ public class MainItems extends Application {
 	}
 	
 	public void poisonDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+offsetX;
-		double y = (Math.floor((event.getY()) / 50))+offsetY;
+		double x = (Math.floor((event.getX()) / 50));
+		double y = (Math.floor((event.getY()) / 50));
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
@@ -354,8 +304,8 @@ public class MainItems extends Application {
 	}
 	
 	public void signDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+offsetX;
-		double y = (Math.floor((event.getY()) / 50))+offsetY;
+		double x = (Math.floor((event.getX()) / 50));
+		double y = (Math.floor((event.getY()) / 50));
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
@@ -366,8 +316,8 @@ public class MainItems extends Application {
 	}
 	
 	public void deathRatDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+offsetX;
-		double y = (Math.floor((event.getY()) / 50))+offsetY;
+		double x = (Math.floor((event.getX()) / 50));
+		double y = (Math.floor((event.getY()) / 50));
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
@@ -378,8 +328,8 @@ public class MainItems extends Application {
 	}
 	
 	public void femaleSexChangerDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+offsetX;
-		double y = (Math.floor((event.getY()) / 50))+offsetY;
+		double x = (Math.floor((event.getX()) / 50));
+		double y = (Math.floor((event.getY()) / 50));
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
@@ -390,8 +340,8 @@ public class MainItems extends Application {
 	}
 	
 	public void maleSexChangerDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+offsetX;
-		double y = (Math.floor((event.getY()) / 50))+offsetY;
+		double x = (Math.floor((event.getX()) / 50));
+		double y = (Math.floor((event.getY()) / 50));
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
