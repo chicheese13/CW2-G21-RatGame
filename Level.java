@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.math.BigDecimal;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -13,12 +14,22 @@ import java.util.ArrayList;
  * Creates a board that will be used to store information on the level, such as tile, rat, and item locations.
  */
 public class Level {
-	Object[][][] board;
+	//Object[][][] board;
 	int score;
 	double currentTime;
 	int parTime;
 	short maxRats;
 	String[] dataArray;
+	
+	private String[][] tiles;
+
+	
+	//ArrayLists for Rats & Items
+	ArrayList<RenderObject> renderRats = new ArrayList<RenderObject>();
+	ArrayList<RenderObject> renderItems = new ArrayList<RenderObject>();
+	ArrayList<RenderTile> renderAfterTiles;
+	ArrayList<Position> renderAfterTilesPosition;
+	private RenderTile[][] renderTiles;
 	
 	/**
 	 * Constructor for level class. Creates board from given text file
@@ -32,12 +43,14 @@ public class Level {
 		try {
 			in = new Scanner(level);
 		} catch(FileNotFoundException e) {
+			System.out.println(fileName);
 			System.out.println("File does not exist");
 			System.exit(0);
 		}
 		
 		while (in.hasNextLine()) {
 			fileData = fileData + in.nextLine();
+			System.out.println(in.nextLine());
 		}		
 		
 		fileData = fileData.substring(0, fileData.indexOf("."));
@@ -51,7 +64,7 @@ public class Level {
 		maxRats = Short.parseShort(dataArray[4]);
 		parTime = Integer.parseInt(dataArray[5]);
 		
-		board = new Object[y][x][3];
+		//board = new Object[y][x][3];
 		
 		
 		
@@ -59,31 +72,144 @@ public class Level {
 		int count = 0;
 		for(int i=0; i<y;i++) {
 			for(int j=0; j<x;j++) {
-				board[i][j][0] = tileTypes[count];
-				board[i][j][1] = new ArrayList<Rat>();
-				board[i][j][2] = new ArrayList<Item>();
+				//board[i][j][0] = tileTypes[count];
+				//board[i][j][1] = new ArrayList<Rat>();
+				//board[i][j][2] = new ArrayList<Item>();
 				count ++;
 			}
 		}
 		
 		//Adds rats in correct position
+		
+		//Position position, boolean gender, TestLevel currentLevel, char directionFacing
+		
 		count = 0;
 		for(int i=0; i<y;i++) {
 			for(int j=0; j<x;j++) {
 				if (rats[count] == "M") {
-					((ArrayList<Rat>) board[i][j][1]).add(new Rat());
+					System.out.println("test1");
+					renderRats.add(new BabyRat(new Position(new BigDecimal(i), new BigDecimal(j)), true, this, 'N'));
 				} else if (rats[count] == "F") {
-					((ArrayList<Rat>) board[i][j][1]).add(new Rat());
+					System.out.println("test2");
+					renderRats.add(new BabyRat(new Position(new BigDecimal(i), new BigDecimal(j)), false, this, 'N'));
 				}
 				count ++;
 			}
-		}		
+		}	
+		
+		//generate render tiles
+		//ConvertLayoutToTiles convertedLayout = new ConvertLayoutToTiles(tiles);
+		//this.renderTiles = convertedLayout.getTiles();
+		//this.renderAfterTiles = convertedLayout.getAfterList();
+		//this.renderAfterTilesPosition = convertedLayout.getAfterPositionList();
+	}
+	
+	public RenderTile[][] getRenderTiles() {
+		return this.renderTiles;
+	}
+	
+	public ArrayList<RenderTile> getRenderTilesAfter() {
+		return this.renderAfterTiles;
+	}
+	
+	public ArrayList<Position> getRenderTilesAfterPositions() {
+		return this.renderAfterTilesPosition;
+	}
+	
+	public String[][] getTiles(){
+		return this.tiles;
 	}
 	
 	/**
 	 * Updates board
 	 */
 	public void updateBoard() {
+		//happens every tick?
+		
+		//goes through all rats and items and does executes their tick methods
+		for (int i = 0; i < renderRats.size(); i++) {
+			renderRats.get(i).tick();
+		}
+		
+		for (int i = 0; i < renderItems.size(); i++) {
+			renderItems.get(i).tick();
+		}
+		
+		//Handles collisions between Rats and Rats
+		for (int i = 0; i < renderRats.size(); i++) {
+			double xMinus = renderRats.get(i).getObjectPosition()[0].doubleValue() - 0.5;
+			double yMinus = renderRats.get(i).getObjectPosition()[1].doubleValue() - 0.5;
+			double xPlus = renderRats.get(i).getObjectPosition()[0].doubleValue() + 0.5;
+			double yPlus = renderRats.get(i).getObjectPosition()[1].doubleValue() + 0.5;
+			
+			//checking if the the render objects are both rats and are not the same rat.
+			for (int i2 = 0; i2 < renderRats.size(); i2++) {
+				//testLevel.getRenderObjects().get(i).getObjectPosition()[0]
+				
+				boolean xCollide = false;
+				boolean yCollide = false;
+				
+				if (renderRats.get(i) != renderRats.get(i2)) {
+					
+					double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
+					double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
+					
+					if (compareX > xMinus && compareX < xPlus) {
+						xCollide = true;
+						//System.out.println("X COLLIDE");
+					}
+					
+					if (compareY > yMinus && compareY < yPlus) {
+						yCollide = true;
+						//System.out.println("Y COLLIDE");
+					}
+					
+					if (xCollide == true && yCollide == true) {
+							((Rat) renderRats.get(i)).collision((Rat) renderRats.get(i2));
+					}
+					
+				}
+				
+			}
+		}
+		
+		//Handles collisions between Items and Rats
+		for (int i = 0; i < renderItems.size(); i++) {
+			double xMinus = renderItems.get(i).getObjectPosition()[0].doubleValue() - 0.5;
+			double yMinus = renderItems.get(i).getObjectPosition()[1].doubleValue() - 0.5;
+			double xPlus = renderItems.get(i).getObjectPosition()[0].doubleValue() + 0.5;
+			double yPlus = renderItems.get(i).getObjectPosition()[1].doubleValue() + 0.5;
+			
+			//checking if the the render objects are both rats and are not the same rat.
+			for (int i2 = 0; i2 < renderRats.size(); i2++) {
+				//testLevel.getRenderObjects().get(i).getObjectPosition()[0]
+				
+				boolean xCollide = false;
+				boolean yCollide = false;
+				
+				if (renderRats.get(i) != renderRats.get(i2)) {
+					
+					double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
+					double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
+					
+					if (compareX > xMinus && compareX < xPlus) {
+						xCollide = true;
+						//System.out.println("X COLLIDE");
+					}
+					
+					if (compareY > yMinus && compareY < yPlus) {
+						yCollide = true;
+						//System.out.println("Y COLLIDE");
+					}
+					
+					if (xCollide == true && yCollide == true) {
+							((Rat) renderRats.get(i)).collision((Rat) renderRats.get(i2));
+					}
+					
+				}
+				
+			}
+		}
 		
 	}
 	
@@ -117,9 +243,9 @@ public class Level {
 	/**
 	 * @return The board the level is being played on
 	 */
-	public Object[][][] getBoard() {
-		return board;
-	}
+	//public Object[][][] getBoard() {
+		//return board;
+	//}
 	
 	/**
 	 * @return Par time to complete level
@@ -154,4 +280,37 @@ public class Level {
 	public Item getItem() {
 		return null;
 	}
+	
+	public boolean tileAvailable (BigDecimal xIn, BigDecimal yIn, char direction){
+		
+		int x = (int) Math.round(xIn.doubleValue());
+		int y = (int) Math.round(yIn.doubleValue());
+		
+		if (direction == 'N') {
+			if (y > 0) {
+				if (tiles[y-1][x] == "P" || tiles[y-1][x] == "T") {
+					return true;
+				}
+			}
+		} else if (direction == 'E'){
+			if (x > 0) {
+				if (tiles[y][x+1] == "P" || tiles[y][x+1] == "T") {
+					return true;
+				}
+			}
+		} else if (direction == 'S') {
+			if (y < (tiles.length-1)) {
+				if (tiles[y+1][x] == "P" || tiles[y+1][x] == "T") {
+					return true;
+				}
+			}
+		} else {
+			if (x > 0) {
+				if (tiles[y][x-1] == "P" || tiles[y][x-1] == "T") {
+					return true;
+				}
+			}
+		}
+		return false;
+	} 
 }

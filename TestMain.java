@@ -105,7 +105,7 @@ public class TestMain extends Application {
 	TestLevel testLevel = new TestLevel();
 	
 	
-	ConvertLayoutToFiles convertedLayout = new ConvertLayoutToFiles(tiles);
+	ConvertLayoutToTiles convertedLayout = new ConvertLayoutToTiles(tiles);
 	RenderTile[][] renderTiles = convertedLayout.getTiles();
 	
 	/**

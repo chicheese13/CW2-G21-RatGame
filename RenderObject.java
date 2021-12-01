@@ -31,7 +31,7 @@ public abstract class RenderObject {
 		return this.renderSprite;
 	}
 	
-	protected TestLevel currentLevel;
+	protected Level currentLevel;
 	
 	/**
 	 * getter for position
@@ -59,13 +59,7 @@ public abstract class RenderObject {
 	 * Method for a RenderObject to remove themselves from the board.
 	 */
 	public void removeSelf() {
-		for (int i = 0; i < this.currentLevel.getRenderObjects().size(); i++) {
-			if (this.currentLevel.getRenderObjects().get(i) == this) {
-				this.currentLevel.removeRenderObject(i);
-				//prematurely exits for loop as we have found what we need.
-				i = this.currentLevel.getRenderObjects().size();
-			}
-		}
+		
 	}
 	
 	/**

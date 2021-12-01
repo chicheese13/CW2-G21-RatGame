@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.math.*;
 
-public class ConvertLayoutToFiles {
+public class ConvertLayoutToTiles {
 	private RenderTile[][] tiles;
 	
 	//ArrayList<String> cars = new ArrayList<String>();
@@ -9,7 +9,7 @@ public class ConvertLayoutToFiles {
 	private ArrayList<RenderTile> afterTiles = new ArrayList<RenderTile>();
 	private ArrayList<Position> afterTilesPositon = new ArrayList<Position>();
 	
-	public ConvertLayoutToFiles(String[][] tiles) {
+	public ConvertLayoutToTiles(String[][] tiles) {
 		this.tiles = convertTiles(tiles);
 	}
 	

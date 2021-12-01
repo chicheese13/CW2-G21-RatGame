@@ -116,7 +116,7 @@ public class AdultRat extends NormalRat {
 	 * @param currentLevel, the current level in which the rat is in.
 	 * @param directionFacing, the direction in which the rat is facing at anytime.
 	 */
-	public AdultRat(Position position, boolean gender, boolean sterile, int ratHealth, char direction, TestLevel currentLevel) {
+	public AdultRat(Position position, boolean gender, boolean sterile, int ratHealth, char direction, Level currentLevel) {
 		this.isPregnant = DEFAULT_PREGNANCY_VALUE;
 		this.pregnancyCounter = DEFAULT_PREGNANCY_COUNT;
 		this.ratSpeed = DEFAULT_ADULT_RAT_SPEED;
@@ -180,7 +180,7 @@ public class AdultRat extends NormalRat {
 	 */
 	public void ratDeath() {
 		//incriment score (pregnancyCounter+1 * RAT_SCORE)
-		this.currentLevel.incrimentScore((this.pregnancyCounter+1) * RAT_SCORE);
+		//this.currentLevel.incrimentScore((this.pregnancyCounter+1) * RAT_SCORE);
 		//create an instance of RenderScore with desired score incriment.
 		//this.currentLevel.addRenderObject(new RenderScore(this.objectPosition, (this.pregnancyCounter+1) * RAT_SCORE, this.currentLevel));
 		//remove itself from RenderObjects array.
@@ -224,7 +224,7 @@ public class AdultRat extends NormalRat {
 			babyRatGender = true;
 		}
 		
-		this.currentLevel.addRenderObject(new BabyRat(new Position(new BigDecimal(Math.round(this.getObjectPosition()[0].doubleValue())), new BigDecimal(Math.round(this.getObjectPosition()[1].doubleValue()))), babyRatGender, this.currentLevel, this.directionFacing));
+		//this.currentLevel.addRenderObject(new BabyRat(new Position(new BigDecimal(Math.round(this.getObjectPosition()[0].doubleValue())), new BigDecimal(Math.round(this.getObjectPosition()[1].doubleValue()))), babyRatGender, this.currentLevel, this.directionFacing));
 	}
 	
 	/**

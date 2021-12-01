@@ -48,7 +48,7 @@ public class BabyRat extends NormalRat {
 	 *  @param currentLevel, the current level in which the rat is in.
 	 *  @param directionFacing, the direction in which the rat is facing at anytime.
 	 */
-	public BabyRat(Position position, boolean gender, TestLevel currentLevel, char directionFacing) {
+	public BabyRat(Position position, boolean gender, Level currentLevel, char directionFacing) {
 		this.objectPosition = position;
 		this.ratGender = gender;
 		this.renderSprite = BABY_RAT_SPRITE_EAST;
@@ -69,7 +69,7 @@ public class BabyRat extends NormalRat {
 	 */
 	public void ratDeath() {
 		//incriment score by RAT_SCORE wherever the score variable is.
-		this.currentLevel.incrimentScore(RAT_SCORE);
+		//this.currentLevel.incrimentScore(RAT_SCORE);
 		//create an instance of RenderScore with desired score incriment.
 		//this.currentLevel.addRenderObject(new RenderScore(this.objectPosition, RAT_SCORE, this.currentLevel));
 		//remove itself from RenderObjects array.
@@ -108,9 +108,9 @@ public class BabyRat extends NormalRat {
 	public void growUp() {
 		//create an adult rat 
 		//might need the baby rat's current tickCounter.
-		this.currentLevel.addRenderObject(new AdultRat(this.objectPosition, this.ratGender, this.ratSterile, this.ratHealth, this.directionFacing, this.currentLevel));
+		//this.currentLevel.addRenderObject(new AdultRat(this.objectPosition, this.ratGender, this.ratSterile, this.ratHealth, this.directionFacing, this.currentLevel));
 		//remove self from array
-		this.removeSelf();
+		//this.removeSelf();
 		}
 	
 }
