@@ -35,6 +35,9 @@ public class MenuItem extends Pane {
         getChildren().addAll(bg, text);
     }
 
+    /**
+     * @param action
+     */
     public void setOnAction(Runnable action) {
         setOnMouseClicked(e -> action.run());
     }
