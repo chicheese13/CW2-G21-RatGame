@@ -4,7 +4,6 @@ public class Poison extends CollideItem {
 
 	private Image poison = new Image("/items/poisononlevel.png");
 
-
 	public Poison(Position objectPosition, Level currentLevel) {
 		this.renderSprite = poison;
 		this.objectPosition = objectPosition;
