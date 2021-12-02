@@ -76,9 +76,16 @@ public class GameConstructor extends Application {
 	private Image grass = new Image("TestTextures/grass.png");
 	private Image path = new Image("TestTextures/path.png");
 	private Image tunnel = new Image("TestTextures/tunnel.png");
+	
+	private Image availSprite;
+	private Image availableSprite = new Image("file:Textures/available.png");
+	private Image unavailableSprite = new Image("file:Textures/unavailable.png");
+	private int focusTileX;
+	private int focusTileY;
 
 	private Level currentLevel = new Level("src/Levels/one.txt");
-	private boolean showAvailableTiles = false;
+	private boolean showAvailableTile = false;
+	private int tickCounter = 0;
 
 	/**
 	 * Setup the new application.
@@ -140,6 +147,11 @@ public class GameConstructor extends Application {
 		
 		//we need to draw the tunnels
 		
+		//draw availability spirte when dragging
+		if (showAvailableTile) {
+			gc.drawImage(availSprite, focusTileX * GRID_CELL_WIDTH, focusTileY * GRID_CELL_HEIGHT);
+		}
+		
 	}	
 	
 	public void processKeyEvent(KeyEvent event) {
@@ -189,6 +201,12 @@ public class GameConstructor extends Application {
 		currentLevel.updateBoard();
 		//We then redraw the whole canvas.
 		drawGame();
+		
+		tickCounter++;
+		if (tickCounter == 66) {
+			showAvailableTile = false;
+			tickCounter = 0;
+		}
 	}
 
 	public void bombDropOccured(DragEvent event) {
@@ -494,9 +512,16 @@ public class GameConstructor extends Application {
 				// our application)
 				double x = (Math.floor((event.getX()) / 50))+offsetX;
 				double y = (Math.floor((event.getY()) / 50))+offsetY;
+				
+				focusTileX = (int) x-offsetX;
+				focusTileY = (int) y-offsetY;
 			
 				//here we check if an item can be placed
+				showAvailableTile = true;
 				if (currentLevel.isPlacable(x, y)) {
+					
+					availSprite = availableSprite;
+					
 					if (event.getGestureSource() == draggableBombImage) {
 						// Mark the drag event as acceptable by the canvas.
 						event.acceptTransferModes(TransferMode.ANY);
@@ -539,6 +564,8 @@ public class GameConstructor extends Application {
 						// Consume the event. This means we mark it as dealt with.
 						event.consume();
 					}
+				} else {
+					availSprite = unavailableSprite;
 				}
 			}
 		});
