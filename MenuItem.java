@@ -18,7 +18,7 @@ public class MenuItem extends Pane {
 
     public MenuItem(String name) {
         Polygon bg = new Polygon(0, 0, 225, 0, 225, 30, 0, 30);
-        bg.setStroke(Color.color(1, 1, 1, 0.75));
+        bg.setStroke(Color.color(1, 1, 1, 0.9));
         bg.setEffect(new GaussianBlur());
 
         bg.fillProperty().bind(Bindings.when(pressedProperty()).then(Color.color(0, 0, 0, 0.75))
@@ -27,7 +27,6 @@ public class MenuItem extends Pane {
         text = new Text(name);
         text.setTranslateX(5);
         text.setTranslateY(20);
-        text.getFont();
         text.setFont(Font.font(14));
         text.setFill(Color.WHITE);
 
@@ -36,9 +35,6 @@ public class MenuItem extends Pane {
         getChildren().addAll(bg, text);
     }
 
-    /**
-     * @param action
-     */
     public void setOnAction(Runnable action) {
         setOnMouseClicked(e -> action.run());
     }
