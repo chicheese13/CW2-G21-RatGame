@@ -83,7 +83,7 @@ public class MOTDGetter2 {
 				// re put the character back into the string.
 				puzzleCharacters[i] = Character.toUpperCase(ALPHABET_ARRAY[alphabetIndex]);
 			}
-			// combine the characters into a string with CS-250 text
+			// combine the characters into a string with CS-230 text
 			String finalText = new String(puzzleCharacters) + "CS-230";
 			// get the length and add it to the start
 			String textLength = String.valueOf(finalText.length());
