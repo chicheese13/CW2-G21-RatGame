@@ -44,8 +44,15 @@ public class Bomb extends Item {
 	}
 
 	public void tick() {
+		
+		SoundClip background = new SoundClip("BombBackground");
 
 		if (timerStarted == false) {
+			
+			if(delayCount == 0) {
+				
+				background.play();
+			}
 
 			if (delayCount % 1000 == 0) {
 				SoundClip tick = new SoundClip("Tick");
@@ -60,7 +67,7 @@ public class Bomb extends Item {
 			delayCount = delayCount + 12.5;
 
 			if (delayCount >= 4000) {
-
+				//background.stop();
 				startTimer();
 				timerStarted = true;
 			}
