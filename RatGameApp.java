@@ -182,20 +182,7 @@ public class RatGameApp extends Application {
     }
 
     private static void selectLevel() {
-        if (activeUser == null) {
-            Alert alert = new Alert(AlertType.WARNING);
-            alert.setContentText("Please select a player before proceeding");
-            alert.show();
-        } else {
-            ArrayList<Integer> possibleLevels = new ArrayList<>();
-            for (int i = 1; i <= activeUser.getLevels(); i++) {
-                possibleLevels.add(i);
-            }
-            ChoiceDialog<Integer> cd = new ChoiceDialog<>(1, possibleLevels);
-            cd.showAndWait();
-            selectedLevel = cd.getSelectedItem();
-            cd.hide();
-        }
+       
     }
 
     private static void addUser() {
@@ -207,7 +194,25 @@ public class RatGameApp extends Application {
     }
 
     private static void startGame() {
-
+    	 if (activeUser == null) {
+             Alert alert = new Alert(AlertType.WARNING);
+             alert.setContentText("Please select a player before proceeding");
+             alert.show();
+         } else {
+             ArrayList<Integer> possibleLevels = new ArrayList<>();
+             for (int i = 1; i <= activeUser.getLevels(); i++) {
+                 possibleLevels.add(i);
+             }
+             ChoiceDialog<Integer> cd = new ChoiceDialog<>(1, possibleLevels);
+             cd.showAndWait();
+             selectedLevel = cd.getSelectedItem();
+             
+             //launch game.
+             cd.hide();
+             System.out.println("Start the game here");
+             GameConstructor playGame = new GameConstructor(selectedLevel);
+             playGame.startGame();
+         }
     }
 
     /**
