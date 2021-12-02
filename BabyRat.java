@@ -73,7 +73,7 @@ public class BabyRat extends NormalRat {
 		//create an instance of RenderScore with desired score incriment.
 		//this.currentLevel.addRenderObject(new RenderScore(this.objectPosition, RAT_SCORE, this.currentLevel));
 		//remove itself from RenderObjects array.
-		this.removeSelf();
+		this.currentLevel.despawnRat(this);
 		
 		//play rat death sound clip.
 		SoundClip ratDeathSound = new SoundClip("rat-death-sound");
@@ -113,5 +113,13 @@ public class BabyRat extends NormalRat {
 		//this.removeSelf();
 		this.currentLevel.despawnRat(this);
 		}
+	
+	public void changeToMale() {
+		this.ratGender = true;
+	}
+	
+	public void changeToFemale() {
+		this.ratGender = false;
+	}
 	
 }

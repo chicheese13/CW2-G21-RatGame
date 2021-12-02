@@ -5,9 +5,8 @@ public class FemaleSexChange extends CollideItem {
 	
 	private Image femaleSexChange = new Image("/items/femalesexchangeronlevel.png");
 
-	private TestLevel currentLevel;
 
-	public FemaleSexChange(Position objectPosition, TestLevel currentLevel) {
+	public FemaleSexChange(Position objectPosition, Level currentLevel) {
 		this.renderSprite = femaleSexChange;
 		this.objectPosition = objectPosition;
 		this.currentLevel = currentLevel;
@@ -15,8 +14,9 @@ public class FemaleSexChange extends CollideItem {
 
 //	public void ratToF(rat)
 
-	public void ratToF() {
+	public void ratToF(NormalRat collidedObject) {
 		//runs rat gender change method in rat classes
+		collidedObject.changeToFemale();
 	}
 	
 	public void tick() {
@@ -24,6 +24,9 @@ public class FemaleSexChange extends CollideItem {
 	}
 	
 	public void collision(Object collidedObject) {
-		
+		if (collidedObject instanceof NormalRat) {
+			ratToF((NormalRat) collidedObject);
+			this.currentLevel.despawnItem(this);
+		}
 	}
 }

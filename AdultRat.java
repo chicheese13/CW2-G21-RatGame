@@ -186,7 +186,7 @@ public class AdultRat extends NormalRat {
 		//remove itself from RenderObjects array.
 		SoundClip ratDeathSound = new SoundClip("rat-death-sound");
 		ratDeathSound.play();
-		this.removeSelf();
+		this.currentLevel.despawnRat(this);
 	}
 	
 	/**
@@ -406,6 +406,76 @@ public class AdultRat extends NormalRat {
 				}
 						
 			}
+		}
+	}
+	
+	public void changeToFemale() {
+		if (this.ratGender == true) {
+			this.ratGender = false;
+			//reset all sprites
+			switch (this.directionFacing) {
+			case 'N':
+				this.renderSprite = ADULT_FEMALE_RAT_SPRITE_NORTH;
+				break;
+			case 'E':
+				this.renderSprite = ADULT_FEMALE_RAT_SPRITE_EAST;
+				break;
+			case 'S':
+				this.renderSprite = ADULT_FEMALE_RAT_SPRITE_SOUTH;
+				break;
+			case 'W':
+				this.renderSprite = ADULT_FEMALE_RAT_SPRITE_WEST;
+				break;
+			}
+			
+			this.ratSpriteNorth = ADULT_FEMALE_RAT_SPRITE_NORTH;
+			this.ratSpriteEast = ADULT_FEMALE_RAT_SPRITE_EAST;
+			this.ratSpriteSouth = ADULT_FEMALE_RAT_SPRITE_SOUTH;
+			this.ratSpriteWest = ADULT_FEMALE_RAT_SPRITE_WEST;
+			
+			this.pregnancyCounter = 0;
+			this.isPregnant = false;
+			this.cooldown = DEFAULT_COOLDOWN_VALUE_FEMALE;
+			this.matingCooldown = false;
+			this.isWaiting = false;
+			
+			this.objectPosition = recallibratePosition(this.objectPosition, DEFAULT_ADULT_RAT_SPEED);
+			this.ratSpeed = DEFAULT_ADULT_RAT_SPEED;
+		}
+	}
+	
+	public void changeToMale() {
+		if (this.ratGender == false) {
+			switch (this.directionFacing) {
+			case 'N':
+				this.renderSprite = ADULT_MALE_RAT_SPRITE_NORTH;
+				break;
+			case 'E':
+				this.renderSprite = ADULT_MALE_RAT_SPRITE_EAST;
+				break;
+			case 'S':
+				this.renderSprite = ADULT_MALE_RAT_SPRITE_SOUTH;
+				break;
+			case 'W':
+				this.renderSprite = ADULT_MALE_RAT_SPRITE_WEST;
+				break;
+			}
+			
+			this.ratGender = true;
+			
+			this.ratSpriteNorth = ADULT_MALE_RAT_SPRITE_NORTH;
+			this.ratSpriteEast = ADULT_MALE_RAT_SPRITE_EAST;
+			this.ratSpriteSouth = ADULT_MALE_RAT_SPRITE_SOUTH;
+			this.ratSpriteWest = ADULT_MALE_RAT_SPRITE_WEST;
+			
+			this.pregnancyCounter = 0;
+			this.isPregnant = false;
+			this.cooldown = DEFAULT_COOLDOWN_VALUE_FEMALE;
+			this.matingCooldown = false;
+			this.isWaiting = false;
+			
+			this.objectPosition = recallibratePosition(this.objectPosition, DEFAULT_ADULT_RAT_SPEED);
+			this.ratSpeed = DEFAULT_ADULT_RAT_SPEED;
 		}
 	}
 	

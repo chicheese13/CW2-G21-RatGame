@@ -78,6 +78,7 @@ public class GameConstructor extends Application {
 	private Image tunnel = new Image("TestTextures/tunnel.png");
 
 	private Level currentLevel = new Level("src/Levels/one.txt");
+	private boolean showAvailableTiles = false;
 
 	/**
 	 * Setup the new application.
@@ -196,7 +197,6 @@ public class GameConstructor extends Application {
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
-		System.out.println(s);
 
 		//currentLevel.addRenderObject(new Bomb(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
 		//drawGame();
@@ -222,7 +222,7 @@ public class GameConstructor extends Application {
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		//currentLevel.addRenderObject(new Poison(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
+		currentLevel.spawnItem(new Poison(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
 		//drawGame();
 	}
 	
@@ -258,7 +258,7 @@ public class GameConstructor extends Application {
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		//currentLevel.addRenderObject(new FemaleSexChange(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
+		currentLevel.spawnItem(new FemaleSexChange(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
 		//drawGame();
 	}
 	
@@ -270,7 +270,7 @@ public class GameConstructor extends Application {
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		//currentLevel.addRenderObject(new MaleSexChange(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
+		currentLevel.spawnItem(new MaleSexChange(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
 		//drawGame();
 	}
 	
@@ -446,6 +446,7 @@ public class GameConstructor extends Application {
 		draggableMaleSexChangerImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
 				// Mark the drag as started.
+				System.out.println("TEST");
 				// We do not use the transfer mode (this can be used to indicate different forms
 				// of drags operations, for example, moving files or copying files).
 				Dragboard db = draggableMaleSexChangerImage.startDragAndDrop(TransferMode.ANY);
@@ -491,46 +492,53 @@ public class GameConstructor extends Application {
 				// Mark the drag as acceptable if the source was the draggable image.
 				// (for example, we don't want to allow the user to drag things or files into
 				// our application)
-				if (event.getGestureSource() == draggableBombImage) {
-					// Mark the drag event as acceptable by the canvas.
-					event.acceptTransferModes(TransferMode.ANY);
-					// Consume the event. This means we mark it as dealt with.
-					event.consume();
-				} else if (event.getGestureSource() == draggableGasImage) {
-					// Mark the drag event as acceptable by the canvas.
-					event.acceptTransferModes(TransferMode.ANY);
-					// Consume the event. This means we mark it as dealt with.
-					event.consume();
-				} else if (event.getGestureSource() == draggablePoisonImage) {
-					// Mark the drag event as acceptable by the canvas.
-					event.acceptTransferModes(TransferMode.ANY);
-					// Consume the event. This means we mark it as dealt with.
-					event.consume();
-				} else if (event.getGestureSource() == draggableSignImage) {
-					// Mark the drag event as acceptable by the canvas.
-					event.acceptTransferModes(TransferMode.ANY);
-					// Consume the event. This means we mark it as dealt with.
-					event.consume();
-				} else if (event.getGestureSource() == draggableDeathRatImage) {
-					// Mark the drag event as acceptable by the canvas.
-					event.acceptTransferModes(TransferMode.ANY);
-					// Consume the event. This means we mark it as dealt with.
-					event.consume();
-				} else if (event.getGestureSource() == draggableFemaleSexChangerImage) {
-					// Mark the drag event as acceptable by the canvas.
-					event.acceptTransferModes(TransferMode.ANY);
-					// Consume the event. This means we mark it as dealt with.
-					event.consume();
-				} else if (event.getGestureSource() == draggableMaleSexChangerImage) {
-					// Mark the drag event as acceptable by the canvas.
-					event.acceptTransferModes(TransferMode.ANY);
-					// Consume the event. This means we mark it as dealt with.
-					event.consume();
-				} else if (event.getGestureSource() == draggableSterilisationImage) {
-					// Mark the drag event as acceptable by the canvas.
-					event.acceptTransferModes(TransferMode.ANY);
-					// Consume the event. This means we mark it as dealt with.
-					event.consume();
+				double x = (Math.floor((event.getX()) / 50))+offsetX;
+				double y = (Math.floor((event.getY()) / 50))+offsetY;
+			
+				//here we check if an item can be placed
+				if (currentLevel.isPlacable(x, y)) {
+					if (event.getGestureSource() == draggableBombImage) {
+						// Mark the drag event as acceptable by the canvas.
+						event.acceptTransferModes(TransferMode.ANY);
+						// Consume the event. This means we mark it as dealt with.
+						event.consume();
+					} else if (event.getGestureSource() == draggableGasImage) {
+						// Mark the drag event as acceptable by the canvas.
+						event.acceptTransferModes(TransferMode.ANY);
+						// Consume the event. This means we mark it as dealt with.
+						event.consume();
+					} else if (event.getGestureSource() == draggablePoisonImage) {
+						// Mark the drag event as acceptable by the canvas.
+						event.acceptTransferModes(TransferMode.ANY);
+						// Consume the event. This means we mark it as dealt with.
+						event.consume();
+					} else if (event.getGestureSource() == draggableSignImage) {
+						// Mark the drag event as acceptable by the canvas.
+						event.acceptTransferModes(TransferMode.ANY);
+						// Consume the event. This means we mark it as dealt with.
+						event.consume();
+					} else if (event.getGestureSource() == draggableDeathRatImage) {
+						// Mark the drag event as acceptable by the canvas.
+						event.acceptTransferModes(TransferMode.ANY);
+						// Consume the event. This means we mark it as dealt with.
+						event.consume();
+					} else if (event.getGestureSource() == draggableFemaleSexChangerImage) {
+						// Mark the drag event as acceptable by the canvas.
+						event.acceptTransferModes(TransferMode.ANY);
+						// Consume the event. This means we mark it as dealt with.
+						event.consume();
+					} else if (event.getGestureSource() == draggableMaleSexChangerImage) {
+						// Mark the drag event as acceptable by the canvas.
+						event.acceptTransferModes(TransferMode.ANY);
+						//here we can display available tiles
+						// Consume the event. This means we mark it as dealt with.
+						event.consume();
+					} else if (event.getGestureSource() == draggableSterilisationImage) {
+						// Mark the drag event as acceptable by the canvas.
+						event.acceptTransferModes(TransferMode.ANY);
+						// Consume the event. This means we mark it as dealt with.
+						event.consume();
+					}
 				}
 			}
 		});

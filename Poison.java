@@ -1,27 +1,19 @@
 import javafx.scene.image.Image;
 
-public class Poison extends Item {
+public class Poison extends CollideItem {
 
 	private Image poison = new Image("/items/poisononlevel.png");
 
-	private TestLevel currentLevel;
 
-	public Poison(Position objectPosition, TestLevel currentLevel) {
+	public Poison(Position objectPosition, Level currentLevel) {
 		this.renderSprite = poison;
 		this.objectPosition = objectPosition;
 		this.currentLevel = currentLevel;
 	}
 
 	private void killRat(Object rat) {
-		if (rat instanceof Rat) {
+		if (rat instanceof NormalRat) {
 			((NormalRat) rat).ratDeath();
-			for (int i = 0; i < this.currentLevel.getRenderObjects().size(); i++) {
-				if (this.currentLevel.getRenderObjects().get(i) == this) {
-					currentLevel.getRenderObjects().remove(i);
-
-				}
-			}
-			
 		}
 	}
 
@@ -35,5 +27,6 @@ public class Poison extends Item {
 
 	public void collision(Object parameter) {
 		killRat(parameter);
+		this.currentLevel.despawnItem(this);
 	}
 }

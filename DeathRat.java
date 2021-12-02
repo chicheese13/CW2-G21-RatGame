@@ -77,7 +77,7 @@ public class DeathRat extends Rat {
 		}
 		
 		if (this.killCounter == KILL_LIMIT) {
-			this.removeSelf();
+			this.currentLevel.despawnRat(this);
 			//maybe play death sound
 		}
 	}
