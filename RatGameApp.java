@@ -51,8 +51,6 @@ public class RatGameApp extends Application {
     private Pane root = new Pane();
     private VBox menuBox = new VBox(-5);
     private Line line;
-    
-    private Scene currentScene;
 
     /**
      * @return Parent
@@ -256,9 +254,9 @@ public class RatGameApp extends Application {
      * @throws Exception
      */
     public void start(Stage primaryStage) throws Exception {
-        Scene currentScene = new Scene(createContent());
+        Scene scene = new Scene(createContent());
         primaryStage.setTitle("RATS menu title");
-        primaryStage.setScene(currentScene);
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 

@@ -94,6 +94,7 @@ public class GameConstructor extends Application {
 	public GameConstructor(int levelNumber) {
 		this.currentLevelNumber = levelNumber;
 		this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt");
+		
 	}
 	
 	public void startGame() {
