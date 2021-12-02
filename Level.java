@@ -127,7 +127,7 @@ public class Level {
 		//this.spawnRat(new BabyRat(new Position(new BigDecimal("1"), new BigDecimal("1")), true, this, 'N'));
 		
 		this.spawnRat(new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), true, false, 10, 'N', this));
-		//this.spawnRat(new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, false, 10, 'N', this));
+		this.spawnRat(new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, false, 10, 'N', this));
 		
 	}
 	
@@ -162,6 +162,9 @@ public class Level {
 		//happens every tick?
 		
 		//Handles collisions between Rats and Rats
+		
+		
+		
 		for (int i = 0; i < renderRats.size(); i++) {
 			double xMinus = renderRats.get(i).getObjectPosition()[0].doubleValue() - 0.5;
 			double yMinus = renderRats.get(i).getObjectPosition()[1].doubleValue() - 0.5;

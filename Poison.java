@@ -11,7 +11,7 @@ public class Poison extends CollideItem {
 		this.currentLevel = currentLevel;
 	}
 
-	private void killRat(Object rat) {
+	private void killRat(NormalRat rat) {
 		if (rat instanceof NormalRat) {
 			((NormalRat) rat).ratDeath();
 		}
@@ -26,7 +26,9 @@ public class Poison extends CollideItem {
 	 */
 
 	public void collision(Object parameter) {
-		killRat(parameter);
-		this.currentLevel.despawnItem(this);
+		if (parameter instanceof NormalRat) {
+			killRat((NormalRat) parameter);
+			this.currentLevel.despawnItem(this);
+		}
 	}
 }
