@@ -1,6 +1,6 @@
 import javafx.scene.image.Image;
 
-public class Sterilisation extends Item {
+public class Sterilisation extends CollideItem {
 	
 	private Image sterilisation = new Image("/items/sterilisationonlevel.png");
 
@@ -14,5 +14,12 @@ public class Sterilisation extends Item {
 	
 	public void tick() {
 		
+	}
+	
+	public void collision(Object parameter) {
+		if (parameter instanceof NormalRat) {
+			((NormalRat) parameter).becomeSterile();
+			this.currentLevel.despawnItem(this);
+		}
 	}
 }
