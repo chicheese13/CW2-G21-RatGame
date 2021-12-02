@@ -57,8 +57,8 @@ public class AdultRat extends NormalRat {
 	/**
 	 * The adult male rat image sprite.
 	 */
-	protected final Image COOLDOWN_SPRITE_MALE = new Image("file:Textures/test-sprite-one.png");
-	protected final Image COOLDOWN_SPRITE_FEMALE = new Image("file:Textures/test-sprite-two.png");
+	protected final Image COOLDOWN_SPRITE_MALE = new Image("Textures/test-sprite-one.png");
+	protected final Image COOLDOWN_SPRITE_FEMALE = new Image("Textures/test-sprite-two.png");
 	
 	protected final Image ADULT_MALE_RAT_SPRITE_NORTH = new Image("Textures/male-rat-north.png");
 	protected final Image ADULT_MALE_RAT_SPRITE_EAST = new Image("Textures/male-rat-east.png");

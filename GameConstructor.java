@@ -82,7 +82,7 @@ public class GameConstructor extends Application {
 	private Image unavailableSprite = new Image("file:Textures/unavailable.png");
 	private int focusTileX;
 	private int focusTileY;
-
+	
 	private Level currentLevel = new Level("src/Levels/one.txt");
 	private boolean showAvailableTile = false;
 	private int tickCounter = 0;
@@ -105,6 +105,8 @@ public class GameConstructor extends Application {
 		tickTimeline.setCycleCount(Animation.INDEFINITE);
 				
 		tickTimeline.play();
+		
+		//this.levelMusic = new LevelMusic("level-one");
 		
 		drawGame();
 		primaryStage.setScene(scene);
