@@ -371,7 +371,7 @@ public class Level {
 		//check for collisions
 		int x = (int) xIn;
 		int y = (int) yIn;
-		if (tiles[y][x] == "G" || tiles[x][y] == "T") {
+		if (tiles[y][x] == "G" || tiles[y][x] == "T") {
 			return false;
 		}
 		
