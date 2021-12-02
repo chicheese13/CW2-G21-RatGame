@@ -298,8 +298,8 @@ public class GameConstructor extends Application {
 	}
 	
 	public void sterilisationDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50));
-		double y = (Math.floor((event.getY()) / 50));
+		double x = (Math.floor((event.getX()) / 50))+offsetX;
+		double y = (Math.floor((event.getY()) / 50))+offsetY;
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
