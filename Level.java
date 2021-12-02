@@ -499,4 +499,16 @@ public class Level {
 		}
 		return false;
 	} 
+	
+	public boolean checkGas(Position position) {
+		for (int i = 0; i < this.renderTempTiles.size(); i++) {
+			if (this.renderTempTiles.get(i) instanceof GasSpread) {
+				if (((GasSpread) this.renderTempTiles.get(i)).getObjectPosition()[0].doubleValue() == position.getPosition()[0].doubleValue()
+					&& ((GasSpread) this.renderTempTiles.get(i)).getObjectPosition()[1].doubleValue() == position.getPosition()[1].doubleValue()){
+						return false;
+					}
+			}
+		}		
+		return true;
+	}
 }
