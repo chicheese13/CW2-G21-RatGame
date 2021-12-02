@@ -66,7 +66,7 @@ public class Bomb extends Item {
 
 			delayCount = delayCount + 12.5;
 
-			if (delayCount >= 4000) {
+			if (delayCount >= 4000 && delayCount < 4020) {
 				//background.stop();
 				startTimer();
 				timerStarted = true;
