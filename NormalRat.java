@@ -143,4 +143,8 @@ public abstract class NormalRat extends Rat {
 	 *  Abstract method which handles the death of a rat.
 	 */
 	public abstract void ratDeath();
+	
+	public abstract void changeToFemale();
+	
+	public abstract void changeToMale();
 }

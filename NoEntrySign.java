@@ -1,18 +1,16 @@
 import javafx.scene.image.Image;
 
-public class NoEntrySign extends Item {
+public class NoEntrySign extends CollideItem {
 
 	private Image noEntrySign = new Image("/items/noentrysignonlevel.png");
 
 	private final int NUMBER_OF_SIGN_FRAMES = 5;
 
-	public int signHealth = 100;
+	public int signHealth = 5;
 	public boolean ratStompsOnSign = false;
 	private int pictureNumber = 1;
 
-	private TestLevel currentLevel;
-
-	public NoEntrySign(Position objectPosition, TestLevel currentLevel) {
+	public NoEntrySign(Position objectPosition, Level currentLevel) {
 		this.renderSprite = noEntrySign;
 		this.objectPosition = objectPosition;
 		this.currentLevel = currentLevel;
@@ -20,39 +18,23 @@ public class NoEntrySign extends Item {
 
 	private Image loadImage(int pictureNumber) {
 
-		Image bomb = new Image("/noentrysign_images/noentrysign" + String.valueOf(pictureNumber) + ".png");
+		Image sign = new Image("/noentrysign_images/noentrysign" + String.valueOf(pictureNumber) + ".png");
 
-		return bomb;
+		return sign;
 	}
 
 	// method that gets run each time a rat hits a sign
 	private void breakSign() {
-		if (ratStompsOnSign()) {
 
-			signHealth = getSignHealth() - 20;
-
+		if (signHealth > 1) {
+			signHealth--;
 			if (pictureNumber < NUMBER_OF_SIGN_FRAMES) {
 				pictureNumber++;
 				this.renderSprite = loadImage(pictureNumber);
-				
 			}
-
-			if (signHealth == 0) {
-				for (int i = 0; i < this.currentLevel.getRenderObjects().size(); i++) {
-					if (this.currentLevel.getRenderObjects().get(i) == this) {
-						currentLevel.getRenderObjects().remove(i);
-					}
-				}
-			}
+		} else {
+			this.currentLevel.despawnItem(this);
 		}
-	}
-	// If rat stomps on a sign, it is being pushed back and it starts moving different direction (we need to code it)
-	public boolean ratStompsOnSign() {
-		// if (RenderObject.getObjectPosition() == Rat.getRatPosition()) {
-		// return true;
-		// } else {
-		return false;
-		// }
 	}
 
 	// gets the signs health
@@ -63,10 +45,15 @@ public class NoEntrySign extends Item {
 	public void tick() {
 
 	}
-	
+
+	// If rat stomps on a sign, it is being pushed back and it starts moving
+	// different direction, the sign loses health points
 	public void collision(Object paramater) {
 		if (paramater instanceof Rat) {
 			((Rat) paramater).turnAround();
+			SoundClip signHit = new SoundClip("signHit" + pictureNumber);
+			signHit.play();
+			breakSign();
 		}
 	}
 
