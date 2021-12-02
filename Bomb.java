@@ -14,9 +14,7 @@ public class Bomb extends Item {
 	private int pictureNumber = 1;
 	private int delayedPictureNumber = 4;
 
-	private TestLevel currentLevel;
-
-	public Bomb(Position objectPosition, TestLevel currentLevel) {
+	public Bomb(Position objectPosition, Level currentLevel) {
 		this.renderSprite = bomb;
 		this.objectPosition = objectPosition;
 		this.currentLevel = currentLevel;
@@ -42,11 +40,7 @@ public class Bomb extends Item {
 		}
 
 		if (frameTime > NUMBER_OF_BOMB_FRAMES * 100) {
-			for (int i = 0; i < this.currentLevel.getRenderObjects().size(); i++) {
-				if (this.currentLevel.getRenderObjects().get(i) == this) {
-					currentLevel.getRenderObjects().remove(i);
-				}
-			}
+			this.currentLevel.despawnItem(this);		
 		}
 	}
 

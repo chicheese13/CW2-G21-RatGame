@@ -215,7 +215,7 @@ public class GameConstructor extends Application {
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 
-		//currentLevel.addRenderObject(new Bomb(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
+		currentLevel.spawnItem(new Bomb(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
 		//drawGame();
 	}
 	
