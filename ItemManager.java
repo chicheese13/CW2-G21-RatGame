@@ -1,33 +1,60 @@
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.util.Duration;
+import java.util.*;
 
 /**
- * Test class for item use
+ * Class for checking item uses and limits the amount that can be used per game
  *
- * @author Callum Young, Armand Dorosz
+ * @author Callum Young
  */
 public class ItemManager {
+<<<<<<< Updated upstream
 
+=======
+	
+	Hashtable<String,Integer> inventory = new Hashtable<String,Integer>();
+	
+	public ItemManager() {
+		inventory.put("Bomb",4);
+		inventory.put("Poison",4);
+		inventory.put("Gas",4);
+		inventory.put("Sterilisation",4);
+		inventory.put("MgenderChange",4);
+		inventory.put("FGenderChange",4);
+		inventory.put("DeathRat",4);
+		inventory.put("NoEntrySign",4);
+	}
+	
+	public void refillAll() {
+		inventory.replace("Bomb",4);
+		inventory.replace("Poison",4);
+		inventory.replace("Gas",4);
+		inventory.replace("Sterile",4);
+		inventory.replace("MGChange",4);
+		inventory.replace("FGChange",4);
+		inventory.replace("DeathRat",4);
+		inventory.replace("NoEntrySign",4);
+	}
+	
+	public void refillOnly(String itemType) {
+		inventory.replace(itemType,4);
+	}
+	
+	public boolean isItemDepleted(String itemType) {
+		if ((this.inventory.get(itemType)) == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public void reduceItem(String itemType) {
+		if (isItemDepleted(itemType)) {
+			//Item pickup error
+		} else {
+			//allows item to be placed
+			inventory.replace(itemType, (this.inventory.get(itemType))-1);
+		}
+	}
+	
+	
+>>>>>>> Stashed changes
 }
