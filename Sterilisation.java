@@ -17,6 +17,8 @@ public class Sterilisation extends CollideItem {
 	public void collision(Object parameter) {
 		if (parameter instanceof NormalRat) {
 			((NormalRat) parameter).becomeSterile();
+			SoundClip sterile = new SoundClip("Syringe");
+			sterile.play();
 			this.currentLevel.despawnItem(this);
 		}
 	}
