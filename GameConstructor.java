@@ -83,9 +83,22 @@ public class GameConstructor extends Application {
 	private int focusTileX;
 	private int focusTileY;
 	
-	private Level currentLevel = new Level("src/Levels/one.txt");
+	private int currentLevelNumber;
+	
+	private Stage gameStage = new Stage();
+	
+	private Level currentLevel;
 	private boolean showAvailableTile = false;
 	private int tickCounter = 0;
+	
+	public GameConstructor(int levelNumber) {
+		this.currentLevelNumber = levelNumber;
+		this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt");
+	}
+	
+	public void startGame() {
+		this.start(gameStage);
+	}
 
 	/**
 	 * Setup the new application.
@@ -632,11 +645,5 @@ public class GameConstructor extends Application {
 
 		// Finally, return the border pane we built up.
 		return root;
-	}
-
-	public static void main(String[] args) {
-
-		// launches the game.
-		launch(args);
 	}
 }

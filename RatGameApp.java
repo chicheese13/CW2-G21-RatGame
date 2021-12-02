@@ -51,6 +51,8 @@ public class RatGameApp extends Application {
     private Pane root = new Pane();
     private VBox menuBox = new VBox(-5);
     private Line line;
+    
+    private Scene currentScene;
 
     /**
      * @return Parent
@@ -182,20 +184,7 @@ public class RatGameApp extends Application {
     }
 
     private static void selectLevel() {
-        if (activeUser == null) {
-            Alert alert = new Alert(AlertType.WARNING);
-            alert.setContentText("Please select a player before proceeding");
-            alert.show();
-        } else {
-            ArrayList<Integer> possibleLevels = new ArrayList<>();
-            for (int i = 1; i <= activeUser.getLevels(); i++) {
-                possibleLevels.add(i);
-            }
-            ChoiceDialog<Integer> cd = new ChoiceDialog<>(1, possibleLevels);
-            cd.showAndWait();
-            selectedLevel = cd.getSelectedItem();
-            cd.hide();
-        }
+       
     }
 
     private static void addUser() {
@@ -207,7 +196,25 @@ public class RatGameApp extends Application {
     }
 
     private static void startGame() {
-
+    	 if (activeUser == null) {
+             Alert alert = new Alert(AlertType.WARNING);
+             alert.setContentText("Please select a player before proceeding");
+             alert.show();
+         } else {
+             ArrayList<Integer> possibleLevels = new ArrayList<>();
+             for (int i = 1; i <= activeUser.getLevels(); i++) {
+                 possibleLevels.add(i);
+             }
+             ChoiceDialog<Integer> cd = new ChoiceDialog<>(1, possibleLevels);
+             cd.showAndWait();
+             selectedLevel = cd.getSelectedItem();
+             
+             //launch game.
+             cd.hide();
+             System.out.println("Start the game here");
+             GameConstructor playGame = new GameConstructor(selectedLevel);
+             playGame.startGame();
+         }
     }
 
     /**
@@ -249,9 +256,9 @@ public class RatGameApp extends Application {
      * @throws Exception
      */
     public void start(Stage primaryStage) throws Exception {
-        Scene scene = new Scene(createContent());
+        Scene currentScene = new Scene(createContent());
         primaryStage.setTitle("RATS menu title");
-        primaryStage.setScene(scene);
+        primaryStage.setScene(currentScene);
         primaryStage.show();
     }
 
