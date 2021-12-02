@@ -78,8 +78,8 @@ public class GameConstructor extends Application {
 	private Image tunnel = new Image("TestTextures/tunnel.png");
 	
 	private Image availSprite;
-	private Image availableSprite = new Image("file:Textures/available.png");
-	private Image unavailableSprite = new Image("file:Textures/unavailable.png");
+	private Image availableSprite = new Image("Textures/available.png");
+	private Image unavailableSprite = new Image("Textures/unavailable.png");
 	private int focusTileX;
 	private int focusTileY;
 	
