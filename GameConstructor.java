@@ -145,6 +145,12 @@ public class GameConstructor extends Application {
 			gc.drawImage(currentLevel.getRats().get(i).getSprite(), (currentLevel.getRats().get(i).getObjectPosition()[0].doubleValue()-offsetX)  * GRID_CELL_WIDTH, (currentLevel.getRats().get(i).getObjectPosition()[1].doubleValue()-offsetY) * GRID_CELL_HEIGHT);
 		}
 		
+		
+		//need to draw the temp tiles
+		for (int i = 0; i < currentLevel.getTempTiles().size(); i++) {
+			gc.drawImage(currentLevel.getTempTiles().get(i).getSprite(), (currentLevel.getTempTiles().get(i).getObjectPosition()[0].doubleValue()-offsetX)  * GRID_CELL_WIDTH, (currentLevel.getTempTiles().get(i).getObjectPosition()[1].doubleValue()-offsetY) * GRID_CELL_HEIGHT);
+		}
+		
 		//we need to draw the tunnels
 		
 		//draw availability spirte when dragging
@@ -215,7 +221,7 @@ public class GameConstructor extends Application {
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 
-		//currentLevel.addRenderObject(new Bomb(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
+		currentLevel.spawnItem(new Bomb(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
 		//drawGame();
 	}
 	

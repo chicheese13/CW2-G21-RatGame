@@ -47,6 +47,7 @@ public class Level {
 	//ArrayLists for Rats & Items
 	ArrayList<RenderObject> renderRats = new ArrayList<RenderObject>();
 	ArrayList<RenderObject> renderItems = new ArrayList<RenderObject>();
+	ArrayList<RenderObject> renderTempTiles = new ArrayList<RenderObject>();
 	ArrayList<RenderTile> renderAfterTiles;
 	ArrayList<Position> renderAfterTilesPosition;
 	private RenderTile[][] renderTiles;
@@ -241,6 +242,46 @@ public class Level {
 			}
 		}
 		
+		
+		for (int i = 0; i < renderTempTiles.size(); i++) {
+			double xMinus = renderTempTiles.get(i).getObjectPosition()[0].doubleValue() - 0.5;
+			double yMinus = renderTempTiles.get(i).getObjectPosition()[1].doubleValue() - 0.5;
+			double xPlus = renderTempTiles.get(i).getObjectPosition()[0].doubleValue() + 0.5;
+			double yPlus = renderTempTiles.get(i).getObjectPosition()[1].doubleValue() + 0.5;
+			
+			//checking if the the render objects are both rats and are not the same rat.
+			for (int i2 = 0; i2 < renderRats.size(); i2++) {
+				//testLevel.getRenderObjects().get(i).getObjectPosition()[0]
+				
+				boolean xCollide = false;
+				boolean yCollide = false;
+				
+					
+					double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
+					double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
+					
+					if (compareX > xMinus && compareX < xPlus) {
+						xCollide = true;
+						//System.out.println("X COLLIDE");
+					}
+					
+					if (compareY > yMinus && compareY < yPlus) {
+						yCollide = true;
+						//System.out.println("Y COLLIDE");
+					}
+					
+					if (xCollide == true && yCollide == true) {
+						if (renderTempTiles.get(i) instanceof CollideItem) {
+							System.out.println("TEMP TILE COLLISION");
+							((CollideItem) renderTempTiles.get(i)).collision((Rat) renderRats.get(i2));
+						}
+					}
+					
+				
+			}
+		}
+		
+		
 		//goes through all rats and items and does executes their tick methods
 				for (int i = 0; i < renderRats.size(); i++) {
 					renderRats.get(i).tick();
@@ -249,7 +290,27 @@ public class Level {
 				for (int i = 0; i < renderItems.size(); i++) {
 					renderItems.get(i).tick();
 				}
+				
+				for (int i = 0; i < renderTempTiles.size(); i++) {
+					renderTempTiles.get(i).tick();
+				}
 		
+	}
+	
+	public void spawnTempTile(RenderObject tempTile) {
+		this.renderTempTiles.add(tempTile);
+	}
+	
+	public void despawnTempTile(RenderObject tempTile) {
+		for (int i = 0; i < renderTempTiles.size(); i++) {
+			if (renderTempTiles.get(i) == tempTile) {
+				renderTempTiles.remove(i);
+			}
+		}
+	}
+	
+	public ArrayList<RenderObject> getTempTiles() {
+		return this.renderTempTiles;
 	}
 	
 	/**
@@ -288,9 +349,11 @@ public class Level {
 		int x = (int) xIn;
 		int y = (int) yIn;
 		
-		System.out.println(tiles[y][x]);
+		System.out.println(x);
+		System.out.println(y);
+		System.out.println("---");
 		
-		if (tiles[y][x] == "G" || tiles[x][y] == "T") {
+		if (tiles[y][x] == "G" || tiles[y][x] == "T") {
 			return false;
 		}
 		
