@@ -5,6 +5,9 @@ import java.net.HttpURLConnection;
 
 public class MOTDGetter2 {
 
+	/**
+	 * @return String
+	 */
 	public static String getMessage() {
 		// TODO Auto-generated method stub
 		try {
@@ -20,6 +23,11 @@ public class MOTDGetter2 {
 			'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 	static int ALPHABET_LENGTH = 26;
 
+	/**
+	 * @param URL
+	 * @return String
+	 * @throws Exception
+	 */
 	// function which returns a String which was taken from a GET request of a web
 	// page.
 	public static String getRequest(String URL) throws Exception {
@@ -35,6 +43,10 @@ public class MOTDGetter2 {
 		}
 	}
 
+	/**
+	 * @return String
+	 * @throws Exception
+	 */
 	public static String MOTDGetter() throws Exception {
 		// need to make a HTTP request to get the puzzle string
 		try {
