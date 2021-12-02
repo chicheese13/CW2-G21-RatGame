@@ -196,7 +196,6 @@ public class GameConstructor extends Application {
 	 * this might cause the bad guys to move (by e.g., looping
 	 * over them all and calling their own tick method). 
 	 */
-	private int counter = 0;
 	public void tick() {
 		currentLevel.updateBoard();
 		//We then redraw the whole canvas.
@@ -515,10 +514,11 @@ public class GameConstructor extends Application {
 				
 				focusTileX = (int) x-offsetX;
 				focusTileY = (int) y-offsetY;
-			
-				//here we check if an item can be placed
+				
 				showAvailableTile = true;
-				if (currentLevel.isPlacable(x, y)) {
+			
+				
+				if (currentLevel.isPlacable(x, y) && event.getGestureSource() != draggableSignImage) {	
 					
 					availSprite = availableSprite;
 					
@@ -533,11 +533,6 @@ public class GameConstructor extends Application {
 						// Consume the event. This means we mark it as dealt with.
 						event.consume();
 					} else if (event.getGestureSource() == draggablePoisonImage) {
-						// Mark the drag event as acceptable by the canvas.
-						event.acceptTransferModes(TransferMode.ANY);
-						// Consume the event. This means we mark it as dealt with.
-						event.consume();
-					} else if (event.getGestureSource() == draggableSignImage) {
 						// Mark the drag event as acceptable by the canvas.
 						event.acceptTransferModes(TransferMode.ANY);
 						// Consume the event. This means we mark it as dealt with.
@@ -564,6 +559,12 @@ public class GameConstructor extends Application {
 						// Consume the event. This means we mark it as dealt with.
 						event.consume();
 					}
+				} else if (event.getGestureSource() == draggableSignImage && currentLevel.isPlaceableSign(x, y)) {
+					availSprite = availableSprite;
+					// Mark the drag event as acceptable by the canvas.
+					event.acceptTransferModes(TransferMode.ANY);
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
 				} else {
 					availSprite = unavailableSprite;
 				}

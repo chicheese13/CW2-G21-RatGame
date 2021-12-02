@@ -287,39 +287,11 @@ public class Level {
 		//need to check if there's any rat's colliding with that tile, or items and if the tile is grass or not
 		int x = (int) xIn;
 		int y = (int) yIn;
-		if (tiles[y][x] == "G") {
+		
+		System.out.println(tiles[y][x]);
+		
+		if (tiles[y][x] == "G" || tiles[x][y] == "T") {
 			return false;
-		}
-		
-		//check for collisions
-		double xMinus = xIn-0.5;
-		double yMinus = yIn-0.5;
-		double xPlus = xIn+0.5;
-		double yPlus = yIn+0.5;
-		
-		for (int i2 = 0; i2 < renderRats.size(); i2++) {
-			//testLevel.getRenderObjects().get(i).getObjectPosition()[0]
-			
-			boolean xCollide = false;
-			boolean yCollide = false;
-			
-				
-				double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
-				double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
-				
-				if (compareX > xMinus && compareX < xPlus) {
-					xCollide = true;
-					//System.out.println("X COLLIDE");
-				}
-				
-				if (compareY > yMinus && compareY < yPlus) {
-					yCollide = true;
-					//System.out.println("Y COLLIDE");
-				}
-				
-				if (xCollide == true && yCollide == true) {
-					return false;
-				}
 		}
 		
 		for (int i2 = 0; i2 < renderItems.size(); i2++) {
@@ -329,8 +301,54 @@ public class Level {
 			}
 		}
 		
-		
 		return true;
+	}
+	
+	public boolean isPlaceableSign(double xIn, double yIn) {
+		//check for collisions
+		int x = (int) xIn;
+		int y = (int) yIn;
+		if (tiles[y][x] == "G" || tiles[x][y] == "T") {
+			return false;
+		}
+		
+				double xMinus = xIn-0.5;
+				double yMinus = yIn-0.5;
+				double xPlus = xIn+0.5;
+				double yPlus = yIn+0.5;
+				
+				for (int i2 = 0; i2 < renderRats.size(); i2++) {
+					//testLevel.getRenderObjects().get(i).getObjectPosition()[0]
+					
+					boolean xCollide = false;
+					boolean yCollide = false;
+					
+						
+						double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
+						double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
+						
+						if (compareX > xMinus && compareX < xPlus) {
+							xCollide = true;
+							//System.out.println("X COLLIDE");
+						}
+						
+						if (compareY > yMinus && compareY < yPlus) {
+							yCollide = true;
+							//System.out.println("Y COLLIDE");
+						}
+						
+						if (xCollide == true && yCollide == true) {
+							return false;
+						}
+				}
+				
+				for (int i2 = 0; i2 < renderItems.size(); i2++) {
+					if (renderItems.get(i2).getObjectPosition()[0].doubleValue() == xIn
+						&& renderItems.get(i2).getObjectPosition()[1].doubleValue() == yIn) {
+							return false;
+					}
+				}
+				return true;
 	}
 	
 	/**
