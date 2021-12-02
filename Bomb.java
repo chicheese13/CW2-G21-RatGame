@@ -14,8 +14,8 @@ public class Bomb extends Item {
 	private int frameTime = 0;
 	private int pictureNumber = 1;
 	private int delayedPictureNumber = 4;
-
-
+	
+	
 	public Bomb(Position objectPosition, Level currentLevel) {
 		this.renderSprite = bomb;
 		this.objectPosition = objectPosition;

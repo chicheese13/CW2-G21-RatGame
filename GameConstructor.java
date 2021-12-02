@@ -305,7 +305,7 @@ public class GameConstructor extends Application {
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		//currentLevel.addRenderObject(new Sterilisation(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
+		currentLevel.spawnItem(new Sterilisation(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
 		//drawGame();
 	}
 	

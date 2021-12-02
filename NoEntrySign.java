@@ -10,7 +10,6 @@ public class NoEntrySign extends CollideItem {
 	public boolean ratStompsOnSign = false;
 	private int pictureNumber = 1;
 
-
 	public NoEntrySign(Position objectPosition, Level currentLevel) {
 		this.renderSprite = noEntrySign;
 		this.objectPosition = objectPosition;
@@ -26,28 +25,16 @@ public class NoEntrySign extends CollideItem {
 
 	// method that gets run each time a rat hits a sign
 	private void breakSign() {
-		if (signHealth > 0) {
 
+		if (signHealth > 1) {
 			signHealth--;
-
 			if (pictureNumber < NUMBER_OF_SIGN_FRAMES) {
 				pictureNumber++;
 				this.renderSprite = loadImage(pictureNumber);
 			}
-
 		} else {
-			
+			this.currentLevel.despawnItem(this);
 		}
-	}
-
-	// If rat stomps on a sign, it is being pushed back and it starts moving
-	// different direction (we need to code it)
-	public boolean ratStompsOnSign() {
-		// if (RenderObject.getObjectPosition() == Rat.getRatPosition()) {
-		// return true;
-		// } else {
-		return false;
-		// }
 	}
 
 	// gets the signs health
@@ -59,9 +46,13 @@ public class NoEntrySign extends CollideItem {
 
 	}
 
+	// If rat stomps on a sign, it is being pushed back and it starts moving
+	// different direction, the sign loses health points
 	public void collision(Object paramater) {
 		if (paramater instanceof Rat) {
 			((Rat) paramater).turnAround();
+			SoundClip signHit = new SoundClip("signHit" + pictureNumber);
+			signHit.play();
 			breakSign();
 		}
 	}
