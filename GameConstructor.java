@@ -269,13 +269,13 @@ public class GameConstructor extends Application {
 				tickCounter = 0;
 			}
 		} else if (gameStatus == "won") {
-			
+			this.currentLeaderboard.run(this.currentUser.getName(), this.currentLevel.getScore());
 			
 			//display win art
 			this.hasWon = true;
 			drawGame();
 		} else if (gameStatus == "lost") {
-			
+			this.currentLeaderboard.run(this.currentUser.getName(), this.currentLevel.getScore());
 			
 			//game is lost, need to append score to leaderboard
 			//display lost game screen
