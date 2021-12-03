@@ -272,7 +272,7 @@ public class RatGameApp extends Application {
      * readUserFile takes all the profiles that have been created in the file and
      * populates the profiles array list with all of these users
      * 
-     * @param file the file from which user details are taken
+     * @param file the users.txt file
      */
     private static void readUserFile(File file) {
         ArrayList<Profile> tempProfiles = new ArrayList<>();
@@ -295,8 +295,8 @@ public class RatGameApp extends Application {
      * writeToUserFile takes the newly created user profile and appends it to the
      * end of the users.txt file
      * 
-     * @param file
-     * @param name
+     * @param file    the users.txt file
+     * @param newUser the profile to be written to the file
      */
     private static void writeToUserFile(File file, Profile newUser) {
         try (FileWriter fw = new FileWriter(file, true);

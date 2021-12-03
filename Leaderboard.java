@@ -142,12 +142,13 @@ public class Leaderboard {
     }
 
     // runs it
-    public void run() {
+    public PriorityQueue<LeaderboardElement> run() {
         readBoard();
         populateLevelScores();
-        displayQueue();
+        PriorityQueue<LeaderboardElement> tempQueue = new PriorityQueue<>();
         updateAllScores();
         writeBoard();
+        return tempQueue;
     }
 
 }
