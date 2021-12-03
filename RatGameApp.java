@@ -65,6 +65,7 @@ public class RatGameApp extends Application {
     private Pane root = new Pane();
     private VBox menuBox = new VBox(-5);
     private Line line;
+    private static Leaderboard board;
 
     /**
      * createContent is the method that
@@ -222,7 +223,7 @@ public class RatGameApp extends Application {
 
             // launch game.
             System.out.println("Start the game here");
-            GameConstructor playGame = new GameConstructor(selectedLevel);
+            GameConstructor playGame = new GameConstructor(selectedLevel, activeUser, board);
             playGame.startGame();
 
             // TODO: Add method to show leaderboard
@@ -287,7 +288,7 @@ public class RatGameApp extends Application {
      */
     public static void main(String[] args) {
         readUserFile(userFile);
-        Leaderboard board = new Leaderboard(1);
+        board = new Leaderboard(1);
         board.run();
         launch(args);
     }

@@ -93,12 +93,15 @@ public class GameConstructor extends Application {
 	private boolean hasWon = false;
 	private boolean hasLost = false;
 	
+	private Leaderboard currentLeaderboard;
+	private Profile currentUser;
 
-	public GameConstructor(int levelNumber) {
+	public GameConstructor(int levelNumber, Profile currentProfile, Leaderboard currentBoard) {
 		this.items = new ItemManager();
 		this.currentLevelNumber = levelNumber;
 		this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt");
-
+		this.currentLeaderboard = currentBoard;
+		this.currentUser = currentProfile;
 	}
 
 	public void startGame() {
@@ -203,7 +206,7 @@ public class GameConstructor extends Application {
 	}	
 	
 
-	}
+	
 
 	public void processKeyEvent(KeyEvent event) {
 		// We change the behaviour depending on the actual key that was pressed.
@@ -266,15 +269,22 @@ public class GameConstructor extends Application {
 				tickCounter = 0;
 			}
 		} else if (gameStatus == "won") {
+			
+			
 			//display win art
 			this.hasWon = true;
 			drawGame();
 		} else if (gameStatus == "lost") {
+			
+			
 			//game is lost, need to append score to leaderboard
 			//display lost game screen
 			System.out.println("GAME IS LOST");
 			this.hasLost = true;
 			drawGame();
+			
+			
+			
 		currentLevel.updateBoard();
 		// We then redraw the whole canvas.
 		drawGame();
@@ -284,6 +294,7 @@ public class GameConstructor extends Application {
 			showAvailableTile = false;
 			tickCounter = 0;
 		}
+	}
 		
 	}
 

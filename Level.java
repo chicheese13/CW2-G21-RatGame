@@ -136,6 +136,10 @@ public class Level {
 		
 	}
 	
+	public int getScore() {
+		return this.score;
+	}
+	
 	public int getOffsetX() {
 		return this.offsetX;
 	}
