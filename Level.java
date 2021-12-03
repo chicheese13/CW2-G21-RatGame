@@ -136,6 +136,10 @@ public class Level {
 		
 	}
 	
+	public int getScore() {
+		return this.score;
+	}
+	
 	public int getOffsetX() {
 		return this.offsetX;
 	}
@@ -176,13 +180,30 @@ public class Level {
 		return this.renderItems;
 	}
 	
+	public String getGameStatus() {
+		int ratCount = 0;
+		for (int i = 0; i < renderRats.size(); i++) {
+			if (renderRats.get(i) instanceof NormalRat) {
+				ratCount++;
+			}
+		}
+		
+		if (ratCount >= maxRats) {
+			return "lost";
+		} else if (ratCount == 0) {
+			return "won";
+		}
+		
+		return "inprogress";
+		
+	}
+	
 	/**
 	 * Updates board
 	 */
 	public void updateBoard() {
-		//happens every tick?
+		//checks if the game is lost
 		
-		//Handles collisions between Rats and Rats
 		
 		
 		
@@ -535,5 +556,6 @@ public class Level {
 	public int getItemInterval() {
 		return this.ITEM_GAIN_INTERVAL;
 	}
+		
 	
 }

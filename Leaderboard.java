@@ -142,12 +142,15 @@ public class Leaderboard {
     }
 
     // runs it
-    public void run() {
+    public PriorityQueue<LeaderboardElement> run(String name, int score) {
         readBoard();
         populateLevelScores();
-        displayQueue();
+        LeaderboardElement newScore = new LeaderboardElement(name, score, level);
+        levelScores.add(newScore);
+        PriorityQueue<LeaderboardElement> tempQueue = new PriorityQueue<>();
         updateAllScores();
         writeBoard();
+        return tempQueue;
     }
 
 }
