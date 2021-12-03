@@ -249,7 +249,8 @@ public class GameConstructor extends Application {
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
-
+		
+		//Check if there are more than 0 of the item in the inventory. If not don't let the user drag the item.
 		if (items.isItemDepleted("Bomb")) {
 			System.out.println("Amount is 0");
 		} else {
@@ -265,8 +266,14 @@ public class GameConstructor extends Application {
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
-
-		currentLevel.spawnItem(new Gas(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+		
+		//Check if there are more than 0 of the item in the inventory. If not don't let the user drag the item.
+		if (items.isItemDepleted("Gas")) {
+			System.out.println("Amount is 0");
+		} else {
+			currentLevel.spawnItem(new Gas(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+			items.tryReduceItem("Gas");
+		}
 		// drawGame();
 	}
 
@@ -277,8 +284,14 @@ public class GameConstructor extends Application {
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
-
-		currentLevel.spawnItem(new Poison(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+		
+		//Check if there are more than 0 of the item in the inventory. If not don't let the user drag the item.
+		if (items.isItemDepleted("Poison")) {
+			System.out.println("Amount is 0");
+		} else {
+			currentLevel.spawnItem(new Poison(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+			items.tryReduceItem("Poison");
+		}
 		// drawGame();
 	}
 
@@ -289,8 +302,14 @@ public class GameConstructor extends Application {
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
-
-		currentLevel.spawnItem(new NoEntrySign(new Position(new BigDecimal(x), new BigDecimal(y)), currentLevel));
+		
+		//Check if there are more than 0 of the item in the inventory. If not don't let the user drag the item.
+		if (items.isItemDepleted("NoEntrySign")) {
+			System.out.println("Amount is 0");
+		} else {
+			currentLevel.spawnItem(new NoEntrySign(new Position(new BigDecimal(x), new BigDecimal(y)), currentLevel));
+			items.tryReduceItem("NoEntrySign");
+		}
 		// drawGame();
 	}
 
@@ -301,8 +320,14 @@ public class GameConstructor extends Application {
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
-
-		currentLevel.spawnRat(new DeathRat(new Position(new BigDecimal(x), new BigDecimal(y)), currentLevel));
+		
+		//Check if there are more than 0 of the item in the inventory. If not don't let the user drag the item.
+		if (items.isItemDepleted("DeathRat")) {
+			System.out.println("Amount is 0");
+		} else {
+			currentLevel.spawnRat(new DeathRat(new Position(new BigDecimal(x), new BigDecimal(y)), currentLevel));
+			items.tryReduceItem("DeathRat");
+		}
 		// drawGame();
 	}
 
@@ -313,9 +338,15 @@ public class GameConstructor extends Application {
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
-
+		
+		//Check if there are more than 0 of the item in the inventory. If not don't let the user drag the item.
+		if (items.isItemDepleted("FGenderChange")) {
+			System.out.println("Amount is 0");
+		} else {
 		currentLevel.spawnItem(
-				new FemaleSexChange(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+			new FemaleSexChange(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+			items.tryReduceItem("FGenderChange");
+		}
 		// drawGame();
 	}
 
@@ -326,9 +357,14 @@ public class GameConstructor extends Application {
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
-
-		currentLevel
-				.spawnItem(new MaleSexChange(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+		
+		//Check if there are more than 0 of the item in the inventory. If not don't let the user drag the item.
+		if (items.isItemDepleted("MgenderChange")) {
+			System.out.println("Amount is 0");
+		} else {
+			currentLevel.spawnItem(new MaleSexChange(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+			items.tryReduceItem("MgenderChange");
+		}
 		// drawGame();
 	}
 
@@ -339,9 +375,14 @@ public class GameConstructor extends Application {
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
-
-		currentLevel
-				.spawnItem(new Sterilisation(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+		
+		//Check if there are more than 0 of the item in the inventory. If not don't let the user drag the item.
+		if (items.isItemDepleted("Sterilisation")) {
+			System.out.println("Amount is 0");
+		} else {
+			currentLevel.spawnItem(new Sterilisation(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+			items.tryReduceItem("Sterilisation");
+		}
 		// drawGame();
 	}
 
@@ -374,13 +415,13 @@ public class GameConstructor extends Application {
 				// We do not use the transfer mode (this can be used to indicate different forms
 				// of drags operations, for example, moving files or copying files).
 				if(items.isItemDepleted("Bomb") == false) {
-				Dragboard db = draggableBombImage.startDragAndDrop(TransferMode.ANY);
-				ClipboardContent content = new ClipboardContent();
-				content.putString("Hello");
-				db.setContent(content);
-				event.consume();
+					Dragboard db = draggableBombImage.startDragAndDrop(TransferMode.ANY);
+					ClipboardContent content = new ClipboardContent();
+					content.putString("Hello");
+					db.setContent(content);
+					event.consume();
 				} else {
-				
+					
 				}
 
 				// We have to put some content in the clipboard of the drag event.
@@ -398,19 +439,24 @@ public class GameConstructor extends Application {
 
 		draggableGasImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				// Mark the drag as started.
-				// We do not use the transfer mode (this can be used to indicate different forms
-				// of drags operations, for example, moving files or copying files).
-				Dragboard db = draggableGasImage.startDragAndDrop(TransferMode.ANY);
-
-				// We have to put some content in the clipboard of the drag event.
-				// We do not use this, but we could use it to store extra data if we wished.
-				ClipboardContent content = new ClipboardContent();
-				content.putString("Hello");
-				db.setContent(content);
-
-				// Consume the event. This means we mark it as dealt with.
-				event.consume();
+				
+				if(items.isItemDepleted("Gas") == false) {
+					// Mark the drag as started.
+					// We do not use the transfer mode (this can be used to indicate different forms
+					// of drags operations, for example, moving files or copying files).
+					Dragboard db = draggableGasImage.startDragAndDrop(TransferMode.ANY);
+	
+					// We have to put some content in the clipboard of the drag event.
+					// We do not use this, but we could use it to store extra data if we wished.
+					ClipboardContent content = new ClipboardContent();
+					content.putString("Hello");
+					db.setContent(content);
+	
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
+				} else {
+					
+				}
 			}
 		});
 
@@ -420,19 +466,24 @@ public class GameConstructor extends Application {
 
 		draggablePoisonImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				// Mark the drag as started.
-				// We do not use the transfer mode (this can be used to indicate different forms
-				// of drags operations, for example, moving files or copying files).
-				Dragboard db = draggablePoisonImage.startDragAndDrop(TransferMode.ANY);
-
-				// We have to put some content in the clipboard of the drag event.
-				// We do not use this, but we could use it to store extra data if we wished.
-				ClipboardContent content = new ClipboardContent();
-				content.putString("Hello");
-				db.setContent(content);
-
-				// Consume the event. This means we mark it as dealt with.
-				event.consume();
+				
+				if(items.isItemDepleted("Poison") == false) {
+					// Mark the drag as started.
+					// We do not use the transfer mode (this can be used to indicate different forms
+					// of drags operations, for example, moving files or copying files).
+					Dragboard db = draggablePoisonImage.startDragAndDrop(TransferMode.ANY);
+	
+					// We have to put some content in the clipboard of the drag event.
+					// We do not use this, but we could use it to store extra data if we wished.
+					ClipboardContent content = new ClipboardContent();
+					content.putString("Hello");
+					db.setContent(content);
+	
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
+				} else {
+					
+				}
 			}
 		});
 
@@ -442,19 +493,24 @@ public class GameConstructor extends Application {
 
 		draggableSignImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				// Mark the drag as started.
-				// We do not use the transfer mode (this can be used to indicate different forms
-				// of drags operations, for example, moving files or copying files).
-				Dragboard db = draggableSignImage.startDragAndDrop(TransferMode.ANY);
-
-				// We have to put some content in the clipboard of the drag event.
-				// We do not use this, but we could use it to store extra data if we wished.
-				ClipboardContent content = new ClipboardContent();
-				content.putString("Hello");
-				db.setContent(content);
-
-				// Consume the event. This means we mark it as dealt with.
-				event.consume();
+				
+				if(items.isItemDepleted("NoEntrySign") == false) {
+					// Mark the drag as started.
+					// We do not use the transfer mode (this can be used to indicate different forms
+					// of drags operations, for example, moving files or copying files).
+					Dragboard db = draggableSignImage.startDragAndDrop(TransferMode.ANY);
+	
+					// We have to put some content in the clipboard of the drag event.
+					// We do not use this, but we could use it to store extra data if we wished.
+					ClipboardContent content = new ClipboardContent();
+					content.putString("Hello");
+					db.setContent(content);
+	
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
+				} else {
+					
+				}
 			}
 		});
 
@@ -464,19 +520,24 @@ public class GameConstructor extends Application {
 
 		draggableDeathRatImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				// Mark the drag as started.
-				// We do not use the transfer mode (this can be used to indicate different forms
-				// of drags operations, for example, moving files or copying files).
-				Dragboard db = draggableDeathRatImage.startDragAndDrop(TransferMode.ANY);
-
-				// We have to put some content in the clipboard of the drag event.
-				// We do not use this, but we could use it to store extra data if we wished.
-				ClipboardContent content = new ClipboardContent();
-				content.putString("Hello");
-				db.setContent(content);
-
-				// Consume the event. This means we mark it as dealt with.
-				event.consume();
+				
+				if(items.isItemDepleted("DeathRat") == false) {
+					// Mark the drag as started.
+					// We do not use the transfer mode (this can be used to indicate different forms
+					// of drags operations, for example, moving files or copying files).
+					Dragboard db = draggableDeathRatImage.startDragAndDrop(TransferMode.ANY);
+	
+					// We have to put some content in the clipboard of the drag event.
+					// We do not use this, but we could use it to store extra data if we wished.
+					ClipboardContent content = new ClipboardContent();
+					content.putString("Hello");
+					db.setContent(content);
+	
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
+				} else {
+					
+				}
 			}
 		});
 
@@ -486,19 +547,24 @@ public class GameConstructor extends Application {
 
 		draggableFemaleSexChangerImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				// Mark the drag as started.
-				// We do not use the transfer mode (this can be used to indicate different forms
-				// of drags operations, for example, moving files or copying files).
-				Dragboard db = draggableFemaleSexChangerImage.startDragAndDrop(TransferMode.ANY);
-
-				// We have to put some content in the clipboard of the drag event.
-				// We do not use this, but we could use it to store extra data if we wished.
-				ClipboardContent content = new ClipboardContent();
-				content.putString("Hello");
-				db.setContent(content);
-
-				// Consume the event. This means we mark it as dealt with.
-				event.consume();
+				
+				if(items.isItemDepleted("FGenderChange") == false) {
+					// Mark the drag as started.
+					// We do not use the transfer mode (this can be used to indicate different forms
+					// of drags operations, for example, moving files or copying files).
+					Dragboard db = draggableFemaleSexChangerImage.startDragAndDrop(TransferMode.ANY);
+	
+					// We have to put some content in the clipboard of the drag event.
+					// We do not use this, but we could use it to store extra data if we wished.
+					ClipboardContent content = new ClipboardContent();
+					content.putString("Hello");
+					db.setContent(content);
+	
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
+				} else {
+					
+				}
 			}
 		});
 
@@ -508,20 +574,24 @@ public class GameConstructor extends Application {
 
 		draggableMaleSexChangerImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				// Mark the drag as started.
-				System.out.println("TEST");
-				// We do not use the transfer mode (this can be used to indicate different forms
-				// of drags operations, for example, moving files or copying files).
-				Dragboard db = draggableMaleSexChangerImage.startDragAndDrop(TransferMode.ANY);
-
-				// We have to put some content in the clipboard of the drag event.
-				// We do not use this, but we could use it to store extra data if we wished.
-				ClipboardContent content = new ClipboardContent();
-				content.putString("Hello");
-				db.setContent(content);
-
-				// Consume the event. This means we mark it as dealt with.
-				event.consume();
+				
+				if(items.isItemDepleted("MgenderChange") == false) {
+					// Mark the drag as started.
+					// We do not use the transfer mode (this can be used to indicate different forms
+					// of drags operations, for example, moving files or copying files).
+					Dragboard db = draggableMaleSexChangerImage.startDragAndDrop(TransferMode.ANY);
+	
+					// We have to put some content in the clipboard of the drag event.
+					// We do not use this, but we could use it to store extra data if we wished.
+					ClipboardContent content = new ClipboardContent();
+					content.putString("Hello");
+					db.setContent(content);
+	
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
+				} else {
+					
+				}
 			}
 		});
 
@@ -530,20 +600,25 @@ public class GameConstructor extends Application {
 		toolbar.getChildren().add(draggableSterilisationImage);
 
 		draggableSterilisationImage.setOnDragDetected(new EventHandler<MouseEvent>() {
-			public void handle(MouseEvent event) {
-				// Mark the drag as started.
-				// We do not use the transfer mode (this can be used to indicate different forms
-				// of drags operations, for example, moving files or copying files).
-				Dragboard db = draggableSterilisationImage.startDragAndDrop(TransferMode.ANY);
-
-				// We have to put some content in the clipboard of the drag event.
-				// We do not use this, but we could use it to store extra data if we wished.
-				ClipboardContent content = new ClipboardContent();
-				content.putString("Hello");
-				db.setContent(content);
-
-				// Consume the event. This means we mark it as dealt with.
-				event.consume();
+				public void handle(MouseEvent event) {
+					
+					if(items.isItemDepleted("Sterilisation") == false) {
+					// Mark the drag as started.
+					// We do not use the transfer mode (this can be used to indicate different forms
+					// of drags operations, for example, moving files or copying files).
+					Dragboard db = draggableSterilisationImage.startDragAndDrop(TransferMode.ANY);
+	
+					// We have to put some content in the clipboard of the drag event.
+					// We do not use this, but we could use it to store extra data if we wished.
+					ClipboardContent content = new ClipboardContent();
+					content.putString("Hello");
+					db.setContent(content);
+	
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
+				} else {
+					
+				}
 			}
 		});
 
