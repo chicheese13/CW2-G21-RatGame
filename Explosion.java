@@ -26,6 +26,9 @@ public class Explosion extends CollideItem {
 	public void collision(Object collidedObject) {
 		if (collidedObject instanceof NormalRat) {
 			((NormalRat) collidedObject).ratDeath();
+		//Checks for every item but Gas (because it broken) and despawns it	
+		} else if ((collidedObject instanceof Item) && ((collidedObject instanceof Gas) == false)) {
+			((Item) collidedObject).currentLevel.despawnItem((Item) collidedObject);
 		}
 	}
 

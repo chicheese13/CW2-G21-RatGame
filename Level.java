@@ -320,6 +320,36 @@ public class Level {
 					
 				
 			}
+			//For temp tiles (such as explosion tiles) detecting other items
+			for (int i2 = 0; i2 < renderItems.size(); i2++) {
+				//testLevel.getRenderObjects().get(i).getObjectPosition()[0]
+				
+				boolean xCollide = false;
+				boolean yCollide = false;
+				
+					
+					double compareX = renderItems.get(i2).getObjectPosition()[0].doubleValue();
+					double compareY = renderItems.get(i2).getObjectPosition()[1].doubleValue();
+					
+					if (compareX > xMinus && compareX < xPlus) {
+						xCollide = true;
+						//System.out.println("X COLLIDE");
+					}
+					
+					if (compareY > yMinus && compareY < yPlus) {
+						yCollide = true;
+						//System.out.println("Y COLLIDE");
+					}
+					
+					if (xCollide == true && yCollide == true) {
+						if (renderTempTiles.get(i) instanceof CollideItem) {
+							System.out.println("TEMP TILE COLLISION");
+							((CollideItem) renderTempTiles.get(i)).collision((Item) renderItems.get(i2));
+						}
+					}
+					
+				
+			}
 		}
 		
 		

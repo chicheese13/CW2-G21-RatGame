@@ -33,6 +33,10 @@ public class Gas extends CollideItem {
 
 	@Override
 	public void collision(Object collidedObject) {
+		
+		if (collidedObject instanceof Explosion) {
+			this.currentLevel.despawnItem(this);
+		}
 		// TODO Auto-generated method stub
 		
 	}
