@@ -14,7 +14,7 @@ public class ItemManager {
 		inventory.put("Poison",4);
 		inventory.put("Gas",4);
 		inventory.put("Sterilisation",4);
-		inventory.put("MgenderChange",4);
+		inventory.put("MGenderChange",4);
 		inventory.put("FGenderChange",4);
 		inventory.put("DeathRat",4);
 		inventory.put("NoEntrySign",4);
@@ -26,8 +26,8 @@ public class ItemManager {
 		inventory.replace("Poison",4);
 		inventory.replace("Gas",4);
 		inventory.replace("Sterile",4);
-		inventory.replace("MGChange",4);
-		inventory.replace("FGChange",4);
+		inventory.replace("MGenderChange",4);
+		inventory.replace("FGenderChange",4);
 		inventory.replace("DeathRat",4);
 		inventory.replace("NoEntrySign",4);
 	}
