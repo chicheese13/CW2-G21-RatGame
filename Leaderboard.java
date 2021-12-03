@@ -145,7 +145,6 @@ public class Leaderboard {
     public void run() {
         readBoard();
         populateLevelScores();
-        addScore("Gareth", 70);
         displayQueue();
         updateAllScores();
         writeBoard();

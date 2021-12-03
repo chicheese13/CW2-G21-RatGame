@@ -56,12 +56,10 @@ public class GameConstructor extends Application {
 	// The dimensions of the canvas
 	private static final int CANVAS_WIDTH = 1250;
 	private static final int CANVAS_HEIGHT = 600;
-	
-	
+
 	private Timeline tickTimeline;
 	private Canvas canvas;
-	
-	
+
 	private Image bomb = new Image("/items/bomb.png");
 	private Image gas = new Image("/items/gas.png");
 	private Image poison = new Image("/items/poison.png");
@@ -70,11 +68,11 @@ public class GameConstructor extends Application {
 	private Image maleSexChanger = new Image("/items/malesexchanger.png");
 	private Image femaleSexChanger = new Image("/items/femalesexchanger.png");
 	private Image sterilisation = new Image("/items/sterilisation.png");
-	
+
 	private Image grass = new Image("TestTextures/grass.png");
 	private Image path = new Image("TestTextures/path.png");
 	private Image tunnel = new Image("TestTextures/tunnel.png");
-	
+
 	private Image availSprite;
 	private Image availableSprite = new Image("Textures/available.png");
 	private Image unavailableSprite = new Image("Textures/unavailable.png");
@@ -83,23 +81,26 @@ public class GameConstructor extends Application {
 	
 	private Image gameWonScreen = new Image("Textures/game-won.png");
 	private Image gameLostScreen = new Image("Textures/game-over.png");
-	
+
+	private ItemManager items;
 	private int currentLevelNumber;
-	
+
 	private Stage gameStage = new Stage();
-	
+
 	private Level currentLevel;
 	private boolean showAvailableTile = false;
 	private int tickCounter = 0;
 	private boolean hasWon = false;
 	private boolean hasLost = false;
 	
+
 	public GameConstructor(int levelNumber) {
+		this.items = new ItemManager();
 		this.currentLevelNumber = levelNumber;
 		this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt");
-		
+
 	}
-	
+
 	public void startGame() {
 		this.start(gameStage);
 	}
@@ -110,21 +111,21 @@ public class GameConstructor extends Application {
 	 * @param primaryStage The stage that is to be used for the application.
 	 */
 	public void start(Stage primaryStage) {
-		//creates a GUI and starts the tick counter. 
+		// creates a GUI and starts the tick counter.
 		Pane root = buildGUI();
 
 		Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-				
+
 		scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> processKeyEvent(event));
-	
+
 		tickTimeline = new Timeline(new KeyFrame(Duration.millis(15), event -> tick()));
-				
+
 		tickTimeline.setCycleCount(Animation.INDEFINITE);
-				
+
 		tickTimeline.play();
-		
-		//this.levelMusic = new LevelMusic("level-one");
-		
+
+		// this.levelMusic = new LevelMusic("level-one");
+
 		drawGame();
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -135,44 +136,56 @@ public class GameConstructor extends Application {
 	 * and rats.
 	 */
 	/**
-	 * Draw the game on the canvas.
-	 * This creates a frame, with all the tiles, items and rats.
+	 * Draw the game on the canvas. This creates a frame, with all the tiles, items
+	 * and rats.
 	 */
 	public void drawGame() {
-		
+
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		gc.setFill(Color.GRAY);
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		
-		//we need to draw the game
-		
-		for (int y = 0; y < (CANVAS_HEIGHT/GRID_CELL_WIDTH); y++) {
-			for (int x = 0; x < (CANVAS_WIDTH/GRID_CELL_HEIGHT); x++) {
-				gc.drawImage(currentLevel.getRenderTiles()[y+currentLevel.getOffsetY()][x+currentLevel.getOffsetX()].getImage(), x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
+
+		// we need to draw the game
+
+		for (int y = 0; y < (CANVAS_HEIGHT / GRID_CELL_WIDTH); y++) {
+			for (int x = 0; x < (CANVAS_WIDTH / GRID_CELL_HEIGHT); x++) {
+				gc.drawImage(currentLevel.getRenderTiles()[y + currentLevel.getOffsetY()][x + currentLevel.getOffsetX()]
+						.getImage(), x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
 			}
 		}
-		
-		//we need to draw the items
+
+		// we need to draw the items
 		for (int i = 0; i < currentLevel.getItems().size(); i++) {
-			gc.drawImage(currentLevel.getItems().get(i).getSprite(), (currentLevel.getItems().get(i).getObjectPosition()[0].doubleValue()-currentLevel.getOffsetX())  * GRID_CELL_WIDTH, (currentLevel.getItems().get(i).getObjectPosition()[1].doubleValue()-currentLevel.getOffsetY()) * GRID_CELL_HEIGHT);
+			gc.drawImage(currentLevel.getItems().get(i).getSprite(),
+					(currentLevel.getItems().get(i).getObjectPosition()[0].doubleValue() - currentLevel.getOffsetX())
+							* GRID_CELL_WIDTH,
+					(currentLevel.getItems().get(i).getObjectPosition()[1].doubleValue() - currentLevel.getOffsetY())
+							* GRID_CELL_HEIGHT);
 		}
-		
-		//we need to draw the rats
-		
+
+		// we need to draw the rats
+
 		for (int i = 0; i < currentLevel.getRats().size(); i++) {
-			gc.drawImage(currentLevel.getRats().get(i).getSprite(), (currentLevel.getRats().get(i).getObjectPosition()[0].doubleValue()-currentLevel.getOffsetX())  * GRID_CELL_WIDTH, (currentLevel.getRats().get(i).getObjectPosition()[1].doubleValue()-currentLevel.getOffsetY()) * GRID_CELL_HEIGHT);
+			gc.drawImage(currentLevel.getRats().get(i).getSprite(),
+					(currentLevel.getRats().get(i).getObjectPosition()[0].doubleValue() - currentLevel.getOffsetX())
+							* GRID_CELL_WIDTH,
+					(currentLevel.getRats().get(i).getObjectPosition()[1].doubleValue() - currentLevel.getOffsetY())
+							* GRID_CELL_HEIGHT);
 		}
-		
-		
-		//need to draw the temp tiles
+
+		// need to draw the temp tiles
 		for (int i = 0; i < currentLevel.getTempTiles().size(); i++) {
-			gc.drawImage(currentLevel.getTempTiles().get(i).getSprite(), (currentLevel.getTempTiles().get(i).getObjectPosition()[0].doubleValue()-currentLevel.getOffsetX())  * GRID_CELL_WIDTH, (currentLevel.getTempTiles().get(i).getObjectPosition()[1].doubleValue()-currentLevel.getOffsetY()) * GRID_CELL_HEIGHT);
+			gc.drawImage(currentLevel.getTempTiles().get(i).getSprite(),
+					(currentLevel.getTempTiles().get(i).getObjectPosition()[0].doubleValue()
+							- currentLevel.getOffsetX()) * GRID_CELL_WIDTH,
+					(currentLevel.getTempTiles().get(i).getObjectPosition()[1].doubleValue()
+							- currentLevel.getOffsetY()) * GRID_CELL_HEIGHT);
 		}
-		
-		//we need to draw the tunnels
-		
-		//draw availability spirte when dragging
+
+		// we need to draw the tunnels
+
+		// draw availability spirte when dragging
 		if (showAvailableTile) {
 			gc.drawImage(availSprite, focusTileX * GRID_CELL_WIDTH, focusTileY * GRID_CELL_HEIGHT);
 		}
@@ -189,47 +202,53 @@ public class GameConstructor extends Application {
 		}
 	}	
 	
+
+	}
+
 	public void processKeyEvent(KeyEvent event) {
 		// We change the behaviour depending on the actual key that was pressed.
-		switch (event.getCode()) {			
-		    case RIGHT:
-		    	// Right key was pressed. So move the player right by one cell.
-		    	if (currentLevel.getOffsetX() < (currentLevel.getRenderTiles()[0].length) - (CANVAS_WIDTH / GRID_CELL_WIDTH)) {
-		    		currentLevel.setOffsetX(currentLevel.getOffsetX()+1);
-		    	}
-	        	break;
-		    case UP:
-		    	if (currentLevel.getOffsetY() > 0) {
-		    		currentLevel.setOffsetY(currentLevel.getOffsetY()-1);
-		    	}
-		    	break;
-		    case DOWN: 
-		    	if (currentLevel.getOffsetY() < (currentLevel.getRenderTiles().length) - (CANVAS_HEIGHT / GRID_CELL_HEIGHT)) {
-		    		currentLevel.setOffsetY(currentLevel.getOffsetY()+1);;
-		    	}	
-		    	break;
-		    case LEFT:
-		    	if (currentLevel.getOffsetX() > 0) {
-		    		currentLevel.setOffsetX(currentLevel.getOffsetX()-1);
-		    	}
-		    	break;
-	        default:
-	        	// Do nothing for all other keys.
-	        	break;
+		switch (event.getCode()) {
+		case RIGHT:
+			// Right key was pressed. So move the player right by one cell.
+			if (currentLevel.getOffsetX() < (currentLevel.getRenderTiles()[0].length)
+					- (CANVAS_WIDTH / GRID_CELL_WIDTH)) {
+				currentLevel.setOffsetX(currentLevel.getOffsetX() + 1);
+			}
+			break;
+		case UP:
+			if (currentLevel.getOffsetY() > 0) {
+				currentLevel.setOffsetY(currentLevel.getOffsetY() - 1);
+			}
+			break;
+		case DOWN:
+			if (currentLevel.getOffsetY() < (currentLevel.getRenderTiles().length)
+					- (CANVAS_HEIGHT / GRID_CELL_HEIGHT)) {
+				currentLevel.setOffsetY(currentLevel.getOffsetY() + 1);
+				;
+			}
+			break;
+		case LEFT:
+			if (currentLevel.getOffsetX() > 0) {
+				currentLevel.setOffsetX(currentLevel.getOffsetX() - 1);
+			}
+			break;
+		default:
+			// Do nothing for all other keys.
+			break;
 		}
-		
+
 		// Redraw game as the player may have moved.
 		drawGame();
-		
-		// Consume the event. This means we mark it as dealt with. This stops other GUI nodes (buttons etc) responding to it.
+
+		// Consume the event. This means we mark it as dealt with. This stops other GUI
+		// nodes (buttons etc) responding to it.
 		event.consume();
 	}
-	
+
 	/**
-	 * This method is called periodically by the tick timeline
-	 * and would for, example move, perform logic in the game,
-	 * this might cause the bad guys to move (by e.g., looping
-	 * over them all and calling their own tick method). 
+	 * This method is called periodically by the tick timeline and would for,
+	 * example move, perform logic in the game, this might cause the bad guys to
+	 * move (by e.g., looping over them all and calling their own tick method).
 	 */
 	public void tick() {
 		
@@ -256,106 +275,119 @@ public class GameConstructor extends Application {
 			System.out.println("GAME IS LOST");
 			this.hasLost = true;
 			drawGame();
+		currentLevel.updateBoard();
+		// We then redraw the whole canvas.
+		drawGame();
+
+		tickCounter++;
+		if (tickCounter == 66) {
+			showAvailableTile = false;
+			tickCounter = 0;
 		}
 		
 	}
 
 	public void bombDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+currentLevel.getOffsetX();
-		double y = (Math.floor((event.getY()) / 50))+currentLevel.getOffsetY();
+		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
+		double y = (Math.floor((event.getY()) / 50)) + currentLevel.getOffsetY();
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 
-		currentLevel.spawnItem(new Bomb(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
-		//drawGame();
+		if (items.isItemDepleted("Bomb")) {
+			System.out.println("Amount is 0");
+		} else {
+			currentLevel.spawnItem(new Bomb(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+			items.tryReduceItem("Bomb");
+		}
 	}
-	
+
 	public void gasDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+currentLevel.getOffsetX();
-		double y = (Math.floor((event.getY()) / 50))+currentLevel.getOffsetY();
+		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
+		double y = (Math.floor((event.getY()) / 50)) + currentLevel.getOffsetY();
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		currentLevel.spawnItem(new Gas(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
-		//drawGame();
+		currentLevel.spawnItem(new Gas(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+		// drawGame();
 	}
-	
+
 	public void poisonDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+currentLevel.getOffsetX();
-		double y = (Math.floor((event.getY()) / 50))+currentLevel.getOffsetY();
+		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
+		double y = (Math.floor((event.getY()) / 50)) + currentLevel.getOffsetY();
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		currentLevel.spawnItem(new Poison(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
-		//drawGame();
+		currentLevel.spawnItem(new Poison(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+		// drawGame();
 	}
-	
+
 	public void signDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+currentLevel.getOffsetX();
-		double y = (Math.floor((event.getY()) / 50))+currentLevel.getOffsetY();
+		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
+		double y = (Math.floor((event.getY()) / 50)) + currentLevel.getOffsetY();
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
 		currentLevel.spawnItem(new NoEntrySign(new Position(new BigDecimal(x), new BigDecimal(y)), currentLevel));
-		//drawGame();
+		// drawGame();
 	}
-	
+
 	public void deathRatDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+currentLevel.getOffsetX();
-		double y = (Math.floor((event.getY()) / 50))+currentLevel.getOffsetY();
+		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
+		double y = (Math.floor((event.getY()) / 50)) + currentLevel.getOffsetY();
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
 		currentLevel.spawnRat(new DeathRat(new Position(new BigDecimal(x), new BigDecimal(y)), currentLevel));
-		//drawGame();
+		// drawGame();
 	}
-	
+
 	public void femaleSexChangerDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+currentLevel.getOffsetX();
-		double y = (Math.floor((event.getY()) / 50))+currentLevel.getOffsetY();
+		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
+		double y = (Math.floor((event.getY()) / 50)) + currentLevel.getOffsetY();
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		currentLevel.spawnItem(new FemaleSexChange(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
-		//drawGame();
+		currentLevel.spawnItem(
+				new FemaleSexChange(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+		// drawGame();
 	}
-	
+
 	public void maleSexChangerDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+currentLevel.getOffsetX();
-		double y = (Math.floor((event.getY()) / 50))+currentLevel.getOffsetY();
+		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
+		double y = (Math.floor((event.getY()) / 50)) + currentLevel.getOffsetY();
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		currentLevel.spawnItem(new MaleSexChange(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
-		//drawGame();
+		currentLevel
+				.spawnItem(new MaleSexChange(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+		// drawGame();
 	}
-	
+
 	public void sterilisationDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+currentLevel.getOffsetX();
-		double y = (Math.floor((event.getY()) / 50))+currentLevel.getOffsetY();
+		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
+		double y = (Math.floor((event.getY()) / 50)) + currentLevel.getOffsetY();
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
 		System.out.println(s);
 
-		currentLevel.spawnItem(new Sterilisation(new Position(BigDecimal.valueOf(x),BigDecimal.valueOf(y)), currentLevel));
-		//drawGame();
+		currentLevel
+				.spawnItem(new Sterilisation(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+		// drawGame();
 	}
-	
-	
 
 	/**
 	 * Create the GUI.
@@ -385,19 +417,25 @@ public class GameConstructor extends Application {
 				// Mark the drag as started.
 				// We do not use the transfer mode (this can be used to indicate different forms
 				// of drags operations, for example, moving files or copying files).
+				if(items.isItemDepleted("Bomb") == false) {
 				Dragboard db = draggableBombImage.startDragAndDrop(TransferMode.ANY);
-
-				// We have to put some content in the clipboard of the drag event.
-				// We do not use this, but we could use it to store extra data if we wished.
 				ClipboardContent content = new ClipboardContent();
 				content.putString("Hello");
 				db.setContent(content);
+				event.consume();
+				} else {
+				
+				}
+
+				// We have to put some content in the clipboard of the drag event.
+				// We do not use this, but we could use it to store extra data if we wished.
+				
 
 				// Consume the event. This means we mark it as dealt with.
-				event.consume();
+				
 			}
 		});
-		
+
 		ImageView draggableGasImage = new ImageView();
 		draggableGasImage.setImage(gas);
 		toolbar.getChildren().add(draggableGasImage);
@@ -441,7 +479,7 @@ public class GameConstructor extends Application {
 				event.consume();
 			}
 		});
-		
+
 		ImageView draggableSignImage = new ImageView();
 		draggableSignImage.setImage(noEntrySign);
 		toolbar.getChildren().add(draggableSignImage);
@@ -463,7 +501,7 @@ public class GameConstructor extends Application {
 				event.consume();
 			}
 		});
-		
+
 		ImageView draggableDeathRatImage = new ImageView();
 		draggableDeathRatImage.setImage(deathRat);
 		toolbar.getChildren().add(draggableDeathRatImage);
@@ -485,7 +523,7 @@ public class GameConstructor extends Application {
 				event.consume();
 			}
 		});
-		
+
 		ImageView draggableFemaleSexChangerImage = new ImageView();
 		draggableFemaleSexChangerImage.setImage(femaleSexChanger);
 		toolbar.getChildren().add(draggableFemaleSexChangerImage);
@@ -507,7 +545,7 @@ public class GameConstructor extends Application {
 				event.consume();
 			}
 		});
-		
+
 		ImageView draggableMaleSexChangerImage = new ImageView();
 		draggableMaleSexChangerImage.setImage(maleSexChanger);
 		toolbar.getChildren().add(draggableMaleSexChangerImage);
@@ -530,7 +568,7 @@ public class GameConstructor extends Application {
 				event.consume();
 			}
 		});
-		
+
 		ImageView draggableSterilisationImage = new ImageView();
 		draggableSterilisationImage.setImage(sterilisation);
 		toolbar.getChildren().add(draggableSterilisationImage);
@@ -561,19 +599,18 @@ public class GameConstructor extends Application {
 				// Mark the drag as acceptable if the source was the draggable image.
 				// (for example, we don't want to allow the user to drag things or files into
 				// our application)
-				double x = (Math.floor((event.getX()) / 50))+currentLevel.getOffsetX();
-				double y = (Math.floor((event.getY()) / 50))+currentLevel.getOffsetY();
-				
-				focusTileX = (int) x-currentLevel.getOffsetX();
-				focusTileY = (int) y-currentLevel.getOffsetY();
-				
+				double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
+				double y = (Math.floor((event.getY()) / 50)) + currentLevel.getOffsetY();
+
+				focusTileX = (int) x - currentLevel.getOffsetX();
+				focusTileY = (int) y - currentLevel.getOffsetY();
+
 				showAvailableTile = true;
-			
-				
-				if (currentLevel.isPlacable(x, y) && event.getGestureSource() != draggableSignImage) {	
-					
+
+				if (currentLevel.isPlacable(x, y) && event.getGestureSource() != draggableSignImage) {
+
 					availSprite = availableSprite;
-					
+
 					if (event.getGestureSource() == draggableBombImage) {
 						// Mark the drag event as acceptable by the canvas.
 						event.acceptTransferModes(TransferMode.ANY);
@@ -602,7 +639,7 @@ public class GameConstructor extends Application {
 					} else if (event.getGestureSource() == draggableMaleSexChangerImage) {
 						// Mark the drag event as acceptable by the canvas.
 						event.acceptTransferModes(TransferMode.ANY);
-						//here we can display available tiles
+						// here we can display available tiles
 						// Consume the event. This means we mark it as dealt with.
 						event.consume();
 					} else if (event.getGestureSource() == draggableSterilisationImage) {
@@ -670,7 +707,7 @@ public class GameConstructor extends Application {
 					sterilisationDropOccured(event);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
-				} 
+				}
 			}
 		});
 
