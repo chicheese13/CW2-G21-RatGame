@@ -33,12 +33,12 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
-/*
+/**
  * @author Josh and Lorenzo
  * @version 1.0
  * 
- * This class is the main class for the game.
- * When running the game the main method here will be run
+ *          This class is the main class for the game.
+ *          When running the game the main method here will be run
  */
 public class RatGameApp extends Application {
 
@@ -68,7 +68,8 @@ public class RatGameApp extends Application {
     private static Leaderboard board;
 
     /**
-     * createContent is the method that
+     * createContent is the method that populates the menu screen and begins the
+     * menu animation
      * 
      * @return Parent
      */
@@ -88,6 +89,10 @@ public class RatGameApp extends Application {
         return root;
     }
 
+    /**
+     * addBackground takes the image to be used for the background and displays it
+     * on the menu screen
+     */
     private void addBackground() {
         try {
             InputStream is = Files.newInputStream(Paths.get("src/menubgplaceholder.jpg"));
@@ -102,10 +107,14 @@ public class RatGameApp extends Application {
             root.getChildren().add(imageView);
 
         } catch (Exception e) {
-            // TODO: handle exception
+
         }
     }
 
+    /**
+     * addTitle creates a new title object and places it in the top middle of the
+     * screen
+     */
     private void addTitle() {
         RatTitle title = new RatTitle("RATS");
         title.setTranslateX(WIDTH / 2 - title.getTitleWidth());
@@ -114,6 +123,10 @@ public class RatGameApp extends Application {
         root.getChildren().add(title);
     }
 
+    /**
+     * addMOTD jsut retrieves the Message of the day from the server, adds it to the
+     * menu on the left side of the screen with text wrapping
+     */
     private void addMOTD() {
         final String MESSAGE = MOTDGetter2.getMessage();
         Label message = new Label(MESSAGE);
@@ -131,8 +144,10 @@ public class RatGameApp extends Application {
     }
 
     /**
-     * @param x
-     * @param y
+     * addLine creates the line to the left of the menu.
+     * 
+     * @param x the x coordinate of the line
+     * @param y the starting y coordinate of the line
      */
     private void addLine(double x, double y) {
         line = new Line(x, y, x, y + 300);
@@ -144,6 +159,11 @@ public class RatGameApp extends Application {
         root.getChildren().add(line);
     }
 
+    /**
+     * startAnimation begins 2 animations whent the menu is loaded, the line is
+     * increased in scale to the full length and the menu items are shifted to the
+     * right sequentially from behind the covering rectangle
+     */
     private void startAnimation() {
         ScaleTransition st = new ScaleTransition(Duration.seconds(1), line);
         st.setToY(1);
@@ -161,6 +181,12 @@ public class RatGameApp extends Application {
     }
 
     /**
+     * addMenu creates the menu items from the list of pairs created above. the text
+     * on the buttonsis the string in the pair and the on click action is set to
+     * whatever runnable was set in the list. There is also a rectangle object
+     * created that covers the menu items initially to give the illusion of the
+     * items appearing.
+     * 
      * @param x
      * @param y
      */
@@ -183,6 +209,11 @@ public class RatGameApp extends Application {
         root.getChildren().add(menuBox);
     }
 
+    /**
+     * selectUser allows the user to choose the profile that they wish to play under
+     * the activeUser is set to whichever profile the user has selected in the pop
+     * up choice dialog box
+     */
     private static void selectUser() {
         readUserFile(userFile);
         if (profiles.isEmpty()) {
@@ -198,14 +229,24 @@ public class RatGameApp extends Application {
 
     }
 
+    /**
+     * addUser is the method to create a new user profile, the user just needs to
+     * input their name
+     */
     private static void addUser() {
         TextInputDialog tDialog = new TextInputDialog();
         tDialog.showAndWait();
         String name = tDialog.getEditor().getText();
-        writeToUserFile(userFile, name);
+        Profile newProfile = new Profile(name, 1);
+        writeToUserFile(userFile, newProfile);
         tDialog.hide();
     }
 
+    /**
+     * startGame checks if the user has selected a profile, if not then they are
+     * prompted to choose one, otherwise they are presented with a choice of which
+     * level to play and then the gameplay is started on the selected level
+     */
     private static void startGame() {
         if (activeUser == null) {
             Alert alert = new Alert(AlertType.WARNING);
@@ -225,13 +266,14 @@ public class RatGameApp extends Application {
             System.out.println("Start the game here");
             GameConstructor playGame = new GameConstructor(selectedLevel, activeUser, board);
             playGame.startGame();
-
-            // TODO: Add method to show leaderboard
         }
     }
 
     /**
-     * @param file
+     * readUserFile takes all the profiles that have been created in the file and
+     * populates the profiles array list with all of these users
+     * 
+     * @param file the users.txt file
      */
     private static void readUserFile(File file) {
         ArrayList<Profile> tempProfiles = new ArrayList<>();
@@ -251,14 +293,17 @@ public class RatGameApp extends Application {
     }
 
     /**
-     * @param file
-     * @param name
+     * writeToUserFile takes the newly created user profile and appends it to the
+     * end of the users.txt file
+     * 
+     * @param file    the users.txt file
+     * @param newUser the profile to be written to the file
      */
-    private static void writeToUserFile(File file, String name) {
+    private static void writeToUserFile(File file, Profile newUser) {
         try (FileWriter fw = new FileWriter(file, true);
                 BufferedWriter bw = new BufferedWriter(fw);
                 PrintWriter out = new PrintWriter(bw)) {
-            out.println(new Profile(name, 1).getAppendVersion());
+            out.println(newUser.getAppendVersion());
         } catch (Exception e) {
             // TODO: Catch exception
         }
