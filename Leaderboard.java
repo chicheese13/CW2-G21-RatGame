@@ -1,3 +1,4 @@
+
 /**
  * LeaderBoard.java
  * @version  1.0
@@ -28,6 +29,7 @@ public class Leaderboard {
 
     /**
      * Constructs the Leaderboard
+     * 
      * @param level
      */
     public Leaderboard(int level) {
@@ -35,10 +37,12 @@ public class Leaderboard {
     }
 
     /**
-     * tries to read  the text file with the scores, splitted by " ". And builds the LeaderboardElement with the data.
+     * tries to read the text file with the scores, splitted by " ". And builds the
+     * LeaderboardElement with the data.
+     * 
      * @throws Exception e
      */
-    private void readBoard() throws Exception{
+    private void readBoard() {
         try {
             Scanner in = new Scanner(scoreFile);
             while (in.hasNextLine()) {
@@ -50,13 +54,15 @@ public class Leaderboard {
             }
             in.close();
         } catch (Exception e) {
-            // TODO: Catch exception. Lorenzo here-> Hi! Check if this how you wanted the exception to work. I've alse created javaDoc for the LeaderboardElement and checked the MOTDGetter2 comments.
-            throw new Exception("Cannot retrieve data.");
+            // TODO: Catch exception. Lorenzo here-> Hi! Check if this how you wanted the
+            // exception to work. I've alse created javaDoc for the LeaderboardElement and
+            // checked the MOTDGetter2 comments.
         }
     }
 
     /**
-     * iterates through the ArrayList of scores and if the level is equal  it adds the score to the priority queue.
+     * iterates through the ArrayList of scores and if the level is equal it adds
+     * the score to the priority queue.
      * iterates through the PriorityQueue and removes them
      */
     private void populateLevelScores() {
@@ -81,6 +87,7 @@ public class Leaderboard {
 
     /**
      * add the scores into the PriorityQueue.
+     * 
      * @param name
      * @param score
      */
@@ -133,7 +140,8 @@ public class Leaderboard {
             }
         }
     }
-// runs it
+
+    // runs it
     public void run() {
         readBoard();
         populateLevelScores();
