@@ -1,3 +1,8 @@
+/**
+ * MOTDGetter2.java
+ * @version 2.0
+ */
+
 import java.net.URL;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
