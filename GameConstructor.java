@@ -78,6 +78,9 @@ public class GameConstructor extends Application {
 	private Image unavailableSprite = new Image("Textures/unavailable.png");
 	private int focusTileX;
 	private int focusTileY;
+	
+	private Image gameWonScreen = new Image("Textures/game-won.png");
+	private Image gameLostScreen = new Image("Textures/game-over.png");
 
 	private ItemManager items;
 	private int currentLevelNumber;
@@ -87,12 +90,18 @@ public class GameConstructor extends Application {
 	private Level currentLevel;
 	private boolean showAvailableTile = false;
 	private int tickCounter = 0;
+	private boolean hasWon = false;
+	private boolean hasLost = false;
+	
+	private Leaderboard currentLeaderboard;
+	private Profile currentUser;
 
-	public GameConstructor(int levelNumber) {
+	public GameConstructor(int levelNumber, Profile currentProfile, Leaderboard currentBoard) {
 		this.items = new ItemManager();
 		this.currentLevelNumber = levelNumber;
 		this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt");
-
+		this.currentLeaderboard = currentBoard;
+		this.currentUser = currentProfile;
 	}
 
 	public void startGame() {
@@ -183,8 +192,21 @@ public class GameConstructor extends Application {
 		if (showAvailableTile) {
 			gc.drawImage(availSprite, focusTileX * GRID_CELL_WIDTH, focusTileY * GRID_CELL_HEIGHT);
 		}
+		
+		
+		//show win screen
+		if (this.hasWon) {
+			gc.drawImage(gameWonScreen, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+		}
+		
+		//show lose screen
+		if (this.hasLost) {
+			gc.drawImage(gameLostScreen, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+		}
+	}	
+	
 
-	}
+	
 
 	public void processKeyEvent(KeyEvent event) {
 		// We change the behaviour depending on the actual key that was pressed.
@@ -232,6 +254,37 @@ public class GameConstructor extends Application {
 	 * move (by e.g., looping over them all and calling their own tick method).
 	 */
 	public void tick() {
+		
+		String gameStatus = currentLevel.getGameStatus();
+		
+		if (gameStatus == "inprogress") {
+			//run game as usual
+			currentLevel.updateBoard();
+			//We then redraw the whole canvas.
+			drawGame();
+			
+			tickCounter++;
+			if (tickCounter == 66) {
+				showAvailableTile = false;
+				tickCounter = 0;
+			}
+		} else if (gameStatus == "won") {
+			this.currentLeaderboard.run(this.currentUser.getName(), this.currentLevel.getScore());
+			
+			//display win art
+			this.hasWon = true;
+			drawGame();
+		} else if (gameStatus == "lost") {
+			this.currentLeaderboard.run(this.currentUser.getName(), this.currentLevel.getScore());
+			
+			//game is lost, need to append score to leaderboard
+			//display lost game screen
+			System.out.println("GAME IS LOST");
+			this.hasLost = true;
+			drawGame();
+			
+			
+			
 		currentLevel.updateBoard();
 		// We then redraw the whole canvas.
 		drawGame();
@@ -241,6 +294,8 @@ public class GameConstructor extends Application {
 			showAvailableTile = false;
 			tickCounter = 0;
 		}
+	}
+		
 	}
 
 	public void bombDropOccured(DragEvent event) {
