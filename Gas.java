@@ -49,6 +49,10 @@ public class Gas extends CollideItem {
 		this.childrenGas.add(childGas);
 	}
 	
+	public void instantDissapate() {
+		this.tickCounter = STOP_SPREAD_INTERVAL;
+		System.out.println("STOP SPREAD");
+	}
 
 	@Override
 	public void tick() {

@@ -20,7 +20,24 @@ public class Level {
 	int parTime;
 	short maxRats = 50;
 	String[] dataArray;
-	private final int ITEM_GAIN_INTERVAL = 660;
+	
+	private double gameCounterPoison = 0;
+	private double gameCounterGas = 0;
+	private double gameCounterBomb = 0;
+	private double gameCounterNoEntry = 0;
+	private double gameCounterSteril = 0;
+	private double gameCounterMGChange = 0;
+	private double gameCounterFGChange = 0;
+	private double gameCounterDeathRat = 0;
+	
+	private final int ITEM_GAIN_INTERVAL_POISON = 660;
+	private final int ITEM_GAIN_INTERVAL_GAS = 660;
+	private final int ITEM_GAIN_INTERVAL_BOMB = 660;
+	private final int ITEM_GAIN_INTERVAL_NOENTRY = 660;
+	private final int ITEM_GAIN_INTERVAL_STERIL = 660;
+	private final int ITEM_GAIN_INTERVAL_MGCHANGE = 660;
+	private final int ITEM_GAIN_INTERVAL_FGCHANGE = 660;
+	private final int ITEM_GAIN_INTERVAL_DEATHRAT = 660;
 	
 	//private String[][] tiles;
 	private static String tiles [][] = {{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
@@ -198,11 +215,31 @@ public class Level {
 		
 	}
 	
+	public void itemInterval(String itemType, ItemManager items, double gameCounter, double ITEM_GAIN_INTERVAL) {
+		if (gameCounter == ITEM_GAIN_INTERVAL) {
+			items.tryIncreaseItem(itemType);
+			//gameCounter = 0;
+			System.out.println("Bomb count increase");
+		} else {
+			gameCounter++;
+			System.out.println(gameCounter);
+		}
+	}
+	
 	/**
 	 * Updates board
 	 */
-	public void updateBoard() {
+	public void updateBoard(ItemManager items) {
 		//checks if the game is lost
+		if (gameCounterBomb == ITEM_GAIN_INTERVAL_BOMB) {
+			items.tryIncreaseItem("Bomb");
+			//gameCounter = 0;
+			System.out.println("Bomb count increase");
+		} else {
+			gameCounterBomb++;
+			System.out.println(gameCounterBomb);
+		}
+		
 		
 		
 		
@@ -321,6 +358,7 @@ public class Level {
 				
 			}
 			//For temp tiles (such as explosion tiles) detecting other items
+			
 			for (int i2 = 0; i2 < renderItems.size(); i2++) {
 				//testLevel.getRenderObjects().get(i).getObjectPosition()[0]
 				
@@ -584,7 +622,8 @@ public class Level {
 	}
 	
 	public int getItemInterval() {
-		return this.ITEM_GAIN_INTERVAL;
+		
+		return this.ITEM_GAIN_INTERVAL_BOMB;
 	}
 		
 	

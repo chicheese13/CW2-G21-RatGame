@@ -10,7 +10,7 @@ public class ItemManager {
 	Hashtable<String,Integer> inventory = new Hashtable<String,Integer>();
 	
 	public ItemManager() {
-		inventory.put("Bomb",4);
+		inventory.put("Bomb",0);
 		inventory.put("Poison",4);
 		inventory.put("Gas",4);
 		inventory.put("Sterilisation",4);

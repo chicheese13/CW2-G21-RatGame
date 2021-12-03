@@ -260,7 +260,7 @@ public class GameConstructor extends Application {
 
 		if (gameStatus == "inprogress") {
 			// run game as usual
-			currentLevel.updateBoard();
+			currentLevel.updateBoard(this.items);
 			// We then redraw the whole canvas.
 			drawGame();
 
@@ -284,7 +284,7 @@ public class GameConstructor extends Application {
 			this.hasLost = true;
 			drawGame();
 
-			currentLevel.updateBoard();
+			currentLevel.updateBoard(this.items);
 			// We then redraw the whole canvas.
 			drawGame();
 
