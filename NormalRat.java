@@ -26,7 +26,7 @@ public abstract class NormalRat extends Rat {
 	/**
 	 * The maximum amount of health a rat can have.
 	 */
-	protected final int MAX_RAT_HEALTH = 5;
+	protected final double MAX_RAT_HEALTH = 100;
 	/**
 	 * 	The gender of the rat, true meaning a male rat, false meaning a female rat.
 	 */
@@ -34,7 +34,7 @@ public abstract class NormalRat extends Rat {
 	/**
 	 * Health of the rat.
 	 */
-	protected int ratHealth;
+	protected double ratHealth;
 	/**
 	 * 	Whether or not the rat is sterile.
 	 */
@@ -77,6 +77,8 @@ public abstract class NormalRat extends Rat {
 	public void becomeSterile() {
 		this.ratSterile = true;
 	}
+	
+	public boolean damageCooldown = false;
 	
 	/**
 	 *  Calculates a new position based on the current position and a new speed value, this is to prevent the new speed value from incrimenting the
@@ -137,6 +139,15 @@ public abstract class NormalRat extends Rat {
 		//this rounds the change value to the nearest multiple of speed
 		BigDecimal output = (roundedDivision.multiply(multipliedSpeed)).divide(new BigDecimal("100"));
 		return (output);
+	}
+	
+	public void dealDamage(double damage) {
+		this.ratHealth = this.ratHealth - damage;
+		System.out.println(this.ratHealth);
+		this.damageCooldown = true;
+		if (this.ratHealth <= 0) {
+			this.ratDeath();
+		}
 	}
 	
 	/**

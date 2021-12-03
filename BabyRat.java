@@ -86,6 +86,7 @@ public class BabyRat extends NormalRat {
 	public void tick() {	
 		//incriments the growCounter and if it's exceeds the grow count limit then make the rat grow up
 		this.growCounter++;
+		this.damageCooldown = false;
 		
 		if (this.growCounter > GROW_COUNT_LIMIT) {
 			this.growUp();

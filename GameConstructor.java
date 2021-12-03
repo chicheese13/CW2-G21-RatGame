@@ -61,8 +61,6 @@ public class GameConstructor extends Application {
 	private Timeline tickTimeline;
 	private Canvas canvas;
 	
-	private int offsetX = 0;
-	private int offsetY = 0;
 	
 	private Image bomb = new Image("/items/bomb.png");
 	private Image gas = new Image("/items/gas.png");
@@ -146,25 +144,25 @@ public class GameConstructor extends Application {
 		
 		for (int y = 0; y < (CANVAS_HEIGHT/GRID_CELL_WIDTH); y++) {
 			for (int x = 0; x < (CANVAS_WIDTH/GRID_CELL_HEIGHT); x++) {
-				gc.drawImage(currentLevel.getRenderTiles()[y+offsetY][x+offsetX].getImage(), x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
+				gc.drawImage(currentLevel.getRenderTiles()[y+currentLevel.getOffsetY()][x+currentLevel.getOffsetX()].getImage(), x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
 			}
 		}
 		
 		//we need to draw the items
 		for (int i = 0; i < currentLevel.getItems().size(); i++) {
-			gc.drawImage(currentLevel.getItems().get(i).getSprite(), (currentLevel.getItems().get(i).getObjectPosition()[0].doubleValue()-offsetX)  * GRID_CELL_WIDTH, (currentLevel.getItems().get(i).getObjectPosition()[1].doubleValue()-offsetY) * GRID_CELL_HEIGHT);
+			gc.drawImage(currentLevel.getItems().get(i).getSprite(), (currentLevel.getItems().get(i).getObjectPosition()[0].doubleValue()-currentLevel.getOffsetX())  * GRID_CELL_WIDTH, (currentLevel.getItems().get(i).getObjectPosition()[1].doubleValue()-currentLevel.getOffsetY()) * GRID_CELL_HEIGHT);
 		}
 		
 		//we need to draw the rats
 		
 		for (int i = 0; i < currentLevel.getRats().size(); i++) {
-			gc.drawImage(currentLevel.getRats().get(i).getSprite(), (currentLevel.getRats().get(i).getObjectPosition()[0].doubleValue()-offsetX)  * GRID_CELL_WIDTH, (currentLevel.getRats().get(i).getObjectPosition()[1].doubleValue()-offsetY) * GRID_CELL_HEIGHT);
+			gc.drawImage(currentLevel.getRats().get(i).getSprite(), (currentLevel.getRats().get(i).getObjectPosition()[0].doubleValue()-currentLevel.getOffsetX())  * GRID_CELL_WIDTH, (currentLevel.getRats().get(i).getObjectPosition()[1].doubleValue()-currentLevel.getOffsetY()) * GRID_CELL_HEIGHT);
 		}
 		
 		
 		//need to draw the temp tiles
 		for (int i = 0; i < currentLevel.getTempTiles().size(); i++) {
-			gc.drawImage(currentLevel.getTempTiles().get(i).getSprite(), (currentLevel.getTempTiles().get(i).getObjectPosition()[0].doubleValue()-offsetX)  * GRID_CELL_WIDTH, (currentLevel.getTempTiles().get(i).getObjectPosition()[1].doubleValue()-offsetY) * GRID_CELL_HEIGHT);
+			gc.drawImage(currentLevel.getTempTiles().get(i).getSprite(), (currentLevel.getTempTiles().get(i).getObjectPosition()[0].doubleValue()-currentLevel.getOffsetX())  * GRID_CELL_WIDTH, (currentLevel.getTempTiles().get(i).getObjectPosition()[1].doubleValue()-currentLevel.getOffsetY()) * GRID_CELL_HEIGHT);
 		}
 		
 		//we need to draw the tunnels
@@ -181,23 +179,23 @@ public class GameConstructor extends Application {
 		switch (event.getCode()) {			
 		    case RIGHT:
 		    	// Right key was pressed. So move the player right by one cell.
-		    	if (offsetX < (currentLevel.getRenderTiles()[0].length) - (CANVAS_WIDTH / GRID_CELL_WIDTH)) {
-		    		offsetX++;
+		    	if (currentLevel.getOffsetX() < (currentLevel.getRenderTiles()[0].length) - (CANVAS_WIDTH / GRID_CELL_WIDTH)) {
+		    		currentLevel.setOffsetX(currentLevel.getOffsetX()+1);
 		    	}
 	        	break;
 		    case UP:
-		    	if (offsetY > 0) {
-		    		offsetY--;
+		    	if (currentLevel.getOffsetY() > 0) {
+		    		currentLevel.setOffsetY(currentLevel.getOffsetY()-1);
 		    	}
 		    	break;
 		    case DOWN: 
-		    	if (offsetY < (currentLevel.getRenderTiles().length) - (CANVAS_HEIGHT / GRID_CELL_HEIGHT)) {
-		    		offsetY++;
+		    	if (currentLevel.getOffsetY() < (currentLevel.getRenderTiles().length) - (CANVAS_HEIGHT / GRID_CELL_HEIGHT)) {
+		    		currentLevel.setOffsetY(currentLevel.getOffsetY()+1);;
 		    	}	
 		    	break;
 		    case LEFT:
-		    	if (offsetX > 0) {
-		    		offsetX--;
+		    	if (currentLevel.getOffsetX() > 0) {
+		    		currentLevel.setOffsetX(currentLevel.getOffsetX()-1);
 		    	}
 		    	break;
 	        default:
@@ -231,8 +229,8 @@ public class GameConstructor extends Application {
 	}
 
 	public void bombDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+offsetX;
-		double y = (Math.floor((event.getY()) / 50))+offsetY;
+		double x = (Math.floor((event.getX()) / 50))+currentLevel.getOffsetX();
+		double y = (Math.floor((event.getY()) / 50))+currentLevel.getOffsetY();
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
@@ -242,8 +240,8 @@ public class GameConstructor extends Application {
 	}
 	
 	public void gasDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+offsetX;
-		double y = (Math.floor((event.getY()) / 50))+offsetY;
+		double x = (Math.floor((event.getX()) / 50))+currentLevel.getOffsetX();
+		double y = (Math.floor((event.getY()) / 50))+currentLevel.getOffsetY();
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
@@ -254,8 +252,8 @@ public class GameConstructor extends Application {
 	}
 	
 	public void poisonDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+offsetX;
-		double y = (Math.floor((event.getY()) / 50))+offsetY;
+		double x = (Math.floor((event.getX()) / 50))+currentLevel.getOffsetX();
+		double y = (Math.floor((event.getY()) / 50))+currentLevel.getOffsetY();
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
@@ -266,8 +264,8 @@ public class GameConstructor extends Application {
 	}
 	
 	public void signDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+offsetX;
-		double y = (Math.floor((event.getY()) / 50))+offsetY;
+		double x = (Math.floor((event.getX()) / 50))+currentLevel.getOffsetX();
+		double y = (Math.floor((event.getY()) / 50))+currentLevel.getOffsetY();
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
@@ -278,8 +276,8 @@ public class GameConstructor extends Application {
 	}
 	
 	public void deathRatDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+offsetX;
-		double y = (Math.floor((event.getY()) / 50))+offsetY;
+		double x = (Math.floor((event.getX()) / 50))+currentLevel.getOffsetX();
+		double y = (Math.floor((event.getY()) / 50))+currentLevel.getOffsetY();
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
@@ -290,8 +288,8 @@ public class GameConstructor extends Application {
 	}
 	
 	public void femaleSexChangerDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+offsetX;
-		double y = (Math.floor((event.getY()) / 50))+offsetY;
+		double x = (Math.floor((event.getX()) / 50))+currentLevel.getOffsetX();
+		double y = (Math.floor((event.getY()) / 50))+currentLevel.getOffsetY();
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
@@ -302,8 +300,8 @@ public class GameConstructor extends Application {
 	}
 	
 	public void maleSexChangerDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+offsetX;
-		double y = (Math.floor((event.getY()) / 50))+offsetY;
+		double x = (Math.floor((event.getX()) / 50))+currentLevel.getOffsetX();
+		double y = (Math.floor((event.getY()) / 50))+currentLevel.getOffsetY();
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
@@ -314,8 +312,8 @@ public class GameConstructor extends Application {
 	}
 	
 	public void sterilisationDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50))+offsetX;
-		double y = (Math.floor((event.getY()) / 50))+offsetY;
+		double x = (Math.floor((event.getX()) / 50))+currentLevel.getOffsetX();
+		double y = (Math.floor((event.getY()) / 50))+currentLevel.getOffsetY();
 
 		// Print a string showing the location.
 		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
@@ -531,11 +529,11 @@ public class GameConstructor extends Application {
 				// Mark the drag as acceptable if the source was the draggable image.
 				// (for example, we don't want to allow the user to drag things or files into
 				// our application)
-				double x = (Math.floor((event.getX()) / 50))+offsetX;
-				double y = (Math.floor((event.getY()) / 50))+offsetY;
+				double x = (Math.floor((event.getX()) / 50))+currentLevel.getOffsetX();
+				double y = (Math.floor((event.getY()) / 50))+currentLevel.getOffsetY();
 				
-				focusTileX = (int) x-offsetX;
-				focusTileY = (int) y-offsetY;
+				focusTileX = (int) x-currentLevel.getOffsetX();
+				focusTileY = (int) y-currentLevel.getOffsetY();
 				
 				showAvailableTile = true;
 			

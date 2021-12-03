@@ -52,6 +52,9 @@ public class Level {
 	ArrayList<Position> renderAfterTilesPosition;
 	private RenderTile[][] renderTiles;
 	
+	private int offsetX = 0;
+	private int offsetY = 0;
+	
 	/**
 	 * Constructor for level class. Creates board from given text file
 	 * @param fileName Name of the file that stores information on the level
@@ -127,9 +130,25 @@ public class Level {
 		//this.spawnRat(new BabyRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, this, 'N'));
 		//this.spawnRat(new BabyRat(new Position(new BigDecimal("1"), new BigDecimal("1")), true, this, 'N'));
 		
-		this.spawnRat(new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), true, false, 10, 'N', this));
-		this.spawnRat(new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, false, 10, 'N', this));
+		this.spawnRat(new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), true, false, 100, 'N', this));
+		this.spawnRat(new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, false, 100, 'N', this));
 		
+	}
+	
+	public int getOffsetX() {
+		return this.offsetX;
+	}
+	
+	public int getOffsetY() {
+		return this.offsetY;
+	}
+	
+	public void setOffsetX(int x) {
+		this.offsetX = x;
+	}
+	
+	public void setOffsetY(int y) {
+		this.offsetY = y;
 	}
 	
 	public RenderTile[][] getRenderTiles() {
@@ -503,8 +522,8 @@ public class Level {
 	public boolean checkGas(Position position) {
 		for (int i = 0; i < this.renderTempTiles.size(); i++) {
 			if (this.renderTempTiles.get(i) instanceof GasSpread) {
-				if (((GasSpread) this.renderTempTiles.get(i)).getObjectPosition()[0].doubleValue() == position.getPosition()[0].doubleValue()
-					&& ((GasSpread) this.renderTempTiles.get(i)).getObjectPosition()[1].doubleValue() == position.getPosition()[1].doubleValue()){
+				if (((GasSpread) this.renderTempTiles.get(i)).getObjectPosition()[0].doubleValue()-offsetX == position.getPosition()[0].doubleValue()-offsetX
+					&& ((GasSpread) this.renderTempTiles.get(i)).getObjectPosition()[1].doubleValue()-offsetY == position.getPosition()[1].doubleValue()-offsetY){
 						return false;
 					}
 			}

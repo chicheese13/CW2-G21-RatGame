@@ -1,14 +1,15 @@
 import java.math.*;
 import javafx.scene.image.Image;
 
-public class GasSpread extends RenderObject {
+public class GasSpread extends CollideItem {
 	
 	
-	private int STOP_SPREAD_INTERVAL = 500;
+	private int STOP_SPREAD_INTERVAL = 200;
 	private int tickCounter = 0;
-	private int TICK_LIMIT = 66;
+	private int TICK_LIMIT = 200;
 	private Gas parentGas;
 	private int dissipateCounter = 0;
+	private final double DAMAGE_TO_RAT = 0.5;
 	
 	public GasSpread(Position position, Level currentLevel, Gas parent) {
 		this.objectPosition = position;
@@ -71,6 +72,14 @@ public class GasSpread extends RenderObject {
 				}
 			}
 			
+		}
+	}
+
+	@Override
+	public void collision(Object collidedObject) {
+		if (collidedObject instanceof NormalRat) {
+			//deal damage to the rat
+			((NormalRat) collidedObject).dealDamage(DAMAGE_TO_RAT);
 		}
 	}
 }

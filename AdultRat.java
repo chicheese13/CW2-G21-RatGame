@@ -116,7 +116,7 @@ public class AdultRat extends NormalRat {
 	 * @param currentLevel, the current level in which the rat is in.
 	 * @param directionFacing, the direction in which the rat is facing at anytime.
 	 */
-	public AdultRat(Position position, boolean gender, boolean sterile, int ratHealth, char direction, Level currentLevel) {
+	public AdultRat(Position position, boolean gender, boolean sterile, double ratHealth, char direction, Level currentLevel) {
 		this.isPregnant = DEFAULT_PREGNANCY_VALUE;
 		this.pregnancyCounter = DEFAULT_PREGNANCY_COUNT;
 		this.ratSpeed = DEFAULT_ADULT_RAT_SPEED;
@@ -483,8 +483,12 @@ public class AdultRat extends NormalRat {
 	 *  Method which is responsible for movement, pregnancy and pregnancy cooldown.
 	 */
 	public void tick() {
+		this.damageCooldown = false;
 		mateCooldown();
 		pregnancyTick();
 		waitTick();		
 	}
+
+	
+	
 }
