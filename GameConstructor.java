@@ -81,6 +81,9 @@ public class GameConstructor extends Application {
 	private int focusTileX;
 	private int focusTileY;
 	
+	private Image gameWonScreen = new Image("Textures/game-won.png");
+	private Image gameLostScreen = new Image("Textures/game-over.png");
+	
 	private int currentLevelNumber;
 	
 	private Stage gameStage = new Stage();
@@ -88,6 +91,8 @@ public class GameConstructor extends Application {
 	private Level currentLevel;
 	private boolean showAvailableTile = false;
 	private int tickCounter = 0;
+	private boolean hasWon = false;
+	private boolean hasLost = false;
 	
 	public GameConstructor(int levelNumber) {
 		this.currentLevelNumber = levelNumber;
@@ -172,6 +177,16 @@ public class GameConstructor extends Application {
 			gc.drawImage(availSprite, focusTileX * GRID_CELL_WIDTH, focusTileY * GRID_CELL_HEIGHT);
 		}
 		
+		
+		//show win screen
+		if (this.hasWon) {
+			gc.drawImage(gameWonScreen, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+		}
+		
+		//show lose screen
+		if (this.hasLost) {
+			gc.drawImage(gameLostScreen, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+		}
 	}	
 	
 	public void processKeyEvent(KeyEvent event) {
@@ -217,15 +232,32 @@ public class GameConstructor extends Application {
 	 * over them all and calling their own tick method). 
 	 */
 	public void tick() {
-		currentLevel.updateBoard();
-		//We then redraw the whole canvas.
-		drawGame();
 		
-		tickCounter++;
-		if (tickCounter == 66) {
-			showAvailableTile = false;
-			tickCounter = 0;
+		String gameStatus = currentLevel.getGameStatus();
+		
+		if (gameStatus == "inprogress") {
+			//run game as usual
+			currentLevel.updateBoard();
+			//We then redraw the whole canvas.
+			drawGame();
+			
+			tickCounter++;
+			if (tickCounter == 66) {
+				showAvailableTile = false;
+				tickCounter = 0;
+			}
+		} else if (gameStatus == "won") {
+			//display win art
+			this.hasWon = true;
+			drawGame();
+		} else if (gameStatus == "lost") {
+			//game is lost, need to append score to leaderboard
+			//display lost game screen
+			System.out.println("GAME IS LOST");
+			this.hasLost = true;
+			drawGame();
 		}
+		
 	}
 
 	public void bombDropOccured(DragEvent event) {
