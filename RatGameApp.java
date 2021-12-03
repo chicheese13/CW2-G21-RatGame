@@ -226,6 +226,7 @@ public class RatGameApp extends Application {
             activeUser = cd.getSelectedItem();
             cd.hide();
         }
+        beatLevel();
 
     }
 
@@ -238,7 +239,7 @@ public class RatGameApp extends Application {
         tDialog.showAndWait();
         String name = tDialog.getEditor().getText();
         Profile newProfile = new Profile(name, 1);
-        writeToUserFile(userFile, newProfile);
+        writeToUserFile(newProfile);
         tDialog.hide();
     }
 
@@ -299,14 +300,36 @@ public class RatGameApp extends Application {
      * @param file    the users.txt file
      * @param newUser the profile to be written to the file
      */
-    private static void writeToUserFile(File file, Profile newUser) {
-        try (FileWriter fw = new FileWriter(file, true);
+    private static void writeToUserFile(Profile newUser) {
+        try (FileWriter fw = new FileWriter(userFile, true);
                 BufferedWriter bw = new BufferedWriter(fw);
                 PrintWriter out = new PrintWriter(bw)) {
             out.println(newUser.getAppendVersion());
         } catch (Exception e) {
             // TODO: Catch exception
         }
+    }
+
+    private static void clearFile() {
+        try {
+            new FileWriter(userFile, false).close();
+        } catch (Exception e) { // TODO: handle exception
+        }
+    }
+
+    public static void beatLevel() {
+        clearFile();
+        try (FileWriter fw = new FileWriter(userFile, true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                PrintWriter out = new PrintWriter(bw)) {
+            activeUser.beatLevel();
+            for (Profile profile : profiles) {
+                out.println(profile.getAppendVersion());
+            }
+        } catch (Exception e) {
+
+        }
+
     }
 
     /**
@@ -320,10 +343,16 @@ public class RatGameApp extends Application {
         primaryStage.show();
     }
 
+    /**
+     * @return Profile
+     */
     public static Profile getActiveUser() {
         return activeUser;
     }
 
+    /**
+     * @return Integer
+     */
     public static Integer getSelectedLevel() {
         return selectedLevel;
     }
@@ -333,6 +362,7 @@ public class RatGameApp extends Application {
      */
     public static void main(String[] args) {
         readUserFile(userFile);
+
         launch(args);
     }
 }
