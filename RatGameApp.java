@@ -333,8 +333,6 @@ public class RatGameApp extends Application {
      */
     public static void main(String[] args) {
         readUserFile(userFile);
-        board = new Leaderboard(1);
-        board.run();
         launch(args);
     }
 }
