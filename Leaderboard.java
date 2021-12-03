@@ -142,9 +142,11 @@ public class Leaderboard {
     }
 
     // runs it
-    public PriorityQueue<LeaderboardElement> run() {
+    public PriorityQueue<LeaderboardElement> run(String name, int score) {
         readBoard();
         populateLevelScores();
+        LeaderboardElement newScore = new LeaderboardElement(name, score, level);
+        levelScores.add(newScore);
         PriorityQueue<LeaderboardElement> tempQueue = new PriorityQueue<>();
         updateAllScores();
         writeBoard();
