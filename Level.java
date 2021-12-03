@@ -18,8 +18,9 @@ public class Level {
 	int score;
 	double currentTime;
 	int parTime;
-	short maxRats;
+	short maxRats = 50;
 	String[] dataArray;
+	private final int ITEM_GAIN_INTERVAL = 660;
 	
 	//private String[][] tiles;
 	private static String tiles [][] = {{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
@@ -530,4 +531,9 @@ public class Level {
 		}		
 		return true;
 	}
+	
+	public int getItemInterval() {
+		return this.ITEM_GAIN_INTERVAL;
+	}
+	
 }
