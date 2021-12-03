@@ -30,7 +30,7 @@ public class Profile {
      * @return String
      */
     public String getAppendVersion() {
-        return playerName + ", " + unlockedTo;
+        return playerName + " " + unlockedTo;
     }
 
     /**

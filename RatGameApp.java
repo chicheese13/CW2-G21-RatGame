@@ -45,8 +45,7 @@ public class RatGameApp extends Application {
     private List<Pair<String, Runnable>> menuData = Arrays.asList(
             new Pair<String, Runnable>("Start Game", RatGameApp::startGame),
             new Pair<String, Runnable>("Select User", RatGameApp::selectUser),
-            new Pair<String, Runnable>("Create New User", RatGameApp::addUser),
-            new Pair<String, Runnable>("Select Level", RatGameApp::selectLevel));
+            new Pair<String, Runnable>("Create New User", RatGameApp::addUser));
 
     private Pane root = new Pane();
     private VBox menuBox = new VBox(-5);
@@ -181,10 +180,6 @@ public class RatGameApp extends Application {
 
     }
 
-    private static void selectLevel() {
-       
-    }
-
     private static void addUser() {
         TextInputDialog tDialog = new TextInputDialog();
         tDialog.showAndWait();
@@ -194,25 +189,27 @@ public class RatGameApp extends Application {
     }
 
     private static void startGame() {
-    	 if (activeUser == null) {
-             Alert alert = new Alert(AlertType.WARNING);
-             alert.setContentText("Please select a player before proceeding");
-             alert.show();
-         } else {
-             ArrayList<Integer> possibleLevels = new ArrayList<>();
-             for (int i = 1; i <= activeUser.getLevels(); i++) {
-                 possibleLevels.add(i);
-             }
-             ChoiceDialog<Integer> cd = new ChoiceDialog<>(1, possibleLevels);
-             cd.showAndWait();
-             selectedLevel = cd.getSelectedItem();
-             
-             //launch game.
-             cd.hide();
-             System.out.println("Start the game here");
-             GameConstructor playGame = new GameConstructor(selectedLevel);
-             playGame.startGame();
-         }
+        if (activeUser == null) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setContentText("Please select a player before proceeding");
+            alert.show();
+        } else {
+            ArrayList<Integer> possibleLevels = new ArrayList<>();
+            for (int i = 1; i <= activeUser.getLevels(); i++) {
+                possibleLevels.add(i);
+            }
+            ChoiceDialog<Integer> cd = new ChoiceDialog<>(1, possibleLevels);
+            cd.showAndWait();
+            selectedLevel = cd.getSelectedItem();
+            cd.hide();
+
+            // launch game.
+            System.out.println("Start the game here");
+            GameConstructor playGame = new GameConstructor(selectedLevel);
+            playGame.startGame();
+
+            // TODO: Add method to show leaderboard
+        }
     }
 
     /**
@@ -224,7 +221,7 @@ public class RatGameApp extends Application {
             Scanner in = new Scanner(file);
             while (in.hasNextLine()) {
                 String text = in.nextLine();
-                String[] details = text.split(", ");
+                String[] details = text.split(" ");
                 Profile profile = new Profile(details[0], Integer.parseInt(details[1]));
                 tempProfiles.add(profile);
             }
@@ -265,6 +262,8 @@ public class RatGameApp extends Application {
      */
     public static void main(String[] args) {
         readUserFile(userFile);
+        Leaderboard board = new Leaderboard(1);
+        board.run();
         launch(args);
     }
 }
