@@ -33,15 +33,30 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
+/*
+ * @author Josh and Lorenzo
+ * @version 1.0
+ * 
+ * This class is the main class for the game.
+ * When running the game the main method here will be run
+ */
 public class RatGameApp extends Application {
 
+    // Width of the window
     private static final int WIDTH = 1280;
+    // Height of the window
     private static final int HEIGHT = 720;
+    // Array List of created profiles
     private static ArrayList<Profile> profiles;
+    // Currently selected profile
     private static Profile activeUser;
+    // currently selected level
     private static Integer selectedLevel;
+    // File where user info is stored
     private static File userFile = new File("src/users.txt");
 
+    // List of pairs to be used when creating the menu, the pair contains the <text
+    // to be displayed, and action to take>
     private List<Pair<String, Runnable>> menuData = Arrays.asList(
             new Pair<String, Runnable>("Start Game", RatGameApp::startGame),
             new Pair<String, Runnable>("Select User", RatGameApp::selectUser),
@@ -52,6 +67,8 @@ public class RatGameApp extends Application {
     private Line line;
 
     /**
+     * createContent is the method that
+     * 
      * @return Parent
      */
     private Parent createContent() {
@@ -255,6 +272,14 @@ public class RatGameApp extends Application {
         primaryStage.setTitle("RATS menu title");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    public static Profile getActiveUser() {
+        return activeUser;
+    }
+
+    public static Integer getSelectedLevel() {
+        return selectedLevel;
     }
 
     /**
