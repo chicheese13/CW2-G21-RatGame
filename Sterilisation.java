@@ -17,7 +17,9 @@ public class Sterilisation extends Item {
 		double startX = this.objectPosition.getPosition()[0].doubleValue()-1;
 		double startY = this.objectPosition.getPosition()[1].doubleValue()-1;
 		
-		
+		SoundClip syringe = new SoundClip("Syringe");
+		syringe.play();
+
 		
 		for (int i = ((int) startX); i < startX+3; i++) {
 			for (int i2 = ((int) startY); i2 < startY+3; i2++) {

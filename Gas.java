@@ -23,6 +23,9 @@ public class Gas extends CollideItem {
 		this.renderSprite = sprinkler;
 		this.objectPosition = objectPosition;
 		this.currentLevel = currentLevel;
+		
+		SoundClip gas = new SoundClip("Gas");
+		gas.play();
 
 		// spawn a gas spread on this tile
 		if (this.currentLevel.checkGas(this.objectPosition)) {
