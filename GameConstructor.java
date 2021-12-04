@@ -56,6 +56,8 @@ public class GameConstructor extends Application {
 	// The dimensions of the canvas
 	private static final int CANVAS_WIDTH = 1250;
 	private static final int CANVAS_HEIGHT = 600;
+	
+	private BigDecimal millisecondCount = new BigDecimal("0");
 
 	private Timeline tickTimeline;
 	private Canvas canvas;
@@ -68,15 +70,25 @@ public class GameConstructor extends Application {
 	ImageView draggableFemaleSexChangerImage = new ImageView();
 	ImageView draggableMaleSexChangerImage = new ImageView();
 	ImageView draggableSterilisationImage = new ImageView();
+	
+	private BigDecimal TICK_DURATION = new BigDecimal("15");
 
-	private Image bomb = new Image("/items_icons/bombON.png");
-	private Image gas = new Image("/items_icons/gasON.png");
-	private Image poison = new Image("/items_icons/poisonON.png");
-	private Image deathRat = new Image("/items_icons/deathratON.png");
-	private Image noEntrySign = new Image("/items_icons/noentrysignON.png");
-	private Image maleSexChanger = new Image("/items_icons/maleON.png");
-	private Image femaleSexChanger = new Image("/items_icons/femaleON.png");
-	private Image sterilisation = new Image("/items_icons/sterilisationON.png");
+	private Image bomb = new Image("/items_icons/bombOFF.png");
+	private Image bombOn = new Image("/items_icons/bombON.png");
+	private Image gas = new Image("/items_icons/gasOFF.png");
+	private Image gasOn = new Image("/items_icons/gasON.png");
+	private Image poison = new Image("/items_icons/poisonOFF.png");
+	private Image poisonOn = new Image("/items_icons/poisonON.png");
+	private Image deathRat = new Image("/items_icons/deathratOFF.png");
+	private Image deathRatOn = new Image("/items_icons/deathratON.png");
+	private Image noEntrySign = new Image("/items_icons/noentrysignOFF.png");
+	private Image noEntrySignOn = new Image("/items_icons/noentrysignON.png");
+	private Image maleSexChanger = new Image("/items_icons/maleOFF.png");
+	private Image maleSexChangerOn = new Image("/items_icons/maleON.png");
+	private Image femaleSexChanger = new Image("/items_icons/femaleOFF.png");
+	private Image femaleSexChangerOn = new Image("/items_icons/femaleON.png");
+	private Image sterilisation = new Image("/items_icons/sterilisationOFF.png");
+	private Image sterilisationOn = new Image("/items_icons/sterilisationON.png");
 
 	private Image availSprite;
 	private Image availableSprite = new Image("Textures/available.png");
@@ -254,8 +266,27 @@ public class GameConstructor extends Application {
 	 * example move, perform logic in the game, this might cause the bad guys to
 	 * move (by e.g., looping over them all and calling their own tick method).
 	 */
+	
+	public void calculateTimePoints() {
+		BigDecimal timeTakenInSeconds = this.millisecondCount.divide(new BigDecimal("1000"));
+		//timeTakenInSeconds < this.currentLevel.getParTime()
+		if (timeTakenInSeconds.compareTo(this.currentLevel.getParTime()) == -1) {
+			//figure out the difference
+			
+			
+			BigDecimal gainScore = this.currentLevel.getParTime().subtract(timeTakenInSeconds);
+			System.out.println("SCORE GAINED");
+			System.out.println(gainScore);
+			this.currentLevel.incrimentScore((int) Math.floor(gainScore.doubleValue()));
+		}
+		
+	}
+	
 	public void tick() {
 
+		this.millisecondCount = this.millisecondCount.add(TICK_DURATION);
+		
+		
 		String gameStatus = currentLevel.getGameStatus();
 
 		if (gameStatus == "inprogress") {
@@ -270,14 +301,17 @@ public class GameConstructor extends Application {
 				tickCounter = 0;
 			}
 		} else if (gameStatus == "won") {
-			this.currentLeaderboard.run(this.currentUser.getName(), this.currentLevel.getScore());
-
+			//this.currentLeaderboard.run(this.currentUser.getName(), this.currentLevel.getScore());
+			calculateTimePoints();
+			
+			//output the score
+			
 			// display win art
 			this.hasWon = true;
 			drawGame();
 		} else if (gameStatus == "lost") {
-			this.currentLeaderboard.run(this.currentUser.getName(), this.currentLevel.getScore());
-
+			//this.currentLeaderboard.run(this.currentUser.getName(), this.currentLevel.getScore());
+			
 			// game is lost, need to append score to leaderboard
 			// display lost game screen
 			System.out.println("GAME IS LOST");
@@ -294,7 +328,40 @@ public class GameConstructor extends Application {
 				tickCounter = 0;
 			}
 		}
+		
+		if (items.getItemCount("Bomb") > 0) {
+			draggableBombImage.setImage(bombOn);
+		}
+		
+		if (items.getItemCount("Poison") > 0) {
+			draggablePoisonImage.setImage(poisonOn);
+		}
+		
+		if (items.getItemCount("Gas") > 0) {
+			draggableGasImage.setImage(gasOn);
+		}
+		
+		if (items.getItemCount("Sterilisation") > 0) {
+			draggableSterilisationImage.setImage(sterilisationOn);
+		}
+		
+		if (items.getItemCount("MGenderChange") > 0) {
+			draggableMaleSexChangerImage.setImage(maleSexChangerOn);
+		}
+		
+		if (items.getItemCount("FGenderChange") > 0) {
+			draggableFemaleSexChangerImage.setImage(femaleSexChangerOn);
+		}
+		
+		if (items.getItemCount("DeathRat") > 0) {
+			draggableDeathRatImage.setImage(deathRatOn);
+		}
+		
+		if (items.getItemCount("NoEntrySign") > 0) {
+			draggableSignImage.setImage(noEntrySignOn);
+		}
 
+		System.out.println(this.currentLevel.getScore());
 	}
 
 	public void bombDropOccured(DragEvent event) {
@@ -309,7 +376,7 @@ public class GameConstructor extends Application {
 			currentLevel.spawnItem(new Bomb(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
 			items.tryReduceItem("Bomb");
 			if (items.isItemDepleted("Bomb")) {
-				bomb = new Image("/items_icons/bombOFF.png");
+				
 				draggableBombImage.setImage(bomb);
 
 			}

@@ -14,6 +14,8 @@ public class Gas extends CollideItem {
 	private boolean isWaiting = false;
 	private int LINGER_LIMIT = 200;
 	private int lingerCounter = 0;
+	private Image brokenGas = new Image("gas_images/SprinklerBroken.png");
+	
 
 	public Gas(Position objectPosition, Level currentLevel) {
 		this.renderSprite = new Image("gas_images/Sprinkler.png");
@@ -51,7 +53,11 @@ public class Gas extends CollideItem {
 	
 	public void instantDissapate() {
 		this.tickCounter = STOP_SPREAD_INTERVAL;
+		this.lingerCounter = LINGER_LIMIT;
 		System.out.println("STOP SPREAD");
+		
+		//sprite change to show the fan is broken
+		this.renderSprite = brokenGas;
 	}
 
 	@Override

@@ -38,8 +38,7 @@ public abstract class NormalRat extends Rat {
 	/**
 	 * 	Whether or not the rat is sterile.
 	 */
-	protected boolean ratSterile;
-	
+	protected boolean ratSterile;	
 	/**
 	 * 	Replenishes the health of a rat back to full health.
 	 */

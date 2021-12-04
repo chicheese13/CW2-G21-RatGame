@@ -78,6 +78,7 @@ public class BabyRat extends NormalRat {
 		//play rat death sound clip.
 		SoundClip ratDeathSound = new SoundClip("rat-death-sound");
 		ratDeathSound.play();
+		this.currentLevel.incrimentScore(RAT_SCORE);
 	}
 	
 	/**

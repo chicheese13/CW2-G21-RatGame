@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.Arrays;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -17,8 +18,8 @@ public class Level {
 	//Object[][][] board;
 	int score;
 	double currentTime;
-	int parTime;
-	short maxRats = 50;
+	BigDecimal parTime;
+	short maxRats;
 	String[] dataArray;
 	
 	private double gameCounterPoison = 0;
@@ -40,26 +41,7 @@ public class Level {
 	private final int ITEM_GAIN_INTERVAL_DEATHRAT = 660;
 	
 	//private String[][] tiles;
-	private static String tiles [][] = {{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
-			{"G","P","P","P","P","P","P","P","G","G","G","G","G","G","G", "G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
-			{"G","P","G","G","T","G","G","P","G","G","G","G","P","P","P", "P","P","G","G","G","P","P","P","P","P","P","P","P","P","G"},
-			{"G","P","G","P","P","P","G","P","G","G","G","P","P","G","G", "G","P","P","G","G","P","G","G","G","G","G","G","G","P","G"},
-			{"G","P","G","P","G","P","G","P","G","G","G","P","G","G","G", "G","G","P","G","G","P","P","P","P","P","P","P","P","P","G"},
-			{"G","P","G","P","G","P","T","P","G","G","P","P","G","G","G", "G","G","P","P","G","G","G","G","P","G","P","G","G","G","G"},
-			{"G","P","G","P","G","P","G","P","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
-			{"G","P","G","P","P","P","G","P","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
-			{"G","P","G","T","G","G","G","P","G","G","P","P","P","P","P", "P","P","P","P","G","G","G","G","P","G","P","G","G","G","G"},
-			{"G","P","P","P","P","P","P","P","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
-			{"G","P","G","G","G","G","G","G","G","G","P","P","P","P","P", "P","P","P","P","G","G","G","G","P","G","P","G","G","G","G"},
-			{"G","P","G","P","P","G","G","G","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
-			{"G","P","G","G","P","G","G","G","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
-			{"G","P","G","G","P","P","G","G","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
-			{"G","P","G","G","G","P","P","G","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
-			{"G","P","G","G","G","G","P","P","G","G","P","G","G","G","G", "G","G","G","P","G","G","G","G","P","G","P","G","G","G","G"},
-			{"G","P","G","G","G","G","G","P","P","P","P","T","T","T","T", "T","T","T","P","T","T","T","T","P","P","P","G","G","G","G"},
-			{"G","P","G","G","G","G","G","T","G","G","G","G","G","G","G", "G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
-			{"G","P","P","P","P","P","P","P","G","G","G","G","G","G","G", "G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"},
-			{"G","G","G","G","G","G","G","G","G","G","G","G","G","G","G", "G","G","G","G","G","G","G","G","G","G","G","G","G","G","G"}};
+	private static char tiles [][];
 
 	
 	//ArrayLists for Rats & Items
@@ -97,46 +79,50 @@ public class Level {
 		fileData = fileData.substring(0, fileData.indexOf("."));
 		dataArray = fileData.split(",");
 		
+		
 		//Sets variables for each piece of data to make it easier to read
 		int x = Integer.parseInt(dataArray[0]);
 		int y = Integer.parseInt(dataArray[1]);
 		String[] tileTypes = dataArray[2].split("");
 		String[] rats = dataArray[3].split("");
 		maxRats = Short.parseShort(dataArray[4]);
-		parTime = Integer.parseInt(dataArray[5]);
+		parTime = new BigDecimal(dataArray[5]);
 		
 		//board = new Object[y][x][3];
 		
-		
+		this.tiles = new char[y][x];
 		
 		//Adds tile types into correct position and sets up ArrayLists
 		int count = 0;
 		for(int i=0; i<y;i++) {
 			for(int j=0; j<x;j++) {
-				//board[i][j][0] = tileTypes[count];
-				//board[i][j][1] = new ArrayList<Rat>();
-				//board[i][j][2] = new ArrayList<Item>();
+				tiles[i][j] = tileTypes[count].charAt(0);
 				count ++;
 			}
 		}
 		
+		count = 0;
+		for(int i=0; i<y;i++) {
+			for(int j=0; j<x;j++) {
+				if (rats[count].charAt(0) == 'M') {
+					this.spawnRat(new BabyRat(new Position(new BigDecimal(j), new BigDecimal(i)), true, this, 'N'));
+				} else if (rats[count].charAt(0) == 'F') {
+					this.spawnRat(new BabyRat(new Position(new BigDecimal(j), new BigDecimal(i)), false, this, 'N'));
+				}
+				count ++;
+			}
+		}
+		
+	
+		
+		System.out.println(x);
+		System.out.println(y);
+		System.out.println(Arrays.deepToString(tiles));
 		//Adds rats in correct position
 		
 		//Position position, boolean gender, TestLevel currentLevel, char directionFacing
 		
-		count = 0;
-		for(int i=0; i<y;i++) {
-			for(int j=0; j<x;j++) {
-				if (rats[count] == "M") {
-					System.out.println("test1");
-					renderRats.add(new BabyRat(new Position(new BigDecimal(i), new BigDecimal(j)), true, this, 'N'));
-				} else if (rats[count] == "F") {
-					System.out.println("test2");
-					renderRats.add(new BabyRat(new Position(new BigDecimal(i), new BigDecimal(j)), false, this, 'N'));
-				}
-				count ++;
-			}
-		}	
+		
 		
 		//generate render tiles
 		ConvertLayoutToTiles convertedLayout = new ConvertLayoutToTiles(tiles);
@@ -148,8 +134,8 @@ public class Level {
 		//this.spawnRat(new BabyRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, this, 'N'));
 		//this.spawnRat(new BabyRat(new Position(new BigDecimal("1"), new BigDecimal("1")), true, this, 'N'));
 		
-		this.spawnRat(new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), true, false, 100, 'N', this));
-		this.spawnRat(new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, false, 100, 'N', this));
+		//this.spawnRat(new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), true, false, 100, 'N', this));
+		//this.spawnRat(new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, false, 100, 'N', this));
 		
 	}
 	
@@ -185,7 +171,7 @@ public class Level {
 		return this.renderAfterTilesPosition;
 	}
 	
-	public String[][] getTiles(){
+	public char[][] getTiles(){
 		return this.tiles;
 	}
 	
@@ -205,6 +191,7 @@ public class Level {
 			}
 		}
 		
+		System.out.println(ratCount);
 		if (ratCount >= maxRats) {
 			return "lost";
 		} else if (ratCount == 0) {
@@ -215,34 +202,35 @@ public class Level {
 		
 	}
 	
-	public void itemInterval(String itemType, ItemManager items, double gameCounter, double ITEM_GAIN_INTERVAL) {
+	public double itemInterval(String itemType, ItemManager items, double gameCounter, double ITEM_GAIN_INTERVAL) {
 		if (gameCounter == ITEM_GAIN_INTERVAL) {
 			items.tryIncreaseItem(itemType);
-			//gameCounter = 0;
-			System.out.println("Bomb count increase");
+			gameCounter = 0;
+			System.out.println("BOMB INCREASE");
 		} else {
 			gameCounter++;
-			System.out.println(gameCounter);
 		}
+		return gameCounter;
+	}
+	
+	public void incrimentScore(int scoreIncrease) {
+		this.score = this.score + scoreIncrease;
 	}
 	
 	/**
 	 * Updates board
 	 */
 	public void updateBoard(ItemManager items) {
-		//checks if the game is lost
-		if (gameCounterBomb == ITEM_GAIN_INTERVAL_BOMB) {
-			items.tryIncreaseItem("Bomb");
-			//gameCounter = 0;
-			System.out.println("Bomb count increase");
-		} else {
-			gameCounterBomb++;
-			System.out.println(gameCounterBomb);
-		}
 		
-		
-		
-		
+		gameCounterBomb = itemInterval("Bomb", items, gameCounterBomb, ITEM_GAIN_INTERVAL_BOMB);
+		gameCounterPoison = itemInterval("Poison", items, gameCounterPoison, ITEM_GAIN_INTERVAL_POISON);
+		gameCounterGas = itemInterval("Gas", items, gameCounterGas, ITEM_GAIN_INTERVAL_GAS);
+		gameCounterSteril = itemInterval("Sterilisation", items, gameCounterSteril, ITEM_GAIN_INTERVAL_STERIL);
+		gameCounterMGChange = itemInterval("MGenderChange", items, gameCounterMGChange, ITEM_GAIN_INTERVAL_MGCHANGE);
+		gameCounterFGChange = itemInterval("FGenderChange", items, gameCounterFGChange, ITEM_GAIN_INTERVAL_FGCHANGE);
+		gameCounterDeathRat = itemInterval("DeathRat", items, gameCounterDeathRat, ITEM_GAIN_INTERVAL_DEATHRAT);
+		gameCounterNoEntry = itemInterval("NoEntrySign", items, gameCounterNoEntry, ITEM_GAIN_INTERVAL_NOENTRY);
+
 		
 		for (int i = 0; i < renderRats.size(); i++) {
 			double xMinus = renderRats.get(i).getObjectPosition()[0].doubleValue() - 0.5;
@@ -357,7 +345,6 @@ public class Level {
 					
 				
 			}
-			//For temp tiles (such as explosion tiles) detecting other items
 			
 			for (int i2 = 0; i2 < renderItems.size(); i2++) {
 				//testLevel.getRenderObjects().get(i).getObjectPosition()[0]
@@ -380,14 +367,20 @@ public class Level {
 					}
 					
 					if (xCollide == true && yCollide == true) {
-						if (renderTempTiles.get(i) instanceof CollideItem) {
-							System.out.println("TEMP TILE COLLISION");
-							((CollideItem) renderTempTiles.get(i)).collision((Item) renderItems.get(i2));
+						if (renderItems.get(i2) instanceof Gas && (renderTempTiles.get(i) instanceof GasSpread) == false) {
+							//dissipate the gas.
+							((Gas) renderItems.get(i2)).instantDissapate();
+							
+						} else if ((renderItems.get(i2) instanceof Gas) == false && (renderItems.get(i2) instanceof Sterilisation) == false  && (renderTempTiles.get(i) instanceof Explosion) == true) {
+							this.despawnItem(((Item) renderItems.get(i2)));
+						} else if ((renderItems.get(i2) instanceof Sterilisation) == true && (renderTempTiles.get(i) instanceof Explosion) == true) {
+							((Sterilisation) renderItems.get(i2)).instantRemove();
 						}
 					}
 					
 				
 			}
+			
 		}
 		
 		
@@ -462,7 +455,7 @@ public class Level {
 		System.out.println(y);
 		System.out.println("---");
 		
-		if (tiles[y][x] == "G" || tiles[y][x] == "T") {
+		if (tiles[y][x] == 'G' || tiles[y][x] == 'T') {
 			return false;
 		}
 		
@@ -480,7 +473,7 @@ public class Level {
 		//check for collisions
 		int x = (int) xIn;
 		int y = (int) yIn;
-		if (tiles[y][x] == "G" || tiles[y][x] == "T") {
+		if (tiles[y][x] == 'G' || tiles[y][x] == 'T') {
 			return false;
 		}
 		
@@ -545,7 +538,7 @@ public class Level {
 	/**
 	 * @return Par time to complete level
 	 */
-	public int getParTime() {
+	public BigDecimal getParTime() {
 		return parTime;
 	}
 	
@@ -583,25 +576,25 @@ public class Level {
 		
 		if (direction == 'N') {
 			if (y > 0) {
-				if (tiles[y-1][x] == "P" || tiles[y-1][x] == "T") {
+				if (tiles[y-1][x] == 'P' || tiles[y-1][x] == 'T') {
 					return true;
 				}
 			}
 		} else if (direction == 'E'){
 			if (x > 0) {
-				if (tiles[y][x+1] == "P" || tiles[y][x+1] == "T") {
+				if (tiles[y][x+1] == 'P' || tiles[y][x+1] == 'T') {
 					return true;
 				}
 			}
 		} else if (direction == 'S') {
 			if (y < (tiles.length-1)) {
-				if (tiles[y+1][x] == "P" || tiles[y+1][x] == "T") {
+				if (tiles[y+1][x] == 'P' || tiles[y+1][x] == 'T') {
 					return true;
 				}
 			}
 		} else {
 			if (x > 0) {
-				if (tiles[y][x-1] == "P" || tiles[y][x-1] == "T") {
+				if (tiles[y][x-1] == 'P' || tiles[y][x-1] == 'T') {
 					return true;
 				}
 			}

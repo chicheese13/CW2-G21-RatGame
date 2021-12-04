@@ -11,13 +11,13 @@ public class ItemManager {
 	
 	public ItemManager() {
 		inventory.put("Bomb",0);
-		inventory.put("Poison",4);
-		inventory.put("Gas",4);
-		inventory.put("Sterilisation",4);
-		inventory.put("MGenderChange",4);
-		inventory.put("FGenderChange",4);
-		inventory.put("DeathRat",4);
-		inventory.put("NoEntrySign",4);
+		inventory.put("Poison",0);
+		inventory.put("Gas",0);
+		inventory.put("Sterilisation",0);
+		inventory.put("MGenderChange",0);
+		inventory.put("FGenderChange",0);
+		inventory.put("DeathRat",0);
+		inventory.put("NoEntrySign",0);
 	}
 	
 	//Refills all items
@@ -35,6 +35,10 @@ public class ItemManager {
 	//Refills only the specific item you want
 	public void refillOnly(String itemType) {
 		inventory.replace(itemType,4);
+	}
+	
+	public int getItemCount(String itemType) {
+		return this.inventory.get(itemType);
 	}
 	
 	//Checks if the item is full

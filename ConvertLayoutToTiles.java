@@ -9,7 +9,7 @@ public class ConvertLayoutToTiles {
 	private ArrayList<RenderTile> afterTiles = new ArrayList<RenderTile>();
 	private ArrayList<Position> afterTilesPositon = new ArrayList<Position>();
 	
-	public ConvertLayoutToTiles(String[][] tiles) {
+	public ConvertLayoutToTiles(char[][] tiles) {
 		this.tiles = convertTiles(tiles);
 	}
 	
@@ -17,7 +17,7 @@ public class ConvertLayoutToTiles {
 		return this.tiles;
 	}
 	 
-	public RenderTile[][] convertTiles(String[][] tileArray){
+	public RenderTile[][] convertTiles(char[][] tileArray){
 		RenderTile[][] returnArray = new RenderTile[tileArray.length][tileArray[0].length];
 		//probably organise the images into groups, top, left, bottom, right.
 		//presume that G = Grass, P = Path and T = Tunnel.
@@ -40,69 +40,72 @@ public class ConvertLayoutToTiles {
 				//check right
 				//check bottom
 				
-				if (tileArray[y][x] == "T") {
+				if (tileArray[y][x] == 'T') {
 					isTunnel = true;
 				}
 				
-				if (tileArray[y][x] == "G") {
+				System.out.println("TESTING");
+				System.out.println(tileArray[y][x]);
+				if (tileArray[y][x] == 'G') {
 					isGrass = true;
+					System.out.println("GRASSSSSS");
 				}
 				
-				if (tileArray[y][x] == "P") {
+				if (tileArray[y][x] == 'P') {
 					isPath = true;
 				}
 				
 				//checks if the current tile is tunnel or Path, if so we can check the surroudning tiles.
-				if (tileArray[y][x] == "P") {
+				if (tileArray[y][x] == 'P') {
 					//check top
 					if (y > 1) {
-						if (tileArray[y-1][x] == "T" || tileArray[y-1][x] == "P") {
+						if (tileArray[y-1][x] == 'T' || tileArray[y-1][x] == 'P') {
 							isTop = true;
 						}
 					}
 					//check left
 					if (x > 0) {
-						if (tileArray[y][x-1] == "T" || tileArray[y][x-1] == "P") {
+						if (tileArray[y][x-1] == 'T' || tileArray[y][x-1] == 'P') {
 							isLeft = true;
 						}
 					}
 					//check right
 					if (x < tileArray[y].length-1) {
-						if (tileArray[y][x+1] == "T" || tileArray[y][x+1] == "P") {
+						if (tileArray[y][x+1] == 'T' || tileArray[y][x+1] == 'P') {
 							isRight = true;
 						}
 					}
 					
 					if (y < tileArray.length-1) {
-						if (tileArray[y+1][x] == "T" || tileArray[y+1][x] == "P") {
+						if (tileArray[y+1][x] == 'T' || tileArray[y+1][x] == 'P') {
 							isBottom = true;
 						}
 					}
 				}
 				
 				//tunnels have special rendering.
-				if (tileArray[y][x] == "T") {
+				if (tileArray[y][x] == 'T') {
 					//check the top, left and right to see if its tunnel.
 					if (y > 1) {
-						if (tileArray[y-1][x] == "T") {
+						if (tileArray[y-1][x] == 'T') {
 							isTop = true;
 						}
 					}
 					//check left
 					if (x > 0) {
-						if (tileArray[y][x-1] == "T") {
+						if (tileArray[y][x-1] == 'T') {
 							isLeft = true;
 						}
 					}
 					//check right
 					if (x < tileArray[y].length-1) {
-						if (tileArray[y][x+1] == "T") {
+						if (tileArray[y][x+1] == 'T') {
 							isRight = true;
 						}
 					}
 					
 					if (y < tileArray.length-1) {
-						if (tileArray[y+1][x] == "T") {
+						if (tileArray[y+1][x] == 'T') {
 							isBottom = true;
 						}
 					}
@@ -117,7 +120,7 @@ public class ConvertLayoutToTiles {
 					String right = "right";
 					String top = "top";
 					String bottom = "bottom";
-					//String dash = "-";
+					//String dash = '-';
 					
 					//top, bottom, left, right, .png
 					if (isTop) {

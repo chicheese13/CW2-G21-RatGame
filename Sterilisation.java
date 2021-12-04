@@ -38,6 +38,11 @@ public class Sterilisation extends Item {
 		return this.tickCounter;
 	}
 
+	public void instantRemove() {
+		System.out.print("STERILE TEST");
+		this.tickCounter = STERILE_DURATION;
+	}
+	
 	@Override
 	public void tick() {
 		this.tickCounter++;
