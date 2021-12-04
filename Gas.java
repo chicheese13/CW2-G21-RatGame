@@ -15,6 +15,7 @@ public class Gas extends CollideItem {
 	private int dissipateCounter = 0;
 	private int dissipateIndex = 0;
 	private boolean isWaiting = false;
+	private boolean isBroken = false;
 	private int LINGER_LIMIT = 200;
 	private int lingerCounter = 0;
 	private Image sprinkler = new Image("gas_images/Sprinkler.png");
@@ -24,7 +25,7 @@ public class Gas extends CollideItem {
 		this.renderSprite = sprinkler;
 		this.objectPosition = objectPosition;
 		this.currentLevel = currentLevel;
-		
+
 		this.currentLevel.spawnSound("Gas");
 
 		// spawn a gas spread on this tile
@@ -41,7 +42,7 @@ public class Gas extends CollideItem {
 	public void collision(Object collidedObject) {
 
 		if (collidedObject instanceof Explosion) {
-			
+
 			this.currentLevel.despawnItem(this);
 		}
 		// TODO Auto-generated method stub
@@ -60,6 +61,8 @@ public class Gas extends CollideItem {
 		this.tickCounter = STOP_SPREAD_INTERVAL;
 		this.lingerCounter = LINGER_LIMIT;
 		System.out.println("STOP SPREAD");
+		this.isBroken = true;
+		//this.currentLevel.stopSound();
 
 		// sprite change to show the fan is broken
 		this.renderSprite = sprinklerBroken;
@@ -89,7 +92,10 @@ public class Gas extends CollideItem {
 
 			if (this.tickCounter == STOP_SPREAD_INTERVAL) {
 				this.lingerCounter++;
-				this.renderSprite = sprinkler;
+				
+				if (isBroken == false) {
+					this.renderSprite = sprinkler;
+				}
 
 				if (lingerCounter >= LINGER_LIMIT) {
 					this.dissipateCounter++;
