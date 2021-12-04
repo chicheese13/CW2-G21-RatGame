@@ -1,9 +1,10 @@
-import java.io.File;
+import java.time.*;
 import java.util.Arrays;
-import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.time.temporal.ChronoField;
+import java.io.*;  // Import the File class
 
 /**
  * Level.java
@@ -14,7 +15,11 @@ import java.util.ArrayList;
 /**
  * Creates a board that will be used to store information on the level, such as tile, rat, and item locations.
  */
-public class Level {
+public class Level implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//Object[][][] board;
 	int score;
 	double currentTime;
@@ -31,49 +36,56 @@ public class Level {
 	private double gameCounterFGChange = 0;
 	private double gameCounterDeathRat = 0;
 	
-	private final int ITEM_GAIN_INTERVAL_POISON = 660;
-	private final int ITEM_GAIN_INTERVAL_GAS = 660;
-	private final int ITEM_GAIN_INTERVAL_BOMB = 660;
-	private final int ITEM_GAIN_INTERVAL_NOENTRY = 660;
-	private final int ITEM_GAIN_INTERVAL_STERIL = 660;
-	private final int ITEM_GAIN_INTERVAL_MGCHANGE = 660;
-	private final int ITEM_GAIN_INTERVAL_FGCHANGE = 660;
-	private final int ITEM_GAIN_INTERVAL_DEATHRAT = 660;
+	private int ITEM_GAIN_INTERVAL_POISON;
+	private int ITEM_GAIN_INTERVAL_GAS;
+	private int ITEM_GAIN_INTERVAL_BOMB;
+	private int ITEM_GAIN_INTERVAL_NOENTRY;
+	private int ITEM_GAIN_INTERVAL_STERIL;
+	private int ITEM_GAIN_INTERVAL_MGCHANGE;
+	private int ITEM_GAIN_INTERVAL_FGCHANGE;
+	private int ITEM_GAIN_INTERVAL_DEATHRAT;
+	
 	
 	//private String[][] tiles;
 	private static char tiles [][];
 
 	
 	//ArrayLists for Rats & Items
-	ArrayList<Rat> renderRats = new ArrayList<Rat>();
-	ArrayList<Item> renderItems = new ArrayList<Item>();
-	ArrayList<CollideItem> renderTempTiles = new ArrayList<CollideItem>();
-	ArrayList<RenderTile> renderAfterTiles;
-	ArrayList<Position> renderAfterTilesPosition;
+	ArrayList<RenderObject> renderRats = new ArrayList<RenderObject>();
+	ArrayList<RenderObject> renderItems = new ArrayList<RenderObject>();
+	ArrayList<RenderObject> renderTempTiles = new ArrayList<RenderObject>();
+	transient ArrayList<RenderTile> renderAfterTiles;
+	transient ArrayList<Position> renderAfterTilesPosition;
 	ArrayList<SoundClip> renderSound = new ArrayList<SoundClip>();
-	private RenderTile[][] renderTiles;
+	private transient RenderTile[][] renderTiles;
 	
 	private int offsetX = 0;
 	private int offsetY = 0;
-	private ItemManager itemManager;
+	private transient ItemManager itemManager;
+	private transient Profile currentUser;
+	private String fileName;
+	private int currentLevelNumber;
+	
 	
 	/**
 	 * Constructor for level class. Creates board from given text file
 	 * @param fileName Name of the file that stores information on the level
 	 */
-	public Level (String fileName, String saveFile, ItemManager items) {
-		this.itemManager = items;
+	public Level (String fileName, String saveFile, ItemManager items, Profile currentUser, int currentLevelNumber) {
+		ArrayStorage tst = new ArrayStorage();
 		
+		this.itemManager = items;
+		this.fileName = fileName;
+		this.currentLevelNumber = currentLevelNumber;
+		this.currentUser = currentUser;
 		String fileData = "";
 		File level = new File(fileName);
 		Scanner in = null;
 		
 		try {
 			in = new Scanner(level);
-		} catch(FileNotFoundException e) {
-			System.out.println(fileName);
-			System.out.println("File does not exist");
-			System.exit(0);
+		} catch(Exception e) {
+			System.out.print("EERORO");
 		}
 		
 		while (in.hasNextLine()) {
@@ -95,6 +107,21 @@ public class Level {
 		String[] rats = dataArray[3].split("");
 		maxRats = Short.parseShort(dataArray[4]);
 		parTime = new BigDecimal(dataArray[5]);
+		String[] itemIntervalsString = dataArray[6].split(" ");
+		
+		System.out.println("LENGTH OF ITEM INTERVALS");
+		System.out.println(itemIntervalsString.length);
+		
+		for (int i = 0; i < itemIntervalsString.length; i++) {
+			ITEM_GAIN_INTERVAL_POISON = Integer.parseInt(itemIntervalsString[0]);
+			ITEM_GAIN_INTERVAL_GAS = Integer.parseInt(itemIntervalsString[1]);
+			ITEM_GAIN_INTERVAL_BOMB = Integer.parseInt(itemIntervalsString[2]);
+			ITEM_GAIN_INTERVAL_NOENTRY = Integer.parseInt(itemIntervalsString[3]);
+			ITEM_GAIN_INTERVAL_STERIL = Integer.parseInt(itemIntervalsString[4]);
+			ITEM_GAIN_INTERVAL_MGCHANGE = Integer.parseInt(itemIntervalsString[5]);
+			ITEM_GAIN_INTERVAL_FGCHANGE = Integer.parseInt(itemIntervalsString[6]);
+			ITEM_GAIN_INTERVAL_DEATHRAT = Integer.parseInt(itemIntervalsString[7]);
+		}
 		
 		//board = new Object[y][x][3];
 		
@@ -145,6 +172,15 @@ public class Level {
 		//this.spawnRat(new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), true, false, 100, 'N', this));
 		//this.spawnRat(new AdultRat(new Position(new BigDecimal("1"), new BigDecimal("1")), false, false, 100, 'N', this));
 		
+		if (saveFile != "") {
+			//fetch the data from the arrays and overwrite the existing arrays
+			
+			//overwrite current time and score
+			
+			//overwrite item manager
+			
+		}
+		
 	}
 	
 	public int getScore() {
@@ -187,7 +223,7 @@ public class Level {
 		this.renderItems.add(spawnItem);
 	}
 	
-	public ArrayList<Item> getItems(){
+	public ArrayList<RenderObject> getItems(){
 		return this.renderItems;
 	}
 	
@@ -423,7 +459,7 @@ public class Level {
 		}
 	}
 	
-	public ArrayList<CollideItem> getTempTiles() {
+	public ArrayList<RenderObject> getTempTiles() {
 		return this.renderTempTiles;
 	}
 	
@@ -580,7 +616,7 @@ public class Level {
 	/**
 	 * @return All rats on the board
 	 */
-	public ArrayList<Rat> getRats() {
+	public ArrayList<RenderObject> getRats() {
 		return this.renderRats;
 	}
 	
@@ -663,6 +699,62 @@ public class Level {
 				renderSound.remove(i);
 			}
 		}
+	}
+	
+	public static void saveArrayToFile(ArrayList<RenderObject> saveArray, String saveLocation) {
+		try{
+			
+		    FileOutputStream writeData = new FileOutputStream(saveLocation+"/rats.ser");
+		    ObjectOutputStream writeStream = new ObjectOutputStream(writeData);
+		    
+		    writeStream.writeObject(saveArray);
+		    writeStream.flush();
+		    writeStream.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	public void saveProgress(BigDecimal time) {
+		String userDirectory = "src/saves/"+this.currentUser.getIdentifier()+"/";
+		String levelName = "Level" + this.currentLevelNumber + "Date:";
+		
+		LocalDateTime currentTime = LocalDateTime.now();
+		String currentYear = String.valueOf(currentTime.getYear());
+		String currentMonth = String.valueOf(currentTime.getMonthValue());
+		String currentDay = String.valueOf(currentTime.getDayOfMonth());
+		String currentHour = String.valueOf(currentTime.getHour());
+		String currentMinute = String.valueOf(currentTime.getMinute());
+		String currentSecond = String.valueOf(currentTime.getSecond());
+		String currentMillisecond = String.valueOf(currentTime.get(ChronoField.MILLI_OF_SECOND));
+		
+		String dateString = currentDay + "-" + currentMonth + "-" + currentYear + "-" + currentHour + ":" + currentMinute + ":" + currentSecond + ":" + currentMillisecond;
+
+		String saveDirectory = userDirectory + levelName + dateString;
+		
+		new File(saveDirectory).mkdirs();
+		//create a level.txt
+		PrintWriter levelWriter;
+		try {
+			levelWriter = new PrintWriter(saveDirectory+"/level.txt");
+			levelWriter.println(this.currentLevelNumber + ",");
+			levelWriter.println(this.itemManager.printItems() + ",");
+			levelWriter.println(time + " " + this.score);
+			levelWriter.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//create array files
+		//saveArrayToFile(this.renderRats, saveDirectory);
+				
+		//System.currentTimeMillis()
+		//go the person's active directory
+		//create a new folder with the level name, day, month, year, hour, minute, second
+		//create files for the array
+		saveArrayToFile(this.renderRats, saveDirectory);
+	
 	}
 	
 }

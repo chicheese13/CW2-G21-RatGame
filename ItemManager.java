@@ -79,4 +79,16 @@ public class ItemManager {
 			inventory.replace(itemType, (this.inventory.get(itemType)) - 1);
 		}
 	}
+	
+	public String printItems() {
+		return (inventory.get("Bomb") + " " +
+				inventory.get("Poison") + " " +
+				inventory.get("Gas") + " " +
+				inventory.get("Sterilisation") + " " +
+				inventory.get("MGenderChange") + " " +
+				inventory.get("FGenderChange") + " " +
+				inventory.get("DeathRat") + " " +
+				inventory.get("NoEntrySign"));
+				
+	}
 }
