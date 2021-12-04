@@ -51,8 +51,7 @@ public class NoEntrySign extends CollideItem {
 	public void collision(Object paramater) {
 		if (paramater instanceof Rat) {
 			((Rat) paramater).turnAround();
-			SoundClip signHit = new SoundClip("signHit" + pictureNumber);
-			signHit.play();
+			this.currentLevel.spawnSound("signHit" + pictureNumber);
 			breakSign();
 		}
 	}

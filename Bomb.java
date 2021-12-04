@@ -24,9 +24,7 @@ public class Bomb extends Item {
 
 	public void startTimer() {
 
-		SoundClip fuse = new SoundClip("Fuse");
-		fuse.play();
-
+		this.currentLevel.spawnSound("Fuse");
 	}
 
 	private Image loadImage(int pictureNumber) {
@@ -45,18 +43,16 @@ public class Bomb extends Item {
 
 	public void tick() {
 		
-		SoundClip background = new SoundClip("BombBackground");
 
 		if (timerStarted == false) {
 			
 			if(delayCount == 0) {
 				
-				background.play();
+				this.currentLevel.spawnSound("BombBackground");
 			}
 
 			if (delayCount % 1000 == 0) {
-				SoundClip tick = new SoundClip("Tick");
-				tick.play();
+				this.currentLevel.spawnSound("Tick");
 				this.renderSprite = loadDelayImage(delayedPictureNumber);
 				if (delayedPictureNumber > 1) {
 					delayedPictureNumber--;
@@ -77,8 +73,7 @@ public class Bomb extends Item {
 				
 				if (pictureNumber == EXPLOSION_FRAME) {
 					explode();
-					SoundClip explosion = new SoundClip("Explosion");
-					explosion.play();
+					this.currentLevel.spawnSound("Explosion");
 				}
 
 				this.renderSprite = loadImage(pictureNumber);

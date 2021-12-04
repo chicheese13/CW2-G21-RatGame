@@ -18,6 +18,10 @@ import java.math.RoundingMode;
 
 public class AdultRat extends NormalRat {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * This is the default value for the pregnancy attribute.
 	 */
 	protected final boolean DEFAULT_PREGNANCY_VALUE = false;
@@ -179,8 +183,7 @@ public class AdultRat extends NormalRat {
 	 * handles the death of an adult rat.
 	 */
 	public void ratDeath() {
-		SoundClip ratDeathSound = new SoundClip("rat-death-sound");
-		ratDeathSound.play();
+		this.currentLevel.spawnSound("rat-death-sound");
 		this.currentLevel.despawnRat(this);
 		this.currentLevel.incrimentScore((this.pregnancyCounter+1) * RAT_SCORE);
 	}

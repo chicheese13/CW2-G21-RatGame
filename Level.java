@@ -50,6 +50,7 @@ public class Level {
 	ArrayList<CollideItem> renderTempTiles = new ArrayList<CollideItem>();
 	ArrayList<RenderTile> renderAfterTiles;
 	ArrayList<Position> renderAfterTilesPosition;
+	ArrayList<SoundClip> renderSound = new ArrayList<SoundClip>();
 	private RenderTile[][] renderTiles;
 	
 	private int offsetX = 0;
@@ -403,6 +404,10 @@ public class Level {
 				for (int i = 0; i < renderTempTiles.size(); i++) {
 					renderTempTiles.get(i).tick();
 				}
+			
+		for (int i = 0; i < renderSound.size(); i++) {
+			renderSound.get(i).tick();
+		}
 		
 	}
 	
@@ -635,6 +640,29 @@ public class Level {
 		
 		return this.ITEM_GAIN_INTERVAL_BOMB;
 	}
-		
+	
+	public void spawnSound(String soundName) {
+		renderSound.add(new SoundClip(soundName, this));
+	}
+	
+	public void pauseAllSound() {
+		for (int i = 0; i < renderSound.size(); i++) {
+			renderSound.get(i).pause();
+		}
+	}
+	
+	public void playAllSound() {
+		for (int i = 0; i < renderSound.size(); i++) {
+			renderSound.get(i).resume();
+		}
+	}
+	
+	public void despawnSound(SoundClip sound) {
+		for (int i = 0; i < renderSound.size(); i++) {
+			if (renderSound.get(i) == sound) {
+				renderSound.remove(i);
+			}
+		}
+	}
 	
 }

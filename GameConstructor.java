@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.math.BigDecimal;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -22,14 +24,42 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.util.Pair;
+
+
+import java.io.BufferedWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Scanner;
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.effect.DropShadow;
+
+
 import java.lang.Math;
 import java.util.Scanner;
 
 import java.awt.event.KeyAdapter;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
+
+
 
 /**
  * Sample application that demonstrates the use of JavaFX Canvas for a Game.
@@ -72,7 +102,7 @@ public class GameConstructor extends Application {
 	ImageView draggableSterilisationImage = new ImageView();
 	
 	private BigDecimal TICK_DURATION = new BigDecimal("15");
-
+	
 	private Image bomb = new Image("/items_icons/bombOFF.png");
 	private Image bombOn = new Image("/items_icons/bombON.png");
 	private Image gas = new Image("/items_icons/gasOFF.png");
@@ -89,7 +119,14 @@ public class GameConstructor extends Application {
 	private Image femaleSexChangerOn = new Image("/items_icons/femaleON.png");
 	private Image sterilisation = new Image("/items_icons/sterilisationOFF.png");
 	private Image sterilisationOn = new Image("/items_icons/sterilisationON.png");
-
+	private Image pausedBG = new Image("/Textures/paused-background.png");
+	private Image quitGameButton = new Image("/Textures/quit-game-button.png");
+	private Image quitGameButtonHover = new Image("/Textures/quit-game-button-hover.png");
+	private boolean quitGameButtonHovered = false;
+	private boolean saveGameButtonHovered = false;
+	private Image saveGameButton = new Image("/Textures/save-button.png");
+	private Image saveGameButtonHover = new Image("/Textures/save-button-hover.png");
+	
 	private Image availSprite;
 	private Image availableSprite = new Image("Textures/available.png");
 	private Image unavailableSprite = new Image("Textures/unavailable.png");
@@ -115,6 +152,14 @@ public class GameConstructor extends Application {
 
 	private Leaderboard currentLeaderboard;
 	private Profile currentUser;
+	
+	private int QUIT_GAME_BUTTON_X = 10;
+	private int QUIT_GAME_BUTTON_Y = 4;
+	private int QUIT_GAME_BUTTON_WIDTH = 2;
+	
+	private int SAVE_GAME_BUTTON_X = 10;
+	private int SAVE_GAME_BUTTON_Y = 5;
+	private int SAVE_GAME_BUTTON_WIDTH = 2;
 
 	public GameConstructor(int levelNumber, Profile currentProfile, Leaderboard currentBoard, String saveFile) {
 		this.currentLevelNumber = levelNumber;
@@ -179,6 +224,9 @@ public class GameConstructor extends Application {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		gc.setFill(Color.GRAY);
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		
+		//pausedBG
+		
 
 		// we need to draw the game
 
@@ -233,6 +281,22 @@ public class GameConstructor extends Application {
 		if (this.hasLost) {
 			gc.drawImage(gameLostScreen, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
 		}
+		
+		if (isPaused) {
+			gc.drawImage(pausedBG, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+			if (quitGameButtonHovered) {
+				gc.drawImage(quitGameButtonHover, QUIT_GAME_BUTTON_X * GRID_CELL_WIDTH, QUIT_GAME_BUTTON_Y * GRID_CELL_HEIGHT);
+			} else {
+				gc.drawImage(quitGameButton, QUIT_GAME_BUTTON_X * GRID_CELL_WIDTH, QUIT_GAME_BUTTON_Y * GRID_CELL_HEIGHT);
+			}
+			
+			if (saveGameButtonHovered) {
+				gc.drawImage(saveGameButtonHover, SAVE_GAME_BUTTON_X * GRID_CELL_WIDTH, SAVE_GAME_BUTTON_Y * GRID_CELL_HEIGHT);
+			} else {
+				gc.drawImage(saveGameButton, SAVE_GAME_BUTTON_X * GRID_CELL_WIDTH, SAVE_GAME_BUTTON_Y * GRID_CELL_HEIGHT);
+			}
+			
+		}
 	}
 
 	public void processKeyEvent(KeyEvent event) {
@@ -263,8 +327,11 @@ public class GameConstructor extends Application {
 			}
 			break;
 		case ESCAPE:
-			togglePause();
-			System.out.println("ESCAPE PRESSED");
+			String gameStatus = currentLevel.getGameStatus();
+			if (gameStatus == "inprogress") {
+				togglePause();
+				System.out.println("ESCAPE PRESSED");
+			}
 			break;
 		default:
 			// Do nothing for all other keys.
@@ -281,10 +348,14 @@ public class GameConstructor extends Application {
 	
 	public void togglePause() {
 		if (this.isPaused) {
+			drawGame();
 			this.isPaused = false;
+			this.currentLevel.playAllSound();
 			tickTimeline.play();
 		} else {
+			drawGame();
 			this.isPaused = true;
+			this.currentLevel.pauseAllSound();
 			tickTimeline.pause();
 		}
 	}
@@ -309,6 +380,7 @@ public class GameConstructor extends Application {
 		}
 		
 	}
+	
 	
 	public void tick() {
 
@@ -393,6 +465,7 @@ public class GameConstructor extends Application {
 
 		System.out.println(this.currentLevel.getScore());
 	}
+	
 
 	public void bombDropOccured(DragEvent event) {
 		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
@@ -573,7 +646,8 @@ public class GameConstructor extends Application {
 			}
 		}
 		// drawGame();
-	}
+	}	
+	
 
 	/**
 	 * Create the GUI.
@@ -671,6 +745,71 @@ public class GameConstructor extends Application {
 
 				}
 			}
+		});
+		
+		canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent event) {		        
+		        int x = (int) (Math.floor((event.getSceneX()) / 50)) + currentLevel.getOffsetX();
+				int y = (int) (Math.floor((event.getSceneY()) / 50)) + currentLevel.getOffsetY();
+				
+				for (int i = QUIT_GAME_BUTTON_X; i < QUIT_GAME_BUTTON_X+QUIT_GAME_BUTTON_WIDTH; i++) {
+					if (x == i && y == QUIT_GAME_BUTTON_Y) {
+						//method for button click;
+						togglePause();
+					}
+				}
+				
+				//check if the x and y is on a button
+				
+				
+		    }
+		});
+		
+		canvas.setOnMouseMoved(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent event) {		        
+		    	int x = (int) (Math.floor((event.getSceneX()) / 50)) + currentLevel.getOffsetX();
+				int y = (int) (Math.floor((event.getSceneY()) / 50)) + currentLevel.getOffsetY();
+				
+				boolean isQuitHoverSave = false;
+				boolean isSaveHoverQuit = false;
+				
+				for (int i = QUIT_GAME_BUTTON_X; i < QUIT_GAME_BUTTON_X+QUIT_GAME_BUTTON_WIDTH; i++) {
+					if (x == i && y == QUIT_GAME_BUTTON_Y) {
+						//method for button click;
+						isQuitHoverSave = true;
+					}
+				}
+				
+				for (int i = SAVE_GAME_BUTTON_X; i < SAVE_GAME_BUTTON_X+SAVE_GAME_BUTTON_WIDTH; i++) {
+					if (x == i && y == SAVE_GAME_BUTTON_Y) {
+						//method for button click;
+						isSaveHoverQuit = true;
+					}
+				}
+				
+				if (isQuitHoverSave) {
+					System.out.println("HOVER");
+					quitGameButtonHovered = true;
+					drawGame();
+				} else {
+					System.out.println("OFF HOVER");
+					quitGameButtonHovered = false;
+					drawGame();
+				}
+				
+				if (isSaveHoverQuit) {
+					System.out.println("HOVER");
+					saveGameButtonHovered = true;
+					drawGame();
+				} else {
+					System.out.println("OFF HOVER");
+					saveGameButtonHovered = false;
+					drawGame();
+				}
+				
+		    }
 		});
 
 		draggableSignImage.setImage(noEntrySign);

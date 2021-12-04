@@ -16,6 +16,10 @@ import javafx.scene.image.Image;
 
 public class BabyRat extends NormalRat {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * This is the default value of the grow count attribute.
 	 */
 	protected final int DEFAULT_GROW_COUNT = 0;
@@ -76,8 +80,7 @@ public class BabyRat extends NormalRat {
 		this.currentLevel.despawnRat(this);
 		
 		//play rat death sound clip.
-		SoundClip ratDeathSound = new SoundClip("rat-death-sound");
-		ratDeathSound.play();
+		this.currentLevel.spawnSound("rat-death-sound");
 		this.currentLevel.incrimentScore(RAT_SCORE);
 	}
 	
