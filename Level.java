@@ -59,7 +59,7 @@ public class Level {
 	 * Constructor for level class. Creates board from given text file
 	 * @param fileName Name of the file that stores information on the level
 	 */
-	public Level (String fileName) {
+	public Level (String fileName, String saveFile) {
 		String fileData = "";
 		File level = new File(fileName);
 		Scanner in = null;
@@ -75,6 +75,10 @@ public class Level {
 		while (in.hasNextLine()) {
 			fileData = fileData + in.nextLine();
 		}		
+		
+		if (saveFile != "") {
+			//need to load in the file and populate the arrays.
+		}
 		
 		fileData = fileData.substring(0, fileData.indexOf("."));
 		dataArray = fileData.split(",");

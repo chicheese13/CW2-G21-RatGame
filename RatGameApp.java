@@ -1,4 +1,6 @@
 import java.io.BufferedWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
@@ -54,18 +56,98 @@ public class RatGameApp extends Application {
     private static Integer selectedLevel;
     // File where user info is stored
     private static File userFile = new File("src/users.txt");
+    
+    private static String selectedTexturePack = "Default";
+    
+    private static String currentSave = "";
+    
+    private static GameConstructor playGame;
+    
+    //private static File userFile = new File("src/users.txt");
 
     // List of pairs to be used when creating the menu, the pair contains the <text
     // to be displayed, and action to take>
     private List<Pair<String, Runnable>> menuData = Arrays.asList(
             new Pair<String, Runnable>("Start Game", RatGameApp::startGame),
             new Pair<String, Runnable>("Select User", RatGameApp::selectUser),
-            new Pair<String, Runnable>("Create New User", RatGameApp::addUser));
+            new Pair<String, Runnable>("Create New User", RatGameApp::addUser),
+            new Pair<String, Runnable>("Texture Packs", RatGameApp::selectTexturePack),
+    		new Pair<String, Runnable>("Saves", RatGameApp::fetchSaves));
 
     private Pane root = new Pane();
     private VBox menuBox = new VBox(-5);
     private Line line;
     private static Leaderboard board;
+    
+    public static void selectTexturePack() {
+    	File folder = new File("src/texturepacks/");
+    	File[] listOfFiles = folder.listFiles();
+    	
+    	ArrayList<String> texturePacks = new ArrayList<String>();
+        	
+    	for (int i = 0; i < listOfFiles.length; i++) {
+    		if (listOfFiles[i].isDirectory()) {
+    			texturePacks.add(listOfFiles[i].getName());
+    		}
+    	}
+    	
+    	ChoiceDialog<String> cd = new ChoiceDialog<>(selectedTexturePack, texturePacks);
+        cd.showAndWait();
+        cd.hide();
+    }
+    
+    public static void fetchSaves() {
+    	//if user is not signed in then display error, else check their saves.
+    	if (activeUser == null) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setContentText("Please select a player before proceeding");
+            alert.show();
+        } else {
+        	try {
+        		//fetch all the save options
+            	File folder = new File("src/saves/"+activeUser.getIdentifier()+"/");
+            	File[] listOfFiles = folder.listFiles();
+            	
+            	ArrayList<String> saveFiles = new ArrayList<String>();
+                
+            	if (listOfFiles.length > 0) {
+            		for (int i = 0; i < listOfFiles.length; i++) {
+                		saveFiles.add(listOfFiles[i].getName().substring(0, listOfFiles[i].getName().length() - 4));
+                	}
+            		
+            		ChoiceDialog<String> cd = new ChoiceDialog<>("Select Save", saveFiles);
+                    cd.showAndWait();
+                    cd.hide();
+                    currentSave = cd.getSelectedItem();
+                    
+            	} else {
+            		Alert alert = new Alert(AlertType.WARNING);
+                    alert.setContentText("No Save files found for this account.");
+                    alert.show();
+            	}
+        	} finally {
+        		if (currentSave != "") {
+        			System.out.println(currentSave);
+        			 //grab the selected level from the txt file
+                    try {
+                    	String saveFileDirectory = "src/saves/"+activeUser.getIdentifier()+"/"+currentSave+".txt";
+                    	BufferedReader saveFile = new BufferedReader(new FileReader(saveFileDirectory));
+                        int level = Integer.parseInt(saveFile.readLine());
+                        saveFile.close();
+                        
+                        //play the game once we have the level
+                        playGame = new GameConstructor(level, activeUser, board, saveFileDirectory);
+                        playGame.startGame();
+                        currentSave = "";
+                    } catch (Exception e) {
+                    	System.out.println("Reader error");
+                    }
+        			
+        		}
+        	}
+        }
+    	
+    }
 
     /**
      * createContent is the method that populates the menu screen and begins the
@@ -128,7 +210,7 @@ public class RatGameApp extends Application {
      * menu on the left side of the screen with text wrapping
      */
     private void addMOTD() {
-        final String MESSAGE = MOTDGetter2.getMessage();
+        final String MESSAGE = MOTDGetter.getMessage();
         Label message = new Label(MESSAGE);
         message.setFont(Font.font(30));
         message.setTextFill(Color.WHITE);
@@ -238,9 +320,22 @@ public class RatGameApp extends Application {
         TextInputDialog tDialog = new TextInputDialog();
         tDialog.showAndWait();
         String name = tDialog.getEditor().getText();
-        Profile newProfile = new Profile(name, 1);
-        writeToUserFile(newProfile);
-        tDialog.hide();
+        
+        //makes sure the user's name is not blank
+        if (name.replaceAll("\\s","").length() > 0) {
+        	Profile newProfile = new Profile(name, 1, -1);
+            writeToUserFile(newProfile);
+            createSaveDirectory(newProfile.getIdentifier());
+            tDialog.hide();
+        } else {
+        	Alert alert = new Alert(AlertType.WARNING);
+            alert.setContentText("Name must not be empty!");
+            alert.show();
+        }
+    }
+    
+    public static void createSaveDirectory(int identifier) {
+    	new File("src/saves/" + identifier + "/").mkdirs();
     }
 
     /**
@@ -265,7 +360,7 @@ public class RatGameApp extends Application {
 
             // launch game.
             System.out.println("Start the game here");
-            GameConstructor playGame = new GameConstructor(selectedLevel, activeUser, board);
+            playGame = new GameConstructor(selectedLevel, activeUser, board, "");
             playGame.startGame();
         }
     }
@@ -277,18 +372,20 @@ public class RatGameApp extends Application {
      * @param file the users.txt file
      */
     private static void readUserFile(File file) {
+    	System.out.println("TEST");
         ArrayList<Profile> tempProfiles = new ArrayList<>();
         try {
             Scanner in = new Scanner(file);
             while (in.hasNextLine()) {
                 String text = in.nextLine();
                 String[] details = text.split(" ");
-                Profile profile = new Profile(details[0], Integer.parseInt(details[1]));
+                Profile profile = new Profile(details[0], Integer.parseInt(details[1]), Integer.parseInt(details[2]));
                 tempProfiles.add(profile);
             }
             in.close();
         } catch (Exception e) {
             // TODO: Catch exception
+        	System.out.println("File error");
         }
         profiles = tempProfiles;
     }
@@ -307,6 +404,7 @@ public class RatGameApp extends Application {
             out.println(newUser.getAppendVersion());
         } catch (Exception e) {
             // TODO: Catch exception
+        	System.out.println("HELLO");
         }
     }
 

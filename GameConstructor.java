@@ -109,16 +109,28 @@ public class GameConstructor extends Application {
 	private int tickCounter = 0;
 	private boolean hasWon = false;
 	private boolean hasLost = false;
+	private String saveFile = "";
 
 	private Leaderboard currentLeaderboard;
 	private Profile currentUser;
 
-	public GameConstructor(int levelNumber, Profile currentProfile, Leaderboard currentBoard) {
-		this.items = new ItemManager();
+	public GameConstructor(int levelNumber, Profile currentProfile, Leaderboard currentBoard, String saveFile) {
 		this.currentLevelNumber = levelNumber;
-		this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt");
 		this.currentLeaderboard = currentBoard;
 		this.currentUser = currentProfile;
+		
+		if (saveFile != "") {
+			//call the load in 
+			
+			//fetch all the item data from save file.
+			//this.items = new ItemManager();
+			this.saveFile = saveFile;
+			this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt", saveFile);
+		} else {
+			this.items = new ItemManager(0,0,0,0,0,0,0,0);
+			this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt", "");
+		}
+		
 	}
 
 	public void startGame() {
@@ -284,6 +296,8 @@ public class GameConstructor extends Application {
 	
 	public void tick() {
 
+		System.out.println(this.saveFile);
+		
 		this.millisecondCount = this.millisecondCount.add(TICK_DURATION);
 		
 		

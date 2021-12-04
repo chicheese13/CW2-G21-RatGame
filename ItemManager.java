@@ -9,15 +9,15 @@ public class ItemManager {
 	
 	Hashtable<String,Integer> inventory = new Hashtable<String,Integer>();
 	
-	public ItemManager() {
-		inventory.put("Bomb",0);
-		inventory.put("Poison",0);
-		inventory.put("Gas",0);
-		inventory.put("Sterilisation",0);
-		inventory.put("MGenderChange",0);
-		inventory.put("FGenderChange",0);
-		inventory.put("DeathRat",0);
-		inventory.put("NoEntrySign",0);
+	public ItemManager(int bomb, int poison, int gas, int sterilisation, int mchange, int fchange, int deathrat, int noentry) {
+		inventory.put("Bomb",bomb);
+		inventory.put("Poison",poison);
+		inventory.put("Gas",gas);
+		inventory.put("Sterilisation",sterilisation);
+		inventory.put("MGenderChange",mchange);
+		inventory.put("FGenderChange",fchange);
+		inventory.put("DeathRat",deathrat);
+		inventory.put("NoEntrySign",noentry);
 	}
 	
 	//Refills all items
