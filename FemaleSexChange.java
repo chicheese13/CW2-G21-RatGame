@@ -10,8 +10,7 @@ public class FemaleSexChange extends CollideItem {
 		this.renderSprite = femaleSexChange;
 		this.objectPosition = objectPosition;
 		this.currentLevel = currentLevel;
-		SoundClip placeItem = new SoundClip("placeItem");
-		placeItem.play();
+		this.currentLevel.spawnSound("placeItem");
 	}
 
 //	public void ratToF(rat)
@@ -28,8 +27,7 @@ public class FemaleSexChange extends CollideItem {
 	public void collision(Object collidedObject) {
 		if (collidedObject instanceof NormalRat) {
 			ratToF((NormalRat) collidedObject);
-			SoundClip FemaleChange = new SoundClip("FemaleSexChange");
-			FemaleChange.play();
+			this.currentLevel.spawnSound("FemaleSexChange");
 			this.currentLevel.despawnItem(this);
 		}
 	}
