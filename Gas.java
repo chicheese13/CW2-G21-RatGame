@@ -4,88 +4,116 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class Gas extends CollideItem {
-	
-	//around 8 seconds.
-	private int STOP_SPREAD_INTERVAL =  200;
+
+	// around 8 seconds.
+	private int STOP_SPREAD_INTERVAL = 200;
+	private int NEXT_ANIMATION = 3;
 	private int tickCounter = 0;
+	private int nextAnimationCounter = 0;
+	private int pictureNumber = 5;
 	private ArrayList<GasSpread> childrenGas = new ArrayList<GasSpread>();
 	private int dissipateCounter = 0;
 	private int dissipateIndex = 0;
 	private boolean isWaiting = false;
 	private int LINGER_LIMIT = 200;
 	private int lingerCounter = 0;
-	private Image brokenGas = new Image("gas_images/SprinklerBroken.png");
-	
+	private Image sprinkler = new Image("gas_images/Sprinkler.png");
 
 	public Gas(Position objectPosition, Level currentLevel) {
-		this.renderSprite = new Image("gas_images/Sprinkler.png");
+		this.renderSprite = sprinkler;
 		this.objectPosition = objectPosition;
 		this.currentLevel = currentLevel;
-		
-		//spawn a gas spread on this tile
+
+		// spawn a gas spread on this tile
 		if (this.currentLevel.checkGas(this.objectPosition)) {
-			this.currentLevel.spawnTempTile(new GasSpread(new Position(this.getObjectPosition()[0], this.getObjectPosition()[1]), this.currentLevel, this));
+			this.currentLevel.spawnTempTile(new GasSpread(
+					new Position(this.getObjectPosition()[0], this.getObjectPosition()[1]), this.currentLevel, this));
 		} else {
 			this.isWaiting = true;
 		}
-		
+
 	}
-
-
 
 	@Override
 	public void collision(Object collidedObject) {
-		
+
 		if (collidedObject instanceof Explosion) {
 			this.currentLevel.despawnItem(this);
 		}
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	public int getTick() {
 		return this.tickCounter;
 	}
-	
+
 	public void addChildToArray(GasSpread childGas) {
 		this.childrenGas.add(childGas);
 	}
-	
+
 	public void instantDissapate() {
 		this.tickCounter = STOP_SPREAD_INTERVAL;
 		this.lingerCounter = LINGER_LIMIT;
 		System.out.println("STOP SPREAD");
-		
-		//sprite change to show the fan is broken
-		this.renderSprite = brokenGas;
+
+		// sprite change to show the fan is broken
+		this.renderSprite = sprinkler;
+	}
+
+	private Image loadImage(int pictureNumber) {
+
+		Image gas = new Image("/gas_images/Sprinkler" + String.valueOf(pictureNumber) + ".png");
+
+		return gas;
 	}
 
 	@Override
 	public void tick() {
+
 		if (isWaiting) {
 			System.out.println("WAITING");
+
 			if (this.currentLevel.checkGas(this.objectPosition)) {
-				this.currentLevel.spawnTempTile(new GasSpread(new Position(this.getObjectPosition()[0], this.getObjectPosition()[1]), this.currentLevel, this));
+				this.currentLevel.spawnTempTile(
+						new GasSpread(new Position(this.getObjectPosition()[0], this.getObjectPosition()[1]),
+								this.currentLevel, this));
 				isWaiting = false;
 			}
 
 		} else {
+
 			if (this.tickCounter == STOP_SPREAD_INTERVAL) {
 				this.lingerCounter++;
+				this.renderSprite = sprinkler;
+
 				if (lingerCounter >= LINGER_LIMIT) {
 					this.dissipateCounter++;
+
 					if (this.dissipateCounter == 20) {
-						if (dissipateIndex < childrenGas.size()){
+
+						if (dissipateIndex < childrenGas.size()) {
 							this.currentLevel.despawnTempTile(this.childrenGas.get(0));
 							this.childrenGas.remove(0);
 						} else {
 							this.currentLevel.despawnItem(this);
 						}
-						//remove index
+						// remove index
 						this.dissipateCounter = 0;
 					}
 				}
 			} else {
+				if (nextAnimationCounter >= NEXT_ANIMATION) {
+					nextAnimationCounter = 0;
+
+					if (pictureNumber == 5) {
+						pictureNumber = 1;
+					} else {
+						pictureNumber++;
+					}
+					this.renderSprite = loadImage(pictureNumber);
+				}
+				this.nextAnimationCounter++;
 				this.tickCounter++;
 			}
 		}
