@@ -63,6 +63,9 @@ public class DeathRat extends Rat {
 		this.ratSpriteSouth = DEATH_RAT_SPRITE_SOUTH;
 		this.ratSpriteWest = DEATH_RAT_SPRITE_WEST;
 		this.currentLevel = currentLevel;
+		
+		SoundClip deathRatAppear = new SoundClip("DeathRat");
+		deathRatAppear.play();
 	}
 	
 	/**
@@ -77,6 +80,8 @@ public class DeathRat extends Rat {
 		}
 		
 		if (this.killCounter == KILL_LIMIT) {
+			SoundClip deathRatDeactivated = new SoundClip("DeathRatDeactivated");
+			deathRatDeactivated.play();
 			this.currentLevel.despawnRat(this);
 			//maybe play death sound
 		}
@@ -88,6 +93,8 @@ public class DeathRat extends Rat {
 	public void collision(Object rat) {
 		if (this.waitCount >= WAIT_LIMIT) {
 			if (rat instanceof NormalRat) {
+				SoundClip deathRatSlay = new SoundClip("DeathRatSlayVictim");
+				deathRatSlay.play();
 				((NormalRat) rat).ratDeath();
 				this.killCounter++;
 			}
