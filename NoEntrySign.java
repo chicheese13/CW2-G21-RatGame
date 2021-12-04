@@ -14,6 +14,8 @@ public class NoEntrySign extends CollideItem {
 		this.renderSprite = noEntrySign;
 		this.objectPosition = objectPosition;
 		this.currentLevel = currentLevel;
+		SoundClip placeSign = new SoundClip("placeSign");
+		placeSign.play();
 	}
 
 	private Image loadImage(int pictureNumber) {

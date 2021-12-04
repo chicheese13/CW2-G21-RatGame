@@ -100,6 +100,15 @@ public class GameConstructor extends Application {
 	ImageView draggableFemaleSexChangerImage = new ImageView();
 	ImageView draggableMaleSexChangerImage = new ImageView();
 	ImageView draggableSterilisationImage = new ImageView();
+	ImageView bombCounter = new ImageView();
+	ImageView gasCounter = new ImageView();
+	ImageView poisonCounter = new ImageView();
+	ImageView signCounter = new ImageView();
+	ImageView deathRatCounter = new ImageView();
+	ImageView femaleCounter = new ImageView();
+	ImageView maleCounter = new ImageView();
+	ImageView sterilisationCounter = new ImageView();
+	
 	
 	private BigDecimal TICK_DURATION = new BigDecimal("15");
 	
@@ -135,6 +144,7 @@ public class GameConstructor extends Application {
 
 	private Image gameWonScreen = new Image("Textures/game-won.png");
 	private Image gameLostScreen = new Image("Textures/game-over.png");
+	private Image defaultCounter = new Image("x/x0.png");
 
 	private ItemManager items;
 	private int currentLevelNumber;
@@ -208,6 +218,13 @@ public class GameConstructor extends Application {
 		drawGame();
 		primaryStage.setScene(scene);
 		primaryStage.show();
+	}
+	
+	private Image loadImage(int pictureNumber) {
+
+		Image counter = new Image("/x/x" + String.valueOf(pictureNumber) + ".png");
+
+		return counter;
 	}
 
 	/**
@@ -432,34 +449,42 @@ public class GameConstructor extends Application {
 		}
 		
 		if (items.getItemCount("Bomb") > 0) {
+			bombCounter.setImage(loadImage(items.getItemCount("Bomb")));
 			draggableBombImage.setImage(bombOn);
 		}
 		
 		if (items.getItemCount("Poison") > 0) {
+			poisonCounter.setImage(loadImage(items.getItemCount("Poison")));
 			draggablePoisonImage.setImage(poisonOn);
 		}
 		
 		if (items.getItemCount("Gas") > 0) {
+			gasCounter.setImage(loadImage(items.getItemCount("Gas")));
 			draggableGasImage.setImage(gasOn);
 		}
 		
 		if (items.getItemCount("Sterilisation") > 0) {
+			sterilisationCounter.setImage(loadImage(items.getItemCount("Sterilisation")));
 			draggableSterilisationImage.setImage(sterilisationOn);
 		}
 		
 		if (items.getItemCount("MGenderChange") > 0) {
+			maleCounter.setImage(loadImage(items.getItemCount("MGenderChange")));
 			draggableMaleSexChangerImage.setImage(maleSexChangerOn);
 		}
 		
 		if (items.getItemCount("FGenderChange") > 0) {
+			femaleCounter.setImage(loadImage(items.getItemCount("FGenderChange")));
 			draggableFemaleSexChangerImage.setImage(femaleSexChangerOn);
 		}
 		
 		if (items.getItemCount("DeathRat") > 0) {
+			deathRatCounter.setImage(loadImage(items.getItemCount("DeathRat")));
 			draggableDeathRatImage.setImage(deathRatOn);
 		}
 		
 		if (items.getItemCount("NoEntrySign") > 0) {
+			signCounter.setImage(loadImage(items.getItemCount("NoEntrySign")));
 			draggableSignImage.setImage(noEntrySignOn);
 		}
 
@@ -479,7 +504,7 @@ public class GameConstructor extends Application {
 			currentLevel.spawnItem(new Bomb(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
 			items.tryReduceItem("Bomb");
 			if (items.isItemDepleted("Bomb")) {
-				
+				bombCounter.setImage(loadImage(items.getItemCount("Bomb")));
 				draggableBombImage.setImage(bomb);
 
 			}
@@ -498,7 +523,7 @@ public class GameConstructor extends Application {
 			currentLevel.spawnItem(new Gas(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
 			items.tryReduceItem("Gas");
 			if (items.isItemDepleted("Gas")) {
-				gas = new Image("/items_icons/gasOFF.png");
+				gasCounter.setImage(loadImage(items.getItemCount("Gas")));
 				draggableGasImage.setImage(gas);
 
 			}
@@ -518,7 +543,7 @@ public class GameConstructor extends Application {
 					.spawnItem(new Poison(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
 			items.tryReduceItem("Poison");
 			if (items.isItemDepleted("Poison")) {
-				poison = new Image("/items_icons/poisonOFF.png");
+				poisonCounter.setImage(loadImage(items.getItemCount("Poison")));
 				draggablePoisonImage.setImage(poison);
 
 			}
@@ -541,7 +566,7 @@ public class GameConstructor extends Application {
 			currentLevel.spawnItem(new NoEntrySign(new Position(new BigDecimal(x), new BigDecimal(y)), currentLevel));
 			items.tryReduceItem("NoEntrySign");
 			if (items.isItemDepleted("NoEntrySign")) {
-				noEntrySign = new Image("/items_icons/noentrysignOFF.png");
+				signCounter.setImage(loadImage(items.getItemCount("NoEntrySign")));
 				draggableSignImage.setImage(noEntrySign);
 
 			}
@@ -565,7 +590,7 @@ public class GameConstructor extends Application {
 			currentLevel.spawnRat(new DeathRat(new Position(new BigDecimal(x), new BigDecimal(y)), currentLevel));
 			items.tryReduceItem("DeathRat");
 			if (items.isItemDepleted("DeathRat")) {
-				deathRat = new Image("/items_icons/deathratOFF.png");
+				deathRatCounter.setImage(loadImage(items.getItemCount("DeathRat")));
 				draggableDeathRatImage.setImage(deathRat);
 
 			}
@@ -590,7 +615,7 @@ public class GameConstructor extends Application {
 					new FemaleSexChange(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
 			items.tryReduceItem("FGenderChange");
 			if (items.isItemDepleted("FGenderChange")) {
-				femaleSexChanger = new Image("/items_icons/femaleOFF.png");
+				femaleCounter.setImage(loadImage(items.getItemCount("FGenderChange")));
 				draggableFemaleSexChangerImage.setImage(femaleSexChanger);
 
 			}
@@ -615,7 +640,7 @@ public class GameConstructor extends Application {
 					new MaleSexChange(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
 			items.tryReduceItem("MGenderChange");
 			if (items.isItemDepleted("MGenderChange")) {
-				maleSexChanger = new Image("/items_icons/maleOFF.png");
+				maleCounter.setImage(loadImage(items.getItemCount("MGenderChange")));
 				draggableMaleSexChangerImage.setImage(maleSexChanger);
 
 			}
@@ -640,7 +665,7 @@ public class GameConstructor extends Application {
 					new Sterilisation(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
 			items.tryReduceItem("Sterilisation");
 			if (items.isItemDepleted("Sterilisation")) {
-				sterilisation = new Image("/items_icons/sterilisationOFF.png");
+				sterilisationCounter.setImage(loadImage(items.getItemCount("Sterilisation")));
 				draggableSterilisationImage.setImage(sterilisation);
 
 			}
@@ -664,12 +689,14 @@ public class GameConstructor extends Application {
 		root.setCenter(canvas);
 
 		HBox toolbar = new HBox();
-		toolbar.setSpacing(10);
+		toolbar.setSpacing(2);
 		toolbar.setPadding(new Insets(10, 10, 10, 10));
 		root.setBottom(toolbar);
 
 		draggableBombImage.setImage(bomb);
 		toolbar.getChildren().add(draggableBombImage);
+		bombCounter.setImage(defaultCounter);
+		toolbar.getChildren().add(bombCounter);
 
 		draggableBombImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
@@ -697,6 +724,8 @@ public class GameConstructor extends Application {
 
 		draggableGasImage.setImage(gas);
 		toolbar.getChildren().add(draggableGasImage);
+		gasCounter.setImage(defaultCounter);
+		toolbar.getChildren().add(gasCounter);
 
 		draggableGasImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
@@ -723,6 +752,8 @@ public class GameConstructor extends Application {
 
 		draggablePoisonImage.setImage(poison);
 		toolbar.getChildren().add(draggablePoisonImage);
+		poisonCounter.setImage(defaultCounter);
+		toolbar.getChildren().add(poisonCounter);
 
 		draggablePoisonImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
@@ -814,6 +845,8 @@ public class GameConstructor extends Application {
 
 		draggableSignImage.setImage(noEntrySign);
 		toolbar.getChildren().add(draggableSignImage);
+		signCounter.setImage(defaultCounter);
+		toolbar.getChildren().add(signCounter);
 
 		draggableSignImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
@@ -840,6 +873,9 @@ public class GameConstructor extends Application {
 
 		draggableDeathRatImage.setImage(deathRat);
 		toolbar.getChildren().add(draggableDeathRatImage);
+		deathRatCounter.setImage(defaultCounter);
+		toolbar.getChildren().add(deathRatCounter);
+
 
 		draggableDeathRatImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
@@ -866,6 +902,8 @@ public class GameConstructor extends Application {
 
 		draggableFemaleSexChangerImage.setImage(femaleSexChanger);
 		toolbar.getChildren().add(draggableFemaleSexChangerImage);
+		femaleCounter.setImage(defaultCounter);
+		toolbar.getChildren().add(femaleCounter);
 
 		draggableFemaleSexChangerImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
@@ -892,6 +930,8 @@ public class GameConstructor extends Application {
 
 		draggableMaleSexChangerImage.setImage(maleSexChanger);
 		toolbar.getChildren().add(draggableMaleSexChangerImage);
+		maleCounter.setImage(defaultCounter);
+		toolbar.getChildren().add(maleCounter);
 
 		draggableMaleSexChangerImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
@@ -918,6 +958,8 @@ public class GameConstructor extends Application {
 
 		draggableSterilisationImage.setImage(sterilisation);
 		toolbar.getChildren().add(draggableSterilisationImage);
+		sterilisationCounter.setImage(defaultCounter);
+		toolbar.getChildren().add(sterilisationCounter);
 
 		draggableSterilisationImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {

@@ -8,6 +8,8 @@ public class Poison extends CollideItem {
 		this.renderSprite = poison;
 		this.objectPosition = objectPosition;
 		this.currentLevel = currentLevel;
+		SoundClip poison = new SoundClip("Poison");
+		poison.play();
 	}
 
 	private void killRat(NormalRat rat) {
@@ -27,6 +29,8 @@ public class Poison extends CollideItem {
 	public void collision(Object parameter) {
 		if (parameter instanceof NormalRat) {
 			killRat((NormalRat) parameter);
+			SoundClip poisonCol = new SoundClip("PoisonCollision");
+			poisonCol.play();
 			this.currentLevel.despawnItem(this);
 		}
 	}
