@@ -1,4 +1,4 @@
-
+import java.io.*;
 /** 
  * RenderObject.java
  * @version 2.0
@@ -14,7 +14,11 @@ import java.math.BigDecimal;
  *
  */
 
-public abstract class RenderObject {
+public abstract class RenderObject implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * renderSprite is an image of the object being rendered.
 	 */

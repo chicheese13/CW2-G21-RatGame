@@ -110,6 +110,8 @@ public class GameConstructor extends Application {
 	private boolean hasWon = false;
 	private boolean hasLost = false;
 	private String saveFile = "";
+	
+	private boolean isPaused = false;
 
 	private Leaderboard currentLeaderboard;
 	private Profile currentUser;
@@ -260,6 +262,10 @@ public class GameConstructor extends Application {
 				currentLevel.setOffsetX(currentLevel.getOffsetX() - 1);
 			}
 			break;
+		case ESCAPE:
+			togglePause();
+			System.out.println("ESCAPE PRESSED");
+			break;
 		default:
 			// Do nothing for all other keys.
 			break;
@@ -271,6 +277,16 @@ public class GameConstructor extends Application {
 		// Consume the event. This means we mark it as dealt with. This stops other GUI
 		// nodes (buttons etc) responding to it.
 		event.consume();
+	}
+	
+	public void togglePause() {
+		if (this.isPaused) {
+			this.isPaused = false;
+			tickTimeline.play();
+		} else {
+			this.isPaused = true;
+			tickTimeline.pause();
+		}
 	}
 
 	/**
