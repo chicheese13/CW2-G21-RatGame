@@ -45,21 +45,24 @@ public class Level {
 
 	
 	//ArrayLists for Rats & Items
-	ArrayList<RenderObject> renderRats = new ArrayList<RenderObject>();
-	ArrayList<RenderObject> renderItems = new ArrayList<RenderObject>();
-	ArrayList<RenderObject> renderTempTiles = new ArrayList<RenderObject>();
+	ArrayList<Rat> renderRats = new ArrayList<Rat>();
+	ArrayList<Item> renderItems = new ArrayList<Item>();
+	ArrayList<CollideItem> renderTempTiles = new ArrayList<CollideItem>();
 	ArrayList<RenderTile> renderAfterTiles;
 	ArrayList<Position> renderAfterTilesPosition;
 	private RenderTile[][] renderTiles;
 	
 	private int offsetX = 0;
 	private int offsetY = 0;
+	private ItemManager itemManager;
 	
 	/**
 	 * Constructor for level class. Creates board from given text file
 	 * @param fileName Name of the file that stores information on the level
 	 */
-	public Level (String fileName, String saveFile) {
+	public Level (String fileName, String saveFile, ItemManager items) {
+		this.itemManager = items;
+		
 		String fileData = "";
 		File level = new File(fileName);
 		Scanner in = null;
@@ -183,7 +186,7 @@ public class Level {
 		this.renderItems.add(spawnItem);
 	}
 	
-	public ArrayList<RenderObject> getItems(){
+	public ArrayList<Item> getItems(){
 		return this.renderItems;
 	}
 	
@@ -224,16 +227,16 @@ public class Level {
 	/**
 	 * Updates board
 	 */
-	public void updateBoard(ItemManager items) {
+	public void updateBoard() {
 		
-		gameCounterBomb = itemInterval("Bomb", items, gameCounterBomb, ITEM_GAIN_INTERVAL_BOMB);
-		gameCounterPoison = itemInterval("Poison", items, gameCounterPoison, ITEM_GAIN_INTERVAL_POISON);
-		gameCounterGas = itemInterval("Gas", items, gameCounterGas, ITEM_GAIN_INTERVAL_GAS);
-		gameCounterSteril = itemInterval("Sterilisation", items, gameCounterSteril, ITEM_GAIN_INTERVAL_STERIL);
-		gameCounterMGChange = itemInterval("MGenderChange", items, gameCounterMGChange, ITEM_GAIN_INTERVAL_MGCHANGE);
-		gameCounterFGChange = itemInterval("FGenderChange", items, gameCounterFGChange, ITEM_GAIN_INTERVAL_FGCHANGE);
-		gameCounterDeathRat = itemInterval("DeathRat", items, gameCounterDeathRat, ITEM_GAIN_INTERVAL_DEATHRAT);
-		gameCounterNoEntry = itemInterval("NoEntrySign", items, gameCounterNoEntry, ITEM_GAIN_INTERVAL_NOENTRY);
+		gameCounterBomb = itemInterval("Bomb", this.itemManager, gameCounterBomb, ITEM_GAIN_INTERVAL_BOMB);
+		gameCounterPoison = itemInterval("Poison", this.itemManager, gameCounterPoison, ITEM_GAIN_INTERVAL_POISON);
+		gameCounterGas = itemInterval("Gas", this.itemManager, gameCounterGas, ITEM_GAIN_INTERVAL_GAS);
+		gameCounterSteril = itemInterval("Sterilisation", this.itemManager, gameCounterSteril, ITEM_GAIN_INTERVAL_STERIL);
+		gameCounterMGChange = itemInterval("MGenderChange", this.itemManager, gameCounterMGChange, ITEM_GAIN_INTERVAL_MGCHANGE);
+		gameCounterFGChange = itemInterval("FGenderChange", this.itemManager, gameCounterFGChange, ITEM_GAIN_INTERVAL_FGCHANGE);
+		gameCounterDeathRat = itemInterval("DeathRat", this.itemManager, gameCounterDeathRat, ITEM_GAIN_INTERVAL_DEATHRAT);
+		gameCounterNoEntry = itemInterval("NoEntrySign", this.itemManager, gameCounterNoEntry, ITEM_GAIN_INTERVAL_NOENTRY);
 
 		
 		for (int i = 0; i < renderRats.size(); i++) {
@@ -403,7 +406,7 @@ public class Level {
 		
 	}
 	
-	public void spawnTempTile(RenderObject tempTile) {
+	public void spawnTempTile(CollideItem tempTile) {
 		this.renderTempTiles.add(tempTile);
 	}
 	
@@ -415,7 +418,7 @@ public class Level {
 		}
 	}
 	
-	public ArrayList<RenderObject> getTempTiles() {
+	public ArrayList<CollideItem> getTempTiles() {
 		return this.renderTempTiles;
 	}
 	
@@ -423,7 +426,17 @@ public class Level {
 	 * Saves board to text file
 	 */
 	public void saveBoard() {
+		//need to write the level number
 		
+		//item quantity currently
+		
+		//time & score
+		
+		//all rats array
+		
+		//all items array
+		
+		//all temp tiles array
 	}
 	
 	/**
@@ -562,7 +575,7 @@ public class Level {
 	/**
 	 * @return All rats on the board
 	 */
-	public ArrayList<RenderObject> getRats() {
+	public ArrayList<Rat> getRats() {
 		return this.renderRats;
 	}
 	

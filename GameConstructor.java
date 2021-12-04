@@ -123,12 +123,12 @@ public class GameConstructor extends Application {
 			//call the load in 
 			
 			//fetch all the item data from save file.
-			//this.items = new ItemManager();
+			this.items = new ItemManager(0,0,0,0,0,0,0,0);
 			this.saveFile = saveFile;
-			this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt", saveFile);
+			this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt", saveFile, this.items);
 		} else {
 			this.items = new ItemManager(0,0,0,0,0,0,0,0);
-			this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt", "");
+			this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt", "", this.items);
 		}
 		
 	}
@@ -305,7 +305,7 @@ public class GameConstructor extends Application {
 
 		if (gameStatus == "inprogress") {
 			// run game as usual
-			currentLevel.updateBoard(this.items);
+			currentLevel.updateBoard();
 			// We then redraw the whole canvas.
 			drawGame();
 
@@ -332,7 +332,7 @@ public class GameConstructor extends Application {
 			this.hasLost = true;
 			drawGame();
 
-			currentLevel.updateBoard(this.items);
+			currentLevel.updateBoard();
 			// We then redraw the whole canvas.
 			drawGame();
 
