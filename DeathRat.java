@@ -99,4 +99,22 @@ public class DeathRat extends Rat {
 		}
 	}
 	
+	public String convertString() {
+		return (this.ratSpeed 
+		+ " " + this.directionFacing
+		+ " " + this.renderSprite.getUrl()
+		+ " " + this.ratSpriteNorth.getUrl()
+		+ " " + this.ratSpriteSouth.getUrl()
+		+ " " + this.ratSpriteEast.getUrl()
+		+ " " + this.ratSpriteWest.getUrl()
+		+ " " + this.objectPosition.getPosition()[0]
+		+ " " + this.objectPosition.getPosition()[1]
+		+ " " + this.waitCount
+		+ " " + this.killCounter);
+	}
+	
+	public void overwriteAttributes(String savedRat) {
+		//overwrite variables for rat.
+	}
+	
 }

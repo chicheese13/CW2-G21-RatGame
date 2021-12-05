@@ -7,18 +7,13 @@ public class test {
 	private static ArrayList<TestClass> renderRats = new ArrayList<TestClass>();
 	
 	public static void main(String[] args) {
-		renderRats.add(new TestClass("helo", "hi", "bye"));
-		renderRats.add(new TestClass("helo1", "hi", "bye"));
-		renderRats.add(new TestClass("helo2", "hi", "bye"));
-		renderRats.add(new TestClass("helo3", "hi", "bye"));
-		saveArrayToFile(renderRats, "src/tstArray/");
 		fetchArrayFromFile();
 	}
 	
 	public static void saveArrayToFile(ArrayList<TestClass> saveArray, String saveLocation) {
 		try{
 			
-		    FileOutputStream writeData = new FileOutputStream("src/tstArray/rats.ser");
+		    FileOutputStream writeData = new FileOutputStream("src/rats.ser");
 		    ObjectOutputStream writeStream = new ObjectOutputStream(writeData);
 
 		    writeStream.writeObject(saveArray);
@@ -31,12 +26,12 @@ public class test {
 	
 	public static void fetchArrayFromFile() {
 		try{
-		    FileInputStream readData = new FileInputStream("src/tstArray/rats.ser");
+		    FileInputStream readData = new FileInputStream("src/rats.ser");
 		    ObjectInputStream readStream = new ObjectInputStream(readData);
 
-		    ArrayList<TestClass> renderRats2 = (ArrayList<TestClass>) readStream.readObject();
+		    ArrayList<RenderObject> renderRats2 = (ArrayList<RenderObject>) readStream.readObject();
 		    readStream.close();
-		    System.out.println(renderRats2.get(0).getProfile());
+		    System.out.println(renderRats2.get(0).getSprite());
 		}catch (Exception e) {
 		    e.printStackTrace();
 		}

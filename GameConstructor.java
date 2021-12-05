@@ -34,6 +34,7 @@ import java.io.BufferedWriter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -170,22 +171,57 @@ public class GameConstructor extends Application {
 	private int SAVE_GAME_BUTTON_X = 10;
 	private int SAVE_GAME_BUTTON_Y = 5;
 	private int SAVE_GAME_BUTTON_WIDTH = 2;
+	private Sprites spriteLoader = new Sprites();
 
 	public GameConstructor(int levelNumber, Profile currentProfile, Leaderboard currentBoard, String saveFile) {
 		this.currentLevelNumber = levelNumber;
 		this.currentLeaderboard = currentBoard;
 		this.currentUser = currentProfile;
 		
-		if (saveFile != "") {
+		System.out.println("test");
+		
+		if (saveFile.equals("")==false) {
+			
 			//call the load in 
 			
 			//fetch all the item data from save file.
-			this.items = new ItemManager(0,0,0,0,0,0,0,0);
+			String fileName = saveFile+"level.txt";
+			String fileData = "";
+			File level = new File(fileName);
+			Scanner in = null;
+			
+			try {
+				in = new Scanner(level);
+			} catch(FileNotFoundException e) {
+				System.out.println(fileName);
+				System.out.println("File does not existP");
+				System.exit(0);
+			}
+			
+			while (in.hasNextLine()) {
+				fileData = fileData + in.nextLine();
+			}
+			
+			String[] fetchData = fileData.split(",");
+			String[] itemQuantitiesString = fetchData[1].split(" ");
+			String[] timeAndScoreString = fetchData[2].split(" ");
+			int[] itemQuantity = new int[8];
+			
+			if (itemQuantity.length == itemQuantitiesString.length) {
+				for (int i = 0; i < itemQuantity.length; i++) {
+					itemQuantity[i] = Integer.parseInt(itemQuantitiesString[i]);
+				}
+			}
+			
+			this.millisecondCount = new BigDecimal(timeAndScoreString[0]);
+			this.items = new ItemManager(itemQuantity[0],itemQuantity[1],itemQuantity[2],itemQuantity[3],itemQuantity[4],itemQuantity[5],itemQuantity[6],itemQuantity[7]);
 			this.saveFile = saveFile;
-			this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt", saveFile, this.items);
+			this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt", saveFile, this.items, currentUser, currentLevelNumber);
+			this.currentLevel.incrimentScore(Integer.parseInt(timeAndScoreString[1]));
+			
 		} else {
 			this.items = new ItemManager(0,0,0,0,0,0,0,0);
-			this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt", "", this.items);
+			this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt", "", this.items, currentUser, currentLevelNumber);
 		}
 		
 	}
@@ -253,10 +289,10 @@ public class GameConstructor extends Application {
 						.getImage(), x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
 			}
 		}
-
+		
 		// we need to draw the items
 		for (int i = 0; i < currentLevel.getItems().size(); i++) {
-			gc.drawImage(currentLevel.getItems().get(i).getSprite(),
+			gc.drawImage(spriteLoader.getImage(currentLevel.getItems().get(i).getSprite()),
 					(currentLevel.getItems().get(i).getObjectPosition()[0].doubleValue() - currentLevel.getOffsetX())
 							* GRID_CELL_WIDTH,
 					(currentLevel.getItems().get(i).getObjectPosition()[1].doubleValue() - currentLevel.getOffsetY())
@@ -265,8 +301,10 @@ public class GameConstructor extends Application {
 
 		// we need to draw the rats
 
+	
+		
 		for (int i = 0; i < currentLevel.getRats().size(); i++) {
-			gc.drawImage(currentLevel.getRats().get(i).getSprite(),
+			gc.drawImage(spriteLoader.getImage(currentLevel.getRats().get(i).getSprite()),
 					(currentLevel.getRats().get(i).getObjectPosition()[0].doubleValue() - currentLevel.getOffsetX())
 							* GRID_CELL_WIDTH,
 					(currentLevel.getRats().get(i).getObjectPosition()[1].doubleValue() - currentLevel.getOffsetY())
@@ -275,7 +313,7 @@ public class GameConstructor extends Application {
 
 		// need to draw the temp tiles
 		for (int i = 0; i < currentLevel.getTempTiles().size(); i++) {
-			gc.drawImage(currentLevel.getTempTiles().get(i).getSprite(),
+			gc.drawImage(spriteLoader.getImage(currentLevel.getTempTiles().get(i).getSprite()),
 					(currentLevel.getTempTiles().get(i).getObjectPosition()[0].doubleValue()
 							- currentLevel.getOffsetX()) * GRID_CELL_WIDTH,
 					(currentLevel.getTempTiles().get(i).getObjectPosition()[1].doubleValue()
@@ -400,8 +438,8 @@ public class GameConstructor extends Application {
 	
 	
 	public void tick() {
-
-		System.out.println(this.saveFile);
+		System.out.println(this.currentLevel.getScore());
+		System.out.println(this.millisecondCount.divide(new BigDecimal("1000")));
 		
 		this.millisecondCount = this.millisecondCount.add(TICK_DURATION);
 		
@@ -780,66 +818,76 @@ public class GameConstructor extends Application {
 		
 		canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
 		    @Override
-		    public void handle(MouseEvent event) {		        
-		        int x = (int) (Math.floor((event.getSceneX()) / 50)) + currentLevel.getOffsetX();
-				int y = (int) (Math.floor((event.getSceneY()) / 50)) + currentLevel.getOffsetY();
-				
-				for (int i = QUIT_GAME_BUTTON_X; i < QUIT_GAME_BUTTON_X+QUIT_GAME_BUTTON_WIDTH; i++) {
-					if (x == i && y == QUIT_GAME_BUTTON_Y) {
-						//method for button click;
-						togglePause();
+		   
+		    public void handle(MouseEvent event) {		 
+		    	if (isPaused) {
+			        int x = (int) (Math.floor((event.getSceneX()) / 50)) + currentLevel.getOffsetX();
+					int y = (int) (Math.floor((event.getSceneY()) / 50)) + currentLevel.getOffsetY();
+					
+					for (int i = QUIT_GAME_BUTTON_X; i < QUIT_GAME_BUTTON_X+QUIT_GAME_BUTTON_WIDTH; i++) {
+						if (x == i && y == QUIT_GAME_BUTTON_Y) {
+							//method for button click for quit;
+							gameStage.close();
+						}
 					}
-				}
-				
+					
+					for (int i = SAVE_GAME_BUTTON_X; i < SAVE_GAME_BUTTON_X+SAVE_GAME_BUTTON_WIDTH; i++) {
+						if (x == i && y == SAVE_GAME_BUTTON_Y) {
+							//method for button click for quit;
+							//save code here
+								System.out.println("SAVEEEEE");
+								currentLevel.saveProgress(millisecondCount);
+						}
+					}
+					
 				//check if the x and y is on a button
-				
+		    	 }
 				
 		    }
 		});
 		
 		canvas.setOnMouseMoved(new EventHandler<MouseEvent>() {
 		    @Override
-		    public void handle(MouseEvent event) {		        
-		    	int x = (int) (Math.floor((event.getSceneX()) / 50)) + currentLevel.getOffsetX();
-				int y = (int) (Math.floor((event.getSceneY()) / 50)) + currentLevel.getOffsetY();
-				
-				boolean isQuitHoverSave = false;
-				boolean isSaveHoverQuit = false;
-				
-				for (int i = QUIT_GAME_BUTTON_X; i < QUIT_GAME_BUTTON_X+QUIT_GAME_BUTTON_WIDTH; i++) {
-					if (x == i && y == QUIT_GAME_BUTTON_Y) {
-						//method for button click;
-						isQuitHoverSave = true;
+		    public void handle(MouseEvent event) {		
+		    	
+		    	if (isPaused) {
+		    		int x = (int) (Math.floor((event.getSceneX()) / 50)) + currentLevel.getOffsetX();
+					int y = (int) (Math.floor((event.getSceneY()) / 50)) + currentLevel.getOffsetY();
+					
+					boolean isQuitHoverSave = false;
+					boolean isSaveHoverQuit = false;
+					
+					for (int i = QUIT_GAME_BUTTON_X; i < QUIT_GAME_BUTTON_X+QUIT_GAME_BUTTON_WIDTH; i++) {
+						if (x == i && y == QUIT_GAME_BUTTON_Y) {
+							//method for button click;
+							isQuitHoverSave = true;
+						}
 					}
-				}
-				
-				for (int i = SAVE_GAME_BUTTON_X; i < SAVE_GAME_BUTTON_X+SAVE_GAME_BUTTON_WIDTH; i++) {
-					if (x == i && y == SAVE_GAME_BUTTON_Y) {
-						//method for button click;
-						isSaveHoverQuit = true;
+					
+					for (int i = SAVE_GAME_BUTTON_X; i < SAVE_GAME_BUTTON_X+SAVE_GAME_BUTTON_WIDTH; i++) {
+						if (x == i && y == SAVE_GAME_BUTTON_Y) {
+							//method for button click;
+							isSaveHoverQuit = true;
+						}
 					}
-				}
-				
-				if (isQuitHoverSave) {
-					System.out.println("HOVER");
-					quitGameButtonHovered = true;
-					drawGame();
-				} else {
-					System.out.println("OFF HOVER");
-					quitGameButtonHovered = false;
-					drawGame();
-				}
-				
-				if (isSaveHoverQuit) {
-					System.out.println("HOVER");
-					saveGameButtonHovered = true;
-					drawGame();
-				} else {
-					System.out.println("OFF HOVER");
-					saveGameButtonHovered = false;
-					drawGame();
-				}
-				
+					
+					if (isQuitHoverSave) {
+						quitGameButtonHovered = true;
+						drawGame();
+					} else {
+						quitGameButtonHovered = false;
+						drawGame();
+					}
+					
+					if (isSaveHoverQuit) {
+						saveGameButtonHovered = true;
+						drawGame();
+					} else {
+						saveGameButtonHovered = false;
+						drawGame();
+					}
+		    	}
+		    	
 		    }
 		});
 

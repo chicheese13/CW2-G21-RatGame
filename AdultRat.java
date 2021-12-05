@@ -60,31 +60,24 @@ public class AdultRat extends NormalRat {
 	
 	/**
 	 * The adult male rat image sprite.
-	 */	
-	protected final Image COOLDOWN_SPRITE_FEMALE_NORTH = new Image("Textures/rat-female-exhausted-north.png");
-	protected final Image COOLDOWN_SPRITE_FEMALE_EAST = new Image("Textures/rat-female-exhausted-east.png");
-	protected final Image COOLDOWN_SPRITE_FEMALE_SOUTH = new Image("Textures/rat-female-exhausted-south.png");
-	protected final Image COOLDOWN_SPRITE_FEMALE_WEST = new Image("Textures/rat-female-exhausted-west.png");
+	 */
+	protected final String COOLDOWN_SPRITE_MALE = "cooldown-male";
+	protected final String COOLDOWN_SPRITE_FEMALE = "cooldown-female";
 	
-	protected final Image COOLDOWN_SPRITE_MALE_NORTH = new Image("Textures/rat-exhausted-male-north.png");
-	protected final Image COOLDOWN_SPRITE_MALE_EAST = new Image("Textures/rat-exhausted-male-east.png");
-	protected final Image COOLDOWN_SPRITE_MALE_SOUTH = new Image("Textures/rat-exhausted-male-south.png");
-	protected final Image COOLDOWN_SPRITE_MALE_WEST = new Image("Textures/rat-exhausted-male-west.png");
+	protected final String ADULT_MALE_RAT_SPRITE_NORTH = "male-rat-north";
+	protected final String ADULT_MALE_RAT_SPRITE_EAST = "male-rat-east";
+	protected final String ADULT_MALE_RAT_SPRITE_SOUTH = "male-rat-south";
+	protected final String ADULT_MALE_RAT_SPRITE_WEST = "male-rat-west";
 	
-	protected final Image ADULT_MALE_RAT_SPRITE_NORTH = new Image("Textures/rat-male-north.png");
-	protected final Image ADULT_MALE_RAT_SPRITE_EAST = new Image("Textures/rat-male-east.png");
-	protected final Image ADULT_MALE_RAT_SPRITE_SOUTH = new Image("Textures/rat-male-south.png");
-	protected final Image ADULT_MALE_RAT_SPRITE_WEST = new Image("Textures/rat-male-west.png");
+	protected final String ADULT_FEMALE_RAT_SPRITE_NORTH = "female-rat-north";
+	protected final String ADULT_FEMALE_RAT_SPRITE_EAST = "female-rat-east";
+	protected final String ADULT_FEMALE_RAT_SPRITE_SOUTH = "female-rat-south";
+	protected final String ADULT_FEMALE_RAT_SPRITE_WEST = "female-rat-west";
 	
-	protected final Image ADULT_FEMALE_RAT_SPRITE_NORTH = new Image("Textures/rat-female-north.png");
-	protected final Image ADULT_FEMALE_RAT_SPRITE_EAST = new Image("Textures/rat-female-east.png");
-	protected final Image ADULT_FEMALE_RAT_SPRITE_SOUTH = new Image("Textures/rat-female-south.png");
-	protected final Image ADULT_FEMALE_RAT_SPRITE_WEST = new Image("Textures/rat-female-west.png");
-	
-	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_NORTH = new Image("Textures/rat-pregnant-north.png");
-	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_EAST = new Image("Textures/rat-pregnant-east.png");
-	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_SOUTH = new Image("Textures/rat-pregnant-south.png");
-	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_WEST = new Image("Textures/rat-pregnant-west.png");
+	protected final String ADULT_FEMALE_RAT_PREGNANT_SPRITE_NORTH = "female-pregnant-rat-north";
+	protected final String ADULT_FEMALE_RAT_PREGNANT_SPRITE_EAST = "female-pregnant-rat-east";
+	protected final String ADULT_FEMALE_RAT_PREGNANT_SPRITE_SOUTH = "female-pregnant-rat-south";
+	protected final String ADULT_FEMALE_RAT_PREGNANT_SPRITE_WEST = "female-pregnant-rat-west";
 	
 	/**
 	 * a boolean to determine whether or not a rat is currently waiting.
@@ -343,23 +336,23 @@ public class AdultRat extends NormalRat {
 				
 				switch (this.directionFacing) {
 				case 'N':
-					this.renderSprite = COOLDOWN_SPRITE_FEMALE_NORTH;
+					this.renderSprite = COOLDOWN_SPRITE_FEMALE;
 					break;
 				case 'E':
-					this.renderSprite = COOLDOWN_SPRITE_FEMALE_EAST;
+					this.renderSprite = COOLDOWN_SPRITE_FEMALE;
 					break;
 				case 'S':
-					this.renderSprite = COOLDOWN_SPRITE_FEMALE_SOUTH;
+					this.renderSprite = COOLDOWN_SPRITE_FEMALE;
 					break;
 				case 'W':
-					this.renderSprite = COOLDOWN_SPRITE_FEMALE_WEST;
+					this.renderSprite = COOLDOWN_SPRITE_FEMALE;
 					break;
 				}
 				
-				this.ratSpriteNorth = COOLDOWN_SPRITE_FEMALE_NORTH;
-				this.ratSpriteEast = COOLDOWN_SPRITE_FEMALE_EAST;
-				this.ratSpriteSouth = COOLDOWN_SPRITE_FEMALE_SOUTH;
-				this.ratSpriteWest = COOLDOWN_SPRITE_FEMALE_WEST;
+				this.ratSpriteNorth = COOLDOWN_SPRITE_FEMALE;
+				this.ratSpriteEast = COOLDOWN_SPRITE_FEMALE;
+				this.ratSpriteSouth = COOLDOWN_SPRITE_FEMALE;
+				this.ratSpriteWest = COOLDOWN_SPRITE_FEMALE;
 				
 				this.objectPosition = recallibratePosition(this.objectPosition, DEFAULT_ADULT_RAT_SPEED);
 				this.ratSpeed = DEFAULT_ADULT_RAT_SPEED;
@@ -382,11 +375,11 @@ public class AdultRat extends NormalRat {
 				this.setRatWait(false);
 				
 				if (this.ratGender) {
-					this.renderSprite = COOLDOWN_SPRITE_MALE_NORTH;
-					this.ratSpriteNorth = COOLDOWN_SPRITE_MALE_NORTH;
-					this.ratSpriteEast = COOLDOWN_SPRITE_MALE_EAST;
-					this.ratSpriteSouth = COOLDOWN_SPRITE_MALE_SOUTH;
-					this.ratSpriteWest = COOLDOWN_SPRITE_MALE_WEST;
+					this.renderSprite = COOLDOWN_SPRITE_MALE;
+					this.ratSpriteNorth = COOLDOWN_SPRITE_MALE;
+					this.ratSpriteEast = COOLDOWN_SPRITE_MALE;
+					this.ratSpriteSouth = COOLDOWN_SPRITE_MALE;
+					this.ratSpriteWest = COOLDOWN_SPRITE_MALE;
 				} else {
 					//pregnancy
 					switch (this.directionFacing) {
@@ -494,7 +487,40 @@ public class AdultRat extends NormalRat {
 		pregnancyTick();
 		waitTick();		
 	}
-
 	
+	public String convertString() {
+		return (this.ratGender 
+		+ " " + this.ratHealth 
+		+ " " + this.ratSterile 
+		+ " " + this.damageCooldown 
+		+ " " + this.ratSpeed 
+		+ " " + this.directionFacing 
+		+ " " + this.isWaiting 
+		+ " " + this.isPregnant 
+		+ " " + this.pregnancyCounter 
+		+ " " + this.waitCounter 
+		+ " " + this.giveBirthCooldown 
+		+ " " + this.matingCooldown
+		+ " " + this.objectPosition.getPosition()[0]
+		+ " " + this.objectPosition.getPosition()[1]);
+	}
+	
+	public void overwriteAttributes(String savedRat) {
+		//overwrite variables for rat.
+		String[] attributes = savedRat.split(" ");
+		this.ratGender = Boolean.parseBoolean(attributes[0]);
+		this.ratHealth = Integer.parseInt(attributes[1]);
+		this.ratSterile = Boolean.parseBoolean(attributes[2]);
+		this.damageCooldown = Boolean.parseBoolean(attributes[3]);
+		this.ratSpeed = new BigDecimal(attributes[4]);
+		this.directionFacing = attributes[5].charAt(0);
+		this.isWaiting = Boolean.parseBoolean(attributes[6]);
+		this.isPregnant = Boolean.parseBoolean(attributes[7]);
+		this.pregnancyCounter = Integer.parseInt(attributes[8]); 
+		this.waitCounter = Integer.parseInt(attributes[9]);
+		this.giveBirthCooldown = Integer.parseInt(attributes[10]);
+		this.matingCooldown = Boolean.parseBoolean(attributes[11]);
+		this.objectPosition.setPosition(new BigDecimal(attributes[17]), new BigDecimal(attributes[18]));		
+	}
 	
 }

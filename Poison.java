@@ -2,10 +2,9 @@ import javafx.scene.image.Image;
 
 public class Poison extends CollideItem {
 
-	private Image poison = new Image("/items/poisononlevel.png");
 
 	public Poison(Position objectPosition, Level currentLevel) {
-		this.renderSprite = poison;
+		this.renderSprite = "poison";
 		this.objectPosition = objectPosition;
 		this.currentLevel = currentLevel;
 		this.currentLevel.spawnSound("Poison");

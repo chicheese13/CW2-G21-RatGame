@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class Bomb extends Item {
 
-	private Image bomb = new Image("/items/bomb.png");
+	private String bomb = "bomb";
 
 	private final int NUMBER_OF_BOMB_FRAMES = 17;
 	private final int EXPLOSION_FRAME = 6;
@@ -27,16 +27,16 @@ public class Bomb extends Item {
 		this.currentLevel.spawnSound("Fuse");
 	}
 
-	private Image loadImage(int pictureNumber) {
+	private String loadImage(int pictureNumber) {
 
-		Image bomb = new Image("/bomb_images/bomb" + String.valueOf(pictureNumber) + ".png");
+		String bomb = "bomb" + String.valueOf(pictureNumber);
 
 		return bomb;
 	}
 
-	private Image loadDelayImage(int delayedPictureNumber) {
+	private String loadDelayImage(int delayedPictureNumber) {
 
-		Image delayBomb = new Image("/delayed_bomb_images/bomb" + String.valueOf(delayedPictureNumber) + ".png");
+		String delayBomb = "bomb-delayed" + String.valueOf(delayedPictureNumber);
 
 		return delayBomb;
 	}
@@ -136,7 +136,7 @@ public class Bomb extends Item {
 
 	}
 
-	public Image getSprite() {
+	public String getSprite() {
 		return this.renderSprite;
 	}
 

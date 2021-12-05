@@ -1,8 +1,9 @@
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Profile {
+public class Profile implements Serializable{
 
     private String playerName;
     private int unlockedTo;

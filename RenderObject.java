@@ -22,7 +22,7 @@ public abstract class RenderObject implements Serializable {
 	/**
 	 * renderSprite is an image of the object being rendered.
 	 */
-	protected Image renderSprite;
+	protected String renderSprite;
 	/**
 	 * objectPosition is the current position of object being rendered.
 	 */
@@ -31,7 +31,7 @@ public abstract class RenderObject implements Serializable {
 	/**
 	 * getter for renderSprite.
 	 */
-	public Image getSprite() {
+	public String getSprite() {
 		return this.renderSprite;
 	}
 	
@@ -55,7 +55,7 @@ public abstract class RenderObject implements Serializable {
 	/**
 	 * Setter for renderSprite.
 	 */
-	public void setSprite(Image newSprite) {
+	public void setSprite(String newSprite) {
 		this.renderSprite = newSprite;
 	}
 	
@@ -70,6 +70,10 @@ public abstract class RenderObject implements Serializable {
 	 * Abstract method for behaviour of a render object per tick.
 	 */
 	public abstract void tick();
+	
+	public void setLevel(Level inputLevel) {
+		this.currentLevel = inputLevel;
+	}
 }
 
 
