@@ -69,7 +69,9 @@ public class Bomb extends Item {
 			}
 		} else {
 
-			if ((tickCounter == frameTime)) {
+			if ((tickCounter == 3)) {
+				
+				tickCounter = 0;
 				
 				if (pictureNumber == EXPLOSION_FRAME) {
 					explode();
@@ -82,13 +84,9 @@ public class Bomb extends Item {
 				}
 			}
 
-			tickCounter = tickCounter + 100;
+			tickCounter++;
 
-			if (tickCounter % 100 == 0) {
-				frameTime = frameTime + 100;
-			}
-
-			if (frameTime > NUMBER_OF_BOMB_FRAMES * 100) {
+			if (pictureNumber == NUMBER_OF_BOMB_FRAMES ) {
 				
 				this.currentLevel.despawnItem(this);
 			}
