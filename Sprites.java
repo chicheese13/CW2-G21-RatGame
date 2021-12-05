@@ -47,7 +47,7 @@ public class Sprites {
 		sprites.put("cooldown-male-north", COOLDOWN_SPRITE_MALE_NORTH);
 		sprites.put("cooldown-male-south", COOLDOWN_SPRITE_MALE_SOUTH);
 		sprites.put("cooldown-male-east", COOLDOWN_SPRITE_MALE_EAST);
-		sprites.put("cooldown-male-south", COOLDOWN_SPRITE_MALE_SOUTH);
+		sprites.put("cooldown-male-west", COOLDOWN_SPRITE_MALE_WEST);
 		
 		sprites.put("cooldown-female-north", COOLDOWN_SPRITE_FEMALE_NORTH);
 		sprites.put("cooldown-female-south", COOLDOWN_SPRITE_FEMALE_SOUTH);
