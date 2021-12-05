@@ -76,6 +76,8 @@ public abstract class RenderObject implements Serializable {
 	public void setLevel(Level inputLevel) {
 		this.currentLevel = inputLevel;
 	}
+	
+	//public abstract void collision(Object collidedObject);
 }
 
 

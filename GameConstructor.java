@@ -196,8 +196,29 @@ public class GameConstructor extends Application {
 	private int SAVE_GAME_BUTTON_Y = 5;
 	private int SAVE_GAME_BUTTON_WIDTH = 2;
 	private Sprites spriteLoader = new Sprites();
+	
+	public static int fetchLevels() {
+		//a list of levels in the levels folder,
+		//remove the .txt from the level name
+		//get the highest number level
+		
+		File[] directories = new File("src/Levels/").listFiles();
+		
+		int highestLevel = 0;
+		
+		for (int i = 0; i < directories.length; i++) {
+			String fileName = directories[i].getName().substring(0, directories[i].getName().length()-4);
+			
+			if (Integer.parseInt(fileName) > highestLevel) {
+				highestLevel = Integer.parseInt(fileName);
+			}
+		}
+		
+		return highestLevel;
+	}
 
 	public GameConstructor(int levelNumber, Profile currentProfile, String saveFile) {
+		
 		this.currentLevelNumber = levelNumber;
 		this.currentUser = currentProfile;
 
@@ -603,6 +624,20 @@ public class GameConstructor extends Application {
 			}
 		} else if (gameStatus == "won") {
 			calculateTimePoints();
+			
+			//get the current user's maximum level
+			//check if the level is equal to the current
+			//get the max level in general
+			
+			int usersCurrent = this.currentUser.getLevels();
+			
+			if (usersCurrent == this.currentLevelNumber && usersCurrent < fetchLevels()) {
+				System.out.print("UPGRADE LEVEL ");
+				System.out.println("LEVEL");
+				System.out.println(this.currentLevelNumber+1);
+				this.currentUser.overwriteLevel(this.currentLevelNumber+1);
+			}
+			
 			this.tickTimeline.stop();
 			this.hasWon = true;
 
