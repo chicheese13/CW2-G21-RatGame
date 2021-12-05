@@ -9,8 +9,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.Scanner;
+import java.util.function.LongFunction;
 
 /**
  * Leaderboard is a class which manages the Elements that
@@ -23,7 +25,7 @@ public class Leaderboard {
      * creates a text file for the scores
      */
     private ArrayList<LeaderboardElement> allScores = new ArrayList<>();
-    private PriorityQueue<LeaderboardElement> levelScores = new PriorityQueue<>(11);
+    private PriorityQueue<LeaderboardElement> levelScores = new PriorityQueue<>();
     private int level;
     private File scoreFile = new File("src/scores.txt");
 
@@ -47,7 +49,7 @@ public class Leaderboard {
             Scanner in = new Scanner(scoreFile);
             while (in.hasNextLine()) {
                 String text = in.nextLine();
-                String[] details = text.split(" ");
+                String[] details = text.split(", ");
                 LeaderboardElement score = new LeaderboardElement(details[0], Integer.parseInt(details[1]),
                         Integer.parseInt(details[2]));
                 allScores.add(score);
@@ -80,20 +82,9 @@ public class Leaderboard {
      * updates the scores into the arraylist.
      */
     private void updateAllScores() {
-        for (int i = 0; i < 10 && !levelScores.isEmpty(); i++) {
+        while (!levelScores.isEmpty()) {
             allScores.add(levelScores.poll());
         }
-    }
-
-    /**
-     * add the scores into the PriorityQueue.
-     * 
-     * @param name
-     * @param score
-     */
-    public void addScore(String name, int score) {
-        LeaderboardElement newScore = new LeaderboardElement(name, score, level);
-        levelScores.add(newScore);
     }
 
     /**
@@ -124,16 +115,13 @@ public class Leaderboard {
         }
     }
 
-    /**
-     * prints the scores of the PriorityQueue.
-     * adds the scores to the PriorityQueue from temp.
-     */
-    private void displayQueue() {
+    private void addScore(LeaderboardElement newScore) {
+        levelScores.add(newScore);
         LeaderboardElement[] temp = new LeaderboardElement[10];
         for (int i = 0; i < 10 && !levelScores.isEmpty(); i++) {
             temp[i] = levelScores.poll();
-            System.out.println(temp[i].toString());
         }
+        levelScores.clear();
         for (LeaderboardElement score : temp) {
             if (score != null) {
                 levelScores.add(score);
@@ -141,13 +129,33 @@ public class Leaderboard {
         }
     }
 
+    /*
+     * prints the scores of the PriorityQueue.
+     * adds the scores to the PriorityQueue from temp.
+     *
+     * public void displayQueue() {
+     * LeaderboardElement[] temp = new LeaderboardElement[10];
+     * for (int i = 0; i < 10 && !levelScores.isEmpty(); i++) {
+     * temp[i] = levelScores.poll();
+     * System.out.println(temp[i].toString());
+     * }
+     * for (LeaderboardElement score : temp) {
+     * if (score != null) {
+     * levelScores.add(score);
+     * }
+     * }
+     * }
+     */
     // runs it
     public PriorityQueue<LeaderboardElement> run(String name, int score) {
         readBoard();
         populateLevelScores();
         LeaderboardElement newScore = new LeaderboardElement(name, score, level);
-        levelScores.add(newScore);
+        addScore(newScore);
         PriorityQueue<LeaderboardElement> tempQueue = new PriorityQueue<>();
+        for (LeaderboardElement tempScore : levelScores) {
+            tempQueue.add(tempScore);
+        }
         updateAllScores();
         writeBoard();
         return tempQueue;

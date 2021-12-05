@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.math.BigDecimal;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -23,12 +24,13 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
-
 
 import java.io.BufferedWriter;
 import java.io.BufferedReader;
@@ -52,15 +54,12 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.effect.DropShadow;
 
-
 import java.lang.Math;
 import java.util.Scanner;
 
 import java.awt.event.KeyAdapter;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-
-
 
 /**
  * Sample application that demonstrates the use of JavaFX Canvas for a Game.
@@ -87,11 +86,16 @@ public class GameConstructor extends Application {
 	// The dimensions of the canvas
 	private static final int CANVAS_WIDTH = 1250;
 	private static final int CANVAS_HEIGHT = 600;
-	
+
 	private BigDecimal millisecondCount = new BigDecimal("0");
 
 	private Timeline tickTimeline;
 	private Canvas canvas;
+
+	private VBox outerBox = new VBox(5);
+	private HBox LBhBox = new HBox(10);
+	private VBox LBvBoxLeft = new VBox(5);
+	private VBox LBvBoxRight = new VBox(5);
 
 	ImageView draggableBombImage = new ImageView();
 	ImageView draggableGasImage = new ImageView();
@@ -109,10 +113,9 @@ public class GameConstructor extends Application {
 	ImageView femaleCounter = new ImageView();
 	ImageView maleCounter = new ImageView();
 	ImageView sterilisationCounter = new ImageView();
-	
-	
+
 	private BigDecimal TICK_DURATION = new BigDecimal("15");
-	
+
 	private Image bomb = new Image("/items_icons/bombOFF.png");
 	private Image bombOn = new Image("/items_icons/bombON.png");
 	private Image gas = new Image("/items_icons/gasOFF.png");
@@ -136,7 +139,7 @@ public class GameConstructor extends Application {
 	private boolean saveGameButtonHovered = false;
 	private Image saveGameButton = new Image("/Textures/save-button.png");
 	private Image saveGameButtonHover = new Image("/Textures/save-button-hover.png");
-	
+
 	private Image availSprite;
 	private Image availableSprite = new Image("Textures/available.png");
 	private Image unavailableSprite = new Image("Textures/unavailable.png");
@@ -158,16 +161,16 @@ public class GameConstructor extends Application {
 	private boolean hasWon = false;
 	private boolean hasLost = false;
 	private String saveFile = "";
-	
+
 	private boolean isPaused = false;
 
 	private Leaderboard currentLeaderboard;
 	private Profile currentUser;
-	
+
 	private int QUIT_GAME_BUTTON_X = 10;
 	private int QUIT_GAME_BUTTON_Y = 4;
 	private int QUIT_GAME_BUTTON_WIDTH = 2;
-	
+
 	private int SAVE_GAME_BUTTON_X = 10;
 	private int SAVE_GAME_BUTTON_Y = 5;
 	private int SAVE_GAME_BUTTON_WIDTH = 2;
@@ -177,53 +180,56 @@ public class GameConstructor extends Application {
 		this.currentLevelNumber = levelNumber;
 		this.currentLeaderboard = currentBoard;
 		this.currentUser = currentProfile;
-		
+
 		System.out.println("test");
-		
-		if (saveFile.equals("")==false) {
-			
-			//call the load in 
-			
-			//fetch all the item data from save file.
-			String fileName = saveFile+"level.txt";
+
+		if (saveFile.equals("") == false) {
+
+			// call the load in
+
+			// fetch all the item data from save file.
+			String fileName = saveFile + "level.txt";
 			String fileData = "";
 			File level = new File(fileName);
 			Scanner in = null;
-			
+
 			try {
 				in = new Scanner(level);
-			} catch(FileNotFoundException e) {
+			} catch (FileNotFoundException e) {
 				System.out.println(fileName);
 				System.out.println("File does not existP");
 				System.exit(0);
 			}
-			
+
 			while (in.hasNextLine()) {
 				fileData = fileData + in.nextLine();
 			}
-			
+
 			String[] fetchData = fileData.split(",");
 			String[] itemQuantitiesString = fetchData[1].split(" ");
 			String[] timeAndScoreString = fetchData[2].split(" ");
 			int[] itemQuantity = new int[8];
-			
+
 			if (itemQuantity.length == itemQuantitiesString.length) {
 				for (int i = 0; i < itemQuantity.length; i++) {
 					itemQuantity[i] = Integer.parseInt(itemQuantitiesString[i]);
 				}
 			}
-			
+
 			this.millisecondCount = new BigDecimal(timeAndScoreString[0]);
-			this.items = new ItemManager(itemQuantity[0],itemQuantity[1],itemQuantity[2],itemQuantity[3],itemQuantity[4],itemQuantity[5],itemQuantity[6],itemQuantity[7]);
+			this.items = new ItemManager(itemQuantity[0], itemQuantity[1], itemQuantity[2], itemQuantity[3],
+					itemQuantity[4], itemQuantity[5], itemQuantity[6], itemQuantity[7]);
 			this.saveFile = saveFile;
-			this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt", saveFile, this.items, currentUser, currentLevelNumber);
+			this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt", saveFile, this.items, currentUser,
+					currentLevelNumber);
 			this.currentLevel.incrimentScore(Integer.parseInt(timeAndScoreString[1]));
-			
+
 		} else {
-			this.items = new ItemManager(0,0,0,0,0,0,0,0);
-			this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt", "", this.items, currentUser, currentLevelNumber);
+			this.items = new ItemManager(0, 0, 0, 0, 0, 0, 0, 0);
+			this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt", "", this.items, currentUser,
+					currentLevelNumber);
 		}
-		
+
 	}
 
 	public void startGame() {
@@ -255,7 +261,7 @@ public class GameConstructor extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
-	
+
 	private Image loadImage(int pictureNumber) {
 
 		Image counter = new Image("/x/x" + String.valueOf(pictureNumber) + ".png");
@@ -277,9 +283,8 @@ public class GameConstructor extends Application {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		gc.setFill(Color.GRAY);
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		
-		//pausedBG
-		
+
+		// pausedBG
 
 		// we need to draw the game
 
@@ -289,7 +294,7 @@ public class GameConstructor extends Application {
 						.getImage(), x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
 			}
 		}
-		
+
 		// we need to draw the items
 		for (int i = 0; i < currentLevel.getItems().size(); i++) {
 			gc.drawImage(spriteLoader.getImage(currentLevel.getItems().get(i).getSprite()),
@@ -301,8 +306,6 @@ public class GameConstructor extends Application {
 
 		// we need to draw the rats
 
-	
-		
 		for (int i = 0; i < currentLevel.getRats().size(); i++) {
 			gc.drawImage(spriteLoader.getImage(currentLevel.getRats().get(i).getSprite()),
 					(currentLevel.getRats().get(i).getObjectPosition()[0].doubleValue() - currentLevel.getOffsetX())
@@ -330,67 +333,95 @@ public class GameConstructor extends Application {
 		// show win screen
 		if (this.hasWon) {
 			gc.drawImage(gameWonScreen, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+			outerBox.getChildren().add(new Text("Leaderboard"));
+			outerBox.getChildren().add(LBhBox);
+			PriorityQueue<LeaderboardElement> top10 = currentLeaderboard.run(currentUser.getName(),
+					this.currentLevel.getScore());
+			LBhBox.getChildren().add(LBvBoxLeft);
+			for (int i = 0; i < 5 && !top10.isEmpty(); i++) {
+				LBvBoxLeft.getChildren().add(new Row(top10.poll().toString()));
+			}
+			LBhBox.getChildren().add(LBvBoxRight);
+			while (!top10.isEmpty()) {
+				LBvBoxRight.getChildren().add(new Row(top10.poll().toString()));
+			}
 		}
 
 		// show lose screen
 		if (this.hasLost) {
 			gc.drawImage(gameLostScreen, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+			outerBox.getChildren().add(new Text("Leaderboard"));
+			outerBox.getChildren().add(LBhBox);
+			PriorityQueue<LeaderboardElement> top10 = currentLeaderboard.run(currentUser.getName(),
+					this.currentLevel.getScore());
+			LBhBox.getChildren().add(LBvBoxLeft);
+			for (int i = 0; i < 5 && !top10.isEmpty(); i++) {
+				LBvBoxLeft.getChildren().add(new Row(top10.poll().toString()));
+			}
+			LBhBox.getChildren().add(LBvBoxRight);
+			while (!top10.isEmpty()) {
+				LBvBoxRight.getChildren().add(new Row(top10.poll().toString()));
+			}
 		}
-		
+
 		if (isPaused) {
 			gc.drawImage(pausedBG, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
 			if (quitGameButtonHovered) {
-				gc.drawImage(quitGameButtonHover, QUIT_GAME_BUTTON_X * GRID_CELL_WIDTH, QUIT_GAME_BUTTON_Y * GRID_CELL_HEIGHT);
+				gc.drawImage(quitGameButtonHover, QUIT_GAME_BUTTON_X * GRID_CELL_WIDTH,
+						QUIT_GAME_BUTTON_Y * GRID_CELL_HEIGHT);
 			} else {
-				gc.drawImage(quitGameButton, QUIT_GAME_BUTTON_X * GRID_CELL_WIDTH, QUIT_GAME_BUTTON_Y * GRID_CELL_HEIGHT);
+				gc.drawImage(quitGameButton, QUIT_GAME_BUTTON_X * GRID_CELL_WIDTH,
+						QUIT_GAME_BUTTON_Y * GRID_CELL_HEIGHT);
 			}
-			
+
 			if (saveGameButtonHovered) {
-				gc.drawImage(saveGameButtonHover, SAVE_GAME_BUTTON_X * GRID_CELL_WIDTH, SAVE_GAME_BUTTON_Y * GRID_CELL_HEIGHT);
+				gc.drawImage(saveGameButtonHover, SAVE_GAME_BUTTON_X * GRID_CELL_WIDTH,
+						SAVE_GAME_BUTTON_Y * GRID_CELL_HEIGHT);
 			} else {
-				gc.drawImage(saveGameButton, SAVE_GAME_BUTTON_X * GRID_CELL_WIDTH, SAVE_GAME_BUTTON_Y * GRID_CELL_HEIGHT);
+				gc.drawImage(saveGameButton, SAVE_GAME_BUTTON_X * GRID_CELL_WIDTH,
+						SAVE_GAME_BUTTON_Y * GRID_CELL_HEIGHT);
 			}
-			
+
 		}
 	}
 
 	public void processKeyEvent(KeyEvent event) {
 		// We change the behaviour depending on the actual key that was pressed.
 		switch (event.getCode()) {
-		case RIGHT:
-			// Right key was pressed. So move the player right by one cell.
-			if (currentLevel.getOffsetX() < (currentLevel.getRenderTiles()[0].length)
-					- (CANVAS_WIDTH / GRID_CELL_WIDTH)) {
-				currentLevel.setOffsetX(currentLevel.getOffsetX() + 1);
-			}
-			break;
-		case UP:
-			if (currentLevel.getOffsetY() > 0) {
-				currentLevel.setOffsetY(currentLevel.getOffsetY() - 1);
-			}
-			break;
-		case DOWN:
-			if (currentLevel.getOffsetY() < (currentLevel.getRenderTiles().length)
-					- (CANVAS_HEIGHT / GRID_CELL_HEIGHT)) {
-				currentLevel.setOffsetY(currentLevel.getOffsetY() + 1);
-				;
-			}
-			break;
-		case LEFT:
-			if (currentLevel.getOffsetX() > 0) {
-				currentLevel.setOffsetX(currentLevel.getOffsetX() - 1);
-			}
-			break;
-		case ESCAPE:
-			String gameStatus = currentLevel.getGameStatus();
-			if (gameStatus == "inprogress") {
-				togglePause();
-				System.out.println("ESCAPE PRESSED");
-			}
-			break;
-		default:
-			// Do nothing for all other keys.
-			break;
+			case RIGHT:
+				// Right key was pressed. So move the player right by one cell.
+				if (currentLevel.getOffsetX() < (currentLevel.getRenderTiles()[0].length)
+						- (CANVAS_WIDTH / GRID_CELL_WIDTH)) {
+					currentLevel.setOffsetX(currentLevel.getOffsetX() + 1);
+				}
+				break;
+			case UP:
+				if (currentLevel.getOffsetY() > 0) {
+					currentLevel.setOffsetY(currentLevel.getOffsetY() - 1);
+				}
+				break;
+			case DOWN:
+				if (currentLevel.getOffsetY() < (currentLevel.getRenderTiles().length)
+						- (CANVAS_HEIGHT / GRID_CELL_HEIGHT)) {
+					currentLevel.setOffsetY(currentLevel.getOffsetY() + 1);
+					;
+				}
+				break;
+			case LEFT:
+				if (currentLevel.getOffsetX() > 0) {
+					currentLevel.setOffsetX(currentLevel.getOffsetX() - 1);
+				}
+				break;
+			case ESCAPE:
+				String gameStatus = currentLevel.getGameStatus();
+				if (gameStatus == "inprogress") {
+					togglePause();
+					System.out.println("ESCAPE PRESSED");
+				}
+				break;
+			default:
+				// Do nothing for all other keys.
+				break;
 		}
 
 		// Redraw game as the player may have moved.
@@ -400,7 +431,7 @@ public class GameConstructor extends Application {
 		// nodes (buttons etc) responding to it.
 		event.consume();
 	}
-	
+
 	public void togglePause() {
 		if (this.isPaused) {
 			drawGame();
@@ -420,30 +451,27 @@ public class GameConstructor extends Application {
 	 * example move, perform logic in the game, this might cause the bad guys to
 	 * move (by e.g., looping over them all and calling their own tick method).
 	 */
-	
+
 	public void calculateTimePoints() {
 		BigDecimal timeTakenInSeconds = this.millisecondCount.divide(new BigDecimal("1000"));
-		//timeTakenInSeconds < this.currentLevel.getParTime()
+		// timeTakenInSeconds < this.currentLevel.getParTime()
 		if (timeTakenInSeconds.compareTo(this.currentLevel.getParTime()) == -1) {
-			//figure out the difference
-			
-			
+			// figure out the difference
+
 			BigDecimal gainScore = this.currentLevel.getParTime().subtract(timeTakenInSeconds);
 			System.out.println("SCORE GAINED");
 			System.out.println(gainScore);
 			this.currentLevel.incrimentScore((int) Math.floor(gainScore.doubleValue()));
 		}
-		
+
 	}
-	
-	
+
 	public void tick() {
 		System.out.println(this.currentLevel.getScore());
 		System.out.println(this.millisecondCount.divide(new BigDecimal("1000")));
-		
+
 		this.millisecondCount = this.millisecondCount.add(TICK_DURATION);
-		
-		
+
 		String gameStatus = currentLevel.getGameStatus();
 
 		if (gameStatus == "inprogress") {
@@ -458,17 +486,19 @@ public class GameConstructor extends Application {
 				tickCounter = 0;
 			}
 		} else if (gameStatus == "won") {
-			//this.currentLeaderboard.run(this.currentUser.getName(), this.currentLevel.getScore());
+			// this.currentLeaderboard.run(this.currentUser.getName(),
+			// this.currentLevel.getScore());
 			calculateTimePoints();
-			
-			//output the score
-			
+
+			// output the score
+
 			// display win art
 			this.hasWon = true;
 			drawGame();
 		} else if (gameStatus == "lost") {
-			//this.currentLeaderboard.run(this.currentUser.getName(), this.currentLevel.getScore());
-			
+			// this.currentLeaderboard.run(this.currentUser.getName(),
+			// this.currentLevel.getScore());
+
 			// game is lost, need to append score to leaderboard
 			// display lost game screen
 			System.out.println("GAME IS LOST");
@@ -485,42 +515,42 @@ public class GameConstructor extends Application {
 				tickCounter = 0;
 			}
 		}
-		
+
 		if (items.getItemCount("Bomb") > 0) {
 			bombCounter.setImage(loadImage(items.getItemCount("Bomb")));
 			draggableBombImage.setImage(bombOn);
 		}
-		
+
 		if (items.getItemCount("Poison") > 0) {
 			poisonCounter.setImage(loadImage(items.getItemCount("Poison")));
 			draggablePoisonImage.setImage(poisonOn);
 		}
-		
+
 		if (items.getItemCount("Gas") > 0) {
 			gasCounter.setImage(loadImage(items.getItemCount("Gas")));
 			draggableGasImage.setImage(gasOn);
 		}
-		
+
 		if (items.getItemCount("Sterilisation") > 0) {
 			sterilisationCounter.setImage(loadImage(items.getItemCount("Sterilisation")));
 			draggableSterilisationImage.setImage(sterilisationOn);
 		}
-		
+
 		if (items.getItemCount("MGenderChange") > 0) {
 			maleCounter.setImage(loadImage(items.getItemCount("MGenderChange")));
 			draggableMaleSexChangerImage.setImage(maleSexChangerOn);
 		}
-		
+
 		if (items.getItemCount("FGenderChange") > 0) {
 			femaleCounter.setImage(loadImage(items.getItemCount("FGenderChange")));
 			draggableFemaleSexChangerImage.setImage(femaleSexChangerOn);
 		}
-		
+
 		if (items.getItemCount("DeathRat") > 0) {
 			deathRatCounter.setImage(loadImage(items.getItemCount("DeathRat")));
 			draggableDeathRatImage.setImage(deathRatOn);
 		}
-		
+
 		if (items.getItemCount("NoEntrySign") > 0) {
 			signCounter.setImage(loadImage(items.getItemCount("NoEntrySign")));
 			draggableSignImage.setImage(noEntrySignOn);
@@ -528,7 +558,6 @@ public class GameConstructor extends Application {
 
 		System.out.println(this.currentLevel.getScore());
 	}
-	
 
 	public void bombDropOccured(DragEvent event) {
 		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
@@ -709,8 +738,7 @@ public class GameConstructor extends Application {
 			}
 		}
 		// drawGame();
-	}	
-	
+	}
 
 	/**
 	 * Create the GUI.
@@ -815,62 +843,62 @@ public class GameConstructor extends Application {
 				}
 			}
 		});
-		
+
 		canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
-		    @Override
-		   
-		    public void handle(MouseEvent event) {		 
-		    	if (isPaused) {
-			        int x = (int) (Math.floor((event.getSceneX()) / 50)) + currentLevel.getOffsetX();
+			@Override
+
+			public void handle(MouseEvent event) {
+				if (isPaused) {
+					int x = (int) (Math.floor((event.getSceneX()) / 50)) + currentLevel.getOffsetX();
 					int y = (int) (Math.floor((event.getSceneY()) / 50)) + currentLevel.getOffsetY();
-					
-					for (int i = QUIT_GAME_BUTTON_X; i < QUIT_GAME_BUTTON_X+QUIT_GAME_BUTTON_WIDTH; i++) {
+
+					for (int i = QUIT_GAME_BUTTON_X; i < QUIT_GAME_BUTTON_X + QUIT_GAME_BUTTON_WIDTH; i++) {
 						if (x == i && y == QUIT_GAME_BUTTON_Y) {
-							//method for button click for quit;
+							// method for button click for quit;
 							gameStage.close();
 						}
 					}
-					
-					for (int i = SAVE_GAME_BUTTON_X; i < SAVE_GAME_BUTTON_X+SAVE_GAME_BUTTON_WIDTH; i++) {
+
+					for (int i = SAVE_GAME_BUTTON_X; i < SAVE_GAME_BUTTON_X + SAVE_GAME_BUTTON_WIDTH; i++) {
 						if (x == i && y == SAVE_GAME_BUTTON_Y) {
-							//method for button click for quit;
-							//save code here
-								System.out.println("SAVEEEEE");
-								currentLevel.saveProgress(millisecondCount);
+							// method for button click for quit;
+							// save code here
+							System.out.println("SAVEEEEE");
+							currentLevel.saveProgress(millisecondCount);
 						}
 					}
-					
-				//check if the x and y is on a button
-		    	 }
-				
-		    }
+
+					// check if the x and y is on a button
+				}
+
+			}
 		});
-		
+
 		canvas.setOnMouseMoved(new EventHandler<MouseEvent>() {
-		    @Override
-		    public void handle(MouseEvent event) {		
-		    	
-		    	if (isPaused) {
-		    		int x = (int) (Math.floor((event.getSceneX()) / 50)) + currentLevel.getOffsetX();
+			@Override
+			public void handle(MouseEvent event) {
+
+				if (isPaused) {
+					int x = (int) (Math.floor((event.getSceneX()) / 50)) + currentLevel.getOffsetX();
 					int y = (int) (Math.floor((event.getSceneY()) / 50)) + currentLevel.getOffsetY();
-					
+
 					boolean isQuitHoverSave = false;
 					boolean isSaveHoverQuit = false;
-					
-					for (int i = QUIT_GAME_BUTTON_X; i < QUIT_GAME_BUTTON_X+QUIT_GAME_BUTTON_WIDTH; i++) {
+
+					for (int i = QUIT_GAME_BUTTON_X; i < QUIT_GAME_BUTTON_X + QUIT_GAME_BUTTON_WIDTH; i++) {
 						if (x == i && y == QUIT_GAME_BUTTON_Y) {
-							//method for button click;
+							// method for button click;
 							isQuitHoverSave = true;
 						}
 					}
-					
-					for (int i = SAVE_GAME_BUTTON_X; i < SAVE_GAME_BUTTON_X+SAVE_GAME_BUTTON_WIDTH; i++) {
+
+					for (int i = SAVE_GAME_BUTTON_X; i < SAVE_GAME_BUTTON_X + SAVE_GAME_BUTTON_WIDTH; i++) {
 						if (x == i && y == SAVE_GAME_BUTTON_Y) {
-							//method for button click;
+							// method for button click;
 							isSaveHoverQuit = true;
 						}
 					}
-					
+
 					if (isQuitHoverSave) {
 						quitGameButtonHovered = true;
 						drawGame();
@@ -878,7 +906,7 @@ public class GameConstructor extends Application {
 						quitGameButtonHovered = false;
 						drawGame();
 					}
-					
+
 					if (isSaveHoverQuit) {
 						saveGameButtonHovered = true;
 						drawGame();
@@ -886,9 +914,9 @@ public class GameConstructor extends Application {
 						saveGameButtonHovered = false;
 						drawGame();
 					}
-		    	}
-		    	
-		    }
+				}
+
+			}
 		});
 
 		draggableSignImage.setImage(noEntrySign);
@@ -923,7 +951,6 @@ public class GameConstructor extends Application {
 		toolbar.getChildren().add(draggableDeathRatImage);
 		deathRatCounter.setImage(defaultCounter);
 		toolbar.getChildren().add(deathRatCounter);
-
 
 		draggableDeathRatImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
