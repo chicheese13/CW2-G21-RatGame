@@ -27,6 +27,7 @@ public class Leaderboard {
     private PriorityQueue<LeaderboardElement> levelScores = new PriorityQueue<>();
     private int level;
     private File scoreFile = new File("src/scores.txt");
+    private static final String FILE_ERROR_STRING = "Unable to retrieve high scores";
 
     /**
      * Constructs the Leaderboard
@@ -53,7 +54,7 @@ public class Leaderboard {
                 allScores.add(score);
             }
         } catch (Exception e) {
-            System.out.println("unable to read high scores");
+            System.out.println(FILE_ERROR_STRING);
         }
     }
 
@@ -94,7 +95,7 @@ public class Leaderboard {
                 out.println(score);
             }
         } catch (Exception e) {
-            // TODO: Catch exception
+            System.out.println(FILE_ERROR_STRING);
         }
 
     }
@@ -106,7 +107,7 @@ public class Leaderboard {
         try {
             new FileWriter(scoreFile, false).close();
         } catch (Exception e) {
-            // TODO: Catch exception
+            System.out.println(FILE_ERROR_STRING);
         }
     }
 
