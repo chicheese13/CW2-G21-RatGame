@@ -80,40 +80,43 @@ public class RatGameApp extends Application {
     private Line line;
 
     public static void deleteProfile() {
-    	 readUserFile(userFile);
-         if (profiles.isEmpty()) {
-             Alert alert = new Alert(AlertType.WARNING);
-             alert.setContentText("No users currently exist, please create a user before trying to proceed");
-             alert.show();
-         } else {
-             ChoiceDialog<Profile> cd = new ChoiceDialog<>(activeUser, profiles);
-             cd.showAndWait();
-             Profile deleteProfile;
-             deleteProfile = cd.getSelectedItem();
-             cd.hide();
-             
-             //delete the profile from the text file here, where user id is active profile id
-             for (int i = 0; i < profiles.size(); i++) {
-            	 if (profiles.get(i).getIdentifier() == deleteProfile.getIdentifier()) {
-            		 profiles.remove(i);
-            	 }
-             }
-             
+        readUserFile(userFile);
+        if (profiles.isEmpty()) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setContentText("No users currently exist, please create a user before trying to proceed");
+            alert.show();
+        } else {
+            ChoiceDialog<Profile> cd = new ChoiceDialog<>(activeUser, profiles);
+            cd.showAndWait();
+            Profile deleteProfile;
+            deleteProfile = cd.getSelectedItem();
+            cd.hide();
+
+            // delete the profile from the text file here, where user id is active profile
+            // id
+            for (int i = 0; i < profiles.size(); i++) {
+                if (profiles.get(i).getIdentifier() == deleteProfile.getIdentifier()) {
+                    profiles.remove(i);
+                }
+            }
+
             PrintWriter userWrite;
-     		try {
-     			userWrite = new PrintWriter("src/users.txt");
-     			for (int i = 0; i < profiles.size(); i++) {
-     				//System.out.println(profiles.get(i).getName() + " " + profiles.get(i).getLevels() + " " + profiles.get(i).getIdentifier());
-     				userWrite.println(profiles.get(i).getName() + " " + profiles.get(i).getLevels() + " " + profiles.get(i).getIdentifier());
-     				//userWrite.println(profiles.get(i).toString());
-     			}
-     			
-     			userWrite.close();
-     			
-     		} catch (Exception e) {
-     			
-     		}
-         }
+            try {
+                userWrite = new PrintWriter("src/users.txt");
+                for (int i = 0; i < profiles.size(); i++) {
+                    // System.out.println(profiles.get(i).getName() + " " +
+                    // profiles.get(i).getLevels() + " " + profiles.get(i).getIdentifier());
+                    userWrite.println(profiles.get(i).getName() + " " + profiles.get(i).getLevels() + " "
+                            + profiles.get(i).getIdentifier());
+                    // userWrite.println(profiles.get(i).toString());
+                }
+
+                userWrite.close();
+
+            } catch (Exception e) {
+
+            }
+        }
     }
 
     public static void fetchSaves() {
@@ -405,7 +408,7 @@ public class RatGameApp extends Application {
             Scanner in = new Scanner(file);
             while (in.hasNextLine()) {
                 String text = in.nextLine();
-                String[] details = text.split(" ");
+                String[] details = text.split(", ");
                 Profile profile = new Profile(details[0], Integer.parseInt(details[1]), Integer.parseInt(details[2]));
                 tempProfiles.add(profile);
             }
