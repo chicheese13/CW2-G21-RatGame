@@ -252,7 +252,7 @@ public class GameConstructor extends Application {
 				try {
 					leaderboardWriter = new PrintWriter("src/Scores/"+this.currentLevelNumber+".txt");
 					for (int i = 0; i < 9; i++) {
-						leaderboardWriter.println("Test 5,");
+						leaderboardWriter.println("Null -1,");
 					}
 					leaderboardWriter.close();
 				} catch (FileNotFoundException e) {
