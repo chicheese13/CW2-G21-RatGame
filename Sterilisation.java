@@ -8,7 +8,7 @@ public class Sterilisation extends Item {
 	private int tickCounter = 0;
 
 	public Sterilisation(Position objectPosition, Level currentLevel) {
-		this.renderSprite = sterilisation;
+		this.renderSprite = "sterilisation";
 		this.objectPosition = objectPosition;
 		this.currentLevel = currentLevel;
 		
@@ -25,7 +25,7 @@ public class Sterilisation extends Item {
 		for (int i = ((int) startX); i < startX+3; i++) {
 			for (int i2 = ((int) startY); i2 < startY+3; i2++) {
 				if (i == startX && i2 == startY) {
-					this.currentLevel.spawnTempTile(new SterileRadius(new Position(new BigDecimal(i), new BigDecimal(i2)), this.currentLevel, this, "Textures/sterile-radius.png"));
+					this.currentLevel.spawnTempTile(new SterileRadius(new Position(new BigDecimal(i), new BigDecimal(i2)), this.currentLevel, this, "sterile-radius"));
 				} else {
 					this.currentLevel.spawnTempTile(new SterileRadius(new Position(new BigDecimal(i), new BigDecimal(i2)), this.currentLevel, this, ""));
 				}

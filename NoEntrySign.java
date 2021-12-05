@@ -11,15 +11,15 @@ public class NoEntrySign extends CollideItem {
 	private int pictureNumber = 1;
 
 	public NoEntrySign(Position objectPosition, Level currentLevel) {
-		this.renderSprite = noEntrySign;
+		this.renderSprite = "no-entry1";
 		this.objectPosition = objectPosition;
 		this.currentLevel = currentLevel;
 		this.currentLevel.spawnSound("placeSign");
 	}
 
-	private Image loadImage(int pictureNumber) {
+	private String loadImage(int pictureNumber) {
 
-		Image sign = new Image("/noentrysign_images/noentrysign" + String.valueOf(pictureNumber) + ".png");
+		String sign = "no-entry" + String.valueOf(pictureNumber);
 
 		return sign;
 	}

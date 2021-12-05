@@ -12,9 +12,9 @@ public class SterileRadius extends CollideItem {
 		this.sterileParent = parent;
 		
 		if (image != "") {
-			this.renderSprite = new Image(image);
+			this.renderSprite = image;
 		} else {
-			this.renderSprite = new Image("Textures/tr.png");
+			this.renderSprite = "tr";
 		}
 		
 	}

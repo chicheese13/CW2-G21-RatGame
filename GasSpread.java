@@ -15,7 +15,7 @@ public class GasSpread extends CollideItem {
 		this.objectPosition = position;
 		this.currentLevel = currentLevel;
 		this.parentGas = parent;
-		this.renderSprite = new Image("Textures/gas.png");
+		this.renderSprite = "gas";
 		this.parentGas.addChildToArray(this);
 	}
 	

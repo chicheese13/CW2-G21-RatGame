@@ -82,13 +82,34 @@ public class Sprites {
 		
 		sprites.put("poison", new Image("/items/poisononlevel.png"));
 		
-		sprites.put("sprinkler", new Image("/gas_images/Sprinkler.png"));
-		sprites.put("sprinkler-broken", new Image("/gas_images/SprinklerBroken.png"));
-		sprites.put("sprinkler-1", new Image("/gas_images/Sprinker1.png"));
-		sprites.put("sprinkler-2", new Image("/gas_images/Sprinker2.png"));
-		sprites.put("sprinkler-3", new Image("/gas_images/Sprinker3.png"));
-		sprites.put("sprinkler-4", new Image("/gas_images/Sprinker4.png"));
-		sprites.put("sprinkler-5", new Image("/gas_images/Sprinker5.png"));
+		sprites.put("sprinkler", new Image("gas_images/Sprinkler.png"));
+		sprites.put("sprinkler-broken", new Image("gas_images/SprinklerBroken.png"));
+		sprites.put("sprinkler1", new Image("gas_images/Sprinkler1.png"));
+		sprites.put("sprinkler2", new Image("gas_images/Sprinkler2.png"));
+		sprites.put("sprinkler3", new Image("gas_images/Sprinkler3.png"));
+		sprites.put("sprinkler4", new Image("gas_images/Sprinkler4.png"));
+		sprites.put("sprinkler5", new Image("gas_images/Sprinkler5.png"));
+		
+		sprites.put("gas", new Image("Textures/gas.png"));
+		
+		sprites.put("death-rat-north", new Image("Textures/death-rat-north.png"));
+		sprites.put("death-rat-east", new Image("Textures/death-rat-east.png"));
+		sprites.put("death-rat-south", new Image("Textures/death-rat-south.png"));
+		sprites.put("death-rat-west", new Image("Textures/death-rat-west.png"));
+		
+		sprites.put("no-entry1", new Image("noentrysign_images/noentrysign1.png"));
+		sprites.put("no-entry2", new Image("noentrysign_images/noentrysign2.png"));
+		sprites.put("no-entry3", new Image("noentrysign_images/noentrysign3.png"));
+		sprites.put("no-entry4", new Image("noentrysign_images/noentrysign4.png"));
+		sprites.put("no-entry5", new Image("noentrysign_images/noentrysign5.png"));
+		
+		sprites.put("sterilisation", new Image("/items/sterilisationonlevel.png"));
+		sprites.put("tr", new Image("Textures/tr.png"));
+		sprites.put("sterile-radius", new Image("Textures/sterile-radius.png"));
+		
+		sprites.put("male-sex-change", new Image("items/malesexchangeronlevel.png"));
+		sprites.put("female-sex-change", new Image("items/femalesexchangeronlevel.png"));
+	
 	}
 	
 	public Image getImage(String image) {

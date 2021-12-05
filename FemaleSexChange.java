@@ -7,7 +7,7 @@ public class FemaleSexChange extends CollideItem {
 
 
 	public FemaleSexChange(Position objectPosition, Level currentLevel) {
-		this.renderSprite = femaleSexChange;
+		this.renderSprite = "female-sex-change";
 		this.objectPosition = objectPosition;
 		this.currentLevel = currentLevel;
 		this.currentLevel.spawnSound("placeItem");

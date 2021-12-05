@@ -53,15 +53,15 @@ public class DeathRat extends Rat {
 	 * @param currentLevel, the level the rat is currently on.
 	 */
 	public DeathRat(Position position, Level currentLevel){
-		this.renderSprite = DEATH_RAT_SPRITE_NORTH;
+		this.renderSprite = "death-rat-north";
 		this.objectPosition = position;
 		this.ratSpeed = DEFAULT_DEATH_RAT_SPEED;
 		this.directionFacing = 'N';
 		this.waitCount = DEFAULT_WAIT_COUNT;
-		this.ratSpriteNorth = DEATH_RAT_SPRITE_NORTH;
-		this.ratSpriteEast = DEATH_RAT_SPRITE_EAST;
-		this.ratSpriteSouth = DEATH_RAT_SPRITE_SOUTH;
-		this.ratSpriteWest = DEATH_RAT_SPRITE_WEST;
+		this.ratSpriteNorth = "death-rat-north";
+		this.ratSpriteEast = "death-rat-east";
+		this.ratSpriteSouth = "death-rat-south";
+		this.ratSpriteWest = "death-rat-west";
 		this.currentLevel = currentLevel;
 		
 
@@ -102,11 +102,6 @@ public class DeathRat extends Rat {
 	public String convertString() {
 		return (this.ratSpeed 
 		+ " " + this.directionFacing
-		+ " " + this.renderSprite.getUrl()
-		+ " " + this.ratSpriteNorth.getUrl()
-		+ " " + this.ratSpriteSouth.getUrl()
-		+ " " + this.ratSpriteEast.getUrl()
-		+ " " + this.ratSpriteWest.getUrl()
 		+ " " + this.objectPosition.getPosition()[0]
 		+ " " + this.objectPosition.getPosition()[1]
 		+ " " + this.waitCount
