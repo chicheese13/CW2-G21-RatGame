@@ -3,10 +3,10 @@ import javafx.scene.image.Image;
 
 public class Sprites {
 	 //All Rats
-	protected final static Image BABY_RAT_SPRITE_EAST = new Image("TestTextures/baby-rat-west.png");
-	protected final static Image BABY_RAT_SPRITE_NORTH = new Image("TestTextures/baby-rat-north.png");
-	protected final static Image BABY_RAT_SPRITE_SOUTH = new Image("TestTextures/baby-rat-south.png");
-	protected final static Image BABY_RAT_SPRITE_WEST = new Image("TestTextures/baby-rat-west.png");
+	protected final static Image BABY_RAT_SPRITE_EAST = new Image("TestTextures/rat-model-east.png");
+	protected final static Image BABY_RAT_SPRITE_NORTH = new Image("TestTextures/rat-model-north.png");
+	protected final static Image BABY_RAT_SPRITE_SOUTH = new Image("TestTextures/rat-model-south.png");
+	protected final static Image BABY_RAT_SPRITE_WEST = new Image("TestTextures/rat-model-west.png");
 	
 	protected final Image COOLDOWN_SPRITE_FEMALE_NORTH = new Image("Textures/rat-female-exhausted-north.png");
 	protected final Image COOLDOWN_SPRITE_FEMALE_EAST = new Image("Textures/rat-female-exhausted-east.png");
