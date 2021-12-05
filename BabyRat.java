@@ -101,10 +101,12 @@ public class BabyRat extends NormalRat {
 	}	
 	
 	/**
-	 *  Methods which handles collision with a collided oject.
+	 *  Methods which handles collision with a collided object.
 	 */
 	public void collision(Object collidedObject) {
-		
+		if (collidedObject instanceof Explosion) {
+			this.ratDeath();
+		}
 	}
 	
 	/**

@@ -88,15 +88,19 @@ public class DeathRat extends Rat {
 	/**
 	 * Method for killing collided rats.
 	 */
-	public void collision(Object rat) {
+	public void collision(Object collidedObject) {
 		if (this.waitCount >= WAIT_LIMIT) {
-			if (rat instanceof NormalRat) {
+			if (collidedObject instanceof NormalRat) {
 				this.currentLevel.spawnSound("DeathRatSlayVictim");
-				((NormalRat) rat).ratDeath();
+				((NormalRat) collidedObject).ratDeath();
 				this.killCounter++;
 			}
 		}
+		if (collidedObject instanceof Explosion) {
+			this.currentLevel.despawnRat(this);
+		}
 	}
+
 	
 	public String convertString() {
 		return (this.ratSpeed 

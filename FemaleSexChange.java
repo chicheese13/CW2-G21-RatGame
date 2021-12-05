@@ -1,5 +1,5 @@
 
-public class FemaleSexChange extends CollideItem {
+public class FemaleSexChange extends RenderObject {
 	
 	
 
@@ -18,6 +18,8 @@ public class FemaleSexChange extends CollideItem {
 		collidedObject.changeToFemale();
 	}
 	
+	
+	
 	public void tick() {
 		
 	}
@@ -26,6 +28,9 @@ public class FemaleSexChange extends CollideItem {
 		if (collidedObject instanceof NormalRat) {
 			ratToF((NormalRat) collidedObject);
 			this.currentLevel.spawnSound("FemaleSexChange");
+			this.currentLevel.despawnItem(this);
+		}
+		if ( collidedObject instanceof Explosion) {
 			this.currentLevel.despawnItem(this);
 		}
 	}

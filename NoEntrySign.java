@@ -1,5 +1,5 @@
 
-public class NoEntrySign extends CollideItem {
+public class NoEntrySign extends RenderObject {
 
 
 	private final int NUMBER_OF_SIGN_FRAMES = 5;
@@ -47,11 +47,14 @@ public class NoEntrySign extends CollideItem {
 
 	// If rat stomps on a sign, it is being pushed back and it starts moving
 	// different direction, the sign loses health points
-	public void collision(Object paramater) {
-		if (paramater instanceof Rat) {
-			((Rat) paramater).turnAround();
+	public void collision(Object collidedObject) {
+		if (collidedObject instanceof Rat) {
+			((Rat) collidedObject).turnAround();
 			this.currentLevel.spawnSound("signHit" + pictureNumber);
 			breakSign();
+		}
+		if ( collidedObject instanceof Explosion) {
+			this.currentLevel.despawnItem(this);
 		}
 	}
 

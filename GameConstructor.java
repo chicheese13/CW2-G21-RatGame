@@ -414,7 +414,7 @@ public class GameConstructor extends Application {
 		gc.drawImage(page, 0, 0);
 		gc.drawImage(stats, 0, 5);
 
-		gc.setFill(Color.BLACK);
+		gc.setFill(Color.RED);
 		gc.setFont(new Font("fonts/jj2.ttf", 13));
 
 		// draw the counters

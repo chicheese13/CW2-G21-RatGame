@@ -97,7 +97,7 @@ public class Profile implements Serializable{
         
         for (int i = 0; i < tempProfiles.size(); i++) {
         	if (tempProfiles.get(i).getIdentifier() == profileID) {
-        		tempProfiles.get(i).
+        		tempProfiles.get(i);
         	}
         }
         

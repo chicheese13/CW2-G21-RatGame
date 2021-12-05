@@ -283,10 +283,11 @@ public class AdultRat extends NormalRat {
 	public void collision(Object parameter) {
 		if (parameter instanceof AdultRat) {
 			ratCollision(((AdultRat) parameter));
-		} else if (parameter instanceof Item) {
+		} else if (parameter instanceof Explosion) {
 			this.ratDeath();
 		}
-	}
+		
+	} 
 	
 	/**
 	 *  Checks if the rat is on a mating cooldown, if so deincriment the cooldown

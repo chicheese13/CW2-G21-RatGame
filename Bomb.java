@@ -1,7 +1,7 @@
 
 import java.math.BigDecimal;
 
-public class Bomb extends Item {
+public class Bomb extends RenderObject {
 
 	private String bomb = "bomb";
 
@@ -89,6 +89,12 @@ public class Bomb extends Item {
 				
 				this.currentLevel.despawnItem(this);
 			}
+		}
+	}
+	
+	public void collision(Object collidedObject) {
+		if ( collidedObject instanceof Explosion) {
+			this.currentLevel.despawnItem(this);
 		}
 	}
 

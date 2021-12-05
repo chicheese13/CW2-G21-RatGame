@@ -1,9 +1,6 @@
 
-public class MaleSexChange extends CollideItem {
+public class MaleSexChange extends RenderObject {
 	
-	
-
-
 	public MaleSexChange(Position objectPosition, Level currentLevel) {
 		this.renderSprite = "male-sex-change";
 		this.objectPosition = objectPosition;
@@ -24,6 +21,9 @@ public class MaleSexChange extends CollideItem {
 		if (collidedObject instanceof NormalRat) {
 			ratToM((NormalRat) collidedObject);
 			this.currentLevel.spawnSound("MaleSexChange");
+			this.currentLevel.despawnItem(this);
+		}
+		if ( collidedObject instanceof Explosion) {
 			this.currentLevel.despawnItem(this);
 		}
 	}

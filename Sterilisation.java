@@ -1,6 +1,6 @@
 import java.math.BigDecimal;
 
-public class Sterilisation extends Item {
+public class Sterilisation extends RenderObject {
 	
 	private int STERILE_DURATION = 200;
 	private int tickCounter = 0;
@@ -52,6 +52,12 @@ public class Sterilisation extends Item {
 		}
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void collision(Object collidedObject) {
+		if ( collidedObject instanceof Explosion) {
+			this.currentLevel.despawnItem(this);
+		}
 	}
 	
 }
