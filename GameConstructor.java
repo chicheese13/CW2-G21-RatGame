@@ -145,6 +145,8 @@ public class GameConstructor extends Application {
 	private Image unavailableSprite = new Image("Textures/unavailable.png");
 	private int focusTileX;
 	private int focusTileY;
+	
+	private Image blackBackground = new Image("Textures/black.png");
 
 	private Image gameWonScreen = new Image("Textures/game-won.png");
 	private Image gameLostScreen = new Image("Textures/game-over.png");
@@ -277,6 +279,7 @@ public class GameConstructor extends Application {
 	 * Draw the game on the canvas. This creates a frame, with all the tiles, items
 	 * and rats.
 	 */
+	
 	public void drawGame() {
 
 		GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -332,21 +335,43 @@ public class GameConstructor extends Application {
 
 		// show win screen
 		if (this.hasWon) {
-			gc.drawImage(gameWonScreen, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
-			/*
-			outerBox.getChildren().add(new Text("Leaderboard"));
-			outerBox.getChildren().add(LBhBox);
-			PriorityQueue<LeaderboardElement> top10 = currentLeaderboard.run(currentUser.getName(),
-					this.currentLevel.getScore());
-			LBhBox.getChildren().add(LBvBoxLeft);
-			for (int i = 0; i < 5 && !top10.isEmpty(); i++) {
-				LBvBoxLeft.getChildren().add(new Row(top10.poll().toString()));
+			//gc.drawImage(gameWonScreen, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+			gc.drawImage(blackBackground, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+			
+			testLead getLeaderboad = new testLead(this.currentLevelNumber);
+			getLeaderboad.addScore(this.currentUser.getName(), this.currentLevel.getScore());
+			
+			
+			//read in the file
+			String fileName = "src/scores/"+this.currentLevelNumber+".txt";
+			String fileData = "";
+			File leaderboard = new File(fileName);
+			Scanner in = null;
+			
+			try {
+				in = new Scanner(leaderboard);
+			} catch(Exception e) {
+				System.out.print("EERORO");
 			}
-			LBhBox.getChildren().add(LBvBoxRight);
-			while (!top10.isEmpty()) {
-				LBvBoxRight.getChildren().add(new Row(top10.poll().toString()));
+			
+			while (in.hasNextLine()) {
+				fileData = fileData + in.nextLine();
 			}
-			*/
+			
+			String[] dataArray = fileData.split(",");
+			
+			int y = 1;
+			for (int i = 0; i < dataArray.length; i++) {
+				String output = dataArray[i].split(" ")[0] + "           " + dataArray[i].split(" ")[1];
+				int x = 6;
+				if (Integer.parseInt(dataArray[i].split(" ")[1])!=-1) {
+					y++;
+					gc.fillText(output, x * GRID_CELL_WIDTH, y * GRID_CELL_WIDTH);
+				}
+			}
+			
+		
+			
 		}
 
 		// show lose screen
@@ -387,6 +412,8 @@ public class GameConstructor extends Application {
 			}
 
 		}
+		
+		//gc.fillText("Text centered on your Canvas", 10 * GRID_CELL_HEIGHT , 10 * GRID_CELL_HEIGHT);
 	}
 
 	public void processKeyEvent(KeyEvent event) {
@@ -488,14 +515,10 @@ public class GameConstructor extends Application {
 				tickCounter = 0;
 			}
 		} else if (gameStatus == "won") {
-			// this.currentLeaderboard.run(this.currentUser.getName(),
-			// this.currentLevel.getScore());
 			calculateTimePoints();
-
-			// output the score
-
-			// display win art
+			this.tickTimeline.stop();
 			this.hasWon = true;
+			
 			drawGame();
 		} else if (gameStatus == "lost") {
 			// this.currentLeaderboard.run(this.currentUser.getName(),

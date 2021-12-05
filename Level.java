@@ -93,10 +93,7 @@ public class Level implements Serializable {
 		while (in.hasNextLine()) {
 			fileData = fileData + in.nextLine();
 		}		
-		
-		if (saveFile != "") {
-			//need to load in the file and populate the arrays.
-		}
+	
 		
 		fileData = fileData.substring(0, fileData.indexOf("."));
 		dataArray = fileData.split(",");
