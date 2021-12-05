@@ -98,8 +98,8 @@ public class Profile implements Serializable{
         
         for (int i = 0; i < tempProfiles.size(); i++) {
         	if (tempProfiles.get(i).getIdentifier() == this.userIdentifier) {
-        		tempProfiles.get(i).setLevel(newLevel);
-        	}
+	        		tempProfiles.get(i).setLevel(newLevel);
+	        }
         }
         
         //re write the users to the text file

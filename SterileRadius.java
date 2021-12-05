@@ -1,7 +1,7 @@
 import java.math.*;
 import javafx.scene.image.Image;
 
-public class SterileRadius extends CollideItem {
+public class SterileRadius extends RenderObject {
 	
 	private Sterilisation sterileParent;
 	private int STERILE_DURATION = 200;
@@ -19,14 +19,10 @@ public class SterileRadius extends CollideItem {
 		
 	}
 
-	@Override
 	public void collision(Object collidedObject) {
-		// TODO Auto-generated method stub
-		if (collidedObject instanceof NormalRat) {
-			System.out.println("STERILE COLLIDE");
-			((NormalRat) collidedObject).becomeSterile();
+		if ( collidedObject instanceof Explosion) {
+			this.currentLevel.despawnItem(this);
 		}
-		
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 import java.math.*;
 
-public class GasSpread extends CollideItem {
+public class GasSpread extends RenderObject {
 	
 	
 	private int STOP_SPREAD_INTERVAL = 200;

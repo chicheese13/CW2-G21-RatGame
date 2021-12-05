@@ -2,7 +2,7 @@
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-public class Gas extends CollideItem {
+public class Gas extends RenderObject {
 
 	// around 8 seconds.
 	private int STOP_SPREAD_INTERVAL = 200;

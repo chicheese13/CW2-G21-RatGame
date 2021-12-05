@@ -193,11 +193,6 @@ public abstract class Rat extends RenderObject {
 		}
 	}
 	
-	/**
-	 * Abstract method for dealing with collisions.
-	 * @param object that has collided with the rat.
-	 */
-	abstract void collision(Object collidedObject);
 	
 	public void turnAround() {
 		switch(this.directionFacing) {

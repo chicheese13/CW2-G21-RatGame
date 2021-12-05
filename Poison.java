@@ -1,5 +1,5 @@
 
-public class Poison extends CollideItem {
+public class Poison extends RenderObject {
 
 
 	public Poison(Position objectPosition, Level currentLevel) {

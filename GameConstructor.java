@@ -21,12 +21,19 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -45,6 +52,7 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
@@ -115,6 +123,7 @@ public class GameConstructor extends Application {
 	ImageView sterilisationCounter = new ImageView();
 
 	private BigDecimal TICK_DURATION = new BigDecimal("15");
+	Font font = Font.loadFont("/fonts/stats.ttf", 45);
 
 	private Image bomb = new Image("/items_icons/bombOFF.png");
 	private Image bombOn = new Image("/items_icons/bombON.png");
@@ -147,6 +156,9 @@ public class GameConstructor extends Application {
 	private Image winning0 = new Image("/winning_the_game/winning0.png");
 	private Image winning1 = new Image("/winning_the_game/winning1.png");
 	private Image winning2 = new Image("/winning_the_game/winning2.png");
+
+	private Image page = new Image("/Textures/page2.png");
+	private Image stats = new Image("/Textures/STATS.png");
 
 	private Image availSprite;
 	private Image availableSprite = new Image("Textures/available.png");
@@ -258,30 +270,28 @@ public class GameConstructor extends Application {
 			this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt", "", this.items, currentUser,
 					currentLevelNumber);
 		}
-		
-		//Create leaderboard file if one doesn't already exist.
-		
-		boolean check = new File("src/Scores/"+this.currentLevelNumber+".txt").exists();
-		
-		if(!check) {
+
+		// Create leaderboard file if one doesn't already exist.
+
+		boolean check = new File("src/Scores/" + this.currentLevelNumber + ".txt").exists();
+
+		if (!check) {
 			String fileData = "";
 			Scanner in = null;
-			
-				PrintWriter leaderboardWriter;
-				try {
-					leaderboardWriter = new PrintWriter("src/Scores/"+this.currentLevelNumber+".txt");
-					for (int i = 0; i < 9; i++) {
-						leaderboardWriter.println("Null -1,");
-					}
-					leaderboardWriter.close();
-				} catch (FileNotFoundException e) {
-					
+
+			PrintWriter leaderboardWriter;
+			try {
+				leaderboardWriter = new PrintWriter("src/Scores/" + this.currentLevelNumber + ".txt");
+				for (int i = 0; i < 9; i++) {
+					leaderboardWriter.println("Null -1,");
 				}
+				leaderboardWriter.close();
+			} catch (FileNotFoundException e) {
+
+			}
 
 		}
-		}
-		
-	
+	}
 
 	public void startGame() {
 		this.start(gameStage);
@@ -382,12 +392,6 @@ public class GameConstructor extends Application {
 			gc.drawImage(availSprite, focusTileX * GRID_CELL_WIDTH, focusTileY * GRID_CELL_HEIGHT);
 		}
 
-		// RAT COUNTER
-
-		gc.fillRect(0, 0, 120, 150);
-		// Set font colour
-		gc.setFill(Color.BLUE);
-
 		int maleCount = 0;
 		int femaleCount = 0;
 		int totalCount;
@@ -411,25 +415,34 @@ public class GameConstructor extends Application {
 		// Find the total number of rats
 		totalCount = maleCount + femaleCount;
 
-		if (currentLevel.getMaxRats() * 0.6 < totalCount && currentLevel.getMaxRats() * 0.75 > totalCount) {
+		if (currentLevel.getMaxRats() * 0.6 <= totalCount && currentLevel.getMaxRats() * 0.75 > totalCount) {
 			gc.drawImage(losing0, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
-		} else if (currentLevel.getMaxRats() * 0.75 < totalCount && currentLevel.getMaxRats() * 0.9 > totalCount) {
+		} else if (currentLevel.getMaxRats() * 0.75 <= totalCount && currentLevel.getMaxRats() * 0.9 > totalCount) {
 			gc.drawImage(losing1, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
-		} else if (currentLevel.getMaxRats() * 0.9 < totalCount) {
+		} else if (currentLevel.getMaxRats() * 0.9 <= totalCount) {
 			gc.drawImage(losing2, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
-		} else if (currentLevel.getMaxRats() * 0.2 > totalCount && currentLevel.getMaxRats() * 0.1 < totalCount) {
+		} else if (currentLevel.getMaxRats() * 0.2 >= totalCount && currentLevel.getMaxRats() * 0.1 < totalCount) {
 			gc.drawImage(winning0, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
-		} else if (currentLevel.getMaxRats() * 0.1 > totalCount && currentLevel.getMaxRats() * 0.05 < totalCount) {
+		} else if (currentLevel.getMaxRats() * 0.1 >= totalCount) {
 			gc.drawImage(winning1, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
-		} else if (currentLevel.getMaxRats() * 0.05 > totalCount) {
-			gc.drawImage(winning2, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
 		}
+		/*
+		 * else if (currentLevel.getMaxRats() * 0.05 >= totalCount) {
+		 * gc.drawImage(winning2, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT); }
+		 */
+
+		// RAT COUNTER
+		gc.drawImage(page, 0, 0);
+		gc.drawImage(stats, 0, 5);
+
+		gc.setFill(Color.RED);
+		gc.setFont(new Font("fonts/jj2.ttf", 13));
 
 		// draw the counters
-		gc.fillText("Total " + totalCount, 0, 10);
-		gc.fillText("Male Rat " + maleCount, 0, 50);
-		gc.fillText("Female Rat " + femaleCount, 0, 100);
-		gc.fillText("No. Rats to lose " + currentLevel.getMaxRats(), 0, 150);
+		gc.fillText(" " + totalCount, 62, 22);
+		gc.fillText(" " + maleCount, 121, 44);
+		gc.fillText(" " + femaleCount, 101, 66);
+		gc.fillText(" " + currentLevel.getMaxRats(), 115, 88);
 
 		// show win screen
 		if (this.hasWon) {
@@ -449,7 +462,7 @@ public class GameConstructor extends Application {
 				in = new Scanner(leaderboard);
 			} catch (Exception e) {
 				System.out.print("EERORO");
-				
+
 			}
 
 			while (in.hasNextLine()) {
@@ -887,6 +900,13 @@ public class GameConstructor extends Application {
 		// We store this as a gloabl variable so other methods can access it.
 		canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 		root.setCenter(canvas);
+
+		BackgroundImage myBI = new BackgroundImage(new Image("/Textures/hud-bg1.png", 0, 0, false, true),
+				BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+				BackgroundSize.DEFAULT);
+
+		// then you set to your node
+		root.setBackground(new Background(myBI));
 
 		HBox toolbar = new HBox();
 		toolbar.setSpacing(2);

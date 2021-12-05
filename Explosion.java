@@ -1,6 +1,6 @@
 
 
-public class Explosion extends CollideItem {
+public class Explosion extends RenderObject {
 
 	private int tickCounter;
 	private int TICK_DURATION = 15;
@@ -23,6 +23,9 @@ public class Explosion extends CollideItem {
 	}
 	
 	public void collision(Object collidedObject) {
+		((RenderObject)collidedObject).collision(this);
+	}
+		/*
 		if (collidedObject instanceof NormalRat) {
 			((NormalRat) collidedObject).ratDeath();
 		//Checks for every item but Gas (because it broken) and despawns it	
@@ -35,5 +38,6 @@ public class Explosion extends CollideItem {
 			((Item) collidedObject).currentLevel.despawnItem((Item) collidedObject);
 		}
 	}
+	*/
 // && ((collidedObject instanceof Gas) == false))
 }

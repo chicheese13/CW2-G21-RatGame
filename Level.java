@@ -284,7 +284,7 @@ public class Level implements Serializable {
 		return this.tiles;
 	}
 	
-	public void spawnItem(Item spawnItem) {
+	public void spawnItem(RenderObject spawnItem) {
 		this.renderItems.add(spawnItem);
 	}
 	
@@ -407,9 +407,9 @@ public class Level implements Serializable {
 					}
 					
 					if (xCollide == true && yCollide == true) {
-						if (renderItems.get(i) instanceof CollideItem) {
+						if (renderItems.get(i) instanceof RenderObject) {
 							System.out.println("ITEM COLLISION DETECTED");
-							((CollideItem) renderItems.get(i)).collision((Rat) renderRats.get(i2));
+							((RenderObject) renderItems.get(i)).collision((Rat) renderRats.get(i2));
 						}
 					}
 					
@@ -446,9 +446,9 @@ public class Level implements Serializable {
 					}
 					
 					if (xCollide == true && yCollide == true) {
-						if (renderTempTiles.get(i) instanceof CollideItem) {
+						if (renderTempTiles.get(i) instanceof RenderObject) {
 							System.out.println("TEMP TILE COLLISION");
-							((CollideItem) renderTempTiles.get(i)).collision((Rat) renderRats.get(i2));
+							((RenderObject) renderTempTiles.get(i)).collision((Rat) renderRats.get(i2));
 						}
 					}
 					
@@ -481,7 +481,7 @@ public class Level implements Serializable {
 							((Gas) renderItems.get(i2)).instantDissapate();
 							
 						} else if ((renderItems.get(i2) instanceof Gas) == false && (renderItems.get(i2) instanceof Sterilisation) == false  && (renderTempTiles.get(i) instanceof Explosion) == true) {
-							this.despawnItem(((Item) renderItems.get(i2)));
+							this.despawnItem(((RenderObject) renderItems.get(i2)));
 						} else if ((renderItems.get(i2) instanceof Sterilisation) == true && (renderTempTiles.get(i) instanceof Explosion) == true) {
 							((Sterilisation) renderItems.get(i2)).instantRemove();
 						}
@@ -512,7 +512,7 @@ public class Level implements Serializable {
 		
 	}
 	
-	public void spawnTempTile(CollideItem tempTile) {
+	public void spawnTempTile(RenderObject tempTile) {
 		this.renderTempTiles.add(tempTile);
 	}
 	
@@ -562,7 +562,7 @@ public class Level implements Serializable {
 		}
 	}
 	
-	public void despawnItem(Item item) {
+	public void despawnItem(RenderObject item) {
 		for (int i = 0; i < renderItems.size(); i++) {
 			if (renderItems.get(i) == item) {
 				renderItems.remove(i);
@@ -646,7 +646,7 @@ public class Level implements Serializable {
 	 * @param x Desired X coordinate of item
 	 * @param y Desired Y coordinate of item
 	 */
-	public void placeItem (Item item, int x, int y) {
+	public void placeItem (RenderObject item, int x, int y) {
 		
 	}
 	
@@ -689,7 +689,7 @@ public class Level implements Serializable {
 	/**
 	 * @return 
 	 */
-	public Item getItem() {
+	public RenderObject getItem() {
 		return null;
 	}
 	
