@@ -18,8 +18,8 @@ public class Gas extends CollideItem {
 	private boolean isBroken = false;
 	private int LINGER_LIMIT = 200;
 	private int lingerCounter = 0;
-	private Image sprinkler = new Image("gas_images/Sprinkler.png");
-	private Image sprinklerBroken = new Image("gas_images/SprinklerBroken.png");
+	private String sprinkler = "sprinkler";
+	private String sprinklerBroken = "sprinkler-broken";
 
 	public Gas(Position objectPosition, Level currentLevel) {
 		this.renderSprite = sprinkler;
@@ -68,9 +68,9 @@ public class Gas extends CollideItem {
 		this.renderSprite = sprinklerBroken;
 	}
 
-	private Image loadImage(int pictureNumber) {
+	private String loadImage(int pictureNumber) {
 
-		Image gas = new Image("/gas_images/Sprinkler" + String.valueOf(pictureNumber) + ".png");
+		String gas = "sprinkler" + String.valueOf(pictureNumber);
 
 		return gas;
 	}

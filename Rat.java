@@ -17,6 +17,14 @@ import javafx.scene.image.Image;
  */
 
 public abstract class Rat extends RenderObject {
+	protected String BABY_REGULAR = "baby-reg";
+	protected String FEMALE_COOLDOWN = "female-cooldown";
+	protected String FEMALE_REGULAR = "female-regular";
+	protected String FEMALE_PREGNANT = "female-pregnant";
+	protected String MALE_REGULAR = "male-regular";
+	protected String MALE_COOLDOWN = "male-cooldown";
+	protected String DEATH_RAT_REGULAR = "death-rat-regular";
+	
     /**
 	 * size of tiles, used in smooth movement.
 	 */
@@ -29,14 +37,18 @@ public abstract class Rat extends RenderObject {
 	 * The direction in which the rat is facing.
 	 */
 	protected char directionFacing;
+	/**
+	 * The current sprites being used.
+	 */
+	protected String currentSpriteMode;
 	
 	/**
 	 * All the sprites for each direction facing for the rat.
 	 */
-	protected Image ratSpriteNorth;
-	protected Image ratSpriteSouth;
-	protected Image ratSpriteEast;
-	protected Image ratSpriteWest;
+	protected String ratSpriteNorth;
+	protected String ratSpriteSouth;
+	protected String ratSpriteEast;
+	protected String ratSpriteWest;
 	/**
 	 * A method which checks the Rat's current position, checks all available directions it can move and chooses a random direction and set's the current
 	 * direction facing to that method.
@@ -204,5 +216,9 @@ public abstract class Rat extends RenderObject {
 		  default:
 			  break;
 		}
+	}
+	
+	public void changeSprites(String changeMode) {
+		
 	}
 }

@@ -35,10 +35,11 @@ public class BabyRat extends NormalRat {
 	/**
 	 * All baby rat sprites for each direction.
 	 */
-	protected final Image BABY_RAT_SPRITE_EAST = new Image("TestTextures/baby-rat-east.png");
-	protected final Image BABY_RAT_SPRITE_NORTH = new Image("TestTextures/baby-rat-north.png");
-	protected final Image BABY_RAT_SPRITE_SOUTH = new Image("TestTextures/baby-rat-south.png");
-	protected final Image BABY_RAT_SPRITE_WEST = new Image("TestTextures/baby-rat-west.png");
+	
+	protected final String BABY_RAT_SPRITE_EAST = "baby-rat-east";
+	protected final String BABY_RAT_SPRITE_NORTH = "baby-rat-north";
+	protected final String BABY_RAT_SPRITE_SOUTH = "baby-rat-south";
+	protected final String BABY_RAT_SPRITE_WEST = "baby-rat-west";
 	/**
 	 *  The grow counter keeps track of the baby growth.
 	 */
@@ -127,4 +128,19 @@ public class BabyRat extends NormalRat {
 		this.ratGender = false;
 	}
 	
+	public String convertString() {
+		return (this.ratGender 
+				+ " " + this.ratHealth 
+				+ " " + this.ratSterile 
+				+ " " + this.damageCooldown 
+				+ " " + this.ratSpeed 
+				+ " " + this.directionFacing 
+				+ " " + this.growCounter
+				+ " " + this.objectPosition.getPosition()[0]
+				+ " " + this.objectPosition.getPosition()[1]);
+	}
+	
+	public void overwriteAttributes(String savedRat) {
+		//overwrite variables for rat.
+	}
 }

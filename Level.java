@@ -136,15 +136,29 @@ public class Level implements Serializable {
 			}
 		}
 		
-		count = 0;
-		for(int i=0; i<y;i++) {
-			for(int j=0; j<x;j++) {
-				if (rats[count].charAt(0) == 'M') {
-					this.spawnRat(new BabyRat(new Position(new BigDecimal(j), new BigDecimal(i)), true, this, 'N'));
-				} else if (rats[count].charAt(0) == 'F') {
-					this.spawnRat(new BabyRat(new Position(new BigDecimal(j), new BigDecimal(i)), false, this, 'N'));
+		if (saveFile.equals("")) {
+			count = 0;
+			for(int i=0; i<y;i++) {
+				for(int j=0; j<x;j++) {
+					if (rats[count].charAt(0) == 'M') {
+						this.spawnRat(new BabyRat(new Position(new BigDecimal(j), new BigDecimal(i)), true, this, 'N'));
+					} else if (rats[count].charAt(0) == 'F') {
+						this.spawnRat(new BabyRat(new Position(new BigDecimal(j), new BigDecimal(i)), false, this, 'N'));
+					}
+					count ++;
 				}
-				count ++;
+			}
+		} else {
+			//spawn the rats
+			System.out.println(saveFile);
+			try{
+			    FileInputStream readData = new FileInputStream(saveFile+"rats.ser");
+			    ObjectInputStream readStream = new ObjectInputStream(readData);
+
+			    this.renderRats = (ArrayList<RenderObject>) readStream.readObject();
+			    readStream.close();
+			}catch (Exception e) {
+			    e.printStackTrace();
 			}
 		}
 		
@@ -708,7 +722,6 @@ public class Level implements Serializable {
 		    ObjectOutputStream writeStream = new ObjectOutputStream(writeData);
 		    
 		    writeStream.writeObject(saveArray);
-		    writeStream.flush();
 		    writeStream.close();
 		} catch (Exception e) {
 			System.out.println(e);

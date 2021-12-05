@@ -171,11 +171,14 @@ public class GameConstructor extends Application {
 	private int SAVE_GAME_BUTTON_X = 10;
 	private int SAVE_GAME_BUTTON_Y = 5;
 	private int SAVE_GAME_BUTTON_WIDTH = 2;
+	private Sprites spriteLoader = new Sprites();
 
 	public GameConstructor(int levelNumber, Profile currentProfile, Leaderboard currentBoard, String saveFile) {
 		this.currentLevelNumber = levelNumber;
 		this.currentLeaderboard = currentBoard;
 		this.currentUser = currentProfile;
+		
+		System.out.println("test");
 		
 		if (saveFile.equals("")==false) {
 			
@@ -286,10 +289,10 @@ public class GameConstructor extends Application {
 						.getImage(), x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
 			}
 		}
-
+		
 		// we need to draw the items
 		for (int i = 0; i < currentLevel.getItems().size(); i++) {
-			gc.drawImage(currentLevel.getItems().get(i).getSprite(),
+			gc.drawImage(spriteLoader.getImage(currentLevel.getItems().get(i).getSprite()),
 					(currentLevel.getItems().get(i).getObjectPosition()[0].doubleValue() - currentLevel.getOffsetX())
 							* GRID_CELL_WIDTH,
 					(currentLevel.getItems().get(i).getObjectPosition()[1].doubleValue() - currentLevel.getOffsetY())
@@ -298,8 +301,10 @@ public class GameConstructor extends Application {
 
 		// we need to draw the rats
 
+	
+		
 		for (int i = 0; i < currentLevel.getRats().size(); i++) {
-			gc.drawImage(currentLevel.getRats().get(i).getSprite(),
+			gc.drawImage(spriteLoader.getImage(currentLevel.getRats().get(i).getSprite()),
 					(currentLevel.getRats().get(i).getObjectPosition()[0].doubleValue() - currentLevel.getOffsetX())
 							* GRID_CELL_WIDTH,
 					(currentLevel.getRats().get(i).getObjectPosition()[1].doubleValue() - currentLevel.getOffsetY())
@@ -308,7 +313,7 @@ public class GameConstructor extends Application {
 
 		// need to draw the temp tiles
 		for (int i = 0; i < currentLevel.getTempTiles().size(); i++) {
-			gc.drawImage(currentLevel.getTempTiles().get(i).getSprite(),
+			gc.drawImage(spriteLoader.getImage(currentLevel.getTempTiles().get(i).getSprite()),
 					(currentLevel.getTempTiles().get(i).getObjectPosition()[0].doubleValue()
 							- currentLevel.getOffsetX()) * GRID_CELL_WIDTH,
 					(currentLevel.getTempTiles().get(i).getObjectPosition()[1].doubleValue()
@@ -433,7 +438,6 @@ public class GameConstructor extends Application {
 	
 	
 	public void tick() {
-
 		System.out.println(this.currentLevel.getScore());
 		System.out.println(this.millisecondCount.divide(new BigDecimal("1000")));
 		
