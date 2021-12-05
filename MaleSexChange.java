@@ -3,7 +3,7 @@ import javafx.scene.image.Image;
 public class MaleSexChange extends CollideItem {
 	
 	
-	private Image maleSexChange = new Image("/items/malesexchangeronlevel.png");
+	private Image maleSexChange = new Image ("/items/malesexchangeronlevel.png");
 
 
 	public MaleSexChange(Position objectPosition, Level currentLevel) {

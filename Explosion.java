@@ -7,7 +7,7 @@ public class Explosion extends CollideItem {
 	private int TICK_DURATION = 15;
 	
 	public Explosion(Position position, Level currentLevel) {
-		this.renderSprite = new Image("Textures/explosion.png");
+		this.renderSprite = "explosion";
 		this.tickCounter = 0;
 		this.objectPosition = position;
 		this.currentLevel = currentLevel;

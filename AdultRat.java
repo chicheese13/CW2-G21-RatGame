@@ -61,23 +61,23 @@ public class AdultRat extends NormalRat {
 	/**
 	 * The adult male rat image sprite.
 	 */
-	protected final Image COOLDOWN_SPRITE_MALE = new Image("Textures/test-sprite-one.png");
-	protected final Image COOLDOWN_SPRITE_FEMALE = new Image("Textures/test-sprite-two.png");
+	protected final String COOLDOWN_SPRITE_MALE = "cooldown-male";
+	protected final String COOLDOWN_SPRITE_FEMALE = "cooldown-female";
 	
-	protected final Image ADULT_MALE_RAT_SPRITE_NORTH = new Image("Textures/male-rat-north.png");
-	protected final Image ADULT_MALE_RAT_SPRITE_EAST = new Image("Textures/male-rat-east.png");
-	protected final Image ADULT_MALE_RAT_SPRITE_SOUTH = new Image("Textures/male-rat-south.png");
-	protected final Image ADULT_MALE_RAT_SPRITE_WEST = new Image("Textures/male-rat-west.png");
+	protected final String ADULT_MALE_RAT_SPRITE_NORTH = "male-rat-north";
+	protected final String ADULT_MALE_RAT_SPRITE_EAST = "male-rat-east";
+	protected final String ADULT_MALE_RAT_SPRITE_SOUTH = "male-rat-south";
+	protected final String ADULT_MALE_RAT_SPRITE_WEST = "male-rat-west";
 	
-	protected final Image ADULT_FEMALE_RAT_SPRITE_NORTH = new Image("Textures/female-rat-north.png");
-	protected final Image ADULT_FEMALE_RAT_SPRITE_EAST = new Image("Textures/female-rat-east.png");
-	protected final Image ADULT_FEMALE_RAT_SPRITE_SOUTH = new Image("Textures/female-rat-south.png");
-	protected final Image ADULT_FEMALE_RAT_SPRITE_WEST = new Image("Textures/female-rat-west.png");
+	protected final String ADULT_FEMALE_RAT_SPRITE_NORTH = "female-rat-north";
+	protected final String ADULT_FEMALE_RAT_SPRITE_EAST = "female-rat-east";
+	protected final String ADULT_FEMALE_RAT_SPRITE_SOUTH = "female-rat-south";
+	protected final String ADULT_FEMALE_RAT_SPRITE_WEST = "female-rat-west";
 	
-	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_NORTH = new Image("Textures/female-rat-pregnant-north.png");
-	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_EAST = new Image("Textures/female-rat-pregnant-east.png");
-	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_SOUTH = new Image("Textures/female-rat-pregnant-south.png");
-	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_WEST = new Image("Textures/female-rat-pregnant-west.png");
+	protected final String ADULT_FEMALE_RAT_PREGNANT_SPRITE_NORTH = "female-pregnant-rat-north";
+	protected final String ADULT_FEMALE_RAT_PREGNANT_SPRITE_EAST = "female-pregnant-rat-east";
+	protected final String ADULT_FEMALE_RAT_PREGNANT_SPRITE_SOUTH = "female-pregnant-rat-south";
+	protected final String ADULT_FEMALE_RAT_PREGNANT_SPRITE_WEST = "female-pregnant-rat-west";
 	
 	/**
 	 * a boolean to determine whether or not a rat is currently waiting.
@@ -487,7 +487,40 @@ public class AdultRat extends NormalRat {
 		pregnancyTick();
 		waitTick();		
 	}
-
 	
+	public String convertString() {
+		return (this.ratGender 
+		+ " " + this.ratHealth 
+		+ " " + this.ratSterile 
+		+ " " + this.damageCooldown 
+		+ " " + this.ratSpeed 
+		+ " " + this.directionFacing 
+		+ " " + this.isWaiting 
+		+ " " + this.isPregnant 
+		+ " " + this.pregnancyCounter 
+		+ " " + this.waitCounter 
+		+ " " + this.giveBirthCooldown 
+		+ " " + this.matingCooldown
+		+ " " + this.objectPosition.getPosition()[0]
+		+ " " + this.objectPosition.getPosition()[1]);
+	}
+	
+	public void overwriteAttributes(String savedRat) {
+		//overwrite variables for rat.
+		String[] attributes = savedRat.split(" ");
+		this.ratGender = Boolean.parseBoolean(attributes[0]);
+		this.ratHealth = Integer.parseInt(attributes[1]);
+		this.ratSterile = Boolean.parseBoolean(attributes[2]);
+		this.damageCooldown = Boolean.parseBoolean(attributes[3]);
+		this.ratSpeed = new BigDecimal(attributes[4]);
+		this.directionFacing = attributes[5].charAt(0);
+		this.isWaiting = Boolean.parseBoolean(attributes[6]);
+		this.isPregnant = Boolean.parseBoolean(attributes[7]);
+		this.pregnancyCounter = Integer.parseInt(attributes[8]); 
+		this.waitCounter = Integer.parseInt(attributes[9]);
+		this.giveBirthCooldown = Integer.parseInt(attributes[10]);
+		this.matingCooldown = Boolean.parseBoolean(attributes[11]);
+		this.objectPosition.setPosition(new BigDecimal(attributes[17]), new BigDecimal(attributes[18]));		
+	}
 	
 }
