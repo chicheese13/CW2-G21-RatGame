@@ -231,8 +231,30 @@ public class GameConstructor extends Application {
 			this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt", "", this.items, currentUser,
 					currentLevelNumber);
 		}
+		
+		//Create leaderboard file if one doesn't already exist.
+		
+		boolean check = new File("src/Scores/"+this.currentLevelNumber+".txt").exists();
+		
+		if(!check) {
+			String fileData = "";
+			Scanner in = null;
+			
+				PrintWriter leaderboardWriter;
+				try {
+					leaderboardWriter = new PrintWriter("src/Scores/"+this.currentLevelNumber+".txt");
+					for (int i = 0; i < 9; i++) {
+						leaderboardWriter.println("Test 5,");
+					}
+					leaderboardWriter.close();
+				} catch (FileNotFoundException e) {
+					
+				}
 
-	}
+		}
+		}
+		
+	
 
 	public void startGame() {
 		this.start(gameStage);
@@ -387,6 +409,7 @@ public class GameConstructor extends Application {
 				in = new Scanner(leaderboard);
 			} catch(Exception e) {
 				System.out.print("EERORO");
+				
 			}
 			
 			while (in.hasNextLine()) {
@@ -412,20 +435,7 @@ public class GameConstructor extends Application {
 		// show lose screen
 		if (this.hasLost) {
 			gc.drawImage(gameLostScreen, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
-			/*
-			outerBox.getChildren().add(new Text("Leaderboard"));
-			outerBox.getChildren().add(LBhBox);
-			PriorityQueue<LeaderboardElement> top10 = currentLeaderboard.run(currentUser.getName(),
-					this.currentLevel.getScore());
-			LBhBox.getChildren().add(LBvBoxLeft);
-			for (int i = 0; i < 5 && !top10.isEmpty(); i++) {
-				LBvBoxLeft.getChildren().add(new Row(top10.poll().toString()));
-			}
-			LBhBox.getChildren().add(LBvBoxRight);
-			while (!top10.isEmpty()) {
-				LBvBoxRight.getChildren().add(new Row(top10.poll().toString()));
-			}
-			*/
+			
 		}
 
 		if (isPaused) {
