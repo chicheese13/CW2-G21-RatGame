@@ -81,11 +81,9 @@ public class testLead {
 				}
 			}
 			
-			leaderboardWriter.println();
 			leaderboardWriter.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println(e);
 		}
 	}
  		

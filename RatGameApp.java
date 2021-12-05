@@ -107,12 +107,13 @@ public class RatGameApp extends Application {
          } else {
              ChoiceDialog<Profile> cd = new ChoiceDialog<>(activeUser, profiles);
              cd.showAndWait();
-             activeUser = cd.getSelectedItem();
+             Profile deleteProfile;
+             deleteProfile = cd.getSelectedItem();
              cd.hide();
              
              //delete the profile from the text file here, where user id is active profile id
              for (int i = 0; i < profiles.size(); i++) {
-            	 if (profiles.get(i).getIdentifier() == activeUser.getIdentifier()) {
+            	 if (profiles.get(i).getIdentifier() == deleteProfile.getIdentifier()) {
             		 profiles.remove(i);
             	 }
              }
@@ -121,16 +122,18 @@ public class RatGameApp extends Application {
      		try {
      			userWrite = new PrintWriter("src/users.txt");
      			for (int i = 0; i < profiles.size(); i++) {
+     				//System.out.println(profiles.get(i).getName() + " " + profiles.get(i).getLevels() + " " + profiles.get(i).getIdentifier());
      				userWrite.println(profiles.get(i).getName() + " " + profiles.get(i).getLevels() + " " + profiles.get(i).getIdentifier());
      				//userWrite.println(profiles.get(i).toString());
      			}
+     			
+     			userWrite.close();
+     			
      		} catch (Exception e) {
      			
      		}
          }
     }
-    
- 
 
     public static void fetchSaves() {
         // if user is not signed in then display error, else check their saves.
