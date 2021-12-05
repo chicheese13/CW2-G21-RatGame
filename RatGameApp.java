@@ -336,7 +336,6 @@ public class RatGameApp extends Application {
             activeUser = cd.getSelectedItem();
             cd.hide();
         }
-        beatLevel();
 
     }
 

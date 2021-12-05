@@ -20,7 +20,6 @@ public class Leaderboard {
 	
 	//
 	
-	
 	public Leaderboard (int level) {
 		this.level = level;
 		
@@ -33,30 +32,6 @@ public class Leaderboard {
 		try {
 			in = new Scanner(leaderboard);
 		} catch(Exception e) {
-		
-			while (in.hasNextLine()) {
-				fileData = fileData + in.nextLine();
-			}
-			
-			String[] dataArray = fileData.split(",");
-			
-			for (int i = 0; i < dataArray.length; i++) {
-				names[i] = dataArray[i].split(" ")[0];
-				scores[i][0] = i;
-				scores[i][1] = Integer.parseInt(dataArray[i].split(" ")[1]);
-			}
-			for (int i = 0; i < scores.length;i++) {
-				System.out.println(scores[i][1]);
-			}
-		}
-		
-	}
-	
-	public void createLeaderboard(int level) {
-		
-		String fileData = "";
-		Scanner in = null;
-		
 			PrintWriter leaderboardWriter;
 			try {
 				leaderboardWriter = new PrintWriter("src/Scores/"+level+".txt");
@@ -64,22 +39,25 @@ public class Leaderboard {
 					leaderboardWriter.println("Null -1,");
 				}
 				leaderboardWriter.close();
-				while (in.hasNextLine()) {
-					fileData = fileData + in.nextLine();
-				}
-				
-				String[] dataArray = fileData.split(",");
-				
-				for (int i = 0; i < dataArray.length; i++) {
-					names[i] = dataArray[i].split(" ")[0];
-					scores[i][0] = i;
-					scores[i][1] = Integer.parseInt(dataArray[i].split(" ")[1]);
-				}
-				
 			} catch (FileNotFoundException e1) {
-					
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+		}
+		
+		while (in.hasNextLine()) {
+			fileData = fileData + in.nextLine();
+		}
+		
+		String[] dataArray = fileData.split(",");
+		
+		for (int i = 0; i < dataArray.length; i++) {
+			names[i] = dataArray[i].split(" ")[0];
+			scores[i][0] = i;
+			scores[i][1] = Integer.parseInt(dataArray[i].split(" ")[1]);
+		}
 	}
+
 	
 	public void addScore(String name, int Score) {
 		scores = checkScore(Score, scores);
@@ -95,9 +73,8 @@ public class Leaderboard {
 				if (scores[i][0] == -1) {
 					leaderboardWriter.println(name + " " + scores[i][1] + ",");
 				} else {
-					System.out.println(scores[i][1]);
-					if (scores[i][1] == -1) {
-						leaderboardWriter.println("Test " + scores[i][1] + ",");
+					if (names[scores[i][0]] == "") {
+						leaderboardWriter.println("Null " + scores[i][1] + ",");
 					} else {
 						leaderboardWriter.println(names[scores[i][0]] + " " + scores[i][1] + ",");
 					}
