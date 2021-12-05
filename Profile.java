@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -73,11 +74,11 @@ public class Profile implements Serializable{
         return playerName + " " + unlockedTo + " " + this.userIdentifier;
     }
     
-    public void setLevel() {
-    	
+    public void setLevel(int level) {
+    	this.unlockedTo = level;
     }
 
-    public void setLevel(int profileID, int newLevel) {
+    public void overwriteLevel(int newLevel) {
     	//set the level
     	
     	//output to file
@@ -96,10 +97,26 @@ public class Profile implements Serializable{
         }
         
         for (int i = 0; i < tempProfiles.size(); i++) {
-        	if (tempProfiles.get(i).getIdentifier() == profileID) {
-        		tempProfiles.get(i).
+        	if (tempProfiles.get(i).getIdentifier() == this.userIdentifier) {
+        		tempProfiles.get(i).setLevel(newLevel);
         	}
         }
+        
+        //re write the users to the text file
+        PrintWriter userWrite;
+ 		try {
+ 			userWrite = new PrintWriter("src/users.txt");
+ 			for (int i = 0; i < tempProfiles.size(); i++) {
+ 				//System.out.println(profiles.get(i).getName() + " " + profiles.get(i).getLevels() + " " + profiles.get(i).getIdentifier());
+ 				userWrite.println(tempProfiles.get(i).getName() + " " + tempProfiles.get(i).getLevels() + " " + tempProfiles.get(i).getIdentifier());
+ 				//userWrite.println(profiles.get(i).toString());
+ 			}
+ 			
+ 			userWrite.close();
+ 			
+ 		} catch (Exception e) {
+ 			
+ 		}
         
     }
     

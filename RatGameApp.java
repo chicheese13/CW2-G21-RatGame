@@ -7,6 +7,8 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -110,6 +112,12 @@ public class RatGameApp extends Application {
      			
      			userWrite.close();
      			
+     			//delete the folder
+     			deleteSaveFolder(new File("src/saves/" + deleteProfile.getIdentifier() + "/"));
+     				
+     			
+     			System.out.println("src/saves/" + activeUser.getIdentifier() + "/");
+     			
      		} catch (Exception e) {
      			
      		}
@@ -176,6 +184,22 @@ public class RatGameApp extends Application {
         }
 
     }
+    
+    
+    public static void deleteSaveFolder(File saveFolder) {
+    	//gets the list of files in the directory.
+        File[] saveFolderContent = saveFolder.listFiles();
+        
+        //checks if the file is null, if not then loop through and remove the contents recursively
+        if (!(saveFolderContent == null)) {
+        	//goes through the contents of each child and call the method to delete them.
+        	for (int i = 0; i < saveFolderContent.length; i++) {
+        		deleteSaveFolder(saveFolderContent[i]);
+        	}
+        }
+        saveFolder.delete();
+    }
+    	  
 
     /**
      * createContent is the method that populates the menu screen and begins the
@@ -473,5 +497,10 @@ public class RatGameApp extends Application {
     public static void main(String[] args) {
         readUserFile(userFile);
         launch(args);
+        
+        activeUser = new Profile("newUser", 0, 6);
+        
+        activeUser.overwriteLevel(3);
+        
     }
 }
