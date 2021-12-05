@@ -61,8 +61,15 @@ public class AdultRat extends NormalRat {
 	/**
 	 * The adult male rat image sprite.
 	 */
-	protected final String COOLDOWN_SPRITE_MALE = "cooldown-male";
-	protected final String COOLDOWN_SPRITE_FEMALE = "cooldown-female";
+	protected final String COOLDOWN_SPRITE_FEMALE_NORTH = "cooldown-female-north";
+	protected final String COOLDOWN_SPRITE_FEMALE_EAST = "cooldown-female-east";
+	protected final String COOLDOWN_SPRITE_FEMALE_SOUTH = "cooldown-female-south";
+	protected final String COOLDOWN_SPRITE_FEMALE_WEST = "cooldown-female-west";
+	
+	protected final String COOLDOWN_SPRITE_MALE_NORTH = "cooldown-male-north";
+	protected final String COOLDOWN_SPRITE_MALE_EAST = "cooldown-male-east";
+	protected final String COOLDOWN_SPRITE_MALE_SOUTH = "cooldown-male-south";
+	protected final String COOLDOWN_SPRITE_MALE_WEST =  "cooldown-male-west";
 	
 	protected final String ADULT_MALE_RAT_SPRITE_NORTH = "male-rat-north";
 	protected final String ADULT_MALE_RAT_SPRITE_EAST = "male-rat-east";
@@ -336,23 +343,23 @@ public class AdultRat extends NormalRat {
 				
 				switch (this.directionFacing) {
 				case 'N':
-					this.renderSprite = COOLDOWN_SPRITE_FEMALE;
+					this.renderSprite = COOLDOWN_SPRITE_FEMALE_NORTH;
 					break;
 				case 'E':
-					this.renderSprite = COOLDOWN_SPRITE_FEMALE;
+					this.renderSprite = COOLDOWN_SPRITE_FEMALE_EAST;
 					break;
 				case 'S':
-					this.renderSprite = COOLDOWN_SPRITE_FEMALE;
+					this.renderSprite = COOLDOWN_SPRITE_FEMALE_SOUTH;
 					break;
 				case 'W':
-					this.renderSprite = COOLDOWN_SPRITE_FEMALE;
+					this.renderSprite = COOLDOWN_SPRITE_FEMALE_WEST;
 					break;
 				}
 				
-				this.ratSpriteNorth = COOLDOWN_SPRITE_FEMALE;
-				this.ratSpriteEast = COOLDOWN_SPRITE_FEMALE;
-				this.ratSpriteSouth = COOLDOWN_SPRITE_FEMALE;
-				this.ratSpriteWest = COOLDOWN_SPRITE_FEMALE;
+				this.ratSpriteNorth = COOLDOWN_SPRITE_FEMALE_NORTH;
+				this.ratSpriteEast = COOLDOWN_SPRITE_FEMALE_EAST;
+				this.ratSpriteSouth = COOLDOWN_SPRITE_FEMALE_SOUTH;
+				this.ratSpriteWest = COOLDOWN_SPRITE_FEMALE_WEST;
 				
 				this.objectPosition = recallibratePosition(this.objectPosition, DEFAULT_ADULT_RAT_SPEED);
 				this.ratSpeed = DEFAULT_ADULT_RAT_SPEED;
@@ -375,11 +382,11 @@ public class AdultRat extends NormalRat {
 				this.setRatWait(false);
 				
 				if (this.ratGender) {
-					this.renderSprite = COOLDOWN_SPRITE_MALE;
-					this.ratSpriteNorth = COOLDOWN_SPRITE_MALE;
-					this.ratSpriteEast = COOLDOWN_SPRITE_MALE;
-					this.ratSpriteSouth = COOLDOWN_SPRITE_MALE;
-					this.ratSpriteWest = COOLDOWN_SPRITE_MALE;
+					this.renderSprite = COOLDOWN_SPRITE_MALE_NORTH;
+					this.ratSpriteNorth = COOLDOWN_SPRITE_MALE_NORTH;
+					this.ratSpriteEast = COOLDOWN_SPRITE_MALE_EAST;
+					this.ratSpriteSouth = COOLDOWN_SPRITE_MALE_SOUTH;
+					this.ratSpriteWest = COOLDOWN_SPRITE_MALE_WEST;
 				} else {
 					//pregnancy
 					switch (this.directionFacing) {
