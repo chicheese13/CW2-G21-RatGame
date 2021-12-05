@@ -333,6 +333,7 @@ public class GameConstructor extends Application {
 		// show win screen
 		if (this.hasWon) {
 			gc.drawImage(gameWonScreen, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+			/*
 			outerBox.getChildren().add(new Text("Leaderboard"));
 			outerBox.getChildren().add(LBhBox);
 			PriorityQueue<LeaderboardElement> top10 = currentLeaderboard.run(currentUser.getName(),
@@ -345,11 +346,13 @@ public class GameConstructor extends Application {
 			while (!top10.isEmpty()) {
 				LBvBoxRight.getChildren().add(new Row(top10.poll().toString()));
 			}
+			*/
 		}
 
 		// show lose screen
 		if (this.hasLost) {
 			gc.drawImage(gameLostScreen, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+			/*
 			outerBox.getChildren().add(new Text("Leaderboard"));
 			outerBox.getChildren().add(LBhBox);
 			PriorityQueue<LeaderboardElement> top10 = currentLeaderboard.run(currentUser.getName(),
@@ -362,6 +365,7 @@ public class GameConstructor extends Application {
 			while (!top10.isEmpty()) {
 				LBvBoxRight.getChildren().add(new Row(top10.poll().toString()));
 			}
+			*/
 		}
 
 		if (isPaused) {

@@ -1,6 +1,8 @@
 import java.time.*;
 import java.util.Arrays;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.time.temporal.ChronoField;
@@ -796,7 +798,7 @@ public class Level implements Serializable {
 	
 	public void saveProgress(BigDecimal time) {
 		String userDirectory = "src/saves/"+this.currentUser.getIdentifier()+"/";
-		String levelName = "Level" + this.currentLevelNumber + "Date:";
+		String levelName = "Level" + this.currentLevelNumber + "Date-";
 		
 		LocalDateTime currentTime = LocalDateTime.now();
 		String currentYear = String.valueOf(currentTime.getYear());
@@ -807,11 +809,12 @@ public class Level implements Serializable {
 		String currentSecond = String.valueOf(currentTime.getSecond());
 		String currentMillisecond = String.valueOf(currentTime.get(ChronoField.MILLI_OF_SECOND));
 		
-		String dateString = currentDay + "-" + currentMonth + "-" + currentYear + "-" + currentHour + ":" + currentMinute + ":" + currentSecond + ":" + currentMillisecond;
+		String dateString = currentDay + "-" + currentMonth + "-" + currentYear + "-" + currentHour + "-" + currentMinute + "-" + currentSecond + "-" + currentMillisecond;
 
 		String saveDirectory = userDirectory + levelName + dateString;
-		
+		System.out.println(saveDirectory);
 		new File(saveDirectory).mkdirs();
+		
 		//create a level.txt
 		PrintWriter levelWriter;
 		try {
