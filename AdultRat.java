@@ -495,39 +495,8 @@ public class AdultRat extends NormalRat {
 		waitTick();		
 	}
 	
-	public String convertString() {
-		return (this.ratGender 
-		+ " " + this.ratHealth 
-		+ " " + this.ratSterile 
-		+ " " + this.damageCooldown 
-		+ " " + this.ratSpeed 
-		+ " " + this.directionFacing 
-		+ " " + this.isWaiting 
-		+ " " + this.isPregnant 
-		+ " " + this.pregnancyCounter 
-		+ " " + this.waitCounter 
-		+ " " + this.giveBirthCooldown 
-		+ " " + this.matingCooldown
-		+ " " + this.objectPosition.getPosition()[0]
-		+ " " + this.objectPosition.getPosition()[1]);
-	}
-	
-	public void overwriteAttributes(String savedRat) {
-		//overwrite variables for rat.
-		String[] attributes = savedRat.split(" ");
-		this.ratGender = Boolean.parseBoolean(attributes[0]);
-		this.ratHealth = Integer.parseInt(attributes[1]);
-		this.ratSterile = Boolean.parseBoolean(attributes[2]);
-		this.damageCooldown = Boolean.parseBoolean(attributes[3]);
-		this.ratSpeed = new BigDecimal(attributes[4]);
-		this.directionFacing = attributes[5].charAt(0);
-		this.isWaiting = Boolean.parseBoolean(attributes[6]);
-		this.isPregnant = Boolean.parseBoolean(attributes[7]);
-		this.pregnancyCounter = Integer.parseInt(attributes[8]); 
-		this.waitCounter = Integer.parseInt(attributes[9]);
-		this.giveBirthCooldown = Integer.parseInt(attributes[10]);
-		this.matingCooldown = Boolean.parseBoolean(attributes[11]);
-		this.objectPosition.setPosition(new BigDecimal(attributes[17]), new BigDecimal(attributes[18]));		
+	public boolean getWait() {
+		return this.isWaiting;
 	}
 	
 }

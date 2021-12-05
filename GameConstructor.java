@@ -1100,9 +1100,13 @@ public class GameConstructor extends Application {
 
 				showAvailableTile = true;
 
-				if (currentLevel.isPlacable(x, y) && event.getGestureSource() != draggableSignImage) {
+				if (currentLevel.isPlacable(x, y) && event.getGestureSource() != draggableSignImage 
+					&& event.getGestureSource() != draggableFemaleSexChangerImage
+					&& event.getGestureSource() != draggableMaleSexChangerImage) {
 
 					availSprite = availableSprite;
+					
+					System.out.println("ITEM PLACE");
 
 					if (event.getGestureSource() == draggableBombImage) {
 						// Mark the drag event as acceptable by the canvas.
@@ -1141,6 +1145,13 @@ public class GameConstructor extends Application {
 						// Consume the event. This means we mark it as dealt with.
 						event.consume();
 					}
+				} else if (event.getGestureSource() == draggableFemaleSexChangerImage && currentLevel.isPlaceableSChange(x, y)
+						|| event.getGestureSource() == draggableMaleSexChangerImage && currentLevel.isPlaceableSChange(x, y)) {
+					availSprite = availableSprite;
+					// Mark the drag event as acceptable by the canvas.
+					event.acceptTransferModes(TransferMode.ANY);
+					// Consume the event. This means we mark it as dealt with.
+					event.consume();
 				} else if (event.getGestureSource() == draggableSignImage && currentLevel.isPlaceableSign(x, y)) {
 					availSprite = availableSprite;
 					// Mark the drag event as acceptable by the canvas.
@@ -1150,6 +1161,7 @@ public class GameConstructor extends Application {
 				} else {
 					availSprite = unavailableSprite;
 				}
+				
 			}
 		});
 
