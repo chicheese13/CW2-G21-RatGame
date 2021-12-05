@@ -35,10 +35,10 @@ public class BabyRat extends NormalRat {
 	/**
 	 * All baby rat sprites for each direction.
 	 */
-	protected final Image BABY_RAT_SPRITE_EAST = new Image("TestTextures/baby-rat-east.png");
-	protected final Image BABY_RAT_SPRITE_NORTH = new Image("TestTextures/baby-rat-north.png");
-	protected final Image BABY_RAT_SPRITE_SOUTH = new Image("TestTextures/baby-rat-south.png");
-	protected final Image BABY_RAT_SPRITE_WEST = new Image("TestTextures/baby-rat-west.png");
+	protected final Image BABY_RAT_SPRITE_EAST = new Image("TestTextures/rat-model-east.png");
+	protected final Image BABY_RAT_SPRITE_NORTH = new Image("TestTextures/rat-model-north.png");
+	protected final Image BABY_RAT_SPRITE_SOUTH = new Image("TestTextures/rat-model-south.png");
+	protected final Image BABY_RAT_SPRITE_WEST = new Image("TestTextures/rat-model-west.png");
 	/**
 	 *  The grow counter keeps track of the baby growth.
 	 */

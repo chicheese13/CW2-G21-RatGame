@@ -60,24 +60,31 @@ public class AdultRat extends NormalRat {
 	
 	/**
 	 * The adult male rat image sprite.
-	 */
-	protected final Image COOLDOWN_SPRITE_MALE = new Image("Textures/test-sprite-one.png");
-	protected final Image COOLDOWN_SPRITE_FEMALE = new Image("Textures/test-sprite-two.png");
+	 */	
+	protected final Image COOLDOWN_SPRITE_FEMALE_NORTH = new Image("Textures/rat-female-exhausted-north.png");
+	protected final Image COOLDOWN_SPRITE_FEMALE_EAST = new Image("Textures/rat-female-exhausted-east.png");
+	protected final Image COOLDOWN_SPRITE_FEMALE_SOUTH = new Image("Textures/rat-female-exhausted-south.png");
+	protected final Image COOLDOWN_SPRITE_FEMALE_WEST = new Image("Textures/rat-female-exhausted-west.png");
 	
-	protected final Image ADULT_MALE_RAT_SPRITE_NORTH = new Image("Textures/male-rat-north.png");
-	protected final Image ADULT_MALE_RAT_SPRITE_EAST = new Image("Textures/male-rat-east.png");
-	protected final Image ADULT_MALE_RAT_SPRITE_SOUTH = new Image("Textures/male-rat-south.png");
-	protected final Image ADULT_MALE_RAT_SPRITE_WEST = new Image("Textures/male-rat-west.png");
+	protected final Image COOLDOWN_SPRITE_MALE_NORTH = new Image("Textures/rat-exhausted-male-north.png");
+	protected final Image COOLDOWN_SPRITE_MALE_EAST = new Image("Textures/rat-exhausted-male-east.png");
+	protected final Image COOLDOWN_SPRITE_MALE_SOUTH = new Image("Textures/rat-exhausted-male-south.png");
+	protected final Image COOLDOWN_SPRITE_MALE_WEST = new Image("Textures/rat-exhausted-male-west.png");
 	
-	protected final Image ADULT_FEMALE_RAT_SPRITE_NORTH = new Image("Textures/female-rat-north.png");
-	protected final Image ADULT_FEMALE_RAT_SPRITE_EAST = new Image("Textures/female-rat-east.png");
-	protected final Image ADULT_FEMALE_RAT_SPRITE_SOUTH = new Image("Textures/female-rat-south.png");
-	protected final Image ADULT_FEMALE_RAT_SPRITE_WEST = new Image("Textures/female-rat-west.png");
+	protected final Image ADULT_MALE_RAT_SPRITE_NORTH = new Image("Textures/rat-male-north.png");
+	protected final Image ADULT_MALE_RAT_SPRITE_EAST = new Image("Textures/rat-male-east.png");
+	protected final Image ADULT_MALE_RAT_SPRITE_SOUTH = new Image("Textures/rat-male-south.png");
+	protected final Image ADULT_MALE_RAT_SPRITE_WEST = new Image("Textures/rat-male-west.png");
 	
-	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_NORTH = new Image("Textures/female-rat-pregnant-north.png");
-	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_EAST = new Image("Textures/female-rat-pregnant-east.png");
-	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_SOUTH = new Image("Textures/female-rat-pregnant-south.png");
-	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_WEST = new Image("Textures/female-rat-pregnant-west.png");
+	protected final Image ADULT_FEMALE_RAT_SPRITE_NORTH = new Image("Textures/rat-female-north.png");
+	protected final Image ADULT_FEMALE_RAT_SPRITE_EAST = new Image("Textures/rat-female-east.png");
+	protected final Image ADULT_FEMALE_RAT_SPRITE_SOUTH = new Image("Textures/rat-female-south.png");
+	protected final Image ADULT_FEMALE_RAT_SPRITE_WEST = new Image("Textures/rat-female-west.png");
+	
+	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_NORTH = new Image("Textures/rat-pregnant-north.png");
+	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_EAST = new Image("Textures/rat-pregnant-east.png");
+	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_SOUTH = new Image("Textures/rat-pregnant-south.png");
+	protected final Image ADULT_FEMALE_RAT_PREGNANT_SPRITE_WEST = new Image("Textures/rat-pregnant-west.png");
 	
 	/**
 	 * a boolean to determine whether or not a rat is currently waiting.
@@ -336,23 +343,23 @@ public class AdultRat extends NormalRat {
 				
 				switch (this.directionFacing) {
 				case 'N':
-					this.renderSprite = COOLDOWN_SPRITE_FEMALE;
+					this.renderSprite = COOLDOWN_SPRITE_FEMALE_NORTH;
 					break;
 				case 'E':
-					this.renderSprite = COOLDOWN_SPRITE_FEMALE;
+					this.renderSprite = COOLDOWN_SPRITE_FEMALE_EAST;
 					break;
 				case 'S':
-					this.renderSprite = COOLDOWN_SPRITE_FEMALE;
+					this.renderSprite = COOLDOWN_SPRITE_FEMALE_SOUTH;
 					break;
 				case 'W':
-					this.renderSprite = COOLDOWN_SPRITE_FEMALE;
+					this.renderSprite = COOLDOWN_SPRITE_FEMALE_WEST;
 					break;
 				}
 				
-				this.ratSpriteNorth = COOLDOWN_SPRITE_FEMALE;
-				this.ratSpriteEast = COOLDOWN_SPRITE_FEMALE;
-				this.ratSpriteSouth = COOLDOWN_SPRITE_FEMALE;
-				this.ratSpriteWest = COOLDOWN_SPRITE_FEMALE;
+				this.ratSpriteNorth = COOLDOWN_SPRITE_FEMALE_NORTH;
+				this.ratSpriteEast = COOLDOWN_SPRITE_FEMALE_EAST;
+				this.ratSpriteSouth = COOLDOWN_SPRITE_FEMALE_SOUTH;
+				this.ratSpriteWest = COOLDOWN_SPRITE_FEMALE_WEST;
 				
 				this.objectPosition = recallibratePosition(this.objectPosition, DEFAULT_ADULT_RAT_SPEED);
 				this.ratSpeed = DEFAULT_ADULT_RAT_SPEED;
@@ -375,11 +382,11 @@ public class AdultRat extends NormalRat {
 				this.setRatWait(false);
 				
 				if (this.ratGender) {
-					this.renderSprite = COOLDOWN_SPRITE_MALE;
-					this.ratSpriteNorth = COOLDOWN_SPRITE_MALE;
-					this.ratSpriteEast = COOLDOWN_SPRITE_MALE;
-					this.ratSpriteSouth = COOLDOWN_SPRITE_MALE;
-					this.ratSpriteWest = COOLDOWN_SPRITE_MALE;
+					this.renderSprite = COOLDOWN_SPRITE_MALE_NORTH;
+					this.ratSpriteNorth = COOLDOWN_SPRITE_MALE_NORTH;
+					this.ratSpriteEast = COOLDOWN_SPRITE_MALE_EAST;
+					this.ratSpriteSouth = COOLDOWN_SPRITE_MALE_SOUTH;
+					this.ratSpriteWest = COOLDOWN_SPRITE_MALE_WEST;
 				} else {
 					//pregnancy
 					switch (this.directionFacing) {
