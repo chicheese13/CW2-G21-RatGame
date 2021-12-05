@@ -174,7 +174,6 @@ public class GameConstructor extends Application {
 
 	private boolean isPaused = false;
 
-	private Leaderboard currentLeaderboard;
 	private Profile currentUser;
 
 	private int QUIT_GAME_BUTTON_X = 10;
@@ -186,9 +185,8 @@ public class GameConstructor extends Application {
 	private int SAVE_GAME_BUTTON_WIDTH = 2;
 	private Sprites spriteLoader = new Sprites();
 
-	public GameConstructor(int levelNumber, Profile currentProfile, Leaderboard currentBoard, String saveFile) {
+	public GameConstructor(int levelNumber, Profile currentProfile, String saveFile) {
 		this.currentLevelNumber = levelNumber;
-		this.currentLeaderboard = currentBoard;
 		this.currentUser = currentProfile;
 
 		System.out.println("test");
@@ -417,7 +415,7 @@ public class GameConstructor extends Application {
 			// gc.drawImage(gameWonScreen, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
 			gc.drawImage(blackBackground, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
 
-			testLead getLeaderboad = new testLead(this.currentLevelNumber);
+			Leaderboard getLeaderboad = new Leaderboard(this.currentLevelNumber);
 			getLeaderboad.addScore(this.currentUser.getName(), this.currentLevel.getScore());
 
 			// read in the file

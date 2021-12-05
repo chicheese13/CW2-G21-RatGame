@@ -1,161 +1,142 @@
-
-/**
- * LeaderBoard.java
- * @version  1.0
- */
-
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.PriorityQueue;
+import java.util.Hashtable;
 import java.util.Scanner;
 
-/**
- * Leaderboard is a class which manages the high scores of players from past
- * games
- */
 public class Leaderboard {
-    /**
-     * creates an arraylist for storing the scores
-     * creates a priority queue to sort the scores
-     * declare the index of the level
-     * creates a text file for the scores
-     */
-    private ArrayList<LeaderboardElement> allScores = new ArrayList<>();
-    private PriorityQueue<LeaderboardElement> levelScores = new PriorityQueue<>();
-    private int level;
-    private File scoreFile = new File("src/scores.txt");
-    private static final String FILE_ERROR_STRING = "Unable to retrieve high scores";
 
-    /**
-     * Constructs the Leaderboard
-     * 
-     * @param level
-     */
-    public Leaderboard(int level) {
-        this.level = level;
-    }
-
-    /**
-     * tries to read the text file with the scores, splitted by ", ". And builds the
-     * LeaderboardElement with the data.
-     * 
-     * @throws Exception e
-     */
-    private void readBoard() {
-        try (Scanner in = new Scanner(scoreFile);) {
-            while (in.hasNextLine()) {
-                String text = in.nextLine();
-                String[] details = text.split(", ");
-                LeaderboardElement score = new LeaderboardElement(details[0], Integer.parseInt(details[1]),
-                        Integer.parseInt(details[2]));
-                allScores.add(score);
-            }
-        } catch (Exception e) {
-            System.out.println(FILE_ERROR_STRING);
-        }
-    }
-
-    /**
-     * Populates the levelScores array with the highscores from allscores array and
-     * removes these from the allScores array
-     */
-    private void populateLevelScores() {
-        for (LeaderboardElement score : allScores) {
-            if (score.getLevel() == level) {
-                levelScores.add(score);
-            }
-        }
-        for (LeaderboardElement score : levelScores) {
-            allScores.remove(score);
-        }
-    }
-
-    /**
-     * updates the top 10 high scores back into the allsScores array, including
-     * newly added score
-     */
-    private void updateAllScores() {
-        while (!levelScores.isEmpty()) {
-            allScores.add(levelScores.poll());
-        }
-    }
-
-    /**
-     * Writes the allScores array to the textfile.
-     */
-    private void writeBoard() {
-        clearFile();
-        try (FileWriter fw = new FileWriter(scoreFile, true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                PrintWriter out = new PrintWriter(bw);) {
-            for (LeaderboardElement score : allScores) {
-                out.println(score);
-            }
-        } catch (Exception e) {
-            System.out.println(FILE_ERROR_STRING);
-        }
-
-    }
-
-    /**
-     * closes the file.
-     */
-    private void clearFile() {
-        try {
-            new FileWriter(scoreFile, false).close();
-        } catch (Exception e) {
-            System.out.println(FILE_ERROR_STRING);
-        }
-    }
-
-    /**
-     * addds the new score to the levelScore array and trims the levelScore down to
-     * the top 10 scores if necessary
-     * 
-     * @param newScore the LeaderboardElement which contains the new score to add
-     */
-    private void addScore(LeaderboardElement newScore) {
-        levelScores.add(newScore);
-        LeaderboardElement[] temp = new LeaderboardElement[10];
-        for (int i = 0; i < 10 && !levelScores.isEmpty(); i++) {
-            temp[i] = levelScores.poll();
-        }
-        levelScores.clear();
-        for (LeaderboardElement score : temp) {
-            if (score != null) {
-                levelScores.add(score);
-            }
-        }
-    }
-
-    /**
-     * The run method takes a user name and score, and runs through a full sequence
-     * that takes the board for the curentlevel from the scores file, adds the new
-     * score, updates the new levelScores array up to allScores and then rewrites
-     * the scores file to add the changes tht have been made. And finally it returns
-     * the levelScore array to be used to display the score to screen
-     * 
-     * @param name  The name of the user who set the score
-     * @param score The score achieved
-     * @return PriorityQueue<LeaderboardElement> the final leaderboard showingt the
-     *         top10 scores for the completed level
-     */
-    // runs it
-    public PriorityQueue<LeaderboardElement> run(String name, int score) {
-        readBoard();
-        populateLevelScores();
-        LeaderboardElement newScore = new LeaderboardElement(name, score, level);
-        addScore(newScore);
-        PriorityQueue<LeaderboardElement> tempQueue = new PriorityQueue<>();
-        for (LeaderboardElement tempScore : levelScores) {
-            tempQueue.add(tempScore);
-        }
-        updateAllScores();
-        writeBoard();
-        return tempQueue;
-    }
+	
+	//take in a text file
+	
+	String file [] = {"Name1 10", "Name2 7","Name3 7","Name4 5","Name5 4","Name6 3","Name7 3","Name8 3","Name9 2", "Name10 2"};
+	
+	private int level;
+	private String[] names = new String[10];
+	private int[][] scores = new int[10][2];
+	//index 0 to 9
+	
+	//highest to lowest
+	
+	//
+	
+	
+	public Leaderboard (int level) {
+		this.level = level;
+		
+		//read in the file
+		String fileName = "src/scores/"+level+".txt";
+		String fileData = "";
+		File leaderboard = new File(fileName);
+		Scanner in = null;
+		
+		try {
+			in = new Scanner(leaderboard);
+		} catch(Exception e) {
+		
+			while (in.hasNextLine()) {
+				fileData = fileData + in.nextLine();
+			}
+			
+			String[] dataArray = fileData.split(",");
+			
+			for (int i = 0; i < dataArray.length; i++) {
+				names[i] = dataArray[i].split(" ")[0];
+				scores[i][0] = i;
+				scores[i][1] = Integer.parseInt(dataArray[i].split(" ")[1]);
+			}
+			for (int i = 0; i < scores.length;i++) {
+				System.out.println(scores[i][1]);
+			}
+		}
+		
+	}
+	
+	public void createLeaderboard(int level) {
+		
+		String fileData = "";
+		Scanner in = null;
+		
+			PrintWriter leaderboardWriter;
+			try {
+				leaderboardWriter = new PrintWriter("src/Scores/"+level+".txt");
+				for (int i = 0; i < 9; i++) {
+					leaderboardWriter.println("Null -1,");
+				}
+				leaderboardWriter.close();
+				while (in.hasNextLine()) {
+					fileData = fileData + in.nextLine();
+				}
+				
+				String[] dataArray = fileData.split(",");
+				
+				for (int i = 0; i < dataArray.length; i++) {
+					names[i] = dataArray[i].split(" ")[0];
+					scores[i][0] = i;
+					scores[i][1] = Integer.parseInt(dataArray[i].split(" ")[1]);
+				}
+				
+			} catch (FileNotFoundException e1) {
+					
+			}
+	}
+	
+	public void addScore(String name, int Score) {
+		scores = checkScore(Score, scores);
+		
+		//output the contents back to the file.
+		
+		PrintWriter leaderboardWriter;
+		try {
+			leaderboardWriter = new PrintWriter("src/Scores/"+level+".txt");
+			
+			for (int i = 0; i < scores.length; i++) {
+				//Name Score
+				if (scores[i][0] == -1) {
+					leaderboardWriter.println(name + " " + scores[i][1] + ",");
+				} else {
+					System.out.println(scores[i][1]);
+					if (scores[i][1] == -1) {
+						leaderboardWriter.println("Test " + scores[i][1] + ",");
+					} else {
+						leaderboardWriter.println(names[scores[i][0]] + " " + scores[i][1] + ",");
+					}
+				}
+			}
+			
+			leaderboardWriter.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+ 		
+	
+	
+	public int[][] checkScore(int score, int[][] checkArray) {
+		//itterate through the array, check the scores and shift if needed.
+		boolean inserted = false;
+		for (int i = 0; i < checkArray.length; i++) {
+			if (score > checkArray[i][1] && inserted == false) {
+				shift(i, checkArray);
+				checkArray[i][0] = -1;
+				checkArray[i][1] = score;
+				inserted = true;
+			}
+		}
+		return checkArray;
+	}
+	
+	
+	public int[][] shift(int startIndex, int[][] shiftArray) {
+		
+		for (int i = shiftArray.length-1; i > 0; i--) {
+			if (i > startIndex) {
+				shiftArray[i][0] = shiftArray[i-1][0];
+				shiftArray[i][1] = shiftArray[i-1][1];
+			}
+		}
+		
+		return shiftArray;
+	}
 
 }

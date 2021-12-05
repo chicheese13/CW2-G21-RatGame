@@ -72,32 +72,13 @@ public class RatGameApp extends Application {
             new Pair<String, Runnable>("Start Game", RatGameApp::startGame),
             new Pair<String, Runnable>("Select User", RatGameApp::selectUser),
             new Pair<String, Runnable>("Create New User", RatGameApp::addUser),
-            new Pair<String, Runnable>("Texture Packs", RatGameApp::selectTexturePack),
             new Pair<String, Runnable>("Saves", RatGameApp::fetchSaves),
             new Pair<String, Runnable>("Delete Profile", RatGameApp::deleteProfile));
 
     private Pane root = new Pane();
     private VBox menuBox = new VBox(-5);
     private Line line;
-    private static Leaderboard board;
 
-    public static void selectTexturePack() {
-        File folder = new File("src/texturepacks/");
-        File[] listOfFiles = folder.listFiles();
-
-        ArrayList<String> texturePacks = new ArrayList<String>();
-
-        for (int i = 0; i < listOfFiles.length; i++) {
-            if (listOfFiles[i].isDirectory()) {
-                texturePacks.add(listOfFiles[i].getName());
-            }
-        }
-
-        ChoiceDialog<String> cd = new ChoiceDialog<>(selectedTexturePack, texturePacks);
-        cd.showAndWait();
-        cd.hide();
-    }
-    
     public static void deleteProfile() {
     	 readUserFile(userFile);
          if (profiles.isEmpty()) {
@@ -183,7 +164,7 @@ public class RatGameApp extends Application {
                         saveFile.close();
 
                         // play the game once we have the level
-                        playGame = new GameConstructor(level, activeUser, board, saveFileDirectory);
+                        playGame = new GameConstructor(level, activeUser, saveFileDirectory);
                         playGame.startGame();
                         currentSave = "";
                     } catch (Exception e) {
@@ -407,7 +388,7 @@ public class RatGameApp extends Application {
 
             // launch game.
             System.out.println("Start the game here");
-            playGame = new GameConstructor(selectedLevel, activeUser, board, "");
+            playGame = new GameConstructor(selectedLevel, activeUser, "");
             playGame.startGame();
         }
     }
