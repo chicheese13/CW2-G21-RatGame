@@ -2,6 +2,7 @@ import java.io.BufferedWriter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -72,7 +73,8 @@ public class RatGameApp extends Application {
             new Pair<String, Runnable>("Select User", RatGameApp::selectUser),
             new Pair<String, Runnable>("Create New User", RatGameApp::addUser),
             new Pair<String, Runnable>("Texture Packs", RatGameApp::selectTexturePack),
-            new Pair<String, Runnable>("Saves", RatGameApp::fetchSaves));
+            new Pair<String, Runnable>("Saves", RatGameApp::fetchSaves),
+            new Pair<String, Runnable>("Delete Profile", RatGameApp::deleteProfile));
 
     private Pane root = new Pane();
     private VBox menuBox = new VBox(-5);
@@ -95,6 +97,40 @@ public class RatGameApp extends Application {
         cd.showAndWait();
         cd.hide();
     }
+    
+    public static void deleteProfile() {
+    	 readUserFile(userFile);
+         if (profiles.isEmpty()) {
+             Alert alert = new Alert(AlertType.WARNING);
+             alert.setContentText("No users currently exist, please create a user before trying to proceed");
+             alert.show();
+         } else {
+             ChoiceDialog<Profile> cd = new ChoiceDialog<>(activeUser, profiles);
+             cd.showAndWait();
+             activeUser = cd.getSelectedItem();
+             cd.hide();
+             
+             //delete the profile from the text file here, where user id is active profile id
+             for (int i = 0; i < profiles.size(); i++) {
+            	 if (profiles.get(i).getIdentifier() == activeUser.getIdentifier()) {
+            		 profiles.remove(i);
+            	 }
+             }
+             
+            PrintWriter userWrite;
+     		try {
+     			userWrite = new PrintWriter("src/users.txt");
+     			for (int i = 0; i < profiles.size(); i++) {
+     				userWrite.println(profiles.get(i).getName() + " " + profiles.get(i).getLevels() + " " + profiles.get(i).getIdentifier());
+     				//userWrite.println(profiles.get(i).toString());
+     			}
+     		} catch (Exception e) {
+     			
+     		}
+         }
+    }
+    
+ 
 
     public static void fetchSaves() {
         // if user is not signed in then display error, else check their saves.
