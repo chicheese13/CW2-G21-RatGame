@@ -442,21 +442,6 @@ public class RatGameApp extends Application {
         }
     }
 
-    public static void beatLevel() {
-        clearFile();
-        try (FileWriter fw = new FileWriter(userFile, true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                PrintWriter out = new PrintWriter(bw)) {
-            activeUser.beatLevel();
-            for (Profile profile : profiles) {
-                out.println(profile.getAppendVersion());
-            }
-        } catch (Exception e) {
-
-        }
-
-    }
-
     /**
      * @param primaryStage
      * @throws Exception
