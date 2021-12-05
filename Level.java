@@ -160,6 +160,26 @@ public class Level implements Serializable {
 			}catch (Exception e) {
 			    e.printStackTrace();
 			}
+			
+			try{
+			    FileInputStream readData = new FileInputStream(saveFile+"items.ser");
+			    ObjectInputStream readStream = new ObjectInputStream(readData);
+
+			    this.renderItems = (ArrayList<RenderObject>) readStream.readObject();
+			    readStream.close();
+			}catch (Exception e) {
+			    e.printStackTrace();
+			}
+			
+			try{
+			    FileInputStream readData = new FileInputStream(saveFile+"temp-tiles.ser");
+			    ObjectInputStream readStream = new ObjectInputStream(readData);
+
+			    this.renderTempTiles = (ArrayList<RenderObject>) readStream.readObject();
+			    readStream.close();
+			}catch (Exception e) {
+			    e.printStackTrace();
+			}
 		}
 		
 	
@@ -718,7 +738,7 @@ public class Level implements Serializable {
 	public static void saveArrayToFile(ArrayList<RenderObject> saveArray, String saveLocation) {
 		try{
 			
-		    FileOutputStream writeData = new FileOutputStream(saveLocation+"/rats.ser");
+		    FileOutputStream writeData = new FileOutputStream(saveLocation);
 		    ObjectOutputStream writeStream = new ObjectOutputStream(writeData);
 		    
 		    writeStream.writeObject(saveArray);
@@ -766,7 +786,9 @@ public class Level implements Serializable {
 		//go the person's active directory
 		//create a new folder with the level name, day, month, year, hour, minute, second
 		//create files for the array
-		saveArrayToFile(this.renderRats, saveDirectory);
+		saveArrayToFile(this.renderRats, saveDirectory+"/rats.ser");
+		saveArrayToFile(this.renderItems, saveDirectory+"/items.ser");
+		saveArrayToFile(this.renderTempTiles, saveDirectory+"/temp-tiles.ser");
 	
 	}
 	

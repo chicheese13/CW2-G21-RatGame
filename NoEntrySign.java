@@ -1,8 +1,6 @@
-import javafx.scene.image.Image;
 
 public class NoEntrySign extends CollideItem {
 
-	private Image noEntrySign = new Image("/items/noentrysignonlevel.png");
 
 	private final int NUMBER_OF_SIGN_FRAMES = 5;
 

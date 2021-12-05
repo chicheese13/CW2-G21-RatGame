@@ -1,9 +1,7 @@
-import javafx.scene.image.Image;
 
 public class FemaleSexChange extends CollideItem {
 	
 	
-	private Image femaleSexChange = new Image("/items/femalesexchangeronlevel.png");
 
 
 	public FemaleSexChange(Position objectPosition, Level currentLevel) {

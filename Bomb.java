@@ -1,5 +1,4 @@
 
-import javafx.scene.image.Image;
 import java.math.BigDecimal;
 
 public class Bomb extends Item {

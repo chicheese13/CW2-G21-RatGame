@@ -1,5 +1,4 @@
 import java.math.*;
-import javafx.scene.image.Image;
 
 public class GasSpread extends CollideItem {
 	

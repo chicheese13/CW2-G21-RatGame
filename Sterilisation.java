@@ -1,9 +1,7 @@
-import javafx.scene.image.Image;
 import java.math.BigDecimal;
 
 public class Sterilisation extends Item {
 	
-	private Image sterilisation = new Image("/items/sterilisationonlevel.png");
 	private int STERILE_DURATION = 200;
 	private int tickCounter = 0;
 

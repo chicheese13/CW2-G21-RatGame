@@ -1,4 +1,3 @@
-import javafx.scene.image.Image;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

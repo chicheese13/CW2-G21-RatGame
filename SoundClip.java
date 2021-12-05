@@ -1,9 +1,11 @@
 
 import java.io.File;
+import java.io.Serializable;
+
 import javax.sound.sampled.*;
 
 
-public class SoundClip {
+public class SoundClip  implements Serializable {
 	private File currentSound;
 	private final String FILE_DIRECTORY_START = "src/Sounds/";
 	private Clip playClip;
