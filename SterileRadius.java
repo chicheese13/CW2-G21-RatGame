@@ -31,8 +31,12 @@ public class SterileRadius extends CollideItem {
 
 	@Override
 	public void tick() {
+		System.out.println("STERILE CHILD");
+		System.out.println(this.sterileParent.getTick());
 		// TODO Auto-generated method stub
-		if (this.sterileParent.getTick() >= STERILE_DURATION) {
+		if (this.sterileParent.getTick() >= STERILE_DURATION-1) {
+			System.out.println("REMOVE STERILE");
+			System.out.println(currentLevel);
 			this.currentLevel.despawnTempTile(this);
 		}
 	}

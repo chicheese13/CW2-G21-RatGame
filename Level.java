@@ -165,6 +165,16 @@ public class Level implements Serializable {
 			}
 			
 			try{
+			    FileInputStream readData = new FileInputStream(saveFile+"sounds.ser");
+			    ObjectInputStream readStream = new ObjectInputStream(readData);
+
+			    this.renderSound = (ArrayList<SoundClip>) readStream.readObject();
+			    readStream.close();
+			}catch (Exception e) {
+			    e.printStackTrace();
+			}
+			
+			try{
 			    FileInputStream readData = new FileInputStream(saveFile+"item-tiles.ser");
 			    ObjectInputStream readStream = new ObjectInputStream(readData);
 
@@ -175,6 +185,8 @@ public class Level implements Serializable {
 			    	if (tempArray.get(i) instanceof GasSpread) {
 			    		this.renderTempTiles.add(tempArray.get(i));
 			    	} else if (tempArray.get(i) instanceof Explosion) {
+			    		this.renderTempTiles.add(tempArray.get(i));
+			    	} else if (tempArray.get(i) instanceof SterileRadius) {
 			    		this.renderTempTiles.add(tempArray.get(i));
 			    	} else {
 			    		this.renderItems.add(tempArray.get(i));
@@ -192,6 +204,10 @@ public class Level implements Serializable {
 			    
 			    for (int i = 0; i < renderRats.size(); i++) {
 			    	renderRats.get(i).setLevel(this);
+			    }
+			    
+			    for (int i = 0; i < renderSound.size(); i++) {
+			    	renderSound.get(i).resume();
 			    }
 			}catch (Exception e) {
 			    e.printStackTrace();
@@ -502,6 +518,7 @@ public class Level implements Serializable {
 	}
 	
 	public void despawnTempTile(RenderObject tempTile) {
+		System.out.println("REMOVE TEMP TILE FROM LEVEL");
 		for (int i = 0; i < renderTempTiles.size(); i++) {
 			if (renderTempTiles.get(i) == tempTile) {
 				renderTempTiles.remove(i);
@@ -764,6 +781,19 @@ public class Level implements Serializable {
 		}
 	}
 	
+	public static void saveSoundArray(ArrayList<SoundClip> saveArray, String saveLocation) {
+		try{
+			
+		    FileOutputStream writeData = new FileOutputStream(saveLocation);
+		    ObjectOutputStream writeStream = new ObjectOutputStream(writeData);
+		    
+		    writeStream.writeObject(saveArray);
+		    writeStream.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	
 	public void saveProgress(BigDecimal time) {
 		String userDirectory = "src/saves/"+this.currentUser.getIdentifier()+"/";
 		String levelName = "Level" + this.currentLevelNumber + "Date:";
@@ -811,8 +841,13 @@ public class Level implements Serializable {
 		//go the person's active directory
 		//create a new folder with the level name, day, month, year, hour, minute, second
 		//create files for the array
+		for (int i = 0; i < renderSound.size(); i++) {
+			renderSound.get(i).setSer();
+		}
+		
 		saveArrayToFile(tempArray, saveDirectory+"/item-tiles.ser");
 		saveArrayToFile(this.renderRats, saveDirectory+"/rats.ser");
+		saveSoundArray(this.renderSound, saveDirectory+"/sounds.ser");
 		//saveArrayToFile(this.renderItems, saveDirectory+"/items.ser");
 		//saveArrayToFile(this.renderTempTiles, saveDirectory+"/temp-tiles.ser");
 	

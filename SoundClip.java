@@ -11,6 +11,8 @@ public class SoundClip  implements Serializable {
 	private String soundName;
 	transient private Clip playClip;
 	private Level currentLevel;
+	private boolean serialized;
+	private int duration;
 	
 	public SoundClip(String fileName, Level currentLevel) {
 		//create a new file with the specified filename.
@@ -20,7 +22,6 @@ public class SoundClip  implements Serializable {
 			playClip = AudioSystem.getClip();
 			playClip.open(AudioSystem.getAudioInputStream(this.currentSound));
 			playClip.start();
-			
 			//Thread.sleep(playClip.getMicrosecondLength()/1000);
 		} catch (Exception e) {
 			System.out.println("Sound Error");
@@ -35,10 +36,27 @@ public class SoundClip  implements Serializable {
 		playClip.stop();
 	}
 	
-	public void tick() {		
-		if (playClip.getFrameLength() == playClip.getFramePosition()) {
-			System.out.print("remove self");
-			this.currentLevel.despawnSound(this);
+	public void setSer() {
+		this.serialized = true;
+		this.duration = playClip.getFramePosition();
+	}
+	
+	public void tick() {
+		if (serialized) {
+			try {
+				this.playClip = AudioSystem.getClip();
+				playClip.open(AudioSystem.getAudioInputStream(this.currentSound));
+				playClip.setFramePosition(this.duration);
+				playClip.start();
+			} catch (Exception e) {
+				
+			}
+			this.serialized = false;
+		} else { 
+			if (playClip.getFrameLength() == playClip.getFramePosition()) {
+				System.out.print("remove self");
+				this.currentLevel.despawnSound(this);
+			}
 		}
 	}
 }
