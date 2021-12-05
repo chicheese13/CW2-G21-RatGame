@@ -8,7 +8,8 @@ import javax.sound.sampled.*;
 public class SoundClip  implements Serializable {
 	private File currentSound;
 	private final String FILE_DIRECTORY_START = "src/Sounds/";
-	private Clip playClip;
+	private String soundName;
+	transient private Clip playClip;
 	private Level currentLevel;
 	
 	public SoundClip(String fileName, Level currentLevel) {

@@ -438,8 +438,6 @@ public class GameConstructor extends Application {
 	
 	
 	public void tick() {
-		System.out.println(this.currentLevel.getScore());
-		System.out.println(this.millisecondCount.divide(new BigDecimal("1000")));
 		
 		this.millisecondCount = this.millisecondCount.add(TICK_DURATION);
 		

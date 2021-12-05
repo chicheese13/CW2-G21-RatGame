@@ -30,6 +30,8 @@ public class GasSpread extends CollideItem {
 	
 	public void tick() {
 		this.tickCounter++;
+		System.out.println("CHILD GAS");
+		System.out.println(parentGas.getTick());
 		
 		if (this.parentGas.getTick() >= STOP_SPREAD_INTERVAL) {
 			

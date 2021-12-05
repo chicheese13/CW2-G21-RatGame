@@ -76,7 +76,10 @@ public class Gas extends CollideItem {
 
 	@Override
 	public void tick() {
-
+		System.out.println("GAS CHILD");
+		System.out.println(childrenGas.size());
+		System.out.println("GAS TICK");
+		System.out.println(this.tickCounter);
 		if (isWaiting) {
 			System.out.println("WAITING");
 

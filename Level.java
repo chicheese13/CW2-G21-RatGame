@@ -150,6 +150,9 @@ public class Level implements Serializable {
 			}
 		} else {
 			//spawn the rats
+			
+			ArrayList<RenderObject> tempArray = new ArrayList<RenderObject>();
+			
 			System.out.println(saveFile);
 			try{
 			    FileInputStream readData = new FileInputStream(saveFile+"rats.ser");
@@ -162,21 +165,34 @@ public class Level implements Serializable {
 			}
 			
 			try{
-			    FileInputStream readData = new FileInputStream(saveFile+"items.ser");
+			    FileInputStream readData = new FileInputStream(saveFile+"item-tiles.ser");
 			    ObjectInputStream readStream = new ObjectInputStream(readData);
 
-			    this.renderItems = (ArrayList<RenderObject>) readStream.readObject();
+			    tempArray = (ArrayList<RenderObject>) readStream.readObject();
 			    readStream.close();
-			}catch (Exception e) {
-			    e.printStackTrace();
-			}
-			
-			try{
-			    FileInputStream readData = new FileInputStream(saveFile+"temp-tiles.ser");
-			    ObjectInputStream readStream = new ObjectInputStream(readData);
-
-			    this.renderTempTiles = (ArrayList<RenderObject>) readStream.readObject();
-			    readStream.close();
+			    
+			    for (int i = 0; i < tempArray.size(); i++) {
+			    	if (tempArray.get(i) instanceof GasSpread) {
+			    		this.renderTempTiles.add(tempArray.get(i));
+			    	} else if (tempArray.get(i) instanceof Explosion) {
+			    		this.renderTempTiles.add(tempArray.get(i));
+			    	} else {
+			    		this.renderItems.add(tempArray.get(i));
+			    	}
+			    }
+			    
+			    //overwrites previous level with this level
+			    for (int i = 0; i < renderTempTiles.size(); i++) {
+			    	renderTempTiles.get(i).setLevel(this);
+			    }
+			    
+			    for (int i = 0; i < renderItems.size(); i++) {
+			    	renderItems.get(i).setLevel(this);
+			    }
+			    
+			    for (int i = 0; i < renderRats.size(); i++) {
+			    	renderRats.get(i).setLevel(this);
+			    }
 			}catch (Exception e) {
 			    e.printStackTrace();
 			}
@@ -782,13 +798,23 @@ public class Level implements Serializable {
 		//create array files
 		//saveArrayToFile(this.renderRats, saveDirectory);
 				
+		ArrayList<RenderObject> tempArray = new ArrayList<RenderObject>();
+		
+		for (int i = 0; i < renderItems.size(); i++) {
+			tempArray.add(renderItems.get(i));
+		}
+		
+		for (int i = 0; i < renderTempTiles.size(); i++) {
+			tempArray.add(renderTempTiles.get(i));
+		}
 		//System.currentTimeMillis()
 		//go the person's active directory
 		//create a new folder with the level name, day, month, year, hour, minute, second
 		//create files for the array
+		saveArrayToFile(tempArray, saveDirectory+"/item-tiles.ser");
 		saveArrayToFile(this.renderRats, saveDirectory+"/rats.ser");
-		saveArrayToFile(this.renderItems, saveDirectory+"/items.ser");
-		saveArrayToFile(this.renderTempTiles, saveDirectory+"/temp-tiles.ser");
+		//saveArrayToFile(this.renderItems, saveDirectory+"/items.ser");
+		//saveArrayToFile(this.renderTempTiles, saveDirectory+"/temp-tiles.ser");
 	
 	}
 	
