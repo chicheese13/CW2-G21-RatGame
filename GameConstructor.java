@@ -882,30 +882,31 @@ public class GameConstructor extends Application {
 		toolbar.getChildren().add(draggableBombImage);
 		bombCounter.setImage(defaultCounter);
 		toolbar.getChildren().add(bombCounter);
+		
+		
 
 		draggableBombImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				// Mark the drag as started.
-				// We do not use the transfer mode (this can be used to indicate different forms
-				// of drags operations, for example, moving files or copying files).
-				if (items.isItemDepleted("Bomb") == false) {
-					Dragboard db = draggableBombImage.startDragAndDrop(TransferMode.ANY);
-					ClipboardContent content = new ClipboardContent();
-					content.putString("Hello");
-					db.setContent(content);
+				if(!hasLost && !hasWon) {
+					// Mark the drag as started.
+					// We do not use the transfer mode (this can be used to indicate different forms
+					// of drags operations, for example, moving files or copying files).
+					if (items.isItemDepleted("Bomb") == false) {
+						Dragboard db = draggableBombImage.startDragAndDrop(TransferMode.ANY);
+						ClipboardContent content = new ClipboardContent();
+						content.putString("Hello");
+						db.setContent(content);
 
-					event.consume();
-				} else {
-
+						event.consume();
+					} 
 				}
-
+			} 
 				// We have to put some content in the clipboard of the drag event.
 				// We do not use this, but we could use it to store extra data if we wished.
 
 				// Consume the event. This means we mark it as dealt with.
-
 			}
-		});
+	);
 
 		draggableGasImage.setImage(gas);
 		toolbar.getChildren().add(draggableGasImage);
@@ -914,26 +915,26 @@ public class GameConstructor extends Application {
 
 		draggableGasImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-
-				if (items.isItemDepleted("Gas") == false) {
-					// Mark the drag as started.
-					// We do not use the transfer mode (this can be used to indicate different forms
-					// of drags operations, for example, moving files or copying files).
-					Dragboard db = draggableGasImage.startDragAndDrop(TransferMode.ANY);
-
-					// We have to put some content in the clipboard of the drag event.
-					// We do not use this, but we could use it to store extra data if we wished.
-					ClipboardContent content = new ClipboardContent();
-					content.putString("Hello");
-					db.setContent(content);
-
-					// Consume the event. This means we mark it as dealt with.
-					event.consume();
-				} else {
-
-				}
+				if(!hasLost && !hasWon) {
+					if (items.isItemDepleted("Gas") == false) {
+						// Mark the drag as started.
+						// We do not use the transfer mode (this can be used to indicate different forms
+						// of drags operations, for example, moving files or copying files).
+						Dragboard db = draggableGasImage.startDragAndDrop(TransferMode.ANY);
+	
+						// We have to put some content in the clipboard of the drag event.
+						// We do not use this, but we could use it to store extra data if we wished.
+						ClipboardContent content = new ClipboardContent();
+						content.putString("Hello");
+						db.setContent(content);
+	
+						// Consume the event. This means we mark it as dealt with.
+						event.consume();
+					}
+					}
+				}	
 			}
-		});
+		);
 
 		draggablePoisonImage.setImage(poison);
 		toolbar.getChildren().add(draggablePoisonImage);
@@ -942,7 +943,7 @@ public class GameConstructor extends Application {
 
 		draggablePoisonImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-
+				if(!hasLost && !hasWon) {
 				if (items.isItemDepleted("Poison") == false) {
 					// Mark the drag as started.
 					// We do not use the transfer mode (this can be used to indicate different forms
@@ -957,11 +958,11 @@ public class GameConstructor extends Application {
 
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
-				} else {
-
+					}
+				   }
 				}
 			}
-		});
+		);
 
 		canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -971,15 +972,15 @@ public class GameConstructor extends Application {
 					int x = (int) (Math.floor((event.getSceneX()) / 50)) + currentLevel.getOffsetX();
 					int y = (int) (Math.floor((event.getSceneY()) / 50)) + currentLevel.getOffsetY();
 
-					for (int i = QUIT_GAME_BUTTON_X; i < QUIT_GAME_BUTTON_X + QUIT_GAME_BUTTON_WIDTH; i++) {
-						if (x == i && y == QUIT_GAME_BUTTON_Y) {
+					for (int i = QUIT_GAME_BUTTON_X + currentLevel.getOffsetX(); i < (QUIT_GAME_BUTTON_X + currentLevel.getOffsetX() + QUIT_GAME_BUTTON_WIDTH); i++) {
+						if (x == i && y == QUIT_GAME_BUTTON_Y + currentLevel.getOffsetY()) {
 							// method for button click for quit;
 							gameStage.close();
 						}
 					}
 
-					for (int i = SAVE_GAME_BUTTON_X; i < SAVE_GAME_BUTTON_X + SAVE_GAME_BUTTON_WIDTH; i++) {
-						if (x == i && y == SAVE_GAME_BUTTON_Y) {
+					for (int i = SAVE_GAME_BUTTON_X + currentLevel.getOffsetX(); i < SAVE_GAME_BUTTON_X + currentLevel.getOffsetX() + SAVE_GAME_BUTTON_WIDTH; i++) {
+						if (x == i && y == SAVE_GAME_BUTTON_Y + currentLevel.getOffsetY()) {
 							// method for button click for quit;
 							// save code here
 							System.out.println("SAVEEEEE");
@@ -1004,15 +1005,15 @@ public class GameConstructor extends Application {
 					boolean isQuitHoverSave = false;
 					boolean isSaveHoverQuit = false;
 
-					for (int i = QUIT_GAME_BUTTON_X; i < QUIT_GAME_BUTTON_X + QUIT_GAME_BUTTON_WIDTH; i++) {
-						if (x == i && y == QUIT_GAME_BUTTON_Y) {
+					for (int i = QUIT_GAME_BUTTON_X + currentLevel.getOffsetX(); i < QUIT_GAME_BUTTON_X + currentLevel.getOffsetX() + QUIT_GAME_BUTTON_WIDTH; i++) {
+						if (x == i && y == QUIT_GAME_BUTTON_Y + currentLevel.getOffsetY()) {
 							// method for button click;
 							isQuitHoverSave = true;
 						}
 					}
 
-					for (int i = SAVE_GAME_BUTTON_X; i < SAVE_GAME_BUTTON_X + SAVE_GAME_BUTTON_WIDTH; i++) {
-						if (x == i && y == SAVE_GAME_BUTTON_Y) {
+					for (int i = SAVE_GAME_BUTTON_X + currentLevel.getOffsetX(); i < SAVE_GAME_BUTTON_X + currentLevel.getOffsetX() + SAVE_GAME_BUTTON_WIDTH; i++) {
+						if (x == i && y == SAVE_GAME_BUTTON_Y + currentLevel.getOffsetY()) {
 							// method for button click;
 							isSaveHoverQuit = true;
 						}
@@ -1044,24 +1045,24 @@ public class GameConstructor extends Application {
 		toolbar.getChildren().add(signCounter);
 
 		draggableSignImage.setOnDragDetected(new EventHandler<MouseEvent>() {
+		
 			public void handle(MouseEvent event) {
-
-				if (items.isItemDepleted("NoEntrySign") == false) {
-					// Mark the drag as started.
-					// We do not use the transfer mode (this can be used to indicate different forms
-					// of drags operations, for example, moving files or copying files).
-					Dragboard db = draggableSignImage.startDragAndDrop(TransferMode.ANY);
-
-					// We have to put some content in the clipboard of the drag event.
-					// We do not use this, but we could use it to store extra data if we wished.
-					ClipboardContent content = new ClipboardContent();
-					content.putString("Hello");
-					db.setContent(content);
-
-					// Consume the event. This means we mark it as dealt with.
-					event.consume();
-				} else {
-
+				if(!hasLost && !hasWon) {
+					if (items.isItemDepleted("NoEntrySign") == false) {
+						// Mark the drag as started.
+						// We do not use the transfer mode (this can be used to indicate different forms
+						// of drags operations, for example, moving files or copying files).
+						Dragboard db = draggableSignImage.startDragAndDrop(TransferMode.ANY);
+	
+						// We have to put some content in the clipboard of the drag event.
+						// We do not use this, but we could use it to store extra data if we wished.
+						ClipboardContent content = new ClipboardContent();
+						content.putString("Hello");
+						db.setContent(content);
+	
+						// Consume the event. This means we mark it as dealt with.
+						event.consume();
+					}	
 				}
 			}
 		});
@@ -1073,7 +1074,7 @@ public class GameConstructor extends Application {
 
 		draggableDeathRatImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-
+				if(!hasLost && !hasWon) {
 				if (items.isItemDepleted("DeathRat") == false) {
 					// Mark the drag as started.
 					// We do not use the transfer mode (this can be used to indicate different forms
@@ -1088,8 +1089,7 @@ public class GameConstructor extends Application {
 
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
-				} else {
-
+					}
 				}
 			}
 		});
@@ -1101,7 +1101,7 @@ public class GameConstructor extends Application {
 
 		draggableFemaleSexChangerImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-
+				if(!hasLost && !hasWon) {
 				if (items.isItemDepleted("FGenderChange") == false) {
 					// Mark the drag as started.
 					// We do not use the transfer mode (this can be used to indicate different forms
@@ -1116,8 +1116,7 @@ public class GameConstructor extends Application {
 
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
-				} else {
-
+					}
 				}
 			}
 		});
@@ -1129,7 +1128,7 @@ public class GameConstructor extends Application {
 
 		draggableMaleSexChangerImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-
+				if(!hasLost && !hasWon) {
 				if (items.isItemDepleted("MGenderChange") == false) {
 					// Mark the drag as started.
 					// We do not use the transfer mode (this can be used to indicate different forms
@@ -1144,7 +1143,7 @@ public class GameConstructor extends Application {
 
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
-				} else {
+				} 
 
 				}
 			}
@@ -1157,7 +1156,7 @@ public class GameConstructor extends Application {
 
 		draggableSterilisationImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-
+				if(!hasLost && !hasWon) {
 				if (items.isItemDepleted("Sterilisation") == false) {
 					// Mark the drag as started.
 					// We do not use the transfer mode (this can be used to indicate different forms
@@ -1172,7 +1171,7 @@ public class GameConstructor extends Application {
 
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
-				} else {
+				} 
 
 				}
 			}
