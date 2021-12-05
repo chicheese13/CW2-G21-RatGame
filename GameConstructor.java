@@ -288,7 +288,7 @@ public class GameConstructor extends Application {
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
 		// pausedBG
-
+		
 		// we need to draw the game
 
 		for (int y = 0; y < (CANVAS_HEIGHT / GRID_CELL_WIDTH); y++) {
@@ -332,7 +332,42 @@ public class GameConstructor extends Application {
 		if (showAvailableTile) {
 			gc.drawImage(availSprite, focusTileX * GRID_CELL_WIDTH, focusTileY * GRID_CELL_HEIGHT);
 		}
-
+		
+		//RAT COUNTER
+		
+		gc.fillRect(0,0,120,150);
+		//Set font colour
+		gc.setFill(Color.BLUE);
+		
+		int maleCount = 0;
+		int femaleCount = 0;
+		int totalCount;
+		
+		//Find the number of male rats
+		for(int i = 0; i < currentLevel.getRats().size();i++) {
+			if ((currentLevel.getRats().get(i) instanceof NormalRat) && ((NormalRat) currentLevel.getRats().get(i)).getRatGender()) {
+				maleCount++;
+			}
+		}
+		
+		//Find the number of female rats
+		for(int i = 0; i < currentLevel.getRats().size();i++) {
+			if ((currentLevel.getRats().get(i) instanceof NormalRat) && (((NormalRat) currentLevel.getRats().get(i)).getRatGender()) == false) {
+				femaleCount++;
+			}
+		}
+		
+		
+		
+		//Find the total number of rats
+		totalCount = maleCount+femaleCount;
+		
+		//draw the counters
+		gc.fillText("Total "+totalCount,0,10);
+		gc.fillText("Male Rat "+maleCount,0,50);
+		gc.fillText("Female Rat "+femaleCount,0,100);
+		gc.fillText("No. Rats to lose "+ currentLevel.getMaxRats(),0,150);
+		
 		// show win screen
 		if (this.hasWon) {
 			//gc.drawImage(gameWonScreen, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
@@ -778,12 +813,12 @@ public class GameConstructor extends Application {
 		// We store this as a gloabl variable so other methods can access it.
 		canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 		root.setCenter(canvas);
-
+		
 		HBox toolbar = new HBox();
 		toolbar.setSpacing(2);
 		toolbar.setPadding(new Insets(10, 10, 10, 10));
 		root.setBottom(toolbar);
-
+		
 		draggableBombImage.setImage(bomb);
 		toolbar.getChildren().add(draggableBombImage);
 		bombCounter.setImage(defaultCounter);
@@ -1100,13 +1135,9 @@ public class GameConstructor extends Application {
 
 				showAvailableTile = true;
 
-				if (currentLevel.isPlacable(x, y) && event.getGestureSource() != draggableSignImage 
-					&& event.getGestureSource() != draggableFemaleSexChangerImage
-					&& event.getGestureSource() != draggableMaleSexChangerImage) {
+				if (currentLevel.isPlacable(x, y) && event.getGestureSource() != draggableSignImage) {
 
 					availSprite = availableSprite;
-					
-					System.out.println("ITEM PLACE");
 
 					if (event.getGestureSource() == draggableBombImage) {
 						// Mark the drag event as acceptable by the canvas.
@@ -1145,13 +1176,6 @@ public class GameConstructor extends Application {
 						// Consume the event. This means we mark it as dealt with.
 						event.consume();
 					}
-				} else if (event.getGestureSource() == draggableFemaleSexChangerImage && currentLevel.isPlaceableSChange(x, y)
-						|| event.getGestureSource() == draggableMaleSexChangerImage && currentLevel.isPlaceableSChange(x, y)) {
-					availSprite = availableSprite;
-					// Mark the drag event as acceptable by the canvas.
-					event.acceptTransferModes(TransferMode.ANY);
-					// Consume the event. This means we mark it as dealt with.
-					event.consume();
 				} else if (event.getGestureSource() == draggableSignImage && currentLevel.isPlaceableSign(x, y)) {
 					availSprite = availableSprite;
 					// Mark the drag event as acceptable by the canvas.
@@ -1161,7 +1185,6 @@ public class GameConstructor extends Application {
 				} else {
 					availSprite = unavailableSprite;
 				}
-				
 			}
 		});
 
@@ -1214,8 +1237,9 @@ public class GameConstructor extends Application {
 					event.consume();
 				}
 			}
+			
 		});
-
+	
 		// Finally, return the border pane we built up.
 		return root;
 	}
