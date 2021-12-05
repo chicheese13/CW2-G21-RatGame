@@ -72,7 +72,37 @@ public class Profile implements Serializable{
     public String getAppendVersion() {
         return playerName + " " + unlockedTo + " " + this.userIdentifier;
     }
+    
+    public void setLevel() {
+    	
+    }
 
+    public void setLevel(int profileID, int newLevel) {
+    	//set the level
+    	
+    	//output to file
+    	ArrayList<Profile> tempProfiles = new ArrayList<>();
+        try {
+            Scanner in = new Scanner(userFile);
+            while (in.hasNextLine()) {
+                String text = in.nextLine();
+                String[] details = text.split(" ");                    
+                Profile profile = new Profile(details[0], Integer.parseInt(details[1]), Integer.parseInt(details[2]));
+                tempProfiles.add(profile);
+            }
+            in.close();
+        } catch (Exception e) {
+            System.exit(0);
+        }
+        
+        for (int i = 0; i < tempProfiles.size(); i++) {
+        	if (tempProfiles.get(i).getIdentifier() == profileID) {
+        		tempProfiles.get(i).
+        	}
+        }
+        
+    }
+    
     /**
      * @return String
      */

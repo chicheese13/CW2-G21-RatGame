@@ -336,7 +336,6 @@ public class RatGameApp extends Application {
             activeUser = cd.getSelectedItem();
             cd.hide();
         }
-        beatLevel();
 
     }
 
@@ -441,21 +440,6 @@ public class RatGameApp extends Application {
             new FileWriter(userFile, false).close();
         } catch (Exception e) { // TODO: handle exception
         }
-    }
-
-    public static void beatLevel() {
-        clearFile();
-        try (FileWriter fw = new FileWriter(userFile, true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                PrintWriter out = new PrintWriter(bw)) {
-            activeUser.beatLevel();
-            for (Profile profile : profiles) {
-                out.println(profile.getAppendVersion());
-            }
-        } catch (Exception e) {
-
-        }
-
     }
 
     /**
