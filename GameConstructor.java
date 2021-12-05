@@ -140,12 +140,20 @@ public class GameConstructor extends Application {
 	private Image saveGameButton = new Image("/Textures/save-button.png");
 	private Image saveGameButtonHover = new Image("/Textures/save-button-hover.png");
 
+	private Image losing0 = new Image("/losing_the_game/losing0.png");
+	private Image losing1 = new Image("/losing_the_game/losing1.png");
+	private Image losing2 = new Image("/losing_the_game/losing2.png");
+
+	private Image winning0 = new Image("/winning_the_game/winning0.png");
+	private Image winning1 = new Image("/winning_the_game/winning1.png");
+	private Image winning2 = new Image("/winning_the_game/winning2.png");
+
 	private Image availSprite;
 	private Image availableSprite = new Image("Textures/available.png");
 	private Image unavailableSprite = new Image("Textures/unavailable.png");
 	private int focusTileX;
 	private int focusTileY;
-	
+
 	private Image blackBackground = new Image("Textures/black.png");
 
 	private Image gameWonScreen = new Image("Textures/game-won.png");
@@ -231,8 +239,30 @@ public class GameConstructor extends Application {
 			this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt", "", this.items, currentUser,
 					currentLevelNumber);
 		}
+		
+		//Create leaderboard file if one doesn't already exist.
+		
+		boolean check = new File("src/Scores/"+this.currentLevelNumber+".txt").exists();
+		
+		if(!check) {
+			String fileData = "";
+			Scanner in = null;
+			
+				PrintWriter leaderboardWriter;
+				try {
+					leaderboardWriter = new PrintWriter("src/Scores/"+this.currentLevelNumber+".txt");
+					for (int i = 0; i < 9; i++) {
+						leaderboardWriter.println("Test 5,");
+					}
+					leaderboardWriter.close();
+				} catch (FileNotFoundException e) {
+					
+				}
 
-	}
+		}
+		}
+		
+	
 
 	public void startGame() {
 		this.start(gameStage);
@@ -279,7 +309,7 @@ public class GameConstructor extends Application {
 	 * Draw the game on the canvas. This creates a frame, with all the tiles, items
 	 * and rats.
 	 */
-	
+
 	public void drawGame() {
 
 		GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -288,7 +318,7 @@ public class GameConstructor extends Application {
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
 		// pausedBG
-		
+
 		// we need to draw the game
 
 		for (int y = 0; y < (CANVAS_HEIGHT / GRID_CELL_WIDTH); y++) {
@@ -332,100 +362,110 @@ public class GameConstructor extends Application {
 		if (showAvailableTile) {
 			gc.drawImage(availSprite, focusTileX * GRID_CELL_WIDTH, focusTileY * GRID_CELL_HEIGHT);
 		}
-		
-		//RAT COUNTER
-		
-		gc.fillRect(0,0,120,150);
-		//Set font colour
+
+		// RAT COUNTER
+
+		gc.fillRect(0, 0, 120, 150);
+		// Set font colour
 		gc.setFill(Color.BLUE);
-		
+
 		int maleCount = 0;
 		int femaleCount = 0;
 		int totalCount;
-		
-		//Find the number of male rats
-		for(int i = 0; i < currentLevel.getRats().size();i++) {
-			if ((currentLevel.getRats().get(i) instanceof NormalRat) && ((NormalRat) currentLevel.getRats().get(i)).getRatGender()) {
+
+		// Find the number of male rats
+		for (int i = 0; i < currentLevel.getRats().size(); i++) {
+			if ((currentLevel.getRats().get(i) instanceof NormalRat)
+					&& ((NormalRat) currentLevel.getRats().get(i)).getRatGender()) {
 				maleCount++;
 			}
 		}
-		
-		//Find the number of female rats
-		for(int i = 0; i < currentLevel.getRats().size();i++) {
-			if ((currentLevel.getRats().get(i) instanceof NormalRat) && (((NormalRat) currentLevel.getRats().get(i)).getRatGender()) == false) {
+
+		// Find the number of female rats
+		for (int i = 0; i < currentLevel.getRats().size(); i++) {
+			if ((currentLevel.getRats().get(i) instanceof NormalRat)
+					&& (((NormalRat) currentLevel.getRats().get(i)).getRatGender()) == false) {
 				femaleCount++;
 			}
 		}
-		
-		
-		
-		//Find the total number of rats
-		totalCount = maleCount+femaleCount;
-		
-		//draw the counters
-		gc.fillText("Total "+totalCount,0,10);
-		gc.fillText("Male Rat "+maleCount,0,50);
-		gc.fillText("Female Rat "+femaleCount,0,100);
-		gc.fillText("No. Rats to lose "+ currentLevel.getMaxRats(),0,150);
-		
+
+		// Find the total number of rats
+		totalCount = maleCount + femaleCount;
+
+		if (currentLevel.getMaxRats() * 0.6 < totalCount && currentLevel.getMaxRats() * 0.75 > totalCount) {
+			gc.drawImage(losing0, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+		} else if (currentLevel.getMaxRats() * 0.75 < totalCount && currentLevel.getMaxRats() * 0.9 > totalCount) {
+			gc.drawImage(losing1, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+		} else if (currentLevel.getMaxRats() * 0.9 < totalCount) {
+			gc.drawImage(losing2, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+		} else if (currentLevel.getMaxRats() * 0.2 > totalCount && currentLevel.getMaxRats() * 0.1 < totalCount) {
+			gc.drawImage(winning0, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+		} else if (currentLevel.getMaxRats() * 0.1 > totalCount && currentLevel.getMaxRats() * 0.05 < totalCount) {
+			gc.drawImage(winning1, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+		} else if (currentLevel.getMaxRats() * 0.05 > totalCount) {
+			gc.drawImage(winning2, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+		}
+
+		// draw the counters
+		gc.fillText("Total " + totalCount, 0, 10);
+		gc.fillText("Male Rat " + maleCount, 0, 50);
+		gc.fillText("Female Rat " + femaleCount, 0, 100);
+		gc.fillText("No. Rats to lose " + currentLevel.getMaxRats(), 0, 150);
+
 		// show win screen
 		if (this.hasWon) {
-			//gc.drawImage(gameWonScreen, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+			// gc.drawImage(gameWonScreen, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
 			gc.drawImage(blackBackground, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
-			
+
 			testLead getLeaderboad = new testLead(this.currentLevelNumber);
 			getLeaderboad.addScore(this.currentUser.getName(), this.currentLevel.getScore());
-			
-			
-			//read in the file
-			String fileName = "src/scores/"+this.currentLevelNumber+".txt";
+
+			// read in the file
+			String fileName = "src/scores/" + this.currentLevelNumber + ".txt";
 			String fileData = "";
 			File leaderboard = new File(fileName);
 			Scanner in = null;
-			
+
 			try {
 				in = new Scanner(leaderboard);
-			} catch(Exception e) {
+			} catch (Exception e) {
 				System.out.print("EERORO");
+				
 			}
-			
+
 			while (in.hasNextLine()) {
 				fileData = fileData + in.nextLine();
 			}
-			
+
 			String[] dataArray = fileData.split(",");
-			
+
 			int y = 1;
 			for (int i = 0; i < dataArray.length; i++) {
 				String output = dataArray[i].split(" ")[0] + "           " + dataArray[i].split(" ")[1];
 				int x = 6;
-				if (Integer.parseInt(dataArray[i].split(" ")[1])!=-1) {
+				if (Integer.parseInt(dataArray[i].split(" ")[1]) != -1) {
 					y++;
 					gc.fillText(output, x * GRID_CELL_WIDTH, y * GRID_CELL_WIDTH);
 				}
 			}
-			
-		
-			
+
 		}
 
 		// show lose screen
 		if (this.hasLost) {
 			gc.drawImage(gameLostScreen, 0 * GRID_CELL_WIDTH, 0 * GRID_CELL_HEIGHT);
+
 			/*
-			outerBox.getChildren().add(new Text("Leaderboard"));
-			outerBox.getChildren().add(LBhBox);
-			PriorityQueue<LeaderboardElement> top10 = currentLeaderboard.run(currentUser.getName(),
-					this.currentLevel.getScore());
-			LBhBox.getChildren().add(LBvBoxLeft);
-			for (int i = 0; i < 5 && !top10.isEmpty(); i++) {
-				LBvBoxLeft.getChildren().add(new Row(top10.poll().toString()));
-			}
-			LBhBox.getChildren().add(LBvBoxRight);
-			while (!top10.isEmpty()) {
-				LBvBoxRight.getChildren().add(new Row(top10.poll().toString()));
-			}
-			*/
+			 * outerBox.getChildren().add(new Text("Leaderboard"));
+			 * outerBox.getChildren().add(LBhBox); PriorityQueue<LeaderboardElement> top10 =
+			 * currentLeaderboard.run(currentUser.getName(), this.currentLevel.getScore());
+			 * LBhBox.getChildren().add(LBvBoxLeft); for (int i = 0; i < 5 &&
+			 * !top10.isEmpty(); i++) { LBvBoxLeft.getChildren().add(new
+			 * Row(top10.poll().toString())); } LBhBox.getChildren().add(LBvBoxRight); while
+			 * (!top10.isEmpty()) { LBvBoxRight.getChildren().add(new
+			 * Row(top10.poll().toString())); }
+			 */
+
 		}
 
 		if (isPaused) {
@@ -447,47 +487,48 @@ public class GameConstructor extends Application {
 			}
 
 		}
-		
-		//gc.fillText("Text centered on your Canvas", 10 * GRID_CELL_HEIGHT , 10 * GRID_CELL_HEIGHT);
+
+		// gc.fillText("Text centered on your Canvas", 10 * GRID_CELL_HEIGHT , 10 *
+		// GRID_CELL_HEIGHT);
 	}
 
 	public void processKeyEvent(KeyEvent event) {
 		// We change the behaviour depending on the actual key that was pressed.
 		switch (event.getCode()) {
-			case RIGHT:
-				// Right key was pressed. So move the player right by one cell.
-				if (currentLevel.getOffsetX() < (currentLevel.getRenderTiles()[0].length)
-						- (CANVAS_WIDTH / GRID_CELL_WIDTH)) {
-					currentLevel.setOffsetX(currentLevel.getOffsetX() + 1);
-				}
-				break;
-			case UP:
-				if (currentLevel.getOffsetY() > 0) {
-					currentLevel.setOffsetY(currentLevel.getOffsetY() - 1);
-				}
-				break;
-			case DOWN:
-				if (currentLevel.getOffsetY() < (currentLevel.getRenderTiles().length)
-						- (CANVAS_HEIGHT / GRID_CELL_HEIGHT)) {
-					currentLevel.setOffsetY(currentLevel.getOffsetY() + 1);
-					;
-				}
-				break;
-			case LEFT:
-				if (currentLevel.getOffsetX() > 0) {
-					currentLevel.setOffsetX(currentLevel.getOffsetX() - 1);
-				}
-				break;
-			case ESCAPE:
-				String gameStatus = currentLevel.getGameStatus();
-				if (gameStatus == "inprogress") {
-					togglePause();
-					System.out.println("ESCAPE PRESSED");
-				}
-				break;
-			default:
-				// Do nothing for all other keys.
-				break;
+		case RIGHT:
+			// Right key was pressed. So move the player right by one cell.
+			if (currentLevel.getOffsetX() < (currentLevel.getRenderTiles()[0].length)
+					- (CANVAS_WIDTH / GRID_CELL_WIDTH)) {
+				currentLevel.setOffsetX(currentLevel.getOffsetX() + 1);
+			}
+			break;
+		case UP:
+			if (currentLevel.getOffsetY() > 0) {
+				currentLevel.setOffsetY(currentLevel.getOffsetY() - 1);
+			}
+			break;
+		case DOWN:
+			if (currentLevel.getOffsetY() < (currentLevel.getRenderTiles().length)
+					- (CANVAS_HEIGHT / GRID_CELL_HEIGHT)) {
+				currentLevel.setOffsetY(currentLevel.getOffsetY() + 1);
+				;
+			}
+			break;
+		case LEFT:
+			if (currentLevel.getOffsetX() > 0) {
+				currentLevel.setOffsetX(currentLevel.getOffsetX() - 1);
+			}
+			break;
+		case ESCAPE:
+			String gameStatus = currentLevel.getGameStatus();
+			if (gameStatus == "inprogress") {
+				togglePause();
+				System.out.println("ESCAPE PRESSED");
+			}
+			break;
+		default:
+			// Do nothing for all other keys.
+			break;
 		}
 
 		// Redraw game as the player may have moved.
@@ -533,7 +574,7 @@ public class GameConstructor extends Application {
 	}
 
 	public void tick() {
-	
+
 		this.millisecondCount = this.millisecondCount.add(TICK_DURATION);
 
 		String gameStatus = currentLevel.getGameStatus();
@@ -553,7 +594,7 @@ public class GameConstructor extends Application {
 			calculateTimePoints();
 			this.tickTimeline.stop();
 			this.hasWon = true;
-			
+
 			drawGame();
 		} else if (gameStatus == "lost") {
 			// this.currentLeaderboard.run(this.currentUser.getName(),
@@ -813,12 +854,12 @@ public class GameConstructor extends Application {
 		// We store this as a gloabl variable so other methods can access it.
 		canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 		root.setCenter(canvas);
-		
+
 		HBox toolbar = new HBox();
 		toolbar.setSpacing(2);
 		toolbar.setPadding(new Insets(10, 10, 10, 10));
 		root.setBottom(toolbar);
-		
+
 		draggableBombImage.setImage(bomb);
 		toolbar.getChildren().add(draggableBombImage);
 		bombCounter.setImage(defaultCounter);
@@ -1237,9 +1278,9 @@ public class GameConstructor extends Application {
 					event.consume();
 				}
 			}
-			
+
 		});
-	
+
 		// Finally, return the border pane we built up.
 		return root;
 	}
