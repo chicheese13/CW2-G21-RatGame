@@ -131,14 +131,14 @@ public abstract class Rat extends RenderObject {
 
 	/**
 	 * A method which handles the movement of a rat, it calls the path finding
-	 * method and increment the rat's current position by it's speed in the
+	 * method and incriment the rat's current position by it's speed in the
 	 * direction it's currently facing.
 	 */
 	protected void movement() {
 		// calls the path finding method to set the current rat direction
 		// facing.
 		pathFinding();
-		// check the direction the rat is facing and increment position based on
+		// check the direction the rat is facing and incriment position based on
 		// that.
 		// also change the rat sprite based on direction.
 		if (this.directionFacing == 'N') {
