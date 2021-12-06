@@ -1185,7 +1185,7 @@ public class Level implements Serializable {
 				if (xCollide == true && yCollide == true) {
 					if (renderItems.get(i2) instanceof Gas && (renderTempTiles.get(i) instanceof GasSpread) == false) {
 							//dissipate the gas.
-						((Gas) renderItems.get(i2)).instantDissapate();
+						((Gas) renderItems.get(i2)).instantDissipate();
 					
 					} else if ((renderItems.get(i2) instanceof Gas) == false && (renderItems.get(i2) instanceof Sterilisation) == false  && (renderTempTiles.get(i) instanceof Explosion) == true) {
 						this.despawnItem(((RenderObject) renderItems.get(i2)));
