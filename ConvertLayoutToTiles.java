@@ -4,10 +4,8 @@ import java.math.*;
 public class ConvertLayoutToTiles {
 	private RenderTile[][] tiles;
 
-	// ArrayList<String> cars = new ArrayList<String>();
-
-	private ArrayList<RenderTile> afterTiles = new ArrayList<RenderTile>();
-	private ArrayList<Position> afterTilesPositon = new ArrayList<Position>();
+	private ArrayList<RenderTile> afterTiles = new ArrayList<>();
+	private ArrayList<Position> afterTilesPositon = new ArrayList<>();
 
 	public ConvertLayoutToTiles(char[][] tiles) {
 		this.tiles = convertTiles(tiles);
@@ -58,60 +56,44 @@ public class ConvertLayoutToTiles {
 				// check the surrounding tiles.
 				if (tileArray[y][x] == 'P') {
 					// check top
-					if (y > 1) {
-						if (tileArray[y - 1][x] == 'T'
-								|| tileArray[y - 1][x] == 'P') {
-							isTop = true;
-						}
+					if (y > 1 && (tileArray[y - 1][x] == 'T'
+							|| tileArray[y - 1][x] == 'P')) {
+						isTop = true;
 					}
 					// check left
-					if (x > 0) {
-						if (tileArray[y][x - 1] == 'T'
-								|| tileArray[y][x - 1] == 'P') {
-							isLeft = true;
-						}
+					if (x > 0 && (tileArray[y][x - 1] == 'T'
+							|| tileArray[y][x - 1] == 'P')) {
+						isLeft = true;
 					}
 					// check right
-					if (x < tileArray[y].length - 1) {
-						if (tileArray[y][x + 1] == 'T'
-								|| tileArray[y][x + 1] == 'P') {
-							isRight = true;
-						}
+					if (x < tileArray[y].length - 1 && (tileArray[y][x + 1] == 'T'
+							|| tileArray[y][x + 1] == 'P')) {
+
+						isRight = true;
 					}
 
-					if (y < tileArray.length - 1) {
-						if (tileArray[y + 1][x] == 'T'
-								|| tileArray[y + 1][x] == 'P') {
-							isBottom = true;
-						}
+					if (y < tileArray.length - 1 && (tileArray[y + 1][x] == 'T'
+							|| tileArray[y + 1][x] == 'P')) {
+						isBottom = true;
 					}
 				}
 
 				// tunnels have special rendering.
 				if (tileArray[y][x] == 'T') {
 					// check the top, left and right to see if its tunnel.
-					if (y > 1) {
-						if (tileArray[y - 1][x] == 'T') {
-							isTop = true;
-						}
+					if (y > 1 && (tileArray[y - 1][x] == 'T')) {
+						isTop = true;
 					}
 					// check left
-					if (x > 0) {
-						if (tileArray[y][x - 1] == 'T') {
-							isLeft = true;
-						}
+					if (x > 0 && (tileArray[y][x - 1] == 'T')) {
+						isLeft = true;
 					}
 					// check right
-					if (x < tileArray[y].length - 1) {
-						if (tileArray[y][x + 1] == 'T') {
-							isRight = true;
-						}
+					if (x < tileArray[y].length - 1 && (tileArray[y][x + 1] == 'T')) {
+						isRight = true;
 					}
-
-					if (y < tileArray.length - 1) {
-						if (tileArray[y + 1][x] == 'T') {
-							isBottom = true;
-						}
+					if (y < tileArray.length - 1 && (tileArray[y + 1][x] == 'T')) {
+						isBottom = true;
 					}
 				}
 
@@ -124,7 +106,6 @@ public class ConvertLayoutToTiles {
 					String right = "right";
 					String top = "top";
 					String bottom = "bottom";
-					// String dash = '-';
 
 					// top, bottom, left, right, .png
 					if (isTop) {
@@ -157,7 +138,6 @@ public class ConvertLayoutToTiles {
 			}
 		}
 		return returnArray;
-		// return returnArray;
 	}
 
 	public ArrayList<RenderTile> getAfterList() {

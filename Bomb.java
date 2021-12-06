@@ -15,7 +15,7 @@ public class Bomb extends RenderObject {
 	/**
 	 * String holding the name of the sprite for the bomb
 	 */
-	private String bomb = "bomb";
+	private String bombstr = "bomb";
 
 	/**
 	 * Attributes helping with animation of the bomb
@@ -45,7 +45,7 @@ public class Bomb extends RenderObject {
 	 * @param currentLevel
 	 */
 	public Bomb(Position objectPosition, Level currentLevel) {
-		this.renderSprite = bomb;
+		this.renderSprite = bombstr;
 		this.objectPosition = objectPosition;
 		this.currentLevel = currentLevel;
 	}
@@ -65,8 +65,7 @@ public class Bomb extends RenderObject {
 	 */
 
 	private String loadImage(int pictureNumber) {
-		String bomb = "bomb" + String.valueOf(pictureNumber);
-		return bomb;
+		return bombstr + String.valueOf(pictureNumber);
 	}
 
 	/**
@@ -76,9 +75,8 @@ public class Bomb extends RenderObject {
 	 * @return name of the next animation
 	 */
 	private String loadDelayImage(int delayedPictureNumber) {
-		String delayBomb = "bomb-delayed"
-				+ String.valueOf(delayedPictureNumber);
-		return delayBomb;
+		return "bomb-delayed"
+				+ delayedPictureNumber;
 	}
 
 	/**
@@ -86,7 +84,7 @@ public class Bomb extends RenderObject {
 	 */
 	public void tick() {
 
-		if (timerStarted == false) {
+		if (!timerStarted) {
 			if (delayCount == 0) {
 				this.currentLevel.spawnSound("BombBackground");
 			}
@@ -185,6 +183,7 @@ public class Bomb extends RenderObject {
 	/**
 	 * Method for passing the name of the image
 	 */
+	@Override
 	public String getSprite() {
 		return this.renderSprite;
 	}
