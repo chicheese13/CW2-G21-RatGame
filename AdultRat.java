@@ -81,13 +81,13 @@ public class AdultRat extends NormalRat {
     /**
      * Creates an adult rat
      * 
-     * @param position Position to spawn rat at
-     * @param gender Gender of rat
-     * @param sterile Whether or not the rat is sterile
-     * @param ratHealth Health of rat
-     * @param currentLevel the current level in which the rat is in.
+     * @param position        Position to spawn rat at
+     * @param gender          Gender of rat
+     * @param sterile         Whether or not the rat is sterile
+     * @param ratHealth       Health of rat
+     * @param currentLevel    the current level in which the rat is in.
      * @param directionFacing the direction in which the rat is facing at
-     * anytime.
+     *                        anytime.
      */
     public AdultRat(Position position, boolean gender, boolean sterile,
             double ratHealth, char direction, Level currentLevel) {
@@ -111,7 +111,7 @@ public class AdultRat extends NormalRat {
             this.ratSpriteWest = ADULT_MALE_RAT_SPRITE_WEST;
         } else {
             this.cooldown = DEFAULT_COOLDOWN_VALUE_FEMALE;
-            // this.renderSprite = ADULT_FEMALE_RAT_SPRITE;
+
             this.renderSprite = ADULT_FEMALE_RAT_SPRITE_EAST;
             this.ratSpriteNorth = ADULT_FEMALE_RAT_SPRITE_NORTH;
             this.ratSpriteEast = ADULT_FEMALE_RAT_SPRITE_EAST;
@@ -191,14 +191,11 @@ public class AdultRat extends NormalRat {
      * @param rat to check
      */
     public boolean isMatabale(AdultRat check) {
-        if (check.getSterile() == false && check.getPregnant() == false
-                && check.getMatingCooldown() == false
-                && this.matingCooldown == false && this.isPregnant == false
-                && this.ratSterile == false
-                && this.ratGender != check.getRatGender()) {
-            return true;
-        }
-        return false;
+        return (!check.getSterile() && !check.getPregnant()
+                && !check.getMatingCooldown()
+                && !this.matingCooldown && !this.isPregnant
+                && !this.ratSterile
+                && this.ratGender != check.getRatGender());
     }
 
     /**
@@ -220,7 +217,7 @@ public class AdultRat extends NormalRat {
                             RoundingMode.HALF_UP),
                     (this.getObjectPosition()[1]).setScale(0,
                             RoundingMode.HALF_UP));
-            if (this.ratGender == false) {
+            if (!this.ratGender) {
                 this.becomePregnant();
 
                 collidedRat.setRatWait(true);
@@ -251,10 +248,10 @@ public class AdultRat extends NormalRat {
      * false. Update the sprites.
      */
     public void mateCooldown() {
-        if (this.matingCooldown == true && this.cooldown > 0) {
+        if (this.matingCooldown && this.cooldown > 0) {
             this.cooldown--;
-        } else if (this.matingCooldown == true) {
-            if (this.ratGender == false) {
+        } else if (this.matingCooldown) {
+            if (!this.ratGender) {
                 this.ratSpriteNorth = ADULT_FEMALE_RAT_SPRITE_NORTH;
                 this.ratSpriteEast = ADULT_FEMALE_RAT_SPRITE_EAST;
                 this.ratSpriteSouth = ADULT_FEMALE_RAT_SPRITE_SOUTH;
@@ -277,13 +274,12 @@ public class AdultRat extends NormalRat {
      * revert back to normal rat and have a cooldown
      */
     public void pregnancyTick() {
-        if (isPregnant == true && isWaiting == false) {
+        if (isPregnant && !isWaiting) {
             this.giveBirthCooldown++;
             if (this.pregnancyCounter > 0) {
                 if (this.giveBirthCooldown > GIVE_BIRTH_INTERVAL) {
                     this.giveBirthCooldown = 0;
                     // reset the cooldown
-                    // this.giveBirthCooldown = GIVE_BIRTH_INTERVAL;
                     // give birth
                     this.giveBirth();
                     // deicnriment pregnancy counter
@@ -298,18 +294,18 @@ public class AdultRat extends NormalRat {
                 // reset sprites
 
                 switch (this.directionFacing) {
-                case 'N':
-                    this.renderSprite = COOLDOWN_SPRITE_FEMALE_NORTH;
-                    break;
-                case 'E':
-                    this.renderSprite = COOLDOWN_SPRITE_FEMALE_EAST;
-                    break;
-                case 'S':
-                    this.renderSprite = COOLDOWN_SPRITE_FEMALE_SOUTH;
-                    break;
-                case 'W':
-                    this.renderSprite = COOLDOWN_SPRITE_FEMALE_WEST;
-                    break;
+                    case 'N':
+                        this.renderSprite = COOLDOWN_SPRITE_FEMALE_NORTH;
+                        break;
+                    case 'E':
+                        this.renderSprite = COOLDOWN_SPRITE_FEMALE_EAST;
+                        break;
+                    case 'S':
+                        this.renderSprite = COOLDOWN_SPRITE_FEMALE_SOUTH;
+                        break;
+                    default:
+                        this.renderSprite = COOLDOWN_SPRITE_FEMALE_WEST;
+                        break;
                 }
 
                 this.ratSpriteNorth = COOLDOWN_SPRITE_FEMALE_NORTH;
@@ -331,7 +327,7 @@ public class AdultRat extends NormalRat {
      * pregnancy sprite.
      */
     public void waitTick() {
-        if (this.isWaiting == false) {
+        if (!this.isWaiting) {
             this.movement();
         } else {
             this.waitCounter++;
@@ -348,18 +344,18 @@ public class AdultRat extends NormalRat {
                 } else {
                     // pregnancy
                     switch (this.directionFacing) {
-                    case 'N':
-                        this.renderSprite = ADULT_FEMALE_RAT_PREGNANT_SPRITE_NORTH;
-                        break;
-                    case 'E':
-                        this.renderSprite = ADULT_FEMALE_RAT_PREGNANT_SPRITE_EAST;
-                        break;
-                    case 'S':
-                        this.renderSprite = ADULT_FEMALE_RAT_PREGNANT_SPRITE_SOUTH;
-                        break;
-                    case 'W':
-                        this.renderSprite = ADULT_FEMALE_RAT_PREGNANT_SPRITE_WEST;
-                        break;
+                        case 'N':
+                            this.renderSprite = ADULT_FEMALE_RAT_PREGNANT_SPRITE_NORTH;
+                            break;
+                        case 'E':
+                            this.renderSprite = ADULT_FEMALE_RAT_PREGNANT_SPRITE_EAST;
+                            break;
+                        case 'S':
+                            this.renderSprite = ADULT_FEMALE_RAT_PREGNANT_SPRITE_SOUTH;
+                            break;
+                        default:
+                            this.renderSprite = ADULT_FEMALE_RAT_PREGNANT_SPRITE_WEST;
+                            break;
                     }
 
                     this.ratSpriteNorth = ADULT_FEMALE_RAT_PREGNANT_SPRITE_NORTH;
@@ -377,22 +373,22 @@ public class AdultRat extends NormalRat {
      * Changes gender to female
      */
     public void changeToFemale() {
-        if (this.ratGender == true) {
+        if (this.ratGender) {
             this.ratGender = false;
             // reset all sprites
             switch (this.directionFacing) {
-            case 'N':
-                this.renderSprite = ADULT_FEMALE_RAT_SPRITE_NORTH;
-                break;
-            case 'E':
-                this.renderSprite = ADULT_FEMALE_RAT_SPRITE_EAST;
-                break;
-            case 'S':
-                this.renderSprite = ADULT_FEMALE_RAT_SPRITE_SOUTH;
-                break;
-            case 'W':
-                this.renderSprite = ADULT_FEMALE_RAT_SPRITE_WEST;
-                break;
+                case 'N':
+                    this.renderSprite = ADULT_FEMALE_RAT_SPRITE_NORTH;
+                    break;
+                case 'E':
+                    this.renderSprite = ADULT_FEMALE_RAT_SPRITE_EAST;
+                    break;
+                case 'S':
+                    this.renderSprite = ADULT_FEMALE_RAT_SPRITE_SOUTH;
+                    break;
+                default:
+                    this.renderSprite = ADULT_FEMALE_RAT_SPRITE_WEST;
+                    break;
             }
 
             this.ratSpriteNorth = ADULT_FEMALE_RAT_SPRITE_NORTH;
@@ -416,20 +412,20 @@ public class AdultRat extends NormalRat {
      * Changes gender to male
      */
     public void changeToMale() {
-        if (this.ratGender == false) {
+        if (!this.ratGender) {
             switch (this.directionFacing) {
-            case 'N':
-                this.renderSprite = ADULT_MALE_RAT_SPRITE_NORTH;
-                break;
-            case 'E':
-                this.renderSprite = ADULT_MALE_RAT_SPRITE_EAST;
-                break;
-            case 'S':
-                this.renderSprite = ADULT_MALE_RAT_SPRITE_SOUTH;
-                break;
-            case 'W':
-                this.renderSprite = ADULT_MALE_RAT_SPRITE_WEST;
-                break;
+                case 'N':
+                    this.renderSprite = ADULT_MALE_RAT_SPRITE_NORTH;
+                    break;
+                case 'E':
+                    this.renderSprite = ADULT_MALE_RAT_SPRITE_EAST;
+                    break;
+                case 'S':
+                    this.renderSprite = ADULT_MALE_RAT_SPRITE_SOUTH;
+                    break;
+                default:
+                    this.renderSprite = ADULT_MALE_RAT_SPRITE_WEST;
+                    break;
             }
 
             this.ratGender = true;

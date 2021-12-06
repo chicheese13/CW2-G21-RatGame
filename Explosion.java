@@ -29,7 +29,6 @@ public class Explosion extends RenderObject {
 	 */
 	@Override
 	public void tick() {
-		// TODO Auto-generated method stub
 		this.tickCounter++;
 		if (this.tickCounter == TICK_DURATION) {
 			System.out.println("TEST");

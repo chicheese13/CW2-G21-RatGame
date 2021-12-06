@@ -8,8 +8,6 @@
 
 import java.math.BigDecimal;
 
-import javafx.scene.image.Image;
-
 /**
  * BabyRat is a class which initialises an instance for BabyRat.
  *
@@ -77,11 +75,6 @@ public class BabyRat extends NormalRat {
    * Method which handles the death of a rat.
    */
   public void ratDeath() {
-    // incriment score by RAT_SCORE wherever the score variable is.
-    // this.currentLevel.incrimentScore(RAT_SCORE);
-    // create an instance of RenderScore with desired score incriment.
-    // this.currentLevel.addRenderObject(new
-    // RenderScore(this.objectPosition, RAT_SCORE, this.currentLevel));
     // remove itself from RenderObjects array.
     this.currentLevel.despawnRat(this);
 
@@ -126,7 +119,6 @@ public class BabyRat extends NormalRat {
         this.ratGender, this.ratSterile, this.ratHealth,
         this.directionFacing, this.currentLevel));
     // remove self from array
-    // this.removeSelf();
     this.currentLevel.despawnRat(this);
   }
 
