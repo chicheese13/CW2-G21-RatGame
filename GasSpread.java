@@ -4,7 +4,7 @@ import java.math.*;
  * @version 1.0
  * @author Dylan Lewis
  * 
- *         GasSpread class, which generates toxic cloud on level
+ * GasSpread class, which generates toxic cloud on level
  *
  */
 public class GasSpread extends RenderObject {
