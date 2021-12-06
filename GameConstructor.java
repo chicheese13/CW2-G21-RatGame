@@ -36,7 +36,7 @@ import java.util.Scanner;
 import java.lang.Math;
 
 /**
- * @author Dylan Lewis
+ * @author Dylan Lewis, Kien Lin, Callum Young, Armond Dorosz
  * @version 1.0
  * 
  * This class handles lots of the javaFX of the game.
