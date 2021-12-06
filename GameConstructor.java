@@ -295,6 +295,7 @@ public class GameConstructor extends Application {
 
         drawGame();
         primaryStage.setScene(scene);
+    	primaryStage.setResizable(false);
         primaryStage.show();
 
         // Close the game properly when they click the "X" in the corner
