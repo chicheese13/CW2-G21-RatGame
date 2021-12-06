@@ -4,8 +4,9 @@ import java.math.BigDecimal;
  * @version 2.0
  * @author Armand Dorosz, Callum Young, Dylan Lewis
  * 
- * Sterilisation class, which generates ready instance of the male sex
- * changer, which is placed on the level
+ *         Sterilisation class, which generates ready instance of the male sex
+ *         changer,
+ *         which is placed on the level
  *
  */
 public class Sterilisation extends RenderObject {

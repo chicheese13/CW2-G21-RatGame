@@ -9,10 +9,6 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-/**
- * @author Joshua Hall, Lorenzo Labarta Arilla 
- * @version 1.0
- */
 public class MenuItem extends Pane {
 
     private Text text;
