@@ -250,8 +250,9 @@ public class Level implements Serializable {
 				gameCounterDeathRat, ITEM_GAIN_INTERVAL_DEATHRAT);
 		gameCounterNoEntry = itemInterval("NoEntrySign", this.itemManager,
 				gameCounterNoEntry, ITEM_GAIN_INTERVAL_NOENTRY);
+		
 
-		for (int i = 0; i < renderRats.size(); i++) {
+		for (int i = 0; i < renderRats.size(); i++) {			
 			double xMinus = renderRats.get(i).getObjectPosition()[0]
 					.doubleValue() - 0.5;
 			double yMinus = renderRats.get(i).getObjectPosition()[1]
@@ -442,7 +443,7 @@ public class Level implements Serializable {
 	 * 
 	 * @param rat Rat to be added to board
 	 */
-	public void spawnRat(Rat rat) {
+	public void spawnRat(RenderObject rat) {
 		renderRats.add(rat);
 	}
 

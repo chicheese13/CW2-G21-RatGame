@@ -789,7 +789,7 @@ public class GameConstructor extends Application {
                         new FemaleSexChange(new Position(BigDecimal.valueOf(x),
                                 BigDecimal.valueOf(y)), currentLevel));
             } else if (itemType == "DeathRat") {
-                currentLevel.spawnItem(
+                currentLevel.spawnRat(
                         new DeathRat(new Position(BigDecimal.valueOf(x),
                                 BigDecimal.valueOf(y)), currentLevel));
             } else if (itemType == "Sterilisation") {
