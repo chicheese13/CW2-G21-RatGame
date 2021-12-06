@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 /**
  * Hash table that takes in a string and gives back an image
  * @author Lewis
- *
+ * @version 1.0
  */
 public class Sprites {
 	// All Rats
