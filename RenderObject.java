@@ -2,18 +2,13 @@ import java.io.*;
 /** 
  * RenderObject.java
  * @version 2.0
- * @author Dylan Lewis, Kien Lin, Callum, Armand
+ * @author Dylan Lewis, Kien Lin, Callum Young, Armand Dorosz
  *
  */
 
 import javafx.scene.image.Image;
 import java.math.BigDecimal;
 
-/**
- * RenderObject defines objects which can be rendered, they all sprites and
- * position in common.
- *
- */
 
 public abstract class RenderObject implements Serializable {
 	/**
