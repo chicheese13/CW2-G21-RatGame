@@ -37,10 +37,7 @@ public class NoEntrySign extends RenderObject {
 	 * @return name of the next animation
 	 */
 	private String loadImage(int pictureNumber) {
-
-		String sign = "no-entry" + String.valueOf(pictureNumber);
-
-		return sign;
+		return "no-entry" + pictureNumber;
 	}
 
 	/**
