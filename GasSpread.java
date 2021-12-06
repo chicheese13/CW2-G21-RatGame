@@ -4,13 +4,13 @@ import java.math.*;
  * @version 1.0
  * @author Dylan Lewis
  * 
- * GasSpread class, which generates toxic cloud on level
+ *         GasSpread class, which generates toxic cloud on level
  *
  */
 public class GasSpread extends RenderObject {
 
-	private final int ONE_SECOND_IN_TICKS = 66;
-	private final double DAMAGE_TO_RAT = 0.5;
+	private static final int ONE_SECOND_IN_TICKS = 66;
+	private static final double DAMAGE_TO_RAT = 0.5;
 
 	private int STOP_SPREAD_INTERVAL = 200;
 	private int tickCounter = 0;
@@ -34,11 +34,8 @@ public class GasSpread extends RenderObject {
 	}
 
 	public boolean checkParent(Position position) {
-		if (this.parentGas.getObjectPosition()[0].doubleValue() == position.getPosition()[0].doubleValue()
-				&& this.parentGas.getObjectPosition()[1].doubleValue() == position.getPosition()[1].doubleValue()) {
-			return false;
-		}
-		return true;
+		return (this.parentGas.getObjectPosition()[0].doubleValue() == position.getPosition()[0].doubleValue()
+				&& this.parentGas.getObjectPosition()[1].doubleValue() == position.getPosition()[1].doubleValue());
 	}
 
 	/**
@@ -50,7 +47,7 @@ public class GasSpread extends RenderObject {
 		System.out.println(parentGas.getTick());
 
 		if (this.parentGas.getTick() >= STOP_SPREAD_INTERVAL) {
-
+			// do nothing
 		} else if (this.tickCounter == ONE_SECOND_IN_TICKS) {
 			// check available directions and add gas there.
 
