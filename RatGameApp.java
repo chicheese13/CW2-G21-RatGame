@@ -21,6 +21,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
@@ -56,7 +57,7 @@ public class RatGameApp extends Application {
     // Currently selected profile
     private static Profile activeUser;
     // currently selected level
-    private static Integer selectedLevel = 0;
+    private static Integer selectedLevel;
     // File where user info is stored
     private static File userFile = new File("src/users.txt");
 
@@ -408,11 +409,11 @@ public class RatGameApp extends Application {
             ChoiceDialog<Integer> cd = new ChoiceDialog<>(0, possibleLevels);
 
             cd.showAndWait();
-            selectedLevel = cd.getSelectedItem();
+            selectedLevel = cd.getResult();
             cd.hide();
             // launch game.
             System.out.println("selected level: " + selectedLevel);
-            if (selectedLevel != 0) {
+            if (selectedLevel != null) {
                 System.out.println("Start the game here");
                 playGame = new GameConstructor(selectedLevel, activeUser, "");
                 playGame.startGame();
