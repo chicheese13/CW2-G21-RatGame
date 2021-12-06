@@ -6,9 +6,7 @@ import java.io.*;
  *
  */
 
-import javafx.scene.image.Image;
 import java.math.BigDecimal;
-
 
 public abstract class RenderObject implements Serializable {
 	/**
@@ -72,6 +70,4 @@ public abstract class RenderObject implements Serializable {
 	public void setLevel(Level inputLevel) {
 		this.currentLevel = inputLevel;
 	}
-
-	// public abstract void collision(Object collidedObject);
 }
