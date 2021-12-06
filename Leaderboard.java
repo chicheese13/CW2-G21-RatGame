@@ -4,22 +4,24 @@ import java.io.PrintWriter;
 import java.util.Hashtable;
 import java.util.Scanner;
 
+/**
+ * Stores scores 
+ * @author Josh Hall 
+ * @version 1.0
+ */
 public class Leaderboard {
-
 	// take in a text file
-
 	String file[] = { "Name1 10", "Name2 7", "Name3 7", "Name4 5", "Name5 4",
 			"Name6 3", "Name7 3", "Name8 3", "Name9 2", "Name10 2" };
 
 	private int level;
 	private String[] names = new String[10];
 	private int[][] scores = new int[10][2];
-	// index 0 to 9
-
-	// highest to lowest
-
-	//
-
+	
+	/**
+	 * Constructor
+	 * @param level level to create leaderboard for
+	 */
 	public Leaderboard(int level) {
 		this.level = level;
 
@@ -41,7 +43,6 @@ public class Leaderboard {
 				}
 				leaderboardWriter.close();
 			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -59,6 +60,11 @@ public class Leaderboard {
 		}
 	}
 
+	/**
+	 * Adds score to leaderboard
+	 * @param name name of profile that got the score
+	 * @param Score score achieved
+	 */
 	public void addScore(String name, int Score) {
 		scores = checkScore(Score, scores);
 
@@ -88,8 +94,14 @@ public class Leaderboard {
 		}
 	}
 
+	/**
+	 * Checks the scores
+	 * @param score Score to be checked
+	 * @param checkArray list of scores in leaderboard
+	 * @return new list of scores
+	 */
 	public int[][] checkScore(int score, int[][] checkArray) {
-		// itterate through the array, check the scores and shift if needed.
+		// iterate through the array, check the scores and shift if needed.
 		boolean inserted = false;
 		for (int i = 0; i < checkArray.length; i++) {
 			if (score > checkArray[i][1] && inserted == false) {
@@ -102,6 +114,12 @@ public class Leaderboard {
 		return checkArray;
 	}
 
+	/**
+	 * Shifts scores in leaderboard down to make room for new score
+	 * @param startIndex Where to perform shift
+	 * @param shiftArray Array to perform shift on
+	 * @return New score array
+	 */
 	public int[][] shift(int startIndex, int[][] shiftArray) {
 
 		for (int i = shiftArray.length - 1; i > 0; i--) {
