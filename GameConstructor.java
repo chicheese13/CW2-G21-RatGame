@@ -486,22 +486,8 @@ public class GameConstructor extends Application {
 
         // show lose screen
         if (this.hasLost) {
-            gc.drawImage(gameLostScreen,  LEADERBOARD_BUTTON_X * GRID_CELL_WIDTH,
-            		LEADERBOARD_BUTTON_Y * GRID_CELL_HEIGHT);
-
-            /*
-             * outerBox.getChildren().add(new Text("Leaderboard"));
-             * outerBox.getChildren().add(LBhBox);
-             * PriorityQueue<LeaderboardElement> top10 =
-             * currentLeaderboard.run(currentUser.getName(),
-             * this.currentLevel.getScore());
-             * LBhBox.getChildren().add(LBvBoxLeft); for (int i = 0; i < 5 &&
-             * !top10.isEmpty(); i++) { LBvBoxLeft.getChildren().add(new
-             * Row(top10.poll().toString())); }
-             * LBhBox.getChildren().add(LBvBoxRight); while (!top10.isEmpty()) {
-             * LBvBoxRight.getChildren().add(new Row(top10.poll().toString()));
-             * }
-             */
+            gc.drawImage(gameLostScreen,  0 * GRID_CELL_WIDTH,
+            		0 * GRID_CELL_HEIGHT);
 
         }
 
