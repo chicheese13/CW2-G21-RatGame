@@ -1,15 +1,14 @@
-import java.math.BigDecimal;
 import java.time.*;
+import java.math.BigDecimal;
+import java.util.Scanner;
 import java.util.ArrayList;
 import java.time.temporal.ChronoField;
-import java.io.*;
-import java.util.Scanner;
+import java.io.*;  // Import the File class
 
 /**
  * Scores all of the information on the level, such as tile locations and all of the rats and items.
- * 
- * @version 1.0
  * @author Lewis Ward, Luca Collicott
+ * @version 1.0
  */
 public class Level implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -191,15 +190,14 @@ public class Level implements Serializable {
 	}
 	
 	/**
-	 * Adds item to inventory if the correct amount of time has passed
-	 * @param itemType Type of item
-	 * @param items Items in level
-	 * @param gameCounter Counts ticks
-	 * @param itemGainInterval Time taken to gain item
+	 * @param itemType
+	 * @param items
+	 * @param gameCounter
+	 * @param ITEM_GAIN_INTERVAL
 	 * @return 
 	 */
-	public double itemInterval(String itemType, ItemManager items, double gameCounter, double itemGainInterval) {
-		if (gameCounter == itemGainInterval) {
+	public double itemInterval(String itemType, ItemManager items, double gameCounter, double ITEM_GAIN_INTERVAL) {
+		if (gameCounter == ITEM_GAIN_INTERVAL) {
 			items.tryIncreaseItem(itemType);
 			gameCounter = 0;
 		} else {
@@ -212,7 +210,6 @@ public class Level implements Serializable {
 	 * Updates board. Should be called every tick
 	 */
 	public void updateBoard() {
-		//Checks each item type to see if it is time to add another
 		gameCounterBomb = itemInterval("Bomb", this.itemManager, gameCounterBomb, ITEM_GAIN_INTERVAL_BOMB);
 		gameCounterPoison = itemInterval("Poison", this.itemManager, gameCounterPoison, ITEM_GAIN_INTERVAL_POISON);
 		gameCounterGas = itemInterval("Gas", this.itemManager, gameCounterGas, ITEM_GAIN_INTERVAL_GAS);
@@ -229,13 +226,13 @@ public class Level implements Serializable {
 			double yPlus = renderRats.get(i).getObjectPosition()[1].doubleValue() + 0.5;
 			
 			//checking if the the render objects are both rats and are not the same rat.
-			for (int j = 0; j < renderRats.size(); j++) {
+			for (int i2 = 0; i2 < renderRats.size(); i2++) {
 				boolean xCollide = false;
 				boolean yCollide = false;
 				
-				if (renderRats.get(i) != renderRats.get(j)) {
-					double compareX = renderRats.get(j).getObjectPosition()[0].doubleValue();
-					double compareY = renderRats.get(j).getObjectPosition()[1].doubleValue();
+				if (renderRats.get(i) != renderRats.get(i2)) {
+					double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
+					double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
 					if (compareX > xMinus && compareX < xPlus) {
 						xCollide = true;
 					}
@@ -243,7 +240,7 @@ public class Level implements Serializable {
 						yCollide = true;
 					}
 					if (xCollide == true && yCollide == true) {
-							((Rat) renderRats.get(i)).collision((Rat) renderRats.get(j));
+							((Rat) renderRats.get(i)).collision((Rat) renderRats.get(i2));
 					}
 				}
 			}
@@ -257,12 +254,12 @@ public class Level implements Serializable {
 			double yPlus = renderItems.get(i).getObjectPosition()[1].doubleValue() + 0.5;
 			
 			//checking if the the render objects are both rats and are not the same rat.
-			for (int j = 0; j < renderRats.size(); j++) {
+			for (int i2 = 0; i2 < renderRats.size(); i2++) {
 				
 				boolean xCollide = false;
 				boolean yCollide = false;	
-				double compareX = renderRats.get(j).getObjectPosition()[0].doubleValue();
-				double compareY = renderRats.get(j).getObjectPosition()[1].doubleValue();
+				double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
+				double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
 				
 				if (compareX > xMinus && compareX < xPlus) {
 					xCollide = true;
@@ -272,7 +269,7 @@ public class Level implements Serializable {
 				}
 				if (xCollide == true && yCollide == true) {
 					if (renderItems.get(i) instanceof RenderObject) {
-						((RenderObject) renderItems.get(i)).collision((Rat) renderRats.get(j));
+						((RenderObject) renderItems.get(i)).collision((Rat) renderRats.get(i2));
 					}
 				}
 			}
@@ -406,12 +403,7 @@ public class Level implements Serializable {
 		}
 	}
 	
-	/**
-	 * Checks whether the tile can be placed on
-	 * @param xIn X coordinate of tile
-	 * @param yIn Y coordinate of tile
-	 * @return true if tile is free to be placed on
-	 */
+	
 	public boolean isPlacable(double xIn, double yIn) {
 		//need to check if there's any rat's colliding with that tile, or items and if the tile is grass or not
 		int x = (int) xIn;
@@ -474,13 +466,6 @@ public class Level implements Serializable {
 				return true;
 			}
 	
-	/**
-	 * Checks if a tile can be travelled on
-	 * @param xIn X coordinate of tile to be checked
-	 * @param yIn Y coordinate of tile to be checked
-	 * @param direction Direction to check
-	 * @return True if tile is available
-	 */
 	public boolean tileAvailable (BigDecimal xIn, BigDecimal yIn, char direction){
 		
 		int x = (int) Math.round(xIn.doubleValue());
@@ -514,14 +499,13 @@ public class Level implements Serializable {
 		return false;
 	} 
 	
-	
 	public boolean checkGas(Position position) {
 		for (int i = 0; i < this.renderTempTiles.size(); i++) {
 			if (this.renderTempTiles.get(i) instanceof GasSpread) {
 				if (((GasSpread) this.renderTempTiles.get(i)).getObjectPosition()[0].doubleValue()-offsetX == position.getPosition()[0].doubleValue()-offsetX
-				&& ((GasSpread) this.renderTempTiles.get(i)).getObjectPosition()[1].doubleValue()-offsetY == position.getPosition()[1].doubleValue()-offsetY){
-					return false;
-				}
+					&& ((GasSpread) this.renderTempTiles.get(i)).getObjectPosition()[1].doubleValue()-offsetY == position.getPosition()[1].doubleValue()-offsetY){
+						return false;
+					}
 			}
 		}		
 		return true;

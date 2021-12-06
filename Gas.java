@@ -1,12 +1,25 @@
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
+/**
+ * @version 3.0
+ * @author Armand Dorosz, Callum Young, Dylan Lewis
+ * 
+ *         Gas class, which generates ready instance of the gas, which is placed
+ *         on the level
+ *
+ */
 public class Gas extends RenderObject {
 
-	// around 8 seconds.
-	private int STOP_SPREAD_INTERVAL = 200;
-	private int NEXT_ANIMATION = 3;
+	/**
+	 * Attributes helping with animation and behaviour of the gas
+	 */
+	private final int NUMBER_OF_GAS_SPRITES = 5;
+	private final int STOP_SPREAD_INTERVAL = 200;
+	private final int DISSIPATE_LIMIT = 20;
+	private final int LINGER_LIMIT = 200;
+	private final int NEXT_ANIMATION = 3;
+	
 	private int tickCounter = 0;
 	private int nextAnimationCounter = 0;
 	private int pictureNumber = 5;
@@ -15,11 +28,20 @@ public class Gas extends RenderObject {
 	private int dissipateIndex = 0;
 	private boolean isWaiting = false;
 	private boolean isBroken = false;
-	private int LINGER_LIMIT = 200;
 	private int lingerCounter = 0;
+
+	/**
+	 * String holding the names of the sprites for the gas
+	 */
 	private String sprinkler = "sprinkler";
 	private String sprinklerBroken = "sprinkler-broken";
 
+	/**
+	 * Gas constructor
+	 * 
+	 * @param objectPosition
+	 * @param currentLevel
+	 */
 	public Gas(Position objectPosition, Level currentLevel) {
 		this.renderSprite = sprinkler;
 		this.objectPosition = objectPosition;
@@ -40,12 +62,6 @@ public class Gas extends RenderObject {
 	@Override
 	public void collision(Object collidedObject) {
 
-		if (collidedObject instanceof Explosion) {
-
-			this.currentLevel.despawnItem(this);
-		}
-		// TODO Auto-generated method stub
-
 	}
 
 	public int getTick() {
@@ -56,17 +72,26 @@ public class Gas extends RenderObject {
 		this.childrenGas.add(childGas);
 	}
 
+	/**
+	 * Method for stopping the spread of gas, if sprinkler gets broken by bomb
+	 */
 	public void instantDissapate() {
 		this.tickCounter = STOP_SPREAD_INTERVAL;
 		this.lingerCounter = LINGER_LIMIT;
 		System.out.println("STOP SPREAD");
 		this.isBroken = true;
-		//this.currentLevel.stopSound();
+		// this.currentLevel.stopSound();
 
 		// sprite change to show the fan is broken
 		this.renderSprite = sprinklerBroken;
 	}
 
+	/**
+	 * Method for loading the animation sprites
+	 * 
+	 * @param delayedPictureNumber
+	 * @return name of the next animation
+	 */
 	private String loadImage(int pictureNumber) {
 
 		String gas = "sprinkler" + String.valueOf(pictureNumber);
@@ -74,6 +99,9 @@ public class Gas extends RenderObject {
 		return gas;
 	}
 
+	/**
+	 * Method, which is responsible for gas behavior every tick
+	 */
 	@Override
 	public void tick() {
 		System.out.println("GAS CHILD");
@@ -94,7 +122,7 @@ public class Gas extends RenderObject {
 
 			if (this.tickCounter == STOP_SPREAD_INTERVAL) {
 				this.lingerCounter++;
-				
+
 				if (isBroken == false) {
 					this.renderSprite = sprinkler;
 				}
@@ -102,7 +130,7 @@ public class Gas extends RenderObject {
 				if (lingerCounter >= LINGER_LIMIT) {
 					this.dissipateCounter++;
 
-					if (this.dissipateCounter == 20) {
+					if (this.dissipateCounter == DISSIPATE_LIMIT) {
 
 						if (dissipateIndex < childrenGas.size()) {
 							this.currentLevel.despawnTempTile(this.childrenGas.get(0));
@@ -115,10 +143,11 @@ public class Gas extends RenderObject {
 					}
 				}
 			} else {
+				// loop the animation
 				if (nextAnimationCounter >= NEXT_ANIMATION) {
 					nextAnimationCounter = 0;
 
-					if (pictureNumber == 5) {
+					if (pictureNumber == NUMBER_OF_GAS_SPRITES) {
 						pictureNumber = 1;
 					} else {
 						pictureNumber++;
