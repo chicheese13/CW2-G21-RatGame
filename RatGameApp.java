@@ -409,11 +409,10 @@ public class RatGameApp extends Application {
             cd.showAndWait();
             selectedLevel = cd.getSelectedItem();
             cd.hide();
-
             // launch game.
             System.out.println("Start the game here");
             playGame = new GameConstructor(selectedLevel, activeUser, "");
-            playGame.startGame();
+            playGame.startGame();	
         }
     }
 
