@@ -95,8 +95,13 @@ public class DeathRat extends Rat {
                 this.killCounter++;
             }
         }
+        
         if (collidedObject instanceof Explosion) {
             this.currentLevel.despawnRat(this);
+        }
+        
+        if (collidedObject instanceof NoEntrySign) {
+        	this.turnAround();
         }
     }
 

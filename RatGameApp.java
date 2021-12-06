@@ -39,8 +39,9 @@ import javafx.util.Pair;
  * @author Josh and Lorenzo
  * @version 1.0
  * 
- * This class is the main class for the game. When running the game the main
- * method here will be run
+ *          This class is the main class for the game. When running the game the
+ *          main
+ *          method here will be run
  */
 public class RatGameApp extends Application {
 
@@ -64,6 +65,8 @@ public class RatGameApp extends Application {
     private static GameConstructor playGame;
 
     private static LeaderboardDisplay testBoard;
+
+    private static final String SRC_PREFIX = "src/saves/";
 
     // List of pairs to be used when creating the menu, the pair contains the
     // <text
@@ -110,27 +113,18 @@ public class RatGameApp extends Application {
                     }
                 }
 
-                PrintWriter userWrite;
-                try {
-                    userWrite = new PrintWriter("src/users.txt");
+                try (PrintWriter userWrite = new PrintWriter("src/users.txt")) {
                     for (int i = 0; i < profiles.size(); i++) {
-                        // System.out.println(profiles.get(i).getName() + " " +
-                        // profiles.get(i).getLevels() + " " +
-                        // profiles.get(i).getIdentifier());
                         userWrite.println(profiles.get(i).getName() + " "
                                 + profiles.get(i).getLevels() + " "
                                 + profiles.get(i).getIdentifier());
-                        // userWrite.println(profiles.get(i).toString());
                     }
-
-                    userWrite.close();
-
                     // delete the folder
-                    deleteSaveFolder(new File("src/saves/"
+                    deleteSaveFolder(new File(SRC_PREFIX
                             + deleteProfile.getIdentifier() + "/"));
 
                     System.out.println(
-                            "src/saves/" + activeUser.getIdentifier() + "/");
+                            SRC_PREFIX + activeUser.getIdentifier() + "/");
 
                 } catch (Exception e) {
                     System.out.println("unable to find save files");
@@ -154,7 +148,7 @@ public class RatGameApp extends Application {
             try {
                 // fetch all the save options
                 File folder = new File(
-                        "src/saves/" + activeUser.getIdentifier() + "/");
+                        SRC_PREFIX + activeUser.getIdentifier() + "/");
                 File[] listOfFiles = folder.listFiles();
 
                 ArrayList<String> saveFiles = new ArrayList<>();
@@ -183,10 +177,10 @@ public class RatGameApp extends Application {
                     System.out.println(currentSave);
                     // grab the selected level from the txt file
                     try {
-                        String saveFileDirectory = "src/saves/"
+                        String saveFileDirectory = SRC_PREFIX
                                 + activeUser.getIdentifier() + "/" + currentSave
                                 + "/";
-                        String saveFileLevel = "src/saves/"
+                        String saveFileLevel = SRC_PREFIX
                                 + activeUser.getIdentifier() + "/" + currentSave
                                 + "/level.txt";
 
@@ -196,7 +190,6 @@ public class RatGameApp extends Application {
                         String levelIn = saveFile.readLine();
                         int level = Integer.parseInt(
                                 levelIn.substring(0, levelIn.length() - 1));
-                        // System.out.println(saveFile.readLine().length());
                         saveFile.close();
 
                         // play the game once we have the level
@@ -278,7 +271,7 @@ public class RatGameApp extends Application {
             root.getChildren().add(imageView);
 
         } catch (Exception e) {
-
+            System.out.println("unable to retrieve image");
         }
     }
 
@@ -315,8 +308,20 @@ public class RatGameApp extends Application {
     }
 
     public static void openLeaderboard() {
-        testBoard = new LeaderboardDisplay();
-        testBoard.startGame();
+    	TextInputDialog tDialog = new TextInputDialog();
+        tDialog.showAndWait();
+        String name = tDialog.getResult();
+
+        if (name != null) {
+            // makes sure the user's name is not blank
+            if (name.replaceAll("\\s", "").length() > 0) {
+            	 testBoard = new LeaderboardDisplay();
+                 testBoard.setLevel(Integer.parseInt(name));
+                 testBoard.startGame();
+                tDialog.hide();
+            }
+        }
+    	
     }
 
     /**
@@ -435,7 +440,7 @@ public class RatGameApp extends Application {
      * @param identifier
      */
     private static void createSaveDirectory(int identifier) {
-        new File("src/saves/" + identifier + "/").mkdirs();
+        new File(SRC_PREFIX + identifier + "/").mkdirs();
     }
 
     /**
@@ -481,8 +486,7 @@ public class RatGameApp extends Application {
     private static void readUserFile(File file) {
         System.out.println("TEST");
         ArrayList<Profile> tempProfiles = new ArrayList<>();
-        try {
-            Scanner in = new Scanner(file);
+        try (Scanner in = new Scanner(file)) {
             while (in.hasNextLine()) {
                 String text = in.nextLine();
                 String[] details = text.split(" ");
@@ -491,7 +495,6 @@ public class RatGameApp extends Application {
                         Integer.parseInt(details[2]));
                 tempProfiles.add(profile);
             }
-            in.close();
         } catch (Exception e) {
             System.out.println("File error");
         }
@@ -502,7 +505,7 @@ public class RatGameApp extends Application {
      * writeToUserFile takes the newly created user profile and appends it to
      * the end of the users.txt file
      * 
-     * @param file the users.txt file
+     * @param file    the users.txt file
      * @param newUser the profile to be written to the file
      */
     private static void writeToUserFile(Profile newUser) {
@@ -523,6 +526,7 @@ public class RatGameApp extends Application {
         Scene scene = new Scene(createContent());
         primaryStage.setTitle("RATS menu title");
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

@@ -111,6 +111,7 @@ public class Profile implements Serializable {
     public void overwriteLevel(int newLevel) {
         // set the level
 
+    	System.out.println("WRITE LEVEL");
         // output to file
         ArrayList<Profile> tempProfiles = new ArrayList<>();
         try {
@@ -142,6 +143,9 @@ public class Profile implements Serializable {
                 // System.out.println(profiles.get(i).getName() + " " +
                 // profiles.get(i).getLevels() + " " +
                 // profiles.get(i).getIdentifier());
+            	System.out.println(tempProfiles.get(i).getName() + " "
+                        + tempProfiles.get(i).getLevels() + " "
+                        + tempProfiles.get(i).getIdentifier());
                 userWrite.println(tempProfiles.get(i).getName() + " "
                         + tempProfiles.get(i).getLevels() + " "
                         + tempProfiles.get(i).getIdentifier());

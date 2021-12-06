@@ -8,8 +8,6 @@
 
 import java.math.BigDecimal;
 
-import javafx.scene.image.Image;
-
 /**
  * BabyRat is a class which initialises an instance for BabyRat.
  *

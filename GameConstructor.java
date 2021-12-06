@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.PriorityQueue;
+
 import java.math.BigDecimal;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -12,7 +9,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -29,48 +25,15 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.util.Pair;
-
-import java.io.BufferedWriter;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Scanner;
-import javafx.animation.ScaleTransition;
-import javafx.animation.TranslateTransition;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceDialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.effect.DropShadow;
-
 import java.lang.Math;
-import java.util.Scanner;
-
-import java.awt.event.KeyAdapter;
-import javax.swing.JFrame;
-import javax.swing.JTextField;
-
-import javafx.stage.WindowEvent;
-import javafx.event.EventHandler;
 
 /**
  * Sample application that demonstrates the use of JavaFX Canvas for a Game.
@@ -84,9 +47,6 @@ import javafx.event.EventHandler;
  * @author Liam O'Reilly
  */
 public class GameConstructor extends Application {
-    // The dimensions of the window
-    private static final int GRID_WIDTH = 30;
-    private static final int GRID_HEIGHT = 17;
 
     private static final int GRID_CELL_WIDTH = 50;
     private static final int GRID_CELL_HEIGHT = 50;
@@ -102,11 +62,6 @@ public class GameConstructor extends Application {
 
     private Timeline tickTimeline;
     private Canvas canvas;
-
-    private VBox outerBox = new VBox(5);
-    private HBox LBhBox = new HBox(10);
-    private VBox LBvBoxLeft = new VBox(5);
-    private VBox LBvBoxRight = new VBox(5);
 
     ImageView draggableBombImage = new ImageView();
     ImageView draggableGasImage = new ImageView();
@@ -124,6 +79,8 @@ public class GameConstructor extends Application {
     ImageView femaleCounter = new ImageView();
     ImageView maleCounter = new ImageView();
     ImageView sterilisationCounter = new ImageView();
+    
+    private final Image EXIT_BUTTON_IMAGE = new Image("Textures/exit-button.png");
 
     private BigDecimal TICK_DURATION = new BigDecimal("15");
     Font font = Font.loadFont("/fonts/stats.ttf", 45);
@@ -162,7 +119,6 @@ public class GameConstructor extends Application {
 
     private Image winning0 = new Image("/winning_the_game/winning0.png");
     private Image winning1 = new Image("/winning_the_game/winning1.png");
-    private Image winning2 = new Image("/winning_the_game/winning2.png");
 
     private Image page = new Image("/Textures/page2.png");
     private Image stats = new Image("/Textures/STATS.png");
@@ -173,14 +129,13 @@ public class GameConstructor extends Application {
     private int focusTileX;
     private int focusTileY;
 
-    private Image blackBackground = new Image("Textures/black.png");
 
     private Image gameWonScreen = new Image("Textures/game-won.png");
     private Image gameLostScreen = new Image("Textures/game-over.png");
     private Image defaultCounter = new Image("x/x0.png");
 
     private ItemManager items;
-    private int currentLevelNumber;
+    private static int currentLevelNumber;
 
     private Stage gameStage = new Stage();
 
@@ -189,7 +144,6 @@ public class GameConstructor extends Application {
     private int tickCounter = 0;
     private boolean hasWon = false;
     private boolean hasLost = false;
-    private String saveFile = "";
 
     private boolean isPaused = false;
 
@@ -203,6 +157,19 @@ public class GameConstructor extends Application {
     private int SAVE_GAME_BUTTON_Y = 5;
     private int SAVE_GAME_BUTTON_WIDTH = 2;
     private Sprites spriteLoader = new Sprites();
+    
+    private int EXIT_BUTTON_WIDTH = 2;
+    private int EXIT_BUTTON_X = 11;
+    private int EXIT_BUTTON_Y = 9;
+    private int LEADERBOARD_BUTTON_X = 5;
+    private int LEADERBOARD_BUTTON_Y = 9;
+    
+    private boolean exitGameButtonHovered = false;
+    
+    private Image EXIT_BUTTON_HOVER = new Image("Textures/exit-button-hover.png");
+    
+    private boolean scoreInserted = false;
+    
 
     public static int fetchLevels() {
         // a list of levels in the levels folder,
@@ -228,9 +195,10 @@ public class GameConstructor extends Application {
     public GameConstructor(int levelNumber, Profile currentProfile,
             String saveFile) {
 
-        this.currentLevelNumber = levelNumber;
         this.currentUser = currentProfile;
 
+        currentLevelNumber = levelNumber;
+        
         System.out.println("test");
 
         if (saveFile.equals("") == false) {
@@ -270,7 +238,6 @@ public class GameConstructor extends Application {
             this.items = new ItemManager(itemQuantity[0], itemQuantity[1],
                     itemQuantity[2], itemQuantity[3], itemQuantity[4],
                     itemQuantity[5], itemQuantity[6], itemQuantity[7]);
-            this.saveFile = saveFile;
             this.currentLevel = new Level("src/Levels/" + levelNumber + ".txt",
                     saveFile, this.items, currentUser, currentLevelNumber);
             this.currentLevel
@@ -285,16 +252,13 @@ public class GameConstructor extends Application {
         // Create leaderboard file if one doesn't already exist.
 
         boolean check = new File(
-                "src/Scores/" + this.currentLevelNumber + ".txt").exists();
+                "src/Scores/" + currentLevelNumber + ".txt").exists();
 
         if (!check) {
-            String fileData = "";
-            Scanner in = null;
-
             PrintWriter leaderboardWriter;
             try {
                 leaderboardWriter = new PrintWriter(
-                        "src/Scores/" + this.currentLevelNumber + ".txt");
+                        "src/Scores/" + currentLevelNumber + ".txt");
                 for (int i = 0; i < 9; i++) {
                     leaderboardWriter.println("Null -1,");
                 }
@@ -508,53 +472,22 @@ public class GameConstructor extends Application {
 
         // show win screen
         if (this.hasWon) {
-            // gc.drawImage(gameWonScreen, 0 * GRID_CELL_WIDTH, 0 *
-            // GRID_CELL_HEIGHT);
-            gc.drawImage(blackBackground, 0 * GRID_CELL_WIDTH,
-                    0 * GRID_CELL_HEIGHT);
-
-            Leaderboard getLeaderboad = new Leaderboard(
-                    this.currentLevelNumber);
-            getLeaderboad.addScore(this.currentUser.getName(),
-                    this.currentLevel.getScore());
-
-            // read in the file
-            String fileName = "src/scores/" + this.currentLevelNumber + ".txt";
-            String fileData = "";
-            File leaderboard = new File(fileName);
-            Scanner in = null;
-
-            try {
-                in = new Scanner(leaderboard);
-            } catch (Exception e) {
-                System.out.print("EERORO");
-
-            }
-
-            while (in.hasNextLine()) {
-                fileData = fileData + in.nextLine();
-            }
-
-            String[] dataArray = fileData.split(",");
-
-            int y = 1;
-            for (int i = 0; i < dataArray.length; i++) {
-                String output = dataArray[i].split(" ")[0] + "           "
-                        + dataArray[i].split(" ")[1];
-                int x = 6;
-                if (Integer.parseInt(dataArray[i].split(" ")[1]) != -1) {
-                    y++;
-                    gc.fillText(output, x * GRID_CELL_WIDTH,
-                            y * GRID_CELL_WIDTH);
-                }
-            }
-
+            gc.drawImage(gameWonScreen, 0 * GRID_CELL_WIDTH, 0 *
+              GRID_CELL_HEIGHT);
+        	
+        	if (!scoreInserted) {
+        		Leaderboard getLeaderboad = new Leaderboard(
+                        currentLevelNumber);
+                getLeaderboad.addScore(this.currentUser.getName(),
+                        this.currentLevel.getScore());
+        		scoreInserted = true;
+        	}          
         }
 
         // show lose screen
         if (this.hasLost) {
-            gc.drawImage(gameLostScreen, 0 * GRID_CELL_WIDTH,
-                    0 * GRID_CELL_HEIGHT);
+            gc.drawImage(gameLostScreen,  LEADERBOARD_BUTTON_X * GRID_CELL_WIDTH,
+            		LEADERBOARD_BUTTON_Y * GRID_CELL_HEIGHT);
 
             /*
              * outerBox.getChildren().add(new Text("Leaderboard"));
@@ -599,6 +532,30 @@ public class GameConstructor extends Application {
         // gc.fillText("Text centered on your Canvas", 10 * GRID_CELL_HEIGHT ,
         // 10 *
         // GRID_CELL_HEIGHT);
+        
+        if (this.hasLost || this.hasWon) {
+        	System.out.println("SHOW BUTTONS");
+        	//show exit and leaderboard buttons
+        	
+        	if (exitGameButtonHovered) {
+        		gc.drawImage(EXIT_BUTTON_HOVER,
+        				EXIT_BUTTON_X * GRID_CELL_WIDTH,
+        				EXIT_BUTTON_Y * GRID_CELL_HEIGHT);
+        	} else {
+        		gc.drawImage(EXIT_BUTTON_IMAGE,
+        				EXIT_BUTTON_X * GRID_CELL_WIDTH,
+        				EXIT_BUTTON_Y * GRID_CELL_HEIGHT);
+        	}
+        	//EXIT_BUTTON_HOVER
+        	
+        	//LEADERBOARD_BUTTON_HOVER
+        	
+        	//gc.drawImage(LEADERBOARD_BUTTON_IMAGE,
+        	//		EXIT_BUTTON_X * GRID_CELL_WIDTH,
+        	//		EXIT_BUTTON_Y * GRID_CELL_HEIGHT);
+        	
+        	
+        }
     }
 
     public void processKeyEvent(KeyEvent event) {
@@ -712,16 +669,16 @@ public class GameConstructor extends Application {
             // get the current user's maximum level
             // check if the level is equal to the current
             // get the max level in general
-
+            
             int usersCurrent = this.currentUser.getLevels();
 
-            if (usersCurrent == this.currentLevelNumber
+            System.out.println(currentLevelNumber);
+            
+            if (usersCurrent == currentLevelNumber
                     && usersCurrent < fetchLevels()) {
-                System.out.print("UPGRADE LEVEL ");
-                System.out.println("LEVEL");
-                System.out.println(this.currentLevelNumber + 1);
-                this.currentUser.overwriteLevel(this.currentLevelNumber + 1);
-            }
+                this.currentUser.overwriteLevel(currentLevelNumber + 1);
+                this.currentUser.setLevel(currentLevelNumber + 1);
+            } 
 
             this.tickTimeline.stop();
             this.hasWon = true;
@@ -977,11 +934,12 @@ public class GameConstructor extends Application {
             @Override
 
             public void handle(MouseEvent event) {
+            	int x = (int) (Math.floor((event.getSceneX()) / 50))
+                        + currentLevel.getOffsetX();
+                int y = (int) (Math.floor((event.getSceneY()) / 50))
+                        + currentLevel.getOffsetY();
+            	
                 if (isPaused) {
-                    int x = (int) (Math.floor((event.getSceneX()) / 50))
-                            + currentLevel.getOffsetX();
-                    int y = (int) (Math.floor((event.getSceneY()) / 50))
-                            + currentLevel.getOffsetY();
 
                     for (int i = QUIT_GAME_BUTTON_X
                             + currentLevel.getOffsetX(); i < (QUIT_GAME_BUTTON_X
@@ -1009,6 +967,19 @@ public class GameConstructor extends Application {
                     }
 
                     // check if the x and y is on a button
+                } else if (hasWon || hasLost) {
+                	for (int i = EXIT_BUTTON_X
+                            + currentLevel.getOffsetX(); i < (EXIT_BUTTON_X
+                                    + currentLevel.getOffsetX()
+                                    + EXIT_BUTTON_WIDTH); i++) {
+                        if (x == i && y == EXIT_BUTTON_Y
+                                + currentLevel.getOffsetY()) {
+                            // method for button click for quit;
+                            tickTimeline.stop();
+                            gameStage.close();
+                        }
+                    }
+                	
                 }
 
             }
@@ -1019,11 +990,12 @@ public class GameConstructor extends Application {
 
             public void handle(MouseEvent event) {
 
+            	int x = (int) (Math.floor((event.getSceneX()) / 50))
+                        + currentLevel.getOffsetX();
+                int y = (int) (Math.floor((event.getSceneY()) / 50))
+                        + currentLevel.getOffsetY();
+            	
                 if (isPaused) {
-                    int x = (int) (Math.floor((event.getSceneX()) / 50))
-                            + currentLevel.getOffsetX();
-                    int y = (int) (Math.floor((event.getSceneY()) / 50))
-                            + currentLevel.getOffsetY();
 
                     boolean isQuitHoverSave = false;
                     boolean isSaveHoverQuit = false;
@@ -1065,6 +1037,31 @@ public class GameConstructor extends Application {
                         saveGameButtonHovered = false;
                         drawGame();
                     }
+                } else if (hasWon || hasLost) {
+                    boolean isExitButtonHover = false;
+
+                    //leaderboardHovered
+                    for (int i = EXIT_BUTTON_X
+                            + currentLevel.getOffsetX(); i < EXIT_BUTTON_X
+                                    + currentLevel.getOffsetX()
+                                    + EXIT_BUTTON_WIDTH; i++) {
+                        if (x == i && y == EXIT_BUTTON_Y
+                                + currentLevel.getOffsetY()) {
+                            // method for button click;
+                        	isExitButtonHover = true;
+                        }
+                    }
+
+            
+                        
+                    if (isExitButtonHover) {
+                    	exitGameButtonHovered = true;
+                        drawGame();
+                    } else {
+                    	exitGameButtonHovered = false;
+                    	drawGame();
+                    }
+                    
                 }
 
             }
