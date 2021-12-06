@@ -62,7 +62,7 @@ public class RatGameApp extends Application {
     private static String currentSave = "";
 
     private static GameConstructor playGame;
-
+    
     private static LeaderboardDisplay testBoard;
 
     // List of pairs to be used when creating the menu, the pair contains the <text
@@ -290,10 +290,10 @@ public class RatGameApp extends Application {
         root.getChildren().add(message);
 
     }
-
+    
     public static void openLeaderboard() {
-        testBoard = new LeaderboardDisplay();
-        testBoard.startGame();
+    	testBoard = new LeaderboardDisplay();
+	    testBoard.startGame();
     }
 
     /**

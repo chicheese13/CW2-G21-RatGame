@@ -1,4 +1,3 @@
-
 /**
  * MOTDGetter2.java
  *
@@ -10,18 +9,13 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 
-/**
- * @author Josh and Lorenzo
- * @version 1.0
- *          Class made to connect to the web server and retrieve the message of
- *          the day
- */
 public class MOTDGetter {
 
     /**
-     * @return String the message of the day retrieved from the web server
+     * @return String
      */
     public static String getMessage() {
+        // TODO Auto-generated method stub
         try {
             return MOTDGetter();
         } catch (Exception e) {
@@ -31,13 +25,13 @@ public class MOTDGetter {
     }
 
     // declaring and initialising variables
-    static Character[] ALPHABET_ARRAY = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
-            'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+    static Character[] ALPHABET_ARRAY = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
+            'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
     static int ALPHABET_LENGTH = 26;
 
     /**
-     * @param URL the URL of the website to retrieve messages from
-     * @return String the puzzle string from the server response
+     * @param URL
+     * @return String
      * @throws Exception
      */
     // function which returns a String which was taken from a GET request of a web
@@ -56,7 +50,7 @@ public class MOTDGetter {
     }
 
     /**
-     * @return String The final output for message of the day
+     * @return String
      * @throws Exception
      */
     public static String MOTDGetter() throws Exception {
@@ -110,3 +104,4 @@ public class MOTDGetter {
     }
 
 }
+
