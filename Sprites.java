@@ -1,6 +1,11 @@
 import java.util.Hashtable;
 import javafx.scene.image.Image;
 
+/**
+ * Hash table that takes in a string and gives back an image
+ * @author Lewis
+ *
+ */
 public class Sprites {
 	// All Rats
 	protected final static Image BABY_RAT_SPRITE_EAST = new Image(
@@ -61,6 +66,9 @@ public class Sprites {
 
 	static Hashtable<String, Image> sprites = new Hashtable<String, Image>();
 
+	/**
+	 * Constructor. Sets the value for all the sprites in the hash table
+	 */
 	public Sprites() {
 		sprites.put("baby-rat-north", BABY_RAT_SPRITE_NORTH);
 		sprites.put("baby-rat-south", BABY_RAT_SPRITE_SOUTH);
@@ -168,6 +176,10 @@ public class Sprites {
 
 	}
 
+	/**
+	 * @param image sprite required
+	 * @return Sprite of requested object
+	 */
 	public Image getImage(String image) {
 		return sprites.get(image);
 	}
