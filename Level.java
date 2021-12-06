@@ -219,20 +219,51 @@ public class Level implements Serializable {
 		gameCounterDeathRat = itemInterval("DeathRat", this.itemManager, gameCounterDeathRat, ITEM_GAIN_INTERVAL_DEATHRAT);
 		gameCounterNoEntry = itemInterval("NoEntrySign", this.itemManager, gameCounterNoEntry, ITEM_GAIN_INTERVAL_NOENTRY);
 
-		for (int i = 0; i < renderRats.size(); i++) {
-			double xMinus = renderRats.get(i).getObjectPosition()[0].doubleValue() - 0.5;
-			double yMinus = renderRats.get(i).getObjectPosition()[1].doubleValue() - 0.5;
-			double xPlus = renderRats.get(i).getObjectPosition()[0].doubleValue() + 0.5;
-			double yPlus = renderRats.get(i).getObjectPosition()[1].doubleValue() + 0.5;
-			
-			//checking if the the render objects are both rats and are not the same rat.
-			for (int i2 = 0; i2 < renderRats.size(); i2++) {
-				boolean xCollide = false;
-				boolean yCollide = false;
+		
+		if (this.getGameStatus() == "inprogress") {
+			for (int i = 0; i < renderRats.size(); i++) {
+				double xMinus = renderRats.get(i).getObjectPosition()[0].doubleValue() - 0.5;
+				double yMinus = renderRats.get(i).getObjectPosition()[1].doubleValue() - 0.5;
+				double xPlus = renderRats.get(i).getObjectPosition()[0].doubleValue() + 0.5;
+				double yPlus = renderRats.get(i).getObjectPosition()[1].doubleValue() + 0.5;
 				
-				if (renderRats.get(i) != renderRats.get(i2)) {
+				//checking if the the render objects are both rats and are not the same rat.
+				for (int i2 = 0; i2 < renderRats.size(); i2++) {
+					boolean xCollide = false;
+					boolean yCollide = false;
+					
+					if (renderRats.get(i) != renderRats.get(i2)) {
+						double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
+						double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
+						if (compareX > xMinus && compareX < xPlus) {
+							xCollide = true;
+						}
+						if (compareY > yMinus && compareY < yPlus) {
+							yCollide = true;
+						}
+						if (xCollide == true && yCollide == true) {
+								((Rat) renderRats.get(i)).collision((Rat) renderRats.get(i2));
+						}
+					}
+				}
+			}
+			
+			System.out.println("IN PROGRESS COLLISIONS");
+			//Handles collisions between Items and Rats
+			for (int i = 0; i < renderItems.size(); i++) {
+				double xMinus = renderItems.get(i).getObjectPosition()[0].doubleValue() - 0.5;
+				double yMinus = renderItems.get(i).getObjectPosition()[1].doubleValue() - 0.5;
+				double xPlus = renderItems.get(i).getObjectPosition()[0].doubleValue() + 0.5;
+				double yPlus = renderItems.get(i).getObjectPosition()[1].doubleValue() + 0.5;
+				
+				//checking if the the render objects are both rats and are not the same rat.
+				for (int i2 = 0; i2 < renderRats.size(); i2++) {
+					
+					boolean xCollide = false;
+					boolean yCollide = false;	
 					double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
 					double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
+					
 					if (compareX > xMinus && compareX < xPlus) {
 						xCollide = true;
 					}
@@ -240,93 +271,66 @@ public class Level implements Serializable {
 						yCollide = true;
 					}
 					if (xCollide == true && yCollide == true) {
-							((Rat) renderRats.get(i)).collision((Rat) renderRats.get(i2));
-					}
-				}
-			}
-		}
-		
-		//Handles collisions between Items and Rats
-		for (int i = 0; i < renderItems.size(); i++) {
-			double xMinus = renderItems.get(i).getObjectPosition()[0].doubleValue() - 0.5;
-			double yMinus = renderItems.get(i).getObjectPosition()[1].doubleValue() - 0.5;
-			double xPlus = renderItems.get(i).getObjectPosition()[0].doubleValue() + 0.5;
-			double yPlus = renderItems.get(i).getObjectPosition()[1].doubleValue() + 0.5;
-			
-			//checking if the the render objects are both rats and are not the same rat.
-			for (int i2 = 0; i2 < renderRats.size(); i2++) {
-				
-				boolean xCollide = false;
-				boolean yCollide = false;	
-				double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
-				double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
-				
-				if (compareX > xMinus && compareX < xPlus) {
-					xCollide = true;
-				}
-				if (compareY > yMinus && compareY < yPlus) {
-					yCollide = true;
-				}
-				if (xCollide == true && yCollide == true) {
-					if (renderItems.get(i) instanceof RenderObject) {
-						((RenderObject) renderItems.get(i)).collision((Rat) renderRats.get(i2));
-					}
-				}
-			}
-		}
-		
-		
-		for (int i = 0; i < renderTempTiles.size(); i++) {
-			double xMinus = renderTempTiles.get(i).getObjectPosition()[0].doubleValue() - 0.5;
-			double yMinus = renderTempTiles.get(i).getObjectPosition()[1].doubleValue() - 0.5;
-			double xPlus = renderTempTiles.get(i).getObjectPosition()[0].doubleValue() + 0.5;
-			double yPlus = renderTempTiles.get(i).getObjectPosition()[1].doubleValue() + 0.5;
-			
-			for (int i2 = 0; i2 < renderRats.size(); i2++) {
-				
-				boolean xCollide = false;
-				boolean yCollide = false;	
-				double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
-				double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
-				
-				if (compareX > xMinus && compareX < xPlus) {
-					xCollide = true;
-				}
-				if (compareY > yMinus && compareY < yPlus) {
-					yCollide = true;
-				}
-				if (xCollide == true && yCollide == true) {
-					if (renderTempTiles.get(i) instanceof RenderObject) {
-						((RenderObject) renderTempTiles.get(i)).collision((Rat) renderRats.get(i2));
+						if (renderItems.get(i) instanceof RenderObject) {
+							((RenderObject) renderItems.get(i)).collision((Rat) renderRats.get(i2));
+						}
 					}
 				}
 			}
 			
-			for (int i2 = 0; i2 < renderItems.size(); i2++) {
-				//testLevel.getRenderObjects().get(i).getObjectPosition()[0]
+			
+			for (int i = 0; i < renderTempTiles.size(); i++) {
+				double xMinus = renderTempTiles.get(i).getObjectPosition()[0].doubleValue() - 0.5;
+				double yMinus = renderTempTiles.get(i).getObjectPosition()[1].doubleValue() - 0.5;
+				double xPlus = renderTempTiles.get(i).getObjectPosition()[0].doubleValue() + 0.5;
+				double yPlus = renderTempTiles.get(i).getObjectPosition()[1].doubleValue() + 0.5;
 				
-				boolean xCollide = false;
-				boolean yCollide = false;	
-				double compareX = renderItems.get(i2).getObjectPosition()[0].doubleValue();
-				double compareY = renderItems.get(i2).getObjectPosition()[1].doubleValue();
+				for (int i2 = 0; i2 < renderRats.size(); i2++) {
 					
-				if (compareX > xMinus && compareX < xPlus) {
-					xCollide = true;
+					boolean xCollide = false;
+					boolean yCollide = false;	
+					double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
+					double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
+					
+					if (compareX > xMinus && compareX < xPlus) {
+						xCollide = true;
+					}
+					if (compareY > yMinus && compareY < yPlus) {
+						yCollide = true;
+					}
+					if (xCollide == true && yCollide == true) {
+						if (renderTempTiles.get(i) instanceof RenderObject) {
+							((RenderObject) renderTempTiles.get(i)).collision((Rat) renderRats.get(i2));
+						}
+					}
 				}
 				
-				if (compareY > yMinus && compareY < yPlus) {
-					yCollide = true;
-				}
+				for (int i2 = 0; i2 < renderItems.size(); i2++) {
+					//testLevel.getRenderObjects().get(i).getObjectPosition()[0]
 					
-				if (xCollide == true && yCollide == true) {
-					if (renderItems.get(i2) instanceof Gas && (renderTempTiles.get(i) instanceof GasSpread) == false) {
-							//dissipate the gas.
-						((Gas) renderItems.get(i2)).instantDissapate();
+					boolean xCollide = false;
+					boolean yCollide = false;	
+					double compareX = renderItems.get(i2).getObjectPosition()[0].doubleValue();
+					double compareY = renderItems.get(i2).getObjectPosition()[1].doubleValue();
+						
+					if (compareX > xMinus && compareX < xPlus) {
+						xCollide = true;
+					}
 					
-					} else if ((renderItems.get(i2) instanceof Gas) == false && (renderItems.get(i2) instanceof Sterilisation) == false  && (renderTempTiles.get(i) instanceof Explosion) == true) {
-						this.despawnItem(((RenderObject) renderItems.get(i2)));
-					} else if ((renderItems.get(i2) instanceof Sterilisation) == true && (renderTempTiles.get(i) instanceof Explosion) == true) {
-						((Sterilisation) renderItems.get(i2)).instantRemove();
+					if (compareY > yMinus && compareY < yPlus) {
+						yCollide = true;
+					}
+						
+					if (xCollide == true && yCollide == true) {
+						if (renderItems.get(i2) instanceof Gas && (renderTempTiles.get(i) instanceof GasSpread) == false) {
+								//dissipate the gas.
+							((Gas) renderItems.get(i2)).instantDissapate();
+						
+						} else if ((renderItems.get(i2) instanceof Gas) == false && (renderItems.get(i2) instanceof Sterilisation) == false  && (renderTempTiles.get(i) instanceof Explosion) == true) {
+							this.despawnItem(((RenderObject) renderItems.get(i2)));
+						} else if ((renderItems.get(i2) instanceof Sterilisation) == true && (renderTempTiles.get(i) instanceof Explosion) == true) {
+							((Sterilisation) renderItems.get(i2)).instantRemove();
+						}
 					}
 				}
 			}

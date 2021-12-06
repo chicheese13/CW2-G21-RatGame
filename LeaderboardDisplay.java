@@ -1,3 +1,7 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -20,6 +24,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -49,6 +54,8 @@ public class LeaderboardDisplay extends Application {
 	// The width of the grid in number of cells.
 	private static final int GRID_WIDTH = 12;
 	
+	private int currentLevelNumber;
+	
 	// The canvas in the GUI. This needs to be a global variable
 	// (in this setup) as we need to access it in different methods.
 	// We could use FXML to place code in the controller instead.
@@ -74,6 +81,11 @@ public class LeaderboardDisplay extends Application {
 	 * Setup the new application.
 	 * @param primaryStage The stage that is to be used for the application.
 	 */
+	
+	public void setLevel(int level) {
+		this.currentLevelNumber = level;
+	}
+	
 	public void start(Stage primaryStage) {
 		// Load images. Note we use png images with a transparent background
 
@@ -85,7 +97,6 @@ public class LeaderboardDisplay extends Application {
 				
 		// Register an event handler for key presses.
 		// This causes the processKeyEvent method to be called each time a key is pressed.
-		scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> processKeyEvent(event));
 				
 		// Register a tick method to be called periodically.
 		// Make a new timeline with one keyframe that triggers the tick method every half a second.
@@ -105,6 +116,7 @@ public class LeaderboardDisplay extends Application {
 	/**
 	 * Process a key event due to a key being pressed, e.g., to move the player.
 	 * @param event The key event that was pressed.
+	 * @throws FileNotFoundException 
 	 */
 	public void processKeyEvent(KeyEvent event) {
 		// We change the behaviour depending on the actual key that was pressed.
@@ -127,9 +139,17 @@ public class LeaderboardDisplay extends Application {
 	
 	/**
 	 * Draw the game on the canvas.
+	 * @throws FileNotFoundException 
 	 */
 	public void drawGame() {
 		// Get the Graphic Context of the canvas. This is what we draw on.
+		Leaderboard getLeaderboad = new Leaderboard(this.currentLevelNumber);
+
+		// read in the file
+		String fileName = "src/scores/" + this.currentLevelNumber + ".txt";
+		String fileData = "";
+		File leaderboard = new File(fileName);
+
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		
 		// Clear canvas
@@ -141,7 +161,40 @@ public class LeaderboardDisplay extends Application {
 		
 		gc.drawImage(leaderboardBackground, 0, 0);
 		
+		gc.setFill(Color.BLACK);
 		
+		
+		gc.setFont(new Font("fonts/jj2.ttf", 15));
+		
+		try {
+			Scanner in = new Scanner(leaderboard);
+
+			while (in.hasNextLine()) {
+				fileData = fileData + in.nextLine();
+			}
+			
+			in.close();
+
+			String[] dataArray = fileData.split(",");
+
+			final int NAME_X = 120;
+			final int SCOERE_X = 1120;
+			final int START_Y = 135;
+			final int INCRIMENT_Y = 52;
+			int y = START_Y;
+			
+			for (int i = 0; i < dataArray.length; i++) {
+				String output = dataArray[i].split(" ")[0] + "           " + dataArray[i].split(" ")[1];
+				System.out.println(output);
+				if (Integer.parseInt(dataArray[i].split(" ")[1]) != -1) {
+					gc.fillText(dataArray[i].split(" ")[0], NAME_X, y);
+					gc.fillText(dataArray[i].split(" ")[1], SCOERE_X, y);
+					y = y + INCRIMENT_Y;
+				}
+			}
+		} catch (Exception e) {
+			
+		}
 	}
 	
 	/**
@@ -166,6 +219,7 @@ public class LeaderboardDisplay extends Application {
 		canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 		root.setCenter(canvas);
 			
+		
         
 		// Finally, return the border pane we built up.
         return root;
