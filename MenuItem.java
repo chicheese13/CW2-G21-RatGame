@@ -12,20 +12,19 @@ import javafx.scene.text.Text;
 /**
  * @author Joshua Hall, Lorenzo Labarta Arilla
  * @version 1.0
- *          manages the sterilization visualization.
+ *          manage the sterilization visualization.
  */
 public class MenuItem extends Pane {
 
     private Text text;
     /**
-     * properties that will modify the text when added.
+     * effects that will modify the text.
      */
     private Effect shadow = new DropShadow(5, Color.BLACK);
     private Effect blur = new BoxBlur(1, 1, 3);
 
     /**
-     * creates a new polygon, and its properties, that will be added to the
-     * children.
+     * create the area of the sterilization with its properties.
      * 
      * @param name
      */
@@ -35,7 +34,7 @@ public class MenuItem extends Pane {
         bg.setEffect(new GaussianBlur());
 
         /**
-         * changes the colour of the polygon when it is pressed.
+         * change the colour of the polygon when it is pressed.
          */
         bg.fillProperty()
                 .bind(Bindings.when(pressedProperty())
@@ -43,8 +42,8 @@ public class MenuItem extends Pane {
                         .otherwise(Color.color(0, 0, 0, 0.25)));
 
         /**
-         * sets text with @param name
-         * and adds the effects on it.
+         * set text with the @param name
+         * and add the effects on it.
          */
         text = new Text(name);
         text.setTranslateX(5);
@@ -59,8 +58,7 @@ public class MenuItem extends Pane {
     }
 
     /**
-     * method that allows to run it,with a lambda function, when you click with your
-     * mouse.
+     * method that allows to run it
      * 
      * @param action
      */
