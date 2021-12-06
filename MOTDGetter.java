@@ -13,7 +13,7 @@ import java.net.HttpURLConnection;
 /**
  * @author Josh and Lorenzo
  * @version 1.0 Class made to connect to the web server and retrieve the message
- * of the day
+ *          of the day
  */
 public class MOTDGetter {
 

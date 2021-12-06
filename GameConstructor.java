@@ -199,29 +199,29 @@ public class GameConstructor extends Application {
 	private int SAVE_GAME_BUTTON_Y = 5;
 	private int SAVE_GAME_BUTTON_WIDTH = 2;
 	private Sprites spriteLoader = new Sprites();
-	
+
 	public static int fetchLevels() {
-		//a list of levels in the levels folder,
-		//remove the .txt from the level name
-		//get the highest number level
-		
+		// a list of levels in the levels folder,
+		// remove the .txt from the level name
+		// get the highest number level
+
 		File[] directories = new File("src/Levels/").listFiles();
-		
+
 		int highestLevel = 0;
-		
+
 		for (int i = 0; i < directories.length; i++) {
-			String fileName = directories[i].getName().substring(0, directories[i].getName().length()-4);
-			
+			String fileName = directories[i].getName().substring(0, directories[i].getName().length() - 4);
+
 			if (Integer.parseInt(fileName) > highestLevel) {
 				highestLevel = Integer.parseInt(fileName);
 			}
 		}
-		
+
 		return highestLevel;
 	}
 
 	public GameConstructor(int levelNumber, Profile currentProfile, String saveFile) {
-		
+
 		this.currentLevelNumber = levelNumber;
 		this.currentUser = currentProfile;
 
@@ -295,11 +295,9 @@ public class GameConstructor extends Application {
 
 		}
 	}
-	
-	
 
 	public void startGame() {
-		
+
 		this.start(gameStage);
 	}
 
@@ -321,7 +319,6 @@ public class GameConstructor extends Application {
 		tickTimeline.setCycleCount(Animation.INDEFINITE);
 
 		tickTimeline.play();
-		
 
 		// this.levelMusic = new LevelMusic("level-one");
 
@@ -329,13 +326,13 @@ public class GameConstructor extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
 		primaryStage.show();
-		
-		//Close the game properly when they click the "X" in the corner
-		
-		primaryStage.setOnCloseRequest(e ->  {
+
+		// Close the game properly when they click the "X" in the corner
+
+		primaryStage.setOnCloseRequest(e -> {
 			primaryStage.close();
 			tickTimeline.stop();
-			
+
 		});
 	}
 
@@ -403,15 +400,17 @@ public class GameConstructor extends Application {
 
 		// we need to draw the tunnels
 
-		if (this.currentLevel.getRenderTilesAfter().size() > 0){
+		if (this.currentLevel.getRenderTilesAfter().size() > 0) {
 			for (int i = 0; i < this.currentLevel.getRenderTilesAfter().size(); i++) {
 				double x = this.currentLevel.getRenderTilesAfterPositions().get(i).getPosition()[0].doubleValue();
 				double y = this.currentLevel.getRenderTilesAfterPositions().get(i).getPosition()[1].doubleValue();
-				
-				gc.drawImage(currentLevel.getRenderTilesAfter().get(i).getImage(), (x * GRID_CELL_WIDTH) - (currentLevel.getOffsetX() * GRID_CELL_WIDTH), (y * GRID_CELL_HEIGHT) - (currentLevel.getOffsetY() * GRID_CELL_HEIGHT));
+
+				gc.drawImage(currentLevel.getRenderTilesAfter().get(i).getImage(),
+						(x * GRID_CELL_WIDTH) - (currentLevel.getOffsetX() * GRID_CELL_WIDTH),
+						(y * GRID_CELL_HEIGHT) - (currentLevel.getOffsetY() * GRID_CELL_HEIGHT));
 			}
 		}
-		
+
 		// draw availability spirte when dragging
 		if (showAvailableTile) {
 			gc.drawImage(availSprite, focusTileX * GRID_CELL_WIDTH, focusTileY * GRID_CELL_HEIGHT);
@@ -552,40 +551,40 @@ public class GameConstructor extends Application {
 	public void processKeyEvent(KeyEvent event) {
 		// We change the behaviour depending on the actual key that was pressed.
 		switch (event.getCode()) {
-		case RIGHT:
-			// Right key was pressed. So move the player right by one cell.
-			if (currentLevel.getOffsetX() < (currentLevel.getRenderTiles()[0].length)
-					- (CANVAS_WIDTH / GRID_CELL_WIDTH)) {
-				currentLevel.setOffsetX(currentLevel.getOffsetX() + 1);
-			}
-			break;
-		case UP:
-			if (currentLevel.getOffsetY() > 0) {
-				currentLevel.setOffsetY(currentLevel.getOffsetY() - 1);
-			}
-			break;
-		case DOWN:
-			if (currentLevel.getOffsetY() < (currentLevel.getRenderTiles().length)
-					- (CANVAS_HEIGHT / GRID_CELL_HEIGHT)) {
-				currentLevel.setOffsetY(currentLevel.getOffsetY() + 1);
-				;
-			}
-			break;
-		case LEFT:
-			if (currentLevel.getOffsetX() > 0) {
-				currentLevel.setOffsetX(currentLevel.getOffsetX() - 1);
-			}
-			break;
-		case ESCAPE:
-			String gameStatus = currentLevel.getGameStatus();
-			if (gameStatus == "inprogress") {
-				togglePause();
-				System.out.println("ESCAPE PRESSED");
-			}
-			break;
-		default:
-			// Do nothing for all other keys.
-			break;
+			case RIGHT:
+				// Right key was pressed. So move the player right by one cell.
+				if (currentLevel.getOffsetX() < (currentLevel.getRenderTiles()[0].length)
+						- (CANVAS_WIDTH / GRID_CELL_WIDTH)) {
+					currentLevel.setOffsetX(currentLevel.getOffsetX() + 1);
+				}
+				break;
+			case UP:
+				if (currentLevel.getOffsetY() > 0) {
+					currentLevel.setOffsetY(currentLevel.getOffsetY() - 1);
+				}
+				break;
+			case DOWN:
+				if (currentLevel.getOffsetY() < (currentLevel.getRenderTiles().length)
+						- (CANVAS_HEIGHT / GRID_CELL_HEIGHT)) {
+					currentLevel.setOffsetY(currentLevel.getOffsetY() + 1);
+					;
+				}
+				break;
+			case LEFT:
+				if (currentLevel.getOffsetX() > 0) {
+					currentLevel.setOffsetX(currentLevel.getOffsetX() - 1);
+				}
+				break;
+			case ESCAPE:
+				String gameStatus = currentLevel.getGameStatus();
+				if (gameStatus == "inprogress") {
+					togglePause();
+					System.out.println("ESCAPE PRESSED");
+				}
+				break;
+			default:
+				// Do nothing for all other keys.
+				break;
 		}
 
 		// Redraw game as the player may have moved.
@@ -649,23 +648,23 @@ public class GameConstructor extends Application {
 			}
 		} else if (gameStatus == "won") {
 			calculateTimePoints();
-			
-			//get the current user's maximum level
-			//check if the level is equal to the current
-			//get the max level in general
-			
+
+			// get the current user's maximum level
+			// check if the level is equal to the current
+			// get the max level in general
+
 			int usersCurrent = this.currentUser.getLevels();
-			
+
 			if (usersCurrent == this.currentLevelNumber && usersCurrent < fetchLevels()) {
 				System.out.print("UPGRADE LEVEL ");
 				System.out.println("LEVEL");
-				System.out.println(this.currentLevelNumber+1);
-				this.currentUser.overwriteLevel(this.currentLevelNumber+1);
+				System.out.println(this.currentLevelNumber + 1);
+				this.currentUser.overwriteLevel(this.currentLevelNumber + 1);
 			}
-			
+
 			this.tickTimeline.stop();
 			this.hasWon = true;
-			
+
 			drawGame();
 		} else if (gameStatus == "lost") {
 			// this.currentLeaderboard.run(this.currentUser.getName(),
@@ -730,8 +729,9 @@ public class GameConstructor extends Application {
 
 		System.out.println(this.currentLevel.getScore());
 	}
-	
-	public void dropOccured(DragEvent event, String itemType, Image itemImage, ImageView counter, ImageView draggableImage) {
+
+	public void dropOccured(DragEvent event, String itemType, Image itemImage, ImageView counter,
+			ImageView draggableImage) {
 		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
 		double y = (Math.floor((event.getY()) / 50)) + currentLevel.getOffsetY();
 
@@ -741,23 +741,31 @@ public class GameConstructor extends Application {
 			System.out.println("Amount is 0");
 		} else {
 			if (itemType == "Bomb") {
-				currentLevel.spawnItem(new Bomb(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+				currentLevel
+						.spawnItem(new Bomb(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
 			} else if (itemType == "Gas") {
-				currentLevel.spawnItem(new Gas(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+				currentLevel
+						.spawnItem(new Gas(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
 			} else if (itemType == "Poison") {
-				currentLevel.spawnItem(new Poison(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+				currentLevel.spawnItem(
+						new Poison(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
 			} else if (itemType == "NoEntrySign") {
-				currentLevel.spawnItem(new NoEntrySign(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+				currentLevel.spawnItem(
+						new NoEntrySign(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
 			} else if (itemType == "MGenderChange") {
-				currentLevel.spawnItem(new MaleSexChange(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+				currentLevel.spawnItem(
+						new MaleSexChange(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
 			} else if (itemType == "FGenderChange") {
-				currentLevel.spawnItem(new FemaleSexChange(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+				currentLevel.spawnItem(
+						new FemaleSexChange(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
 			} else if (itemType == "DeathRat") {
-				currentLevel.spawnItem(new DeathRat(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+				currentLevel.spawnItem(
+						new DeathRat(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
 			} else if (itemType == "Sterilisation") {
-				currentLevel.spawnItem(new Sterilisation(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+				currentLevel.spawnItem(
+						new Sterilisation(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
 			}
-			
+
 			items.tryReduceItem(itemType);
 			if (items.isItemDepleted(itemType)) {
 				counter.setImage(loadImage(items.getItemCount(itemType)));
@@ -765,8 +773,6 @@ public class GameConstructor extends Application {
 			}
 		}
 	}
-
-	
 
 	/**
 	 * Create the GUI.
@@ -798,12 +804,10 @@ public class GameConstructor extends Application {
 		toolbar.getChildren().add(draggableBombImage);
 		bombCounter.setImage(defaultCounter);
 		toolbar.getChildren().add(bombCounter);
-		
-		
 
 		draggableBombImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				if(!hasLost && !hasWon) {
+				if (!hasLost && !hasWon) {
 					// Mark the drag as started.
 					// We do not use the transfer mode (this can be used to indicate different forms
 					// of drags operations, for example, moving files or copying files).
@@ -814,15 +818,14 @@ public class GameConstructor extends Application {
 						db.setContent(content);
 
 						event.consume();
-					} 
+					}
 				}
-			} 
-				// We have to put some content in the clipboard of the drag event.
-				// We do not use this, but we could use it to store extra data if we wished.
-
-				// Consume the event. This means we mark it as dealt with.
 			}
-	);
+			// We have to put some content in the clipboard of the drag event.
+			// We do not use this, but we could use it to store extra data if we wished.
+
+			// Consume the event. This means we mark it as dealt with.
+		});
 
 		draggableGasImage.setImage(gas);
 		toolbar.getChildren().add(draggableGasImage);
@@ -831,26 +834,25 @@ public class GameConstructor extends Application {
 
 		draggableGasImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				if(!hasLost && !hasWon) {
+				if (!hasLost && !hasWon) {
 					if (items.isItemDepleted("Gas") == false) {
 						// Mark the drag as started.
 						// We do not use the transfer mode (this can be used to indicate different forms
 						// of drags operations, for example, moving files or copying files).
 						Dragboard db = draggableGasImage.startDragAndDrop(TransferMode.ANY);
-	
+
 						// We have to put some content in the clipboard of the drag event.
 						// We do not use this, but we could use it to store extra data if we wished.
 						ClipboardContent content = new ClipboardContent();
 						content.putString("Hello");
 						db.setContent(content);
-	
+
 						// Consume the event. This means we mark it as dealt with.
 						event.consume();
 					}
-					}
-				}	
+				}
 			}
-		);
+		});
 
 		draggablePoisonImage.setImage(poison);
 		toolbar.getChildren().add(draggablePoisonImage);
@@ -859,26 +861,25 @@ public class GameConstructor extends Application {
 
 		draggablePoisonImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				if(!hasLost && !hasWon) {
-				if (items.isItemDepleted("Poison") == false) {
-					// Mark the drag as started.
-					// We do not use the transfer mode (this can be used to indicate different forms
-					// of drags operations, for example, moving files or copying files).
-					Dragboard db = draggablePoisonImage.startDragAndDrop(TransferMode.ANY);
+				if (!hasLost && !hasWon) {
+					if (items.isItemDepleted("Poison") == false) {
+						// Mark the drag as started.
+						// We do not use the transfer mode (this can be used to indicate different forms
+						// of drags operations, for example, moving files or copying files).
+						Dragboard db = draggablePoisonImage.startDragAndDrop(TransferMode.ANY);
 
-					// We have to put some content in the clipboard of the drag event.
-					// We do not use this, but we could use it to store extra data if we wished.
-					ClipboardContent content = new ClipboardContent();
-					content.putString("Hello");
-					db.setContent(content);
+						// We have to put some content in the clipboard of the drag event.
+						// We do not use this, but we could use it to store extra data if we wished.
+						ClipboardContent content = new ClipboardContent();
+						content.putString("Hello");
+						db.setContent(content);
 
-					// Consume the event. This means we mark it as dealt with.
-					event.consume();
+						// Consume the event. This means we mark it as dealt with.
+						event.consume();
 					}
-				   }
 				}
 			}
-		);
+		});
 
 		canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -888,7 +889,8 @@ public class GameConstructor extends Application {
 					int x = (int) (Math.floor((event.getSceneX()) / 50)) + currentLevel.getOffsetX();
 					int y = (int) (Math.floor((event.getSceneY()) / 50)) + currentLevel.getOffsetY();
 
-					for (int i = QUIT_GAME_BUTTON_X + currentLevel.getOffsetX(); i < (QUIT_GAME_BUTTON_X + currentLevel.getOffsetX() + QUIT_GAME_BUTTON_WIDTH); i++) {
+					for (int i = QUIT_GAME_BUTTON_X + currentLevel.getOffsetX(); i < (QUIT_GAME_BUTTON_X
+							+ currentLevel.getOffsetX() + QUIT_GAME_BUTTON_WIDTH); i++) {
 						if (x == i && y == QUIT_GAME_BUTTON_Y + currentLevel.getOffsetY()) {
 							// method for button click for quit;
 							tickTimeline.stop();
@@ -896,7 +898,8 @@ public class GameConstructor extends Application {
 						}
 					}
 
-					for (int i = SAVE_GAME_BUTTON_X + currentLevel.getOffsetX(); i < SAVE_GAME_BUTTON_X + currentLevel.getOffsetX() + SAVE_GAME_BUTTON_WIDTH; i++) {
+					for (int i = SAVE_GAME_BUTTON_X + currentLevel.getOffsetX(); i < SAVE_GAME_BUTTON_X
+							+ currentLevel.getOffsetX() + SAVE_GAME_BUTTON_WIDTH; i++) {
 						if (x == i && y == SAVE_GAME_BUTTON_Y + currentLevel.getOffsetY()) {
 							// method for button click for quit;
 							// save code here
@@ -910,10 +913,10 @@ public class GameConstructor extends Application {
 
 			}
 		});
-		
+
 		canvas.setOnMouseMoved(new EventHandler<MouseEvent>() {
 			@Override
-			
+
 			public void handle(MouseEvent event) {
 
 				if (isPaused) {
@@ -923,14 +926,16 @@ public class GameConstructor extends Application {
 					boolean isQuitHoverSave = false;
 					boolean isSaveHoverQuit = false;
 
-					for (int i = QUIT_GAME_BUTTON_X + currentLevel.getOffsetX(); i < QUIT_GAME_BUTTON_X + currentLevel.getOffsetX() + QUIT_GAME_BUTTON_WIDTH; i++) {
+					for (int i = QUIT_GAME_BUTTON_X + currentLevel.getOffsetX(); i < QUIT_GAME_BUTTON_X
+							+ currentLevel.getOffsetX() + QUIT_GAME_BUTTON_WIDTH; i++) {
 						if (x == i && y == QUIT_GAME_BUTTON_Y + currentLevel.getOffsetY()) {
 							// method for button click;
 							isQuitHoverSave = true;
 						}
 					}
 
-					for (int i = SAVE_GAME_BUTTON_X + currentLevel.getOffsetX(); i < SAVE_GAME_BUTTON_X + currentLevel.getOffsetX() + SAVE_GAME_BUTTON_WIDTH; i++) {
+					for (int i = SAVE_GAME_BUTTON_X + currentLevel.getOffsetX(); i < SAVE_GAME_BUTTON_X
+							+ currentLevel.getOffsetX() + SAVE_GAME_BUTTON_WIDTH; i++) {
 						if (x == i && y == SAVE_GAME_BUTTON_Y + currentLevel.getOffsetY()) {
 							// method for button click;
 							isSaveHoverQuit = true;
@@ -963,24 +968,24 @@ public class GameConstructor extends Application {
 		toolbar.getChildren().add(signCounter);
 
 		draggableSignImage.setOnDragDetected(new EventHandler<MouseEvent>() {
-		
+
 			public void handle(MouseEvent event) {
-				if(!hasLost && !hasWon) {
+				if (!hasLost && !hasWon) {
 					if (items.isItemDepleted("NoEntrySign") == false) {
 						// Mark the drag as started.
 						// We do not use the transfer mode (this can be used to indicate different forms
 						// of drags operations, for example, moving files or copying files).
 						Dragboard db = draggableSignImage.startDragAndDrop(TransferMode.ANY);
-	
+
 						// We have to put some content in the clipboard of the drag event.
 						// We do not use this, but we could use it to store extra data if we wished.
 						ClipboardContent content = new ClipboardContent();
 						content.putString("Hello");
 						db.setContent(content);
-	
+
 						// Consume the event. This means we mark it as dealt with.
 						event.consume();
-					}	
+					}
 				}
 			}
 		});
@@ -992,21 +997,21 @@ public class GameConstructor extends Application {
 
 		draggableDeathRatImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				if(!hasLost && !hasWon) {
-				if (items.isItemDepleted("DeathRat") == false) {
-					// Mark the drag as started.
-					// We do not use the transfer mode (this can be used to indicate different forms
-					// of drags operations, for example, moving files or copying files).
-					Dragboard db = draggableDeathRatImage.startDragAndDrop(TransferMode.ANY);
+				if (!hasLost && !hasWon) {
+					if (items.isItemDepleted("DeathRat") == false) {
+						// Mark the drag as started.
+						// We do not use the transfer mode (this can be used to indicate different forms
+						// of drags operations, for example, moving files or copying files).
+						Dragboard db = draggableDeathRatImage.startDragAndDrop(TransferMode.ANY);
 
-					// We have to put some content in the clipboard of the drag event.
-					// We do not use this, but we could use it to store extra data if we wished.
-					ClipboardContent content = new ClipboardContent();
-					content.putString("Hello");
-					db.setContent(content);
+						// We have to put some content in the clipboard of the drag event.
+						// We do not use this, but we could use it to store extra data if we wished.
+						ClipboardContent content = new ClipboardContent();
+						content.putString("Hello");
+						db.setContent(content);
 
-					// Consume the event. This means we mark it as dealt with.
-					event.consume();
+						// Consume the event. This means we mark it as dealt with.
+						event.consume();
 					}
 				}
 			}
@@ -1019,21 +1024,21 @@ public class GameConstructor extends Application {
 
 		draggableFemaleSexChangerImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				if(!hasLost && !hasWon) {
-				if (items.isItemDepleted("FGenderChange") == false) {
-					// Mark the drag as started.
-					// We do not use the transfer mode (this can be used to indicate different forms
-					// of drags operations, for example, moving files or copying files).
-					Dragboard db = draggableFemaleSexChangerImage.startDragAndDrop(TransferMode.ANY);
+				if (!hasLost && !hasWon) {
+					if (items.isItemDepleted("FGenderChange") == false) {
+						// Mark the drag as started.
+						// We do not use the transfer mode (this can be used to indicate different forms
+						// of drags operations, for example, moving files or copying files).
+						Dragboard db = draggableFemaleSexChangerImage.startDragAndDrop(TransferMode.ANY);
 
-					// We have to put some content in the clipboard of the drag event.
-					// We do not use this, but we could use it to store extra data if we wished.
-					ClipboardContent content = new ClipboardContent();
-					content.putString("Hello");
-					db.setContent(content);
+						// We have to put some content in the clipboard of the drag event.
+						// We do not use this, but we could use it to store extra data if we wished.
+						ClipboardContent content = new ClipboardContent();
+						content.putString("Hello");
+						db.setContent(content);
 
-					// Consume the event. This means we mark it as dealt with.
-					event.consume();
+						// Consume the event. This means we mark it as dealt with.
+						event.consume();
 					}
 				}
 			}
@@ -1046,22 +1051,22 @@ public class GameConstructor extends Application {
 
 		draggableMaleSexChangerImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				if(!hasLost && !hasWon) {
-				if (items.isItemDepleted("MGenderChange") == false) {
-					// Mark the drag as started.
-					// We do not use the transfer mode (this can be used to indicate different forms
-					// of drags operations, for example, moving files or copying files).
-					Dragboard db = draggableMaleSexChangerImage.startDragAndDrop(TransferMode.ANY);
+				if (!hasLost && !hasWon) {
+					if (items.isItemDepleted("MGenderChange") == false) {
+						// Mark the drag as started.
+						// We do not use the transfer mode (this can be used to indicate different forms
+						// of drags operations, for example, moving files or copying files).
+						Dragboard db = draggableMaleSexChangerImage.startDragAndDrop(TransferMode.ANY);
 
-					// We have to put some content in the clipboard of the drag event.
-					// We do not use this, but we could use it to store extra data if we wished.
-					ClipboardContent content = new ClipboardContent();
-					content.putString("Hello");
-					db.setContent(content);
+						// We have to put some content in the clipboard of the drag event.
+						// We do not use this, but we could use it to store extra data if we wished.
+						ClipboardContent content = new ClipboardContent();
+						content.putString("Hello");
+						db.setContent(content);
 
-					// Consume the event. This means we mark it as dealt with.
-					event.consume();
-				} 
+						// Consume the event. This means we mark it as dealt with.
+						event.consume();
+					}
 
 				}
 			}
@@ -1074,22 +1079,22 @@ public class GameConstructor extends Application {
 
 		draggableSterilisationImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				if(!hasLost && !hasWon) {
-				if (items.isItemDepleted("Sterilisation") == false) {
-					// Mark the drag as started.
-					// We do not use the transfer mode (this can be used to indicate different forms
-					// of drags operations, for example, moving files or copying files).
-					Dragboard db = draggableSterilisationImage.startDragAndDrop(TransferMode.ANY);
+				if (!hasLost && !hasWon) {
+					if (items.isItemDepleted("Sterilisation") == false) {
+						// Mark the drag as started.
+						// We do not use the transfer mode (this can be used to indicate different forms
+						// of drags operations, for example, moving files or copying files).
+						Dragboard db = draggableSterilisationImage.startDragAndDrop(TransferMode.ANY);
 
-					// We have to put some content in the clipboard of the drag event.
-					// We do not use this, but we could use it to store extra data if we wished.
-					ClipboardContent content = new ClipboardContent();
-					content.putString("Hello");
-					db.setContent(content);
+						// We have to put some content in the clipboard of the drag event.
+						// We do not use this, but we could use it to store extra data if we wished.
+						ClipboardContent content = new ClipboardContent();
+						content.putString("Hello");
+						db.setContent(content);
 
-					// Consume the event. This means we mark it as dealt with.
-					event.consume();
-				} 
+						// Consume the event. This means we mark it as dealt with.
+						event.consume();
+					}
 
 				}
 			}
@@ -1170,47 +1175,48 @@ public class GameConstructor extends Application {
 		// things).
 		canvas.setOnDragDropped(new EventHandler<DragEvent>() {
 			public void handle(DragEvent event) {
-				
-				
+
 				// We call this method which is where the bulk of the behaviour takes place.
 				if (event.getGestureSource() == draggableBombImage) {
 					// Mark the drag event as acceptable by the canvas.
-					dropOccured(event, "Bomb", bomb, bombCounter,draggableBombImage);
+					dropOccured(event, "Bomb", bomb, bombCounter, draggableBombImage);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				} else if (event.getGestureSource() == draggableGasImage) {
 					// Mark the drag event as acceptable by the canvas.
-					dropOccured(event, "Gas", gas, gasCounter,draggableGasImage);
+					dropOccured(event, "Gas", gas, gasCounter, draggableGasImage);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				} else if (event.getGestureSource() == draggablePoisonImage) {
 					// Mark the drag event as acceptable by the canvas.
-					dropOccured(event, "Poison", poison, poisonCounter,draggablePoisonImage);
+					dropOccured(event, "Poison", poison, poisonCounter, draggablePoisonImage);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				} else if (event.getGestureSource() == draggableSignImage) {
 					// Mark the drag event as acceptable by the canvas.
-					dropOccured(event, "NoEntrySign", noEntrySign, signCounter,draggableSignImage);
+					dropOccured(event, "NoEntrySign", noEntrySign, signCounter, draggableSignImage);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				} else if (event.getGestureSource() == draggableDeathRatImage) {
 					// Mark the drag event as acceptable by the canvas.
-					dropOccured(event, "DeathRat", deathRat, deathRatCounter,draggableDeathRatImage);
+					dropOccured(event, "DeathRat", deathRat, deathRatCounter, draggableDeathRatImage);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				} else if (event.getGestureSource() == draggableFemaleSexChangerImage) {
 					// Mark the drag event as acceptable by the canvas.
-					dropOccured(event, "FGenderChange", femaleSexChanger, femaleCounter,draggableFemaleSexChangerImage);
+					dropOccured(event, "FGenderChange", femaleSexChanger, femaleCounter,
+							draggableFemaleSexChangerImage);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				} else if (event.getGestureSource() == draggableMaleSexChangerImage) {
 					// Mark the drag event as acceptable by the canvas.
-					dropOccured(event, "MGenderChange", maleSexChanger, maleCounter,draggableMaleSexChangerImage);
+					dropOccured(event, "MGenderChange", maleSexChanger, maleCounter, draggableMaleSexChangerImage);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				} else if (event.getGestureSource() == draggableSterilisationImage) {
 					// Mark the drag event as acceptable by the canvas.
-					dropOccured(event, "Sterilisation", sterilisation, sterilisationCounter,draggableSterilisationImage);
+					dropOccured(event, "Sterilisation", sterilisation, sterilisationCounter,
+							draggableSterilisationImage);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				}

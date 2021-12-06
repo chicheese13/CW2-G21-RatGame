@@ -4,7 +4,7 @@ import java.math.*;
  * @version 1.0
  * @author Dylan Lewis
  * 
- * GasSpread class, which generates toxic cloud on level
+ *         GasSpread class, which generates toxic cloud on level
  *
  */
 public class GasSpread extends RenderObject {
@@ -14,15 +14,16 @@ public class GasSpread extends RenderObject {
 
 	private int STOP_SPREAD_INTERVAL = 200;
 	private int tickCounter = 0;
-	
-	//tells which sprinkler releases the gas
+
+	// tells which sprinkler releases the gas
 	private Gas parentGas;
 
 	/**
 	 * Instantiates a new GasSpread
+	 * 
 	 * @param position
 	 * @param currentLevel
-	 * @param parent tells which sprinkler releases the gas
+	 * @param parent       tells which sprinkler releases the gas
 	 */
 	public GasSpread(Position position, Level currentLevel, Gas parent) {
 		this.objectPosition = position;

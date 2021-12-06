@@ -3,7 +3,7 @@
  * @version 1.0
  * @author Dylan Lewis
  * 
- * SterileRadius class, which makes rat in certain radius sterile
+ *         SterileRadius class, which makes rat in certain radius sterile
  *
  */
 public class SterileRadius extends RenderObject {
@@ -35,7 +35,7 @@ public class SterileRadius extends RenderObject {
 	public void collision(Object collidedObject) {
 
 	}
-	
+
 	/**
 	 * Method for sterilisation of rats, which step into radius
 	 */

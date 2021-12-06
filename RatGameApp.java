@@ -39,8 +39,9 @@ import javafx.util.Pair;
  * @author Josh and Lorenzo
  * @version 1.0
  * 
- * This class is the main class for the game. When running the game the main
- * method here will be run
+ *          This class is the main class for the game. When running the game the
+ *          main
+ *          method here will be run
  */
 public class RatGameApp extends Application {
 
@@ -502,7 +503,7 @@ public class RatGameApp extends Application {
      * writeToUserFile takes the newly created user profile and appends it to
      * the end of the users.txt file
      * 
-     * @param file the users.txt file
+     * @param file    the users.txt file
      * @param newUser the profile to be written to the file
      */
     private static void writeToUserFile(Profile newUser) {

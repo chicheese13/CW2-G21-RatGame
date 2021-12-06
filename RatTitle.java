@@ -6,7 +6,7 @@ import javafx.scene.text.Text;
 /**
  * @author Josh and Lorenzo
  * @version 1.0 A class to simplify construction of the title on the menu
- * screen.
+ *          screen.
  */
 public class RatTitle extends Pane {
     private Text text;
