@@ -1,2 +1,2 @@
-newUser 2 6
+newUser 3 6
 hello 7 7

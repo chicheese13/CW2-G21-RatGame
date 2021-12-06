@@ -405,6 +405,7 @@ public class RatGameApp extends Application {
                 possibleLevels.add(i);
             }
             ChoiceDialog<Integer> cd = new ChoiceDialog<>(1, possibleLevels);
+            
             cd.showAndWait();
             selectedLevel = cd.getSelectedItem();
             cd.hide();
