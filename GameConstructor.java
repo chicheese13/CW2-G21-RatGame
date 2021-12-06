@@ -400,6 +400,15 @@ public class GameConstructor extends Application {
 
 		// we need to draw the tunnels
 
+		if (this.currentLevel.getRenderTilesAfter().size() > 0){
+			for (int i = 0; i < this.currentLevel.getRenderTilesAfter().size(); i++) {
+				double x = this.currentLevel.getRenderTilesAfterPositions().get(i).getPosition()[0].doubleValue();
+				double y = this.currentLevel.getRenderTilesAfterPositions().get(i).getPosition()[1].doubleValue();
+				
+				gc.drawImage(currentLevel.getRenderTilesAfter().get(i).getImage(), (x * GRID_CELL_WIDTH) - (currentLevel.getOffsetX() * GRID_CELL_WIDTH), (y * GRID_CELL_HEIGHT) - (currentLevel.getOffsetY() * GRID_CELL_HEIGHT));
+			}
+		}
+		
 		// draw availability spirte when dragging
 		if (showAvailableTile) {
 			gc.drawImage(availSprite, focusTileX * GRID_CELL_WIDTH, focusTileY * GRID_CELL_HEIGHT);

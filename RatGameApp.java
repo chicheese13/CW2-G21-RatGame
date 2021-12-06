@@ -62,6 +62,8 @@ public class RatGameApp extends Application {
     private static String currentSave = "";
 
     private static GameConstructor playGame;
+    
+    private static LeaderboardDisplay testBoard;
 
     // List of pairs to be used when creating the menu, the pair contains the <text
     // to be displayed, and action to take>
@@ -70,6 +72,7 @@ public class RatGameApp extends Application {
             new Pair<String, Runnable>("Select User", RatGameApp::selectUser),
             new Pair<String, Runnable>("Create New User", RatGameApp::addUser),
             new Pair<String, Runnable>("Saves", RatGameApp::fetchSaves),
+            new Pair<String, Runnable>("Leaderboard", RatGameApp::openLeaderboard),
             new Pair<String, Runnable>("Delete Profile", RatGameApp::deleteProfile));
 
     private Pane root = new Pane();
@@ -286,6 +289,11 @@ public class RatGameApp extends Application {
 
         root.getChildren().add(message);
 
+    }
+    
+    public static void openLeaderboard() {
+    	testBoard = new LeaderboardDisplay();
+	    testBoard.startGame();
     }
 
     /**
