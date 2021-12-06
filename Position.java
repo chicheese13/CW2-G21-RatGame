@@ -39,8 +39,7 @@ public class Position implements Serializable {
 	 * @return 1D array consisting of x and y.
 	 */
 	public BigDecimal[] getPosition() {
-		BigDecimal retrunArray[] = { positionX, positionY };
-		return retrunArray;
+		return new BigDecimal[] { positionX, positionY };
 	}
 
 	/**
