@@ -2,13 +2,10 @@ import java.io.BufferedWriter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,8 +65,6 @@ public class RatGameApp extends Application {
     
     private static LeaderboardDisplay testBoard;
 
-    // private static File userFile = new File("src/users.txt");
-
     // List of pairs to be used when creating the menu, the pair contains the <text
     // to be displayed, and action to take>
     private List<Pair<String, Runnable>> menuData = Arrays.asList(
@@ -84,50 +79,62 @@ public class RatGameApp extends Application {
     private VBox menuBox = new VBox(-5);
     private Line line;
 
-    public static void deleteProfile() {
-    	 readUserFile(userFile);
-         if (profiles.isEmpty()) {
-             Alert alert = new Alert(AlertType.WARNING);
-             alert.setContentText("No users currently exist, please create a user before trying to proceed");
-             alert.show();
-         } else {
-             ChoiceDialog<Profile> cd = new ChoiceDialog<>(activeUser, profiles);
-             cd.showAndWait();
-             Profile deleteProfile;
-             deleteProfile = cd.getSelectedItem();
-             cd.hide();
-             
-             //delete the profile from the text file here, where user id is active profile id
-             for (int i = 0; i < profiles.size(); i++) {
-            	 if (profiles.get(i).getIdentifier() == deleteProfile.getIdentifier()) {
-            		 profiles.remove(i);
-            	 }
-             }
-             
-            PrintWriter userWrite;
-     		try {
-     			userWrite = new PrintWriter("src/users.txt");
-     			for (int i = 0; i < profiles.size(); i++) {
-     				//System.out.println(profiles.get(i).getName() + " " + profiles.get(i).getLevels() + " " + profiles.get(i).getIdentifier());
-     				userWrite.println(profiles.get(i).getName() + " " + profiles.get(i).getLevels() + " " + profiles.get(i).getIdentifier());
-     				//userWrite.println(profiles.get(i).toString());
-     			}
-     			
-     			userWrite.close();
-     			
-     			//delete the folder
-     			deleteSaveFolder(new File("src/saves/" + deleteProfile.getIdentifier() + "/"));
-     				
-     			
-     			System.out.println("src/saves/" + activeUser.getIdentifier() + "/");
-     			
-     		} catch (Exception e) {
-     			
-     		}
-         }
+    /**
+     * deleteProfile allows the user to select a profile to be deleted
+     */
+    private static void deleteProfile() {
+        readUserFile(userFile);
+        if (profiles.isEmpty()) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setContentText("No users currently exist, please create a user before trying to proceed");
+            alert.show();
+        } else {
+            ChoiceDialog<Profile> cd = new ChoiceDialog<>(activeUser, profiles);
+            cd.showAndWait();
+            Profile deleteProfile;
+            deleteProfile = cd.getResult();
+            cd.hide();
+
+            if (deleteProfile != null) {
+                // delete the profile from the text file here, where user id is active profile
+                // id
+                for (int i = 0; i < profiles.size(); i++) {
+                    if (profiles.get(i).getIdentifier() == deleteProfile.getIdentifier()) {
+                        profiles.remove(i);
+                    }
+                }
+
+                PrintWriter userWrite;
+                try {
+                    userWrite = new PrintWriter("src/users.txt");
+                    for (int i = 0; i < profiles.size(); i++) {
+                        // System.out.println(profiles.get(i).getName() + " " +
+                        // profiles.get(i).getLevels() + " " + profiles.get(i).getIdentifier());
+                        userWrite.println(profiles.get(i).getName() + " " + profiles.get(i).getLevels() + " "
+                                + profiles.get(i).getIdentifier());
+                        // userWrite.println(profiles.get(i).toString());
+                    }
+
+                    userWrite.close();
+
+                    // delete the folder
+                    deleteSaveFolder(new File("src/saves/" + deleteProfile.getIdentifier() + "/"));
+
+                    System.out.println("src/saves/" + activeUser.getIdentifier() + "/");
+
+                } catch (Exception e) {
+                    System.out.println("unable to find save files");
+                }
+            }
+
+        }
     }
 
-    public static void fetchSaves() {
+    /**
+     * fetchSaves retrieves all of the available save states for the selected
+     * player, allowing players to resume from a past save
+     */
+    private static void fetchSaves() {
         // if user is not signed in then display error, else check their saves.
         if (activeUser == null) {
             Alert alert = new Alert(AlertType.WARNING);
@@ -139,7 +146,7 @@ public class RatGameApp extends Application {
                 File folder = new File("src/saves/" + activeUser.getIdentifier() + "/");
                 File[] listOfFiles = folder.listFiles();
 
-                ArrayList<String> saveFiles = new ArrayList<String>();
+                ArrayList<String> saveFiles = new ArrayList<>();
 
                 try {
                     for (int i = 0; i < listOfFiles.length; i++) {
@@ -151,7 +158,7 @@ public class RatGameApp extends Application {
                     ChoiceDialog<String> cd = new ChoiceDialog<>("Select Save", saveFiles);
                     cd.showAndWait();
                     cd.hide();
-                    currentSave = cd.getSelectedItem();
+                    currentSave = cd.getResult();
                 } catch (Exception e) {
                     Alert alert = new Alert(AlertType.WARNING);
                     alert.setContentText("No Save files found for this account.");
@@ -159,7 +166,7 @@ public class RatGameApp extends Application {
                 }
 
             } finally {
-                if (currentSave != "") {
+                if (!"".equals(currentSave)) {
                     System.out.println(currentSave);
                     // grab the selected level from the txt file
                     try {
@@ -187,22 +194,26 @@ public class RatGameApp extends Application {
         }
 
     }
-    
-    
-    public static void deleteSaveFolder(File saveFolder) {
-    	//gets the list of files in the directory.
+
+    /**
+     * deleteSaveFolder is a utility method that deletes the folder of save files
+     * 
+     * @param saveFolder
+     */
+    private static void deleteSaveFolder(File saveFolder) {
+        // gets the list of files in the directory.
         File[] saveFolderContent = saveFolder.listFiles();
-        
-        //checks if the file is null, if not then loop through and remove the contents recursively
-        if (!(saveFolderContent == null)) {
-        	//goes through the contents of each child and call the method to delete them.
-        	for (int i = 0; i < saveFolderContent.length; i++) {
-        		deleteSaveFolder(saveFolderContent[i]);
-        	}
+
+        // checks if the file is null, if not then loop through and remove the contents
+        // recursively
+        if (saveFolderContent != null) {
+            // goes through the contents of each child and call the method to delete them.
+            for (int i = 0; i < saveFolderContent.length; i++) {
+                deleteSaveFolder(saveFolderContent[i]);
+            }
         }
         saveFolder.delete();
     }
-    	  
 
     /**
      * createContent is the method that populates the menu screen and begins the
@@ -261,7 +272,7 @@ public class RatGameApp extends Application {
     }
 
     /**
-     * addMOTD jsut retrieves the Message of the day from the server, adds it to the
+     * addMOTD just retrieves the Message of the day from the server, adds it to the
      * menu on the left side of the screen with text wrapping
      */
     private void addMOTD() {
@@ -365,7 +376,7 @@ public class RatGameApp extends Application {
         } else {
             ChoiceDialog<Profile> cd = new ChoiceDialog<>(activeUser, profiles);
             cd.showAndWait();
-            activeUser = cd.getSelectedItem();
+            activeUser = cd.getResult();
             cd.hide();
         }
 
@@ -378,22 +389,27 @@ public class RatGameApp extends Application {
     private static void addUser() {
         TextInputDialog tDialog = new TextInputDialog();
         tDialog.showAndWait();
-        String name = tDialog.getEditor().getText();
+        String name = tDialog.getResult();
 
-        // makes sure the user's name is not blank
-        if (name.replaceAll("\\s", "").length() > 0) {
-            Profile newProfile = new Profile(name, 1, -1);
-            writeToUserFile(newProfile);
-            createSaveDirectory(newProfile.getIdentifier());
-            tDialog.hide();
-        } else {
-            Alert alert = new Alert(AlertType.WARNING);
-            alert.setContentText("Name must not be empty!");
-            alert.show();
+        if (name != null) {
+            // makes sure the user's name is not blank
+            if (name.replaceAll("\\s", "").length() > 0) {
+                Profile newProfile = new Profile(name, 1, -1);
+                writeToUserFile(newProfile);
+                createSaveDirectory(newProfile.getIdentifier());
+                tDialog.hide();
+            } else {
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setContentText("Name must not be empty!");
+                alert.show();
+            }
         }
     }
 
-    public static void createSaveDirectory(int identifier) {
+    /**
+     * @param identifier
+     */
+    private static void createSaveDirectory(int identifier) {
         new File("src/saves/" + identifier + "/").mkdirs();
     }
 
@@ -413,14 +429,20 @@ public class RatGameApp extends Application {
                 possibleLevels.add(i);
             }
             ChoiceDialog<Integer> cd = new ChoiceDialog<>(1, possibleLevels);
+
             cd.showAndWait();
-            selectedLevel = cd.getSelectedItem();
-            
-            
+            selectedLevel = cd.getResult();
+            cd.hide();
             // launch game.
-            //System.out.println("Start the game here");
-            playGame = new GameConstructor(selectedLevel, activeUser, "");
-            playGame.startGame();	
+            System.out.println("selected level: " + selectedLevel);
+            if (selectedLevel != null) {
+                System.out.println("Start the game here");
+                playGame = new GameConstructor(selectedLevel, activeUser, "");
+                playGame.startGame();
+            } else {
+                System.out.println("Game start cancelled");
+            }
+
         }
     }
 
@@ -443,7 +465,6 @@ public class RatGameApp extends Application {
             }
             in.close();
         } catch (Exception e) {
-            // TODO: Catch exception
             System.out.println("File error");
         }
         profiles = tempProfiles;
@@ -462,15 +483,7 @@ public class RatGameApp extends Application {
                 PrintWriter out = new PrintWriter(bw)) {
             out.println(newUser.getAppendVersion());
         } catch (Exception e) {
-            // TODO: Catch exception
             System.out.println("HELLO");
-        }
-    }
-
-    private static void clearFile() {
-        try {
-            new FileWriter(userFile, false).close();
-        } catch (Exception e) { // TODO: handle exception
         }
     }
 
@@ -486,14 +499,14 @@ public class RatGameApp extends Application {
     }
 
     /**
-     * @return Profile
+     * @return Profile the currently selected user
      */
     public static Profile getActiveUser() {
         return activeUser;
     }
 
     /**
-     * @return Integer
+     * @return Integer the currently selected level
      */
     public static Integer getSelectedLevel() {
         return selectedLevel;
@@ -505,10 +518,10 @@ public class RatGameApp extends Application {
     public static void main(String[] args) {
         readUserFile(userFile);
         launch(args);
-        
+
         activeUser = new Profile("newUser", 0, 6);
-        
+
         activeUser.overwriteLevel(3);
-        
+
     }
 }
