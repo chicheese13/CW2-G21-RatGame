@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  * @version 3.0
  * @author Armand Dorosz, Callum Young, Dylan Lewis
  * 
- *         Bomb class, which generates ready instance of the bomb, which can be
+ *         Bomb class, which generates ready instance of the bomb, which is
  *         placed on the level
  */
 public class Bomb extends RenderObject {
@@ -28,7 +28,7 @@ public class Bomb extends RenderObject {
 	private boolean timerStarted = false;
 
 	/**
-	 * Bomb constructor
+	 * Instantiates a new bomb
 	 * 
 	 * @param objectPosition
 	 * @param currentLevel
@@ -62,7 +62,7 @@ public class Bomb extends RenderObject {
 	 * Method for loading the animation sprites
 	 * 
 	 * @param delayedPictureNumber
-	 * @returnname of the next animation
+	 * @return name of the next animation
 	 */
 	private String loadDelayImage(int delayedPictureNumber) {
 		String delayBomb = "bomb-delayed" + String.valueOf(delayedPictureNumber);
@@ -108,13 +108,8 @@ public class Bomb extends RenderObject {
 		}
 	}
 
-	/**
-	 * Method for destroying items, which are in bomb explosion radius
-	 */
 	public void collision(Object collidedObject) {
-		if (collidedObject instanceof Explosion) {
-			this.currentLevel.despawnItem(this);
-		}
+
 	}
 
 	/**
