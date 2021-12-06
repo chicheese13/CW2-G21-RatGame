@@ -1,4 +1,5 @@
 import javafx.scene.image.Image;
+
 /**
  * @version 2.0
  * @author Armand Dorosz, Callum Young, Dylan Lewis
@@ -10,11 +11,12 @@ import javafx.scene.image.Image;
  */
 
 public class RenderTile {
-	
+
 	private Image renderImage;
 
 	/**
 	 * Method for rendering the tile Image provided with string
+	 * 
 	 * @param imageText
 	 */
 	public RenderTile(String imageText) {

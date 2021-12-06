@@ -135,17 +135,12 @@ public class Profile implements Serializable {
         }
 
         // re write the users to the text file
-        PrintWriter userWrite;
-        try {
-            userWrite = new PrintWriter("src/users.txt");
+        try (PrintWriter userWrite = new PrintWriter("src/users.txt");) {
+
             for (int i = 0; i < tempProfiles.size(); i++) {
-                // System.out.println(profiles.get(i).getName() + " " +
-                // profiles.get(i).getLevels() + " " +
-                // profiles.get(i).getIdentifier());
                 userWrite.println(tempProfiles.get(i).getName() + " "
                         + tempProfiles.get(i).getLevels() + " "
                         + tempProfiles.get(i).getIdentifier());
-                // userWrite.println(profiles.get(i).toString());
             }
 
             userWrite.close();

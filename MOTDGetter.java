@@ -67,7 +67,6 @@ public class MOTDGetter {
         try {
             char[] puzzleCharacters = getRequest(
                     "http://cswebcat.swansea.ac.uk/puzzle").toCharArray();
-            // char[] puzzleCharacters = {'C', 'A', 'B'};
             int alphabetIndex = -1;
             // go through each character, plus or minusing the letters based on
             // odd and even

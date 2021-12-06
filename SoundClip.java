@@ -12,7 +12,7 @@ public class SoundClip implements Serializable {
 	private File currentSound;
 	private final String FILE_DIRECTORY_START = "src/Sounds/";
 	private String soundName;
-	transient private Clip playClip;
+	private transient Clip playClip;
 	private Level currentLevel;
 	private boolean serialized;
 	private int duration;
@@ -70,7 +70,7 @@ public class SoundClip implements Serializable {
 				playClip.setFramePosition(this.duration);
 				playClip.start();
 			} catch (Exception e) {
-
+				System.out.println("unable to find sound file");
 			}
 			this.serialized = false;
 		} else {
