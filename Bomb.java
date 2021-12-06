@@ -19,13 +19,24 @@ public class Bomb extends RenderObject {
 	/**
 	 * Attributes helping with animation of the bomb
 	 */
-	private final int NUMBER_OF_BOMB_FRAMES = 17;
+	private final int NUMBER_OF_BOMB_SPRITES = 17;
 	private final int EXPLOSION_FRAME = 6;
+	
+	// time in ms to start the bomb
+	private final int INITIALIZE_BOMB = 4000;
+	
+	// indicator of number of ticks required to load new image
+	private final int ANIMATION_SLOWER = 3;
+	
+	// variable, which helps to adjust ticks to real time
+	private final double TICK_ADJUSTER = 12.5;
+	
 	private double tickCounter = 0;
 	private double delayCount = 0;
 	private int pictureNumber = 1;
 	private int delayedPictureNumber = 4;
 	private boolean timerStarted = false;
+
 
 	/**
 	 * Instantiates a new bomb
@@ -86,21 +97,21 @@ public class Bomb extends RenderObject {
 				}
 			}
 
-			delayCount = delayCount + 12.5;
+			delayCount = delayCount + TICK_ADJUSTER;
 
-			if (delayCount >= 4000) {
+			if (delayCount >= INITIALIZE_BOMB) {
 				startTimer();
 				timerStarted = true;
 			}
 		} else {
-			if ((tickCounter == 3)) {
+			if ((tickCounter == ANIMATION_SLOWER)) {
 				tickCounter = 0;
 				if (pictureNumber == EXPLOSION_FRAME) {
 					explode();
 					this.currentLevel.spawnSound("Explosion");
 				}
 				this.renderSprite = loadImage(pictureNumber);
-				if (pictureNumber < NUMBER_OF_BOMB_FRAMES) {
+				if (pictureNumber < NUMBER_OF_BOMB_SPRITES) {
 					pictureNumber++;
 				}
 			}

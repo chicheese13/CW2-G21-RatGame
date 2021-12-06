@@ -10,7 +10,8 @@ import java.math.BigDecimal;
  */
 public class Sterilisation extends RenderObject {
 
-	private int STERILE_DURATION = 200;
+	private final int STERILE_DURATION = 200;
+	private final int RADIUS = 3;
 	private int tickCounter = 0;
 
 	/**
@@ -32,8 +33,8 @@ public class Sterilisation extends RenderObject {
 		this.currentLevel.spawnSound("Syringe");
 
 		// create sterile tile objects
-		for (int i = ((int) startX); i < startX + 3; i++) {
-			for (int i2 = ((int) startY); i2 < startY + 3; i2++) {
+		for (int i = ((int) startX); i < startX + RADIUS; i++) {
+			for (int i2 = ((int) startY); i2 < startY + RADIUS; i2++) {
 				if (i == startX && i2 == startY) {
 					this.currentLevel
 							.spawnTempTile(new SterileRadius(new Position(new BigDecimal(i), new BigDecimal(i2)),
