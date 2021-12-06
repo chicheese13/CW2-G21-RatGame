@@ -359,7 +359,7 @@ public class RatGameApp extends Application {
         } else {
             ChoiceDialog<Profile> cd = new ChoiceDialog<>(activeUser, profiles);
             cd.showAndWait();
-            activeUser = cd.getSelectedItem();
+            activeUser = cd.getResult();
             cd.hide();
         }
 
