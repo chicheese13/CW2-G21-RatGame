@@ -72,7 +72,7 @@ public class Gas extends RenderObject {
 	/**
 	 * Method for stopping the spread of gas, if sprinkler gets broken by bomb
 	 */
-	public void instantDissapate() {
+	public void instantDissipate() {
 		this.tickCounter = STOP_SPREAD_INTERVAL;
 		this.lingerCounter = LINGER_LIMIT;
 		System.out.println("STOP SPREAD");
