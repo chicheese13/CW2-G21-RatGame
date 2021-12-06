@@ -65,6 +65,8 @@ public class RatGameApp extends Application {
     private static String currentSave = "";
 
     private static GameConstructor playGame;
+    
+    private static LeaderboardDisplay testBoard;
 
     // private static File userFile = new File("src/users.txt");
 
@@ -75,6 +77,7 @@ public class RatGameApp extends Application {
             new Pair<String, Runnable>("Select User", RatGameApp::selectUser),
             new Pair<String, Runnable>("Create New User", RatGameApp::addUser),
             new Pair<String, Runnable>("Saves", RatGameApp::fetchSaves),
+            new Pair<String, Runnable>("Leaderboard", RatGameApp::openLeaderboard),
             new Pair<String, Runnable>("Delete Profile", RatGameApp::deleteProfile));
 
     private Pane root = new Pane();
@@ -276,6 +279,11 @@ public class RatGameApp extends Application {
         root.getChildren().add(message);
 
     }
+    
+    public static void openLeaderboard() {
+    	testBoard = new LeaderboardDisplay();
+	    testBoard.startGame();
+    }
 
     /**
      * addLine creates the line to the left of the menu.
@@ -407,9 +415,10 @@ public class RatGameApp extends Application {
             ChoiceDialog<Integer> cd = new ChoiceDialog<>(1, possibleLevels);
             cd.showAndWait();
             selectedLevel = cd.getSelectedItem();
-            cd.hide();
+            
+            
             // launch game.
-            System.out.println("Start the game here");
+            //System.out.println("Start the game here");
             playGame = new GameConstructor(selectedLevel, activeUser, "");
             playGame.startGame();	
         }

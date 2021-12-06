@@ -10,6 +10,7 @@ public class Profile implements Serializable{
     private int unlockedTo;
     private int userIdentifier;
     private static File userFile = new File("src/users.txt");
+    
 
     public Profile(String playerName, int unlockedTo, int uniqueID) {
         this.playerName = playerName;
