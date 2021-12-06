@@ -12,8 +12,11 @@ import javafx.scene.text.Text;
 /**
  * @author Joshua Hall, Lorenzo Labarta Arilla 
  * @version 1.0
+<<<<<<< HEAD
  * 
  * manages the sterilization visualization.
+=======
+>>>>>>> parent of acd5812 (Revert "Added and improved javadocs")
  */
 public class MenuItem extends Pane {
 
