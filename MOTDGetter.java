@@ -13,7 +13,7 @@ import java.net.HttpURLConnection;
 /**
  * @author Josh and Lorenzo
  * @version 1.0 Class made to connect to the web server and retrieve the message
- * of the day
+ *          of the day
  */
 public class MOTDGetter {
 
@@ -67,7 +67,6 @@ public class MOTDGetter {
         try {
             char[] puzzleCharacters = getRequest(
                     "http://cswebcat.swansea.ac.uk/puzzle").toCharArray();
-            // char[] puzzleCharacters = {'C', 'A', 'B'};
             int alphabetIndex = -1;
             // go through each character, plus or minusing the letters based on
             // odd and even
