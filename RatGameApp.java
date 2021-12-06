@@ -92,7 +92,7 @@ public class RatGameApp extends Application {
             ChoiceDialog<Profile> cd = new ChoiceDialog<>(activeUser, profiles);
             cd.showAndWait();
             Profile deleteProfile;
-            deleteProfile = cd.getSelectedItem();
+            deleteProfile = cd.getResult();
             cd.hide();
 
             // delete the profile from the text file here, where user id is active profile
@@ -151,7 +151,7 @@ public class RatGameApp extends Application {
                     ChoiceDialog<String> cd = new ChoiceDialog<>("Select Save", saveFiles);
                     cd.showAndWait();
                     cd.hide();
-                    currentSave = cd.getSelectedItem();
+                    currentSave = cd.getResult();
                 } catch (Exception e) {
                     Alert alert = new Alert(AlertType.WARNING);
                     alert.setContentText("No Save files found for this account.");
