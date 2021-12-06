@@ -29,7 +29,7 @@ public class Poison extends RenderObject {
 	 */
 	private void killRat(NormalRat rat) {
 		if (rat instanceof NormalRat) {
-			((NormalRat) rat).ratDeath();
+			(rat).ratDeath();
 		}
 	}
 
