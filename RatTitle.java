@@ -1,6 +1,7 @@
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 /**
@@ -16,7 +17,8 @@ public class RatTitle extends Pane {
      */
     public RatTitle(String title) {
         text = new Text(title);
-        text.setFont(text.getFont().font(40));
+        text.getFont();
+		text.setFont(Font.font(40));
         text.setFill(Color.LIGHTGRAY);
         text.setEffect(new DropShadow(30, Color.BLACK));
 
