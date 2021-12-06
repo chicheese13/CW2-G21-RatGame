@@ -9,7 +9,16 @@ import java.util.*;
  */
 public class ItemManager {
 
-	Hashtable<String, Integer> inventory = new Hashtable<String, Integer>();
+	private static final String BOMB_STR = "Bomb";
+	private static final String POISON_STR = "Poison";
+	private static final String GAS_STR = "Gas";
+	private static final String STERILISATION_STR = "Sterilisation";
+	private static final String MGENDERCHANGE_STR = "MGenderChange";
+	private static final String FGENDERCHANGE_STR = "FGenderChange";
+	private static final String DEATHRAT_STR = "DeathRat";
+	private static final String NOENTRYSIGN_STR = "NoEntrySign";
+
+	Hashtable<String, Integer> inventory = new Hashtable<>();
 
 	/**
 	 * Constructs an ItemManager with items and their amount
@@ -25,26 +34,26 @@ public class ItemManager {
 	 */
 	public ItemManager(int bomb, int poison, int gas, int sterilisation,
 			int mchange, int fchange, int deathrat, int noentry) {
-		inventory.put("Bomb", bomb);
-		inventory.put("Poison", poison);
-		inventory.put("Gas", gas);
-		inventory.put("Sterilisation", sterilisation);
-		inventory.put("MGenderChange", mchange);
-		inventory.put("FGenderChange", fchange);
-		inventory.put("DeathRat", deathrat);
-		inventory.put("NoEntrySign", noentry);
+		inventory.put(BOMB_STR, bomb);
+		inventory.put(POISON_STR, poison);
+		inventory.put(GAS_STR, gas);
+		inventory.put(STERILISATION_STR, sterilisation);
+		inventory.put(MGENDERCHANGE_STR, mchange);
+		inventory.put(FGENDERCHANGE_STR, fchange);
+		inventory.put(DEATHRAT_STR, deathrat);
+		inventory.put(NOENTRYSIGN_STR, noentry);
 	}
 
 	// Refills all items
 	public void refillAll() {
-		inventory.replace("Bomb", 4);
-		inventory.replace("Poison", 4);
-		inventory.replace("Gas", 4);
+		inventory.replace(BOMB_STR, 4);
+		inventory.replace(POISON_STR, 4);
+		inventory.replace(GAS_STR, 4);
 		inventory.replace("Sterile", 4);
-		inventory.replace("MGenderChange", 4);
-		inventory.replace("FGenderChange", 4);
-		inventory.replace("DeathRat", 4);
-		inventory.replace("NoEntrySign", 4);
+		inventory.replace(MGENDERCHANGE_STR, 4);
+		inventory.replace(FGENDERCHANGE_STR, 4);
+		inventory.replace(DEATHRAT_STR, 4);
+		inventory.replace(NOENTRYSIGN_STR, 4);
 	}
 
 	/**
@@ -73,11 +82,7 @@ public class ItemManager {
 	 * @return the boolean value of whether the item chosen is full
 	 */
 	public boolean isItemFull(String itemType) {
-		if ((this.inventory.get(itemType)) == 4) {
-			return true;
-		} else {
-			return false;
-		}
+		return ((this.inventory.get(itemType)) == 4);
 	}
 
 	/**
@@ -87,11 +92,7 @@ public class ItemManager {
 	 * @return the boolean value of whether the item chosen is depleted
 	 */
 	public boolean isItemDepleted(String itemType) {
-		if ((this.inventory.get(itemType)) == 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return ((this.inventory.get(itemType)) == 0);
 	}
 
 	/**
@@ -127,12 +128,12 @@ public class ItemManager {
 	 * @return the string of item counts
 	 */
 	public String printItems() {
-		return (inventory.get("Bomb") + " " + inventory.get("Poison") + " "
-				+ inventory.get("Gas") + " " + inventory.get("Sterilisation")
-				+ " " + inventory.get("MGenderChange") + " "
-				+ inventory.get("FGenderChange") + " "
-				+ inventory.get("DeathRat") + " "
-				+ inventory.get("NoEntrySign"));
+		return (inventory.get(BOMB_STR) + " " + inventory.get(POISON_STR) + " "
+				+ inventory.get(GAS_STR) + " " + inventory.get(STERILISATION_STR)
+				+ " " + inventory.get(MGENDERCHANGE_STR) + " "
+				+ inventory.get(FGENDERCHANGE_STR) + " "
+				+ inventory.get(DEATHRAT_STR) + " "
+				+ inventory.get(NOENTRYSIGN_STR));
 
 	}
 }
