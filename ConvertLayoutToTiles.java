@@ -1,12 +1,29 @@
 import java.util.ArrayList;
 import java.math.*;
 
+/**
+ * @version 1.0
+ * @author Dylan Lewis
+ * 
+ *  ConverLayoutToTiles class, which decodes string input and converts it into tiles
+ *
+ */
 public class ConvertLayoutToTiles {
+
+	/**
+	 * Creating arrays for the tiles and afterTiles. 
+	 * The afterTiles are second layer and are covering whatsever lays below them.
+	 */
 	private RenderTile[][] tiles;
 
 	private ArrayList<RenderTile> afterTiles = new ArrayList<>();
 	private ArrayList<Position> afterTilesPositon = new ArrayList<>();
 
+	/**
+	 * Constructor, which initiates converting string to tiles
+	 * 
+	 * @param tiles
+	 */
 	public ConvertLayoutToTiles(char[][] tiles) {
 		this.tiles = convertTiles(tiles);
 	}
@@ -15,6 +32,14 @@ public class ConvertLayoutToTiles {
 		return this.tiles;
 	}
 
+	/**
+	 * Method which systematically appends new strings based on tile directions
+	 * accessibility to decode neccesary tile sprite. 
+	 * It constructs the final lookout of the level
+	 * 
+	 * @param tileArray
+	 * @return
+	 */
 	public RenderTile[][] convertTiles(char[][] tileArray) {
 		RenderTile[][] returnArray = new RenderTile[tileArray.length][tileArray[0].length];
 		// probably organise the images into groups, top, left, bottom, right.
@@ -56,24 +81,20 @@ public class ConvertLayoutToTiles {
 				// check the surrounding tiles.
 				if (tileArray[y][x] == 'P') {
 					// check top
-					if (y > 1 && (tileArray[y - 1][x] == 'T'
-							|| tileArray[y - 1][x] == 'P')) {
+					if (y > 1 && (tileArray[y - 1][x] == 'T' || tileArray[y - 1][x] == 'P')) {
 						isTop = true;
 					}
 					// check left
-					if (x > 0 && (tileArray[y][x - 1] == 'T'
-							|| tileArray[y][x - 1] == 'P')) {
+					if (x > 0 && (tileArray[y][x - 1] == 'T' || tileArray[y][x - 1] == 'P')) {
 						isLeft = true;
 					}
 					// check right
-					if (x < tileArray[y].length - 1 && (tileArray[y][x + 1] == 'T'
-							|| tileArray[y][x + 1] == 'P')) {
+					if (x < tileArray[y].length - 1 && (tileArray[y][x + 1] == 'T' || tileArray[y][x + 1] == 'P')) {
 
 						isRight = true;
 					}
 
-					if (y < tileArray.length - 1 && (tileArray[y + 1][x] == 'T'
-							|| tileArray[y + 1][x] == 'P')) {
+					if (y < tileArray.length - 1 && (tileArray[y + 1][x] == 'T' || tileArray[y + 1][x] == 'P')) {
 						isBottom = true;
 					}
 				}
@@ -127,8 +148,7 @@ public class ConvertLayoutToTiles {
 					if (isTunnel) {
 						fetchString = fetchString + "tunnel";
 						afterTiles.add(new RenderTile(fetchString + "tr.png"));
-						afterTilesPositon.add(new Position(new BigDecimal(x),
-								new BigDecimal(y)));
+						afterTilesPositon.add(new Position(new BigDecimal(x), new BigDecimal(y)));
 					}
 
 					fetchString = fetchString + ".png";
