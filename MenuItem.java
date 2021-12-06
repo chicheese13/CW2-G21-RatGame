@@ -21,8 +21,10 @@ public class MenuItem extends Pane {
         bg.setStroke(Color.color(1, 1, 1, 0.9));
         bg.setEffect(new GaussianBlur());
 
-        bg.fillProperty().bind(Bindings.when(pressedProperty()).then(Color.color(0, 0, 0, 0.75))
-                .otherwise(Color.color(0, 0, 0, 0.25)));
+        bg.fillProperty()
+                .bind(Bindings.when(pressedProperty())
+                        .then(Color.color(0, 0, 0, 0.75))
+                        .otherwise(Color.color(0, 0, 0, 0.25)));
 
         text = new Text(name);
         text.setTranslateX(5);
@@ -30,7 +32,8 @@ public class MenuItem extends Pane {
         text.setFont(Font.font(14));
         text.setFill(Color.WHITE);
 
-        text.effectProperty().bind(Bindings.when(hoverProperty()).then(shadow).otherwise(blur));
+        text.effectProperty().bind(
+                Bindings.when(hoverProperty()).then(shadow).otherwise(blur));
 
         getChildren().addAll(bg, text);
     }

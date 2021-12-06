@@ -8,7 +8,7 @@ import java.util.Scanner;
  * @author Josh and Lorenzo
  * @version 1.0
  * 
- *          class to represent the profiles used when playing the game
+ * class to represent the profiles used when playing the game
  */
 public class Profile implements Serializable {
 
@@ -20,7 +20,7 @@ public class Profile implements Serializable {
     /**
      * @param playerName The name of the player
      * @param unlockedTo The maximum level that player is able to play
-     * @param uniqueID   The unique ID of the profile
+     * @param uniqueID The unique ID of the profile
      */
     public Profile(String playerName, int unlockedTo, int uniqueID) {
         this.playerName = playerName;
@@ -33,7 +33,8 @@ public class Profile implements Serializable {
                 while (in.hasNextLine()) {
                     String text = in.nextLine();
                     String[] details = text.split(" ");
-                    Profile profile = new Profile(details[0], Integer.parseInt(details[1]),
+                    Profile profile = new Profile(details[0],
+                            Integer.parseInt(details[1]),
                             Integer.parseInt(details[2]));
                     tempProfiles.add(profile);
                 }
@@ -78,7 +79,8 @@ public class Profile implements Serializable {
     }
 
     /**
-     * increments the maximum level available up to the number of available levels
+     * increments the maximum level available up to the number of available
+     * levels
      */
     public void beatLevel() {
         if (unlockedTo < 3) {
@@ -88,7 +90,7 @@ public class Profile implements Serializable {
 
     /**
      * @return String the version of the profile that is used to append onto the
-     *         save file.
+     * save file.
      */
     public String getAppendVersion() {
         return playerName + " " + unlockedTo + " " + this.userIdentifier;
@@ -116,7 +118,9 @@ public class Profile implements Serializable {
             while (in.hasNextLine()) {
                 String text = in.nextLine();
                 String[] details = text.split(" ");
-                Profile profile = new Profile(details[0], Integer.parseInt(details[1]), Integer.parseInt(details[2]));
+                Profile profile = new Profile(details[0],
+                        Integer.parseInt(details[1]),
+                        Integer.parseInt(details[2]));
                 tempProfiles.add(profile);
             }
             in.close();
@@ -136,8 +140,10 @@ public class Profile implements Serializable {
             userWrite = new PrintWriter("src/users.txt");
             for (int i = 0; i < tempProfiles.size(); i++) {
                 // System.out.println(profiles.get(i).getName() + " " +
-                // profiles.get(i).getLevels() + " " + profiles.get(i).getIdentifier());
-                userWrite.println(tempProfiles.get(i).getName() + " " + tempProfiles.get(i).getLevels() + " "
+                // profiles.get(i).getLevels() + " " +
+                // profiles.get(i).getIdentifier());
+                userWrite.println(tempProfiles.get(i).getName() + " "
+                        + tempProfiles.get(i).getLevels() + " "
                         + tempProfiles.get(i).getIdentifier());
                 // userWrite.println(profiles.get(i).toString());
             }
