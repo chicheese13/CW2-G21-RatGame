@@ -299,6 +299,7 @@ public class GameConstructor extends Application {
 	
 
 	public void startGame() {
+		
 		this.start(gameStage);
 	}
 
@@ -320,11 +321,13 @@ public class GameConstructor extends Application {
 		tickTimeline.setCycleCount(Animation.INDEFINITE);
 
 		tickTimeline.play();
+		
 
 		// this.levelMusic = new LevelMusic("level-one");
 
 		drawGame();
 		primaryStage.setScene(scene);
+		primaryStage.setResizable(false);
 		primaryStage.show();
 		
 		//Close the game properly when they click the "X" in the corner

@@ -495,6 +495,7 @@ public class RatGameApp extends Application {
         Scene scene = new Scene(createContent());
         primaryStage.setTitle("RATS menu title");
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
