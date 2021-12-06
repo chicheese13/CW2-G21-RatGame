@@ -15,16 +15,16 @@ public class Gas extends RenderObject {
 	/**
 	 * Attributes helping with animation and behaviour of the gas
 	 */
-	private static final int NUMBER_OF_GAS_SPRITES = 5;
-	private static final int STOP_SPREAD_INTERVAL = 200;
-	private static final int DISSIPATE_LIMIT = 20;
-	private static final int LINGER_LIMIT = 200;
-	private static final int NEXT_ANIMATION = 3;
+	private final int NUMBER_OF_GAS_SPRITES = 5;
+	private final int STOP_SPREAD_INTERVAL = 200;
+	private final int DISSIPATE_LIMIT = 20;
+	private final int LINGER_LIMIT = 200;
+	private final int NEXT_ANIMATION = 3;
 
 	private int tickCounter = 0;
 	private int nextAnimationCounter = 0;
 	private int pictureNumber = 5;
-	private ArrayList<GasSpread> childrenGas = new ArrayList<>();
+	private ArrayList<GasSpread> childrenGas = new ArrayList<GasSpread>();
 	private int dissipateCounter = 0;
 	private int dissipateIndex = 0;
 	private boolean isWaiting = false;
@@ -83,6 +83,8 @@ public class Gas extends RenderObject {
 		this.lingerCounter = LINGER_LIMIT;
 		System.out.println("STOP SPREAD");
 		this.isBroken = true;
+		// this.currentLevel.stopSound();
+
 		// sprite change to show the fan is broken
 		this.renderSprite = sprinklerBroken;
 	}
@@ -94,7 +96,10 @@ public class Gas extends RenderObject {
 	 * @return name of the next animation
 	 */
 	private String loadImage(int pictureNumber) {
-		return "sprinkler" + pictureNumber;
+
+		String gas = "sprinkler" + String.valueOf(pictureNumber);
+
+		return gas;
 	}
 
 	/**
@@ -122,7 +127,7 @@ public class Gas extends RenderObject {
 			if (this.tickCounter == STOP_SPREAD_INTERVAL) {
 				this.lingerCounter++;
 
-				if (!isBroken) {
+				if (isBroken == false) {
 					this.renderSprite = sprinkler;
 				}
 
