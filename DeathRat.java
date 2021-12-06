@@ -52,15 +52,15 @@ public class DeathRat extends Rat {
 	 * @param currentLevel, the level the rat is currently on.
 	 */
 	public DeathRat(Position position, Level currentLevel) {
-		this.renderSprite = DEATH_RAT_SPRITE_NORTH;
+		this.renderSprite = "death-rat-north";
 		this.objectPosition = position;
 		this.ratSpeed = DEFAULT_DEATH_RAT_SPEED;
 		this.directionFacing = 'N';
 		this.waitCount = DEFAULT_WAIT_COUNT;
-		this.ratSpriteNorth = DEATH_RAT_SPRITE_NORTH;
-		this.ratSpriteEast = DEATH_RAT_SPRITE_EAST;
-		this.ratSpriteSouth = DEATH_RAT_SPRITE_SOUTH;
-		this.ratSpriteWest = DEATH_RAT_SPRITE_WEST;
+		this.ratSpriteNorth = "death-rat-north";
+		this.ratSpriteEast = "death-rat-east";
+		this.ratSpriteSouth = "death-rat-south";
+		this.ratSpriteWest = "death-rat-west";
 		this.currentLevel = currentLevel;
 
 		this.currentLevel.spawnSound("DeathRat");
@@ -88,10 +88,12 @@ public class DeathRat extends Rat {
 	 * Method for killing collided rats.
 	 */
 	public void collision(Object collidedObject) {
-		if (this.waitCount >= WAIT_LIMIT && (collidedObject instanceof NormalRat)) {
-			this.currentLevel.spawnSound("DeathRatSlayVictim");
-			((NormalRat) collidedObject).ratDeath();
-			this.killCounter++;
+		if (this.waitCount >= WAIT_LIMIT) {
+			if (collidedObject instanceof NormalRat) {
+				this.currentLevel.spawnSound("DeathRatSlayVictim");
+				((NormalRat) collidedObject).ratDeath();
+				this.killCounter++;
+			}
 		}
 		if (collidedObject instanceof Explosion) {
 			this.currentLevel.despawnRat(this);
