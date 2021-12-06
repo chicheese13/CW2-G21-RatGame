@@ -424,7 +424,7 @@ public class GameConstructor extends Application {
 		for (int i = 0; i < currentLevel.getRats().size(); i++) {
 			if ((currentLevel.getRats().get(i) instanceof NormalRat)
 					&& ((NormalRat) currentLevel.getRats().get(i)).getRatGender()) {
-				maleCount++;
+				femaleCount++;
 			}
 		}
 
@@ -432,7 +432,7 @@ public class GameConstructor extends Application {
 		for (int i = 0; i < currentLevel.getRats().size(); i++) {
 			if ((currentLevel.getRats().get(i) instanceof NormalRat)
 					&& (((NormalRat) currentLevel.getRats().get(i)).getRatGender()) == false) {
-				femaleCount++;
+				maleCount++;
 			}
 		}
 
