@@ -1,60 +1,61 @@
 
 public class NoEntrySign extends RenderObject {
 
-    private final int NUMBER_OF_SIGN_FRAMES = 5;
 
-    public int signHealth = 5;
-    public boolean ratStompsOnSign = false;
-    private int pictureNumber = 1;
+	private final int NUMBER_OF_SIGN_FRAMES = 5;
 
-    public NoEntrySign(Position objectPosition, Level currentLevel) {
-        this.renderSprite = "no-entry1";
-        this.objectPosition = objectPosition;
-        this.currentLevel = currentLevel;
-        this.currentLevel.spawnSound("placeSign");
-    }
+	public int signHealth = 5;
+	public boolean ratStompsOnSign = false;
+	private int pictureNumber = 1;
 
-    private String loadImage(int pictureNumber) {
+	public NoEntrySign(Position objectPosition, Level currentLevel) {
+		this.renderSprite = "no-entry1";
+		this.objectPosition = objectPosition;
+		this.currentLevel = currentLevel;
+		this.currentLevel.spawnSound("placeSign");
+	}
 
-        String sign = "no-entry" + String.valueOf(pictureNumber);
+	private String loadImage(int pictureNumber) {
 
-        return sign;
-    }
+		String sign = "no-entry" + String.valueOf(pictureNumber);
 
-    // method that gets run each time a rat hits a sign
-    private void breakSign() {
+		return sign;
+	}
 
-        if (signHealth > 1) {
-            signHealth--;
-            if (pictureNumber < NUMBER_OF_SIGN_FRAMES) {
-                pictureNumber++;
-                this.renderSprite = loadImage(pictureNumber);
-            }
-        } else {
-            this.currentLevel.despawnItem(this);
-        }
-    }
+	// method that gets run each time a rat hits a sign
+	private void breakSign() {
 
-    // gets the signs health
-    private int getSignHealth() {
-        return signHealth;
-    }
+		if (signHealth > 1) {
+			signHealth--;
+			if (pictureNumber < NUMBER_OF_SIGN_FRAMES) {
+				pictureNumber++;
+				this.renderSprite = loadImage(pictureNumber);
+			}
+		} else {
+			this.currentLevel.despawnItem(this);
+		}
+	}
 
-    public void tick() {
+	// gets the signs health
+	private int getSignHealth() {
+		return signHealth;
+	}
 
-    }
+	public void tick() {
 
-    // If rat stomps on a sign, it is being pushed back and it starts moving
-    // different direction, the sign loses health points
-    public void collision(Object collidedObject) {
-        if (collidedObject instanceof Rat) {
-            ((Rat) collidedObject).turnAround();
-            this.currentLevel.spawnSound("signHit" + pictureNumber);
-            breakSign();
-        }
-        if (collidedObject instanceof Explosion) {
-            this.currentLevel.despawnItem(this);
-        }
-    }
+	}
+
+	// If rat stomps on a sign, it is being pushed back and it starts moving
+	// different direction, the sign loses health points
+	public void collision(Object collidedObject) {
+		if (collidedObject instanceof Rat) {
+			((Rat) collidedObject).turnAround();
+			this.currentLevel.spawnSound("signHit" + pictureNumber);
+			breakSign();
+		}
+		if ( collidedObject instanceof Explosion) {
+			this.currentLevel.despawnItem(this);
+		}
+	}
 
 }
