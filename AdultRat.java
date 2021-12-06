@@ -1,3 +1,4 @@
+
 /** 
  * AdultRat.java
  * @version 2.0
@@ -6,62 +7,28 @@
  */
 
 import java.util.Random;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-/**
+
+/** 
  * AdultRat is a class which initialises an instance for AdultRat.
- *
+ * @version 1.0
+ * @author Dylan Lewis, Kien Lin
  */
 
 @SuppressWarnings("serial")
 public class AdultRat extends NormalRat {
-	
-	/**
-	 * This is the default value for the pregnancy attribute.
-	 */
-	protected final boolean DEFAULT_PREGNANCY_VALUE = false;
-	/**
-	 * This is the default value for the pregnancy count attribute.
-	 */
-	protected final int DEFAULT_PREGNANCY_COUNT = 0;
-	/**
-	 * Mating interval wait
-	 */
+	protected final boolean DEFAULT_PREGNANCY_VALUE = false;	//Default value for pregnancy attribute
+	protected final int DEFAULT_PREGNANCY_COUNT = 0;	//Default value for pregnancy count
 	private final int MATING_WAIT_INTERVAL = 200;
-	/**
-	 * Default cooldown for female rat in ticks
-	 */
-	protected final int DEFAULT_COOLDOWN_VALUE_FEMALE = 400;
-	/**
-	 * Default cooldown for a male rat in ticks
-	 */
-	protected final int DEFAULT_COOLDOWN_VALUE_MALE = DEFAULT_COOLDOWN_VALUE_FEMALE + MATING_WAIT_INTERVAL;
-	/**
-	 * This is the default value for the non pregnant adult rat speed.
-	 */
-	protected final BigDecimal DEFAULT_ADULT_RAT_SPEED = new BigDecimal("0.02");
-	/**
-	 * This is the default value for the pregnant adult rat speed.
-	 */
-	protected final BigDecimal PREGNANT_FEMALE_RAT_SPEED = new BigDecimal("0.01");
-	/**
-	 * The maximum number of babies a pregnant rat can carry at one time.
-	 */
-	private final int MAXIMUM_PREGNANCY_COUNT = 5;
-	/**
-	 * The interval in ticks at which the pregnant female rat gives birth.
-	 */
-	private final int GIVE_BIRTH_INTERVAL = 333;
+	protected final int DEFAULT_COOLDOWN_VALUE_FEMALE = 400;	//Default cooldown for females in ticks
+	protected final int DEFAULT_COOLDOWN_VALUE_MALE = DEFAULT_COOLDOWN_VALUE_FEMALE + MATING_WAIT_INTERVAL;	//Default cooldown for males in ticks
+	protected final BigDecimal DEFAULT_ADULT_RAT_SPEED = new BigDecimal("0.02");	//Default value for adult rat speed
+	protected final BigDecimal PREGNANT_FEMALE_RAT_SPEED = new BigDecimal("0.01");	//Default value for pregnant adult rat speed
+	private final int MAXIMUM_PREGNANCY_COUNT = 5;	//Max number of babies a pregnant rat can carry
+	private final int GIVE_BIRTH_INTERVAL = 333;	//interval in ticks at which the pregnant female rat gives birth
 	
-	/**
-	 * The adult male rat image sprite.
-	 */
-	protected final String COOLDOWN_SPRITE_FEMALE_NORTH = "cooldown-female-north";
-	protected final String COOLDOWN_SPRITE_FEMALE_EAST = "cooldown-female-east";
-	protected final String COOLDOWN_SPRITE_FEMALE_SOUTH = "cooldown-female-south";
-	protected final String COOLDOWN_SPRITE_FEMALE_WEST = "cooldown-female-west";
-	
+	//Rat image sprites
 	protected final String COOLDOWN_SPRITE_MALE_NORTH = "cooldown-male-north";
 	protected final String COOLDOWN_SPRITE_MALE_EAST = "cooldown-male-east";
 	protected final String COOLDOWN_SPRITE_MALE_SOUTH = "cooldown-male-south";
@@ -71,6 +38,11 @@ public class AdultRat extends NormalRat {
 	protected final String ADULT_MALE_RAT_SPRITE_EAST = "male-rat-east";
 	protected final String ADULT_MALE_RAT_SPRITE_SOUTH = "male-rat-south";
 	protected final String ADULT_MALE_RAT_SPRITE_WEST = "male-rat-west";
+	
+	protected final String COOLDOWN_SPRITE_FEMALE_NORTH = "cooldown-female-north";
+	protected final String COOLDOWN_SPRITE_FEMALE_EAST = "cooldown-female-east";
+	protected final String COOLDOWN_SPRITE_FEMALE_SOUTH = "cooldown-female-south";
+	protected final String COOLDOWN_SPRITE_FEMALE_WEST = "cooldown-female-west";
 	
 	protected final String ADULT_FEMALE_RAT_SPRITE_NORTH = "female-rat-north";
 	protected final String ADULT_FEMALE_RAT_SPRITE_EAST = "female-rat-east";
@@ -82,46 +54,22 @@ public class AdultRat extends NormalRat {
 	protected final String ADULT_FEMALE_RAT_PREGNANT_SPRITE_SOUTH = "female-pregnant-rat-south";
 	protected final String ADULT_FEMALE_RAT_PREGNANT_SPRITE_WEST = "female-pregnant-rat-west";
 	
-	/**
-	 * a boolean to determine whether or not a rat is currently waiting.
-	 */
 	private boolean isWaiting = false; 
-	/**
-	 * Whether the rat is pregnant or not.
-	 */
 	private boolean isPregnant;
-	/**
-	 * Cool down for rat pregnancy.
-	 */
-	private int cooldown;
-	/**
-	 * Number of babies a pregnant rat is carrying.
-	 */
-	private int pregnancyCounter;
-	
-	/**
-	 * keeps count of ticks passed.
-	 */
-	private int waitCounter = 0;
-	/**
-	 * Mating cooldown interval wait
-	 */
-	
+	private int cooldown;	//Cooldown for rat pregnancy
+	private int pregnancyCounter;	//Number of babies pregnant rat is carrying
+	private int waitCounter = 0;	//Counts ticks passed
 	private int giveBirthCooldown;
-		
-	/**
-	 * Whether or not the rat is on a mating cooldown
-	 */
 	private boolean matingCooldown = false;
 	
 	/**
 	 * Creates an adult rat
-	 * @param position
-	 * @param gender
-	 * @param sterile
-	 * @param ratHealth
-	 * @param currentLevel, the current level in which the rat is in.
-	 * @param directionFacing, the direction in which the rat is facing at anytime.
+	 * @param position Position to spawn rat at
+	 * @param gender Gender of rat
+	 * @param sterile Whether or not the rat is sterile
+	 * @param ratHealth Health of rat 
+	 * @param currentLevel the current level in which the rat is in.
+	 * @param directionFacing the direction in which the rat is facing at anytime.
 	 */
 	public AdultRat(Position position, boolean gender, boolean sterile, double ratHealth, char direction, Level currentLevel) {
 		this.isPregnant = DEFAULT_PREGNANCY_VALUE;
@@ -154,7 +102,7 @@ public class AdultRat extends NormalRat {
 	}
 	
 	/**
-	 * Become pregnant method, this makes the rat's speed slower, changes the sprite of the rat and randomises number of rats it's carrying.
+	 * Makes rat pregnant, causing it to become slower and change its sprite. It also sets a random number of babies
 	 */
 	public void becomePregnant () {
 		this.isPregnant = true;
@@ -167,23 +115,11 @@ public class AdultRat extends NormalRat {
 		recallibratePosition(this.objectPosition, PREGNANT_FEMALE_RAT_SPEED);
 		
 		this.setRatWait(true);
-		
-	
-		//might make a method purley for changing spirtes.
-		
-		//resets the give birth cooldown.
 		this.giveBirthCooldown = 0;
 	}
 	
 	/**
-	 * Getter for isPregnant
-	 */
-	public boolean getPregnant() {
-		return this.isPregnant;
-	}
-	
-	/**
-	 * handles the death of an adult rat.
+	 * Despawns rat
 	 */
 	public void ratDeath() {
 		this.currentLevel.spawnSound("rat-death-sound");
@@ -192,21 +128,7 @@ public class AdultRat extends NormalRat {
 	}
 	
 	/**
-	 * Setter for ratWait
-	 */
-	public void setRatWait(boolean waiting) {
-		this.isWaiting = waiting;
-	}
-	
-	/**
-	 *  Getter for mating cooldown.
-	 */
-	public boolean getMatingCooldown() {
-		return this.matingCooldown;
-	}
-	
-	/**
-	 * Method which creates an instance of BabyRat on the AdultRat's current position.
+	 * Causes pregnant rat to give birth, spawning baby rats at its location
 	 */
 	public void giveBirth() {
 		//choose a random number between 0 and 1
@@ -230,15 +152,15 @@ public class AdultRat extends NormalRat {
 	}
 	
 	/**
-	 * Starts the mating cooldown for an AdultRat, so it can't mate with other rats whilst true.
+	 * Starts mating cooldown for rat, not letting it mate until the cooldown is up
 	 */
 	public void startMatingCooldown() {
 		this.matingCooldown = true;
 	}
 	
 	/**
-	 * Takes in a rat and checks if the they are eligible to mate, returns true if both are.
-	 * @param check, an AdultRat to check.
+	 * Checks whether or not a rat is eligible to mate
+	 * @param rat to check
 	 */
 	public boolean isMatabale(AdultRat check) {
 		if (check.getSterile() == false 
@@ -255,7 +177,7 @@ public class AdultRat extends NormalRat {
 	
 	/**
 	 * Handles collisions with other AdultRats.
-	 * @param collidedRat, an AdultRat which has collided with this Rat.
+	 * @param collidedRat rat collided with
 	 */
 	public void ratCollision(AdultRat collidedRat) {
 		//if the rat is not sterile and is not pregnant and is not on a mating cooldown then
@@ -412,6 +334,9 @@ public class AdultRat extends NormalRat {
 		}
 	}
 	
+	/**
+	 * Changes gender to female
+	 */
 	public void changeToFemale() {
 		if (this.ratGender == true) {
 			this.ratGender = false;
@@ -447,6 +372,9 @@ public class AdultRat extends NormalRat {
 		}
 	}
 	
+	/**
+	 * Changes gender to male
+	 */
 	public void changeToMale() {
 		if (this.ratGender == false) {
 			switch (this.directionFacing) {
@@ -490,6 +418,29 @@ public class AdultRat extends NormalRat {
 		mateCooldown();
 		pregnancyTick();
 		waitTick();		
+	}
+	
+	//Getters
+	/**
+	 * @return whether or not rat is pregnant
+	 */
+	public boolean getPregnant() {
+		return this.isPregnant;
+	}
+	
+	/**
+	 * @return cooldown for mating
+	 */
+	public boolean getMatingCooldown() {
+		return this.matingCooldown;
+	}
+	
+	//Setters
+	/**
+	 * @param waiting New isWaiting value
+	 */
+	public void setRatWait(boolean waiting) {
+		this.isWaiting = waiting;
 	}
 	
 }
