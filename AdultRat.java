@@ -1,6 +1,6 @@
 /** 
  * AdultRat.java
- * @version 1.0
+ * @version 2.0
  * @author Dylan Lewis, Kien Lin
  *
  */
@@ -14,11 +14,9 @@ import java.math.RoundingMode;
  *
  */
 
+@SuppressWarnings("serial")
 public class AdultRat extends NormalRat {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * This is the default value for the pregnancy attribute.
 	 */
