@@ -718,187 +718,43 @@ public class GameConstructor extends Application {
 
 		System.out.println(this.currentLevel.getScore());
 	}
-
-	public void bombDropOccured(DragEvent event) {
+	
+	public void dropOccured(DragEvent event, String itemType, Image itemImage, ImageView counter, ImageView draggableImage) {
 		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
 		double y = (Math.floor((event.getY()) / 50)) + currentLevel.getOffsetY();
 
 		// Check if there are more than 0 of the item in the inventory. If not don't let
 		// the user drag the item.
-		if (items.isItemDepleted("Bomb")) {
+		if (items.isItemDepleted(itemType)) {
 			System.out.println("Amount is 0");
 		} else {
-			currentLevel.spawnItem(new Bomb(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
-			items.tryReduceItem("Bomb");
-			if (items.isItemDepleted("Bomb")) {
-				bombCounter.setImage(loadImage(items.getItemCount("Bomb")));
-				draggableBombImage.setImage(bomb);
-
+			if (itemType == "Bomb") {
+				currentLevel.spawnItem(new Bomb(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+			} else if (itemType == "Gas") {
+				currentLevel.spawnItem(new Gas(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+			} else if (itemType == "Poison") {
+				currentLevel.spawnItem(new Poison(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+			} else if (itemType == "NoEntrySign") {
+				currentLevel.spawnItem(new NoEntrySign(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+			} else if (itemType == "MGenderChange") {
+				currentLevel.spawnItem(new MaleSexChange(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+			} else if (itemType == "FGenderChange") {
+				currentLevel.spawnItem(new FemaleSexChange(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+			} else if (itemType == "DeathRat") {
+				currentLevel.spawnItem(new DeathRat(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+			} else if (itemType == "Sterilisation") {
+				currentLevel.spawnItem(new Sterilisation(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
+			}
+			
+			items.tryReduceItem(itemType);
+			if (items.isItemDepleted(itemType)) {
+				counter.setImage(loadImage(items.getItemCount(itemType)));
+				draggableImage.setImage(itemImage);
 			}
 		}
 	}
 
-	public void gasDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
-		double y = (Math.floor((event.getY()) / 50)) + currentLevel.getOffsetY();
-
-		// Check if there are more than 0 of the item in the inventory. If not don't let
-		// the user drag the item.
-		if (items.isItemDepleted("Gas")) {
-			System.out.println("Amount is 0");
-		} else {
-			currentLevel.spawnItem(new Gas(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
-			items.tryReduceItem("Gas");
-			if (items.isItemDepleted("Gas")) {
-				gasCounter.setImage(loadImage(items.getItemCount("Gas")));
-				draggableGasImage.setImage(gas);
-
-			}
-		}
-	}
-
-	public void poisonDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
-		double y = (Math.floor((event.getY()) / 50)) + currentLevel.getOffsetY();
-
-		// Check if there are more than 0 of the item in the inventory. If not don't let
-		// the user drag the item.
-		if (items.isItemDepleted("Poison")) {
-			System.out.println("Amount is 0");
-		} else {
-			currentLevel
-					.spawnItem(new Poison(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
-			items.tryReduceItem("Poison");
-			if (items.isItemDepleted("Poison")) {
-				poisonCounter.setImage(loadImage(items.getItemCount("Poison")));
-				draggablePoisonImage.setImage(poison);
-
-			}
-		}
-	}
-
-	public void signDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
-		double y = (Math.floor((event.getY()) / 50)) + currentLevel.getOffsetY();
-
-		// Print a string showing the location.
-		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
-		System.out.println(s);
-
-		// Check if there are more than 0 of the item in the inventory. If not don't let
-		// the user drag the item.
-		if (items.isItemDepleted("NoEntrySign")) {
-			System.out.println("Amount is 0");
-		} else {
-			currentLevel.spawnItem(new NoEntrySign(new Position(new BigDecimal(x), new BigDecimal(y)), currentLevel));
-			items.tryReduceItem("NoEntrySign");
-			if (items.isItemDepleted("NoEntrySign")) {
-				signCounter.setImage(loadImage(items.getItemCount("NoEntrySign")));
-				draggableSignImage.setImage(noEntrySign);
-
-			}
-		}
-		// drawGame();
-	}
-
-	public void deathRatDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
-		double y = (Math.floor((event.getY()) / 50)) + currentLevel.getOffsetY();
-
-		// Print a string showing the location.
-		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
-		System.out.println(s);
-
-		// Check if there are more than 0 of the item in the inventory. If not don't let
-		// the user drag the item.
-		if (items.isItemDepleted("DeathRat")) {
-			System.out.println("Amount is 0");
-		} else {
-			currentLevel.spawnRat(new DeathRat(new Position(new BigDecimal(x), new BigDecimal(y)), currentLevel));
-			items.tryReduceItem("DeathRat");
-			if (items.isItemDepleted("DeathRat")) {
-				deathRatCounter.setImage(loadImage(items.getItemCount("DeathRat")));
-				draggableDeathRatImage.setImage(deathRat);
-
-			}
-		}
-		// drawGame();
-	}
-
-	public void femaleSexChangerDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
-		double y = (Math.floor((event.getY()) / 50)) + currentLevel.getOffsetY();
-
-		// Print a string showing the location.
-		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
-		System.out.println(s);
-
-		// Check if there are more than 0 of the item in the inventory. If not don't let
-		// the user drag the item.
-		if (items.isItemDepleted("FGenderChange")) {
-			System.out.println("Amount is 0");
-		} else {
-			currentLevel.spawnItem(
-					new FemaleSexChange(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
-			items.tryReduceItem("FGenderChange");
-			if (items.isItemDepleted("FGenderChange")) {
-				femaleCounter.setImage(loadImage(items.getItemCount("FGenderChange")));
-				draggableFemaleSexChangerImage.setImage(femaleSexChanger);
-
-			}
-		}
-		// drawGame();
-	}
-
-	public void maleSexChangerDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
-		double y = (Math.floor((event.getY()) / 50)) + currentLevel.getOffsetY();
-
-		// Print a string showing the location.
-		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
-		System.out.println(s);
-
-		// Check if there are more than 0 of the item in the inventory. If not don't let
-		// the user drag the item.
-		if (items.isItemDepleted("MGenderChange")) {
-			System.out.println("Amount is 0");
-		} else {
-			currentLevel.spawnItem(
-					new MaleSexChange(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
-			items.tryReduceItem("MGenderChange");
-			if (items.isItemDepleted("MGenderChange")) {
-				maleCounter.setImage(loadImage(items.getItemCount("MGenderChange")));
-				draggableMaleSexChangerImage.setImage(maleSexChanger);
-
-			}
-		}
-		// drawGame();
-	}
-
-	public void sterilisationDropOccured(DragEvent event) {
-		double x = (Math.floor((event.getX()) / 50)) + currentLevel.getOffsetX();
-		double y = (Math.floor((event.getY()) / 50)) + currentLevel.getOffsetY();
-
-		// Print a string showing the location.
-		String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
-		System.out.println(s);
-
-		// Check if there are more than 0 of the item in the inventory. If not don't let
-		// the user drag the item.
-		if (items.isItemDepleted("Sterilisation")) {
-			System.out.println("Amount is 0");
-		} else {
-			currentLevel.spawnItem(
-					new Sterilisation(new Position(BigDecimal.valueOf(x), BigDecimal.valueOf(y)), currentLevel));
-			items.tryReduceItem("Sterilisation");
-			if (items.isItemDepleted("Sterilisation")) {
-				sterilisationCounter.setImage(loadImage(items.getItemCount("Sterilisation")));
-				draggableSterilisationImage.setImage(sterilisation);
-
-			}
-		}
-		// drawGame();
-	}
+	
 
 	/**
 	 * Create the GUI.
@@ -1042,9 +898,10 @@ public class GameConstructor extends Application {
 
 			}
 		});
-
+		
 		canvas.setOnMouseMoved(new EventHandler<MouseEvent>() {
 			@Override
+			
 			public void handle(MouseEvent event) {
 
 				if (isPaused) {
@@ -1301,45 +1158,47 @@ public class GameConstructor extends Application {
 		// things).
 		canvas.setOnDragDropped(new EventHandler<DragEvent>() {
 			public void handle(DragEvent event) {
+				
+				
 				// We call this method which is where the bulk of the behaviour takes place.
 				if (event.getGestureSource() == draggableBombImage) {
 					// Mark the drag event as acceptable by the canvas.
-					bombDropOccured(event);
+					dropOccured(event, "Bomb", bomb, bombCounter,draggableBombImage);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				} else if (event.getGestureSource() == draggableGasImage) {
 					// Mark the drag event as acceptable by the canvas.
-					gasDropOccured(event);
+					dropOccured(event, "Gas", gas, gasCounter,draggableGasImage);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				} else if (event.getGestureSource() == draggablePoisonImage) {
 					// Mark the drag event as acceptable by the canvas.
-					poisonDropOccured(event);
+					dropOccured(event, "Poison", poison, poisonCounter,draggablePoisonImage);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				} else if (event.getGestureSource() == draggableSignImage) {
 					// Mark the drag event as acceptable by the canvas.
-					signDropOccured(event);
+					dropOccured(event, "NoEntrySign", noEntrySign, signCounter,draggableSignImage);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				} else if (event.getGestureSource() == draggableDeathRatImage) {
 					// Mark the drag event as acceptable by the canvas.
-					deathRatDropOccured(event);
+					dropOccured(event, "DeathRat", deathRat, deathRatCounter,draggableDeathRatImage);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				} else if (event.getGestureSource() == draggableFemaleSexChangerImage) {
 					// Mark the drag event as acceptable by the canvas.
-					femaleSexChangerDropOccured(event);
+					dropOccured(event, "FGenderChange", femaleSexChanger, femaleCounter,draggableFemaleSexChangerImage);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				} else if (event.getGestureSource() == draggableMaleSexChangerImage) {
 					// Mark the drag event as acceptable by the canvas.
-					maleSexChangerDropOccured(event);
+					dropOccured(event, "MGenderChange", maleSexChanger, maleCounter,draggableMaleSexChangerImage);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				} else if (event.getGestureSource() == draggableSterilisationImage) {
 					// Mark the drag event as acceptable by the canvas.
-					sterilisationDropOccured(event);
+					dropOccured(event, "Sterilisation", sterilisation, sterilisationCounter,draggableSterilisationImage);
 					// Consume the event. This means we mark it as dealt with.
 					event.consume();
 				}
