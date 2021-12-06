@@ -80,10 +80,8 @@ public class Level implements Serializable {
 			fileData = fileData + in.nextLine();
 		}		
 	
-		
 		fileData = fileData.substring(0, fileData.indexOf("."));
 		dataArray = fileData.split(",");
-		
 		
 		//Sets variables for each piece of data to make it easier to read
 		int x = Integer.parseInt(dataArray[0]);
@@ -93,9 +91,6 @@ public class Level implements Serializable {
 		maxRats = Short.parseShort(dataArray[4]);
 		parTime = new BigDecimal(dataArray[5]);
 		String[] itemIntervalsString = dataArray[6].split(" ");
-		
-		System.out.println("LENGTH OF ITEM INTERVALS");
-		System.out.println(itemIntervalsString.length);
 		
 		for (int i = 0; i < itemIntervalsString.length; i++) {
 			ITEM_GAIN_INTERVAL_POISON = Integer.parseInt(itemIntervalsString[0]);
@@ -145,7 +140,6 @@ public class Level implements Serializable {
 			try{
 			    FileInputStream readData = new FileInputStream(saveFile+"sounds.ser");
 			    ObjectInputStream readStream = new ObjectInputStream(readData);
-
 			    this.renderSound = (ArrayList<SoundClip>) readStream.readObject();
 			    readStream.close();
 			}catch (Exception e) {
@@ -155,7 +149,6 @@ public class Level implements Serializable {
 			try{
 			    FileInputStream readData = new FileInputStream(saveFile+"item-tiles.ser");
 			    ObjectInputStream readStream = new ObjectInputStream(readData);
-
 			    tempArray = (ArrayList<RenderObject>) readStream.readObject();
 			    readStream.close();
 			    
@@ -175,19 +168,16 @@ public class Level implements Serializable {
 			    for (int i = 0; i < renderTempTiles.size(); i++) {
 			    	renderTempTiles.get(i).setLevel(this);
 			    }
-			    
 			    for (int i = 0; i < renderItems.size(); i++) {
 			    	renderItems.get(i).setLevel(this);
 			    }
-			    
 			    for (int i = 0; i < renderRats.size(); i++) {
 			    	renderRats.get(i).setLevel(this);
 			    }
-			    
 			    for (int i = 0; i < renderSound.size(); i++) {
 			    	renderSound.get(i).resume();
 			    }
-			}catch (Exception e) {
+			} catch (Exception e) {
 			    e.printStackTrace();
 			}
 		}
@@ -197,22 +187,19 @@ public class Level implements Serializable {
 		this.renderTiles = convertedLayout.getTiles();
 		this.renderAfterTiles = convertedLayout.getAfterList();
 		this.renderAfterTilesPosition = convertedLayout.getAfterPositionList();
-		
 	}
 	
 	/**
-	 * 
 	 * @param itemType
 	 * @param items
 	 * @param gameCounter
 	 * @param ITEM_GAIN_INTERVAL
-	 * @return
+	 * @return 
 	 */
 	public double itemInterval(String itemType, ItemManager items, double gameCounter, double ITEM_GAIN_INTERVAL) {
 		if (gameCounter == ITEM_GAIN_INTERVAL) {
 			items.tryIncreaseItem(itemType);
 			gameCounter = 0;
-			System.out.println("BOMB INCREASE");
 		} else {
 			gameCounter++;
 		}
@@ -232,7 +219,6 @@ public class Level implements Serializable {
 		gameCounterDeathRat = itemInterval("DeathRat", this.itemManager, gameCounterDeathRat, ITEM_GAIN_INTERVAL_DEATHRAT);
 		gameCounterNoEntry = itemInterval("NoEntrySign", this.itemManager, gameCounterNoEntry, ITEM_GAIN_INTERVAL_NOENTRY);
 
-		
 		for (int i = 0; i < renderRats.size(); i++) {
 			double xMinus = renderRats.get(i).getObjectPosition()[0].doubleValue() - 0.5;
 			double yMinus = renderRats.get(i).getObjectPosition()[1].doubleValue() - 0.5;
@@ -241,32 +227,22 @@ public class Level implements Serializable {
 			
 			//checking if the the render objects are both rats and are not the same rat.
 			for (int i2 = 0; i2 < renderRats.size(); i2++) {
-				//testLevel.getRenderObjects().get(i).getObjectPosition()[0]
-				
 				boolean xCollide = false;
 				boolean yCollide = false;
 				
 				if (renderRats.get(i) != renderRats.get(i2)) {
-					
 					double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
 					double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
-					
 					if (compareX > xMinus && compareX < xPlus) {
 						xCollide = true;
-						//System.out.println("X COLLIDE");
 					}
-					
 					if (compareY > yMinus && compareY < yPlus) {
 						yCollide = true;
-						//System.out.println("Y COLLIDE");
 					}
-					
 					if (xCollide == true && yCollide == true) {
 							((Rat) renderRats.get(i)).collision((Rat) renderRats.get(i2));
 					}
-					
 				}
-				
 			}
 		}
 		
@@ -279,33 +255,23 @@ public class Level implements Serializable {
 			
 			//checking if the the render objects are both rats and are not the same rat.
 			for (int i2 = 0; i2 < renderRats.size(); i2++) {
-				//testLevel.getRenderObjects().get(i).getObjectPosition()[0]
 				
 				boolean xCollide = false;
-				boolean yCollide = false;
+				boolean yCollide = false;	
+				double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
+				double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
 				
-					
-					double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
-					double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
-					
-					if (compareX > xMinus && compareX < xPlus) {
-						xCollide = true;
-						//System.out.println("X COLLIDE");
+				if (compareX > xMinus && compareX < xPlus) {
+					xCollide = true;
+				}
+				if (compareY > yMinus && compareY < yPlus) {
+					yCollide = true;
+				}
+				if (xCollide == true && yCollide == true) {
+					if (renderItems.get(i) instanceof RenderObject) {
+						((RenderObject) renderItems.get(i)).collision((Rat) renderRats.get(i2));
 					}
-					
-					if (compareY > yMinus && compareY < yPlus) {
-						yCollide = true;
-						//System.out.println("Y COLLIDE");
-					}
-					
-					if (xCollide == true && yCollide == true) {
-						if (renderItems.get(i) instanceof RenderObject) {
-							System.out.println("ITEM COLLISION DETECTED");
-							((RenderObject) renderItems.get(i)).collision((Rat) renderRats.get(i2));
-						}
-					}
-					
-				
+				}
 			}
 		}
 		
@@ -316,87 +282,68 @@ public class Level implements Serializable {
 			double xPlus = renderTempTiles.get(i).getObjectPosition()[0].doubleValue() + 0.5;
 			double yPlus = renderTempTiles.get(i).getObjectPosition()[1].doubleValue() + 0.5;
 			
-			//checking if the the render objects are both rats and are not the same rat.
 			for (int i2 = 0; i2 < renderRats.size(); i2++) {
-				//testLevel.getRenderObjects().get(i).getObjectPosition()[0]
 				
 				boolean xCollide = false;
-				boolean yCollide = false;
+				boolean yCollide = false;	
+				double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
+				double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
 				
-					
-					double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
-					double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
-					
-					if (compareX > xMinus && compareX < xPlus) {
-						xCollide = true;
-						//System.out.println("X COLLIDE");
+				if (compareX > xMinus && compareX < xPlus) {
+					xCollide = true;
+				}
+				if (compareY > yMinus && compareY < yPlus) {
+					yCollide = true;
+				}
+				if (xCollide == true && yCollide == true) {
+					if (renderTempTiles.get(i) instanceof RenderObject) {
+						((RenderObject) renderTempTiles.get(i)).collision((Rat) renderRats.get(i2));
 					}
-					
-					if (compareY > yMinus && compareY < yPlus) {
-						yCollide = true;
-						//System.out.println("Y COLLIDE");
-					}
-					
-					if (xCollide == true && yCollide == true) {
-						if (renderTempTiles.get(i) instanceof RenderObject) {
-							System.out.println("TEMP TILE COLLISION");
-							((RenderObject) renderTempTiles.get(i)).collision((Rat) renderRats.get(i2));
-						}
-					}
-					
-				
+				}
 			}
 			
 			for (int i2 = 0; i2 < renderItems.size(); i2++) {
 				//testLevel.getRenderObjects().get(i).getObjectPosition()[0]
 				
 				boolean xCollide = false;
-				boolean yCollide = false;
+				boolean yCollide = false;	
+				double compareX = renderItems.get(i2).getObjectPosition()[0].doubleValue();
+				double compareY = renderItems.get(i2).getObjectPosition()[1].doubleValue();
+					
+				if (compareX > xMinus && compareX < xPlus) {
+					xCollide = true;
+				}
 				
+				if (compareY > yMinus && compareY < yPlus) {
+					yCollide = true;
+				}
 					
-					double compareX = renderItems.get(i2).getObjectPosition()[0].doubleValue();
-					double compareY = renderItems.get(i2).getObjectPosition()[1].doubleValue();
-					
-					if (compareX > xMinus && compareX < xPlus) {
-						xCollide = true;
-						//System.out.println("X COLLIDE");
-					}
-					
-					if (compareY > yMinus && compareY < yPlus) {
-						yCollide = true;
-						//System.out.println("Y COLLIDE");
-					}
-					
-					if (xCollide == true && yCollide == true) {
-						if (renderItems.get(i2) instanceof Gas && (renderTempTiles.get(i) instanceof GasSpread) == false) {
+				if (xCollide == true && yCollide == true) {
+					if (renderItems.get(i2) instanceof Gas && (renderTempTiles.get(i) instanceof GasSpread) == false) {
 							//dissipate the gas.
-							((Gas) renderItems.get(i2)).instantDissapate();
-							
-						} else if ((renderItems.get(i2) instanceof Gas) == false && (renderItems.get(i2) instanceof Sterilisation) == false  && (renderTempTiles.get(i) instanceof Explosion) == true) {
-							this.despawnItem(((RenderObject) renderItems.get(i2)));
-						} else if ((renderItems.get(i2) instanceof Sterilisation) == true && (renderTempTiles.get(i) instanceof Explosion) == true) {
-							((Sterilisation) renderItems.get(i2)).instantRemove();
-						}
-					}
+						((Gas) renderItems.get(i2)).instantDissapate();
 					
-				
+					} else if ((renderItems.get(i2) instanceof Gas) == false && (renderItems.get(i2) instanceof Sterilisation) == false  && (renderTempTiles.get(i) instanceof Explosion) == true) {
+						this.despawnItem(((RenderObject) renderItems.get(i2)));
+					} else if ((renderItems.get(i2) instanceof Sterilisation) == true && (renderTempTiles.get(i) instanceof Explosion) == true) {
+						((Sterilisation) renderItems.get(i2)).instantRemove();
+					}
+				}
 			}
-			
 		}
 		
-		
 		//goes through all rats and items and does executes their tick methods
-				for (int i = 0; i < renderRats.size(); i++) {
-					renderRats.get(i).tick();
-				}
+		for (int i = 0; i < renderRats.size(); i++) {
+			renderRats.get(i).tick();
+		}
 				
-				for (int i = 0; i < renderItems.size(); i++) {
-					renderItems.get(i).tick();
-				}
+		for (int i = 0; i < renderItems.size(); i++) {
+			renderItems.get(i).tick();
+		}
 				
-				for (int i = 0; i < renderTempTiles.size(); i++) {
-					renderTempTiles.get(i).tick();
-				}
+		for (int i = 0; i < renderTempTiles.size(); i++) {
+			renderTempTiles.get(i).tick();
+		}
 			
 		for (int i = 0; i < renderSound.size(); i++) {
 			renderSound.get(i).tick();
@@ -462,10 +409,6 @@ public class Level implements Serializable {
 		int x = (int) xIn;
 		int y = (int) yIn;
 		
-		System.out.println(x);
-		System.out.println(y);
-		System.out.println("---");
-		
 		if (tiles[y][x] == 'G' || tiles[y][x] == 'T') {
 			return false;
 		}
@@ -476,7 +419,6 @@ public class Level implements Serializable {
 					return false;
 			}
 		}
-		
 		return true;
 	}
 	
@@ -499,18 +441,15 @@ public class Level implements Serializable {
 					boolean xCollide = false;
 					boolean yCollide = false;
 					
-						
 						double compareX = renderRats.get(i2).getObjectPosition()[0].doubleValue();
 						double compareY = renderRats.get(i2).getObjectPosition()[1].doubleValue();
 						
 						if (compareX > xMinus && compareX < xPlus) {
 							xCollide = true;
-							//System.out.println("X COLLIDE");
 						}
 						
 						if (compareY > yMinus && compareY < yPlus) {
 							yCollide = true;
-							//System.out.println("Y COLLIDE");
 						}
 						
 						if (xCollide == true && yCollide == true) {
@@ -612,7 +551,6 @@ public class Level implements Serializable {
 	
 	public static void saveArrayToFile(ArrayList<RenderObject> saveArray, String saveLocation) {
 		try{
-			
 		    FileOutputStream writeData = new FileOutputStream(saveLocation);
 		    ObjectOutputStream writeStream = new ObjectOutputStream(writeData);
 		    
@@ -625,7 +563,6 @@ public class Level implements Serializable {
 	
 	public static void saveSoundArray(ArrayList<SoundClip> saveArray, String saveLocation) {
 		try{
-			
 		    FileOutputStream writeData = new FileOutputStream(saveLocation);
 		    ObjectOutputStream writeStream = new ObjectOutputStream(writeData);
 		    
@@ -652,7 +589,6 @@ public class Level implements Serializable {
 		String dateString = currentDay + "-" + currentMonth + "-" + currentYear + "-" + currentHour + "-" + currentMinute + "-" + currentSecond + "-" + currentMillisecond;
 
 		String saveDirectory = userDirectory + levelName + dateString;
-		System.out.println(saveDirectory);
 		new File(saveDirectory).mkdirs();
 		
 		//create a level.txt
@@ -665,11 +601,7 @@ public class Level implements Serializable {
 			levelWriter.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}
-		
-		//create array files
-		//saveArrayToFile(this.renderRats, saveDirectory);
-				
+		}		
 		ArrayList<RenderObject> tempArray = new ArrayList<RenderObject>();
 		
 		for (int i = 0; i < renderItems.size(); i++) {
@@ -679,10 +611,6 @@ public class Level implements Serializable {
 		for (int i = 0; i < renderTempTiles.size(); i++) {
 			tempArray.add(renderTempTiles.get(i));
 		}
-		//System.currentTimeMillis()
-		//go the person's active directory
-		//create a new folder with the level name, day, month, year, hour, minute, second
-		//create files for the array
 		for (int i = 0; i < renderSound.size(); i++) {
 			renderSound.get(i).setSer();
 		}
@@ -690,9 +618,6 @@ public class Level implements Serializable {
 		saveArrayToFile(tempArray, saveDirectory+"/item-tiles.ser");
 		saveArrayToFile(this.renderRats, saveDirectory+"/rats.ser");
 		saveSoundArray(this.renderSound, saveDirectory+"/sounds.ser");
-		//saveArrayToFile(this.renderItems, saveDirectory+"/items.ser");
-		//saveArrayToFile(this.renderTempTiles, saveDirectory+"/temp-tiles.ser");
-	
 	}
 	
 	//Getters	
@@ -708,7 +633,6 @@ public class Level implements Serializable {
 			}
 		}
 		
-		System.out.println(ratCount);
 		if (ratCount >= maxRats) {
 			return "lost";
 		} else if (ratCount == 0) {
