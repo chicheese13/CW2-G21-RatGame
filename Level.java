@@ -19,7 +19,7 @@ public class Level implements Serializable {
 	private BigDecimal parTime;
 	private short maxRats;
 	private String[] dataArray;
-	private static char[][] tiles;
+	private static char tiles[][];
 
 	private double gameCounterPoison = 0;
 	private double gameCounterGas = 0;
@@ -40,12 +40,12 @@ public class Level implements Serializable {
 	private int ITEM_GAIN_INTERVAL_DEATHRAT;
 
 	// ArrayLists for Rats & Items
-	private ArrayList<RenderObject> renderRats = new ArrayList<>();
-	private ArrayList<RenderObject> renderItems = new ArrayList<>();
-	private ArrayList<RenderObject> renderTempTiles = new ArrayList<>();
+	private ArrayList<RenderObject> renderRats = new ArrayList<RenderObject>();
+	private ArrayList<RenderObject> renderItems = new ArrayList<RenderObject>();
+	private ArrayList<RenderObject> renderTempTiles = new ArrayList<RenderObject>();
 	private transient ArrayList<RenderTile> renderAfterTiles;
 	private transient ArrayList<Position> renderAfterTilesPosition;
-	private ArrayList<SoundClip> renderSound = new ArrayList<>();
+	private ArrayList<SoundClip> renderSound = new ArrayList<SoundClip>();
 	private transient RenderTile[][] renderTiles;
 
 	private int offsetX = 0;
@@ -73,15 +73,16 @@ public class Level implements Serializable {
 		this.currentUser = currentUser;
 		String fileData = "";
 		File level = new File(fileName);
+		Scanner in = null;
 
-		try (Scanner in = new Scanner(level)) {
-			StringBuilder bld = new StringBuilder();
-			while (in.hasNextLine()) {
-				bld.append(in.nextLine());
-			}
-			fileData = bld.toString();
+		try {
+			in = new Scanner(level);
 		} catch (Exception e) {
 			System.out.print("EERORO");
+		}
+
+		while (in.hasNextLine()) {
+			fileData = fileData + in.nextLine();
 		}
 
 		fileData = fileData.substring(0, fileData.indexOf("."));
@@ -144,7 +145,7 @@ public class Level implements Serializable {
 				}
 			}
 		} else {
-			ArrayList<RenderObject> tempArray = new ArrayList<>();
+			ArrayList<RenderObject> tempArray = new ArrayList<RenderObject>();
 			try {
 				FileInputStream readData = new FileInputStream(
 						saveFile + "rats.ser");
@@ -278,9 +279,9 @@ public class Level implements Serializable {
 					if (compareY > yMinus && compareY < yPlus) {
 						yCollide = true;
 					}
-					if (xCollide && yCollide) {
+					if (xCollide == true && yCollide == true) {
 						((Rat) renderRats.get(i))
-								.collision(renderRats.get(i2));
+								.collision((Rat) renderRats.get(i2));
 					}
 				}
 			}
@@ -314,10 +315,10 @@ public class Level implements Serializable {
 				if (compareY > yMinus && compareY < yPlus) {
 					yCollide = true;
 				}
-				if (xCollide && yCollide) {
+				if (xCollide == true && yCollide == true) {
 					if (renderItems.get(i) instanceof RenderObject) {
-						(renderItems.get(i))
-								.collision(renderRats.get(i2));
+						((RenderObject) renderItems.get(i))
+								.collision((Rat) renderRats.get(i2));
 					}
 				}
 			}
@@ -348,10 +349,10 @@ public class Level implements Serializable {
 				if (compareY > yMinus && compareY < yPlus) {
 					yCollide = true;
 				}
-				if (xCollide && yCollide) {
+				if (xCollide == true && yCollide == true) {
 					if (renderTempTiles.get(i) instanceof RenderObject) {
-						(renderTempTiles.get(i))
-								.collision(renderRats.get(i2));
+						((RenderObject) renderTempTiles.get(i))
+								.collision((Rat) renderRats.get(i2));
 					}
 				}
 			}
@@ -374,22 +375,22 @@ public class Level implements Serializable {
 					yCollide = true;
 				}
 
-				if (xCollide && yCollide) {
-					if (renderItems.get(i2) instanceof Gas && !(renderTempTiles
-							.get(i) instanceof GasSpread)) {
+				if (xCollide == true && yCollide == true) {
+					if (renderItems.get(i2) instanceof Gas && (renderTempTiles
+							.get(i) instanceof GasSpread) == false) {
 						// dissipate the gas.
 						((Gas) renderItems.get(i2)).instantDissapate();
 
-					} else if (!(renderItems.get(i2) instanceof Gas)
-							&& !(renderItems
-									.get(i2) instanceof Sterilisation)
+					} else if ((renderItems.get(i2) instanceof Gas) == false
+							&& (renderItems
+									.get(i2) instanceof Sterilisation) == false
 							&& (renderTempTiles
-									.get(i) instanceof Explosion)) {
-						this.despawnItem((renderItems.get(i2)));
+									.get(i) instanceof Explosion) == true) {
+						this.despawnItem(((RenderObject) renderItems.get(i2)));
 					} else if ((renderItems
-							.get(i2) instanceof Sterilisation)
+							.get(i2) instanceof Sterilisation) == true
 							&& (renderTempTiles
-									.get(i) instanceof Explosion)) {
+									.get(i) instanceof Explosion) == true) {
 						((Sterilisation) renderItems.get(i2)).instantRemove();
 					}
 				}
@@ -524,7 +525,7 @@ public class Level implements Serializable {
 				yCollide = true;
 			}
 
-			if (xCollide && yCollide) {
+			if (xCollide == true && yCollide == true) {
 				return false;
 			}
 		}
@@ -633,9 +634,12 @@ public class Level implements Serializable {
 
 	public static void saveArrayToFile(ArrayList<RenderObject> saveArray,
 			String saveLocation) {
-		try (FileOutputStream writeData = new FileOutputStream(saveLocation);
-				ObjectOutputStream writeStream = new ObjectOutputStream(writeData)) {
+		try {
+			FileOutputStream writeData = new FileOutputStream(saveLocation);
+			ObjectOutputStream writeStream = new ObjectOutputStream(writeData);
+
 			writeStream.writeObject(saveArray);
+			writeStream.close();
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -643,9 +647,12 @@ public class Level implements Serializable {
 
 	public static void saveSoundArray(ArrayList<SoundClip> saveArray,
 			String saveLocation) {
-		try (FileOutputStream writeData = new FileOutputStream(saveLocation);
-				ObjectOutputStream writeStream = new ObjectOutputStream(writeData)) {
+		try {
+			FileOutputStream writeData = new FileOutputStream(saveLocation);
+			ObjectOutputStream writeStream = new ObjectOutputStream(writeData);
+
 			writeStream.writeObject(saveArray);
+			writeStream.close();
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -656,15 +663,15 @@ public class Level implements Serializable {
 				+ "/";
 		String levelName = "Level" + this.currentLevelNumber + "Date-";
 
-		LocalDateTime currentSysTime = LocalDateTime.now();
-		String currentYear = String.valueOf(currentSysTime.getYear());
-		String currentMonth = String.valueOf(currentSysTime.getMonthValue());
-		String currentDay = String.valueOf(currentSysTime.getDayOfMonth());
-		String currentHour = String.valueOf(currentSysTime.getHour());
-		String currentMinute = String.valueOf(currentSysTime.getMinute());
-		String currentSecond = String.valueOf(currentSysTime.getSecond());
+		LocalDateTime currentTime = LocalDateTime.now();
+		String currentYear = String.valueOf(currentTime.getYear());
+		String currentMonth = String.valueOf(currentTime.getMonthValue());
+		String currentDay = String.valueOf(currentTime.getDayOfMonth());
+		String currentHour = String.valueOf(currentTime.getHour());
+		String currentMinute = String.valueOf(currentTime.getMinute());
+		String currentSecond = String.valueOf(currentTime.getSecond());
 		String currentMillisecond = String
-				.valueOf(currentSysTime.get(ChronoField.MILLI_OF_SECOND));
+				.valueOf(currentTime.get(ChronoField.MILLI_OF_SECOND));
 
 		String dateString = currentDay + "-" + currentMonth + "-" + currentYear
 				+ "-" + currentHour + "-" + currentMinute + "-" + currentSecond
@@ -684,7 +691,7 @@ public class Level implements Serializable {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		ArrayList<RenderObject> tempArray = new ArrayList<>();
+		ArrayList<RenderObject> tempArray = new ArrayList<RenderObject>();
 
 		for (int i = 0; i < renderItems.size(); i++) {
 			tempArray.add(renderItems.get(i));
