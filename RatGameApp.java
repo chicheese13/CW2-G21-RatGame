@@ -308,8 +308,20 @@ public class RatGameApp extends Application {
     }
 
     public static void openLeaderboard() {
-        testBoard = new LeaderboardDisplay();
-        testBoard.startGame();
+    	TextInputDialog tDialog = new TextInputDialog();
+        tDialog.showAndWait();
+        String name = tDialog.getResult();
+
+        if (name != null) {
+            // makes sure the user's name is not blank
+            if (name.replaceAll("\\s", "").length() > 0) {
+            	 testBoard = new LeaderboardDisplay();
+                 testBoard.setLevel(Integer.parseInt(name));
+                 testBoard.startGame();
+                tDialog.hide();
+            }
+        }
+    	
     }
 
     /**

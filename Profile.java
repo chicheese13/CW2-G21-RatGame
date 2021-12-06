@@ -8,7 +8,7 @@ import java.util.Scanner;
  * @author Josh and Lorenzo
  * @version 1.0
  * 
- *          class to represent the profiles used when playing the game
+ * class to represent the profiles used when playing the game
  */
 public class Profile implements Serializable {
 
@@ -20,7 +20,7 @@ public class Profile implements Serializable {
     /**
      * @param playerName The name of the player
      * @param unlockedTo The maximum level that player is able to play
-     * @param uniqueID   The unique ID of the profile
+     * @param uniqueID The unique ID of the profile
      */
     public Profile(String playerName, int unlockedTo, int uniqueID) {
         this.playerName = playerName;
@@ -90,7 +90,7 @@ public class Profile implements Serializable {
 
     /**
      * @return String the version of the profile that is used to append onto the
-     *         save file.
+     * save file.
      */
     public String getAppendVersion() {
         return playerName + " " + unlockedTo + " " + this.userIdentifier;
@@ -111,6 +111,7 @@ public class Profile implements Serializable {
     public void overwriteLevel(int newLevel) {
         // set the level
 
+    	System.out.println("WRITE LEVEL");
         // output to file
         ArrayList<Profile> tempProfiles = new ArrayList<>();
         try {
@@ -135,12 +136,20 @@ public class Profile implements Serializable {
         }
 
         // re write the users to the text file
-        try (PrintWriter userWrite = new PrintWriter("src/users.txt");) {
-
+        PrintWriter userWrite;
+        try {
+            userWrite = new PrintWriter("src/users.txt");
             for (int i = 0; i < tempProfiles.size(); i++) {
+                // System.out.println(profiles.get(i).getName() + " " +
+                // profiles.get(i).getLevels() + " " +
+                // profiles.get(i).getIdentifier());
+            	System.out.println(tempProfiles.get(i).getName() + " "
+                        + tempProfiles.get(i).getLevels() + " "
+                        + tempProfiles.get(i).getIdentifier());
                 userWrite.println(tempProfiles.get(i).getName() + " "
                         + tempProfiles.get(i).getLevels() + " "
                         + tempProfiles.get(i).getIdentifier());
+                // userWrite.println(profiles.get(i).toString());
             }
 
             userWrite.close();
