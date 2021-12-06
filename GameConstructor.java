@@ -69,6 +69,9 @@ import java.awt.event.KeyAdapter;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
+import javafx.stage.WindowEvent;
+import javafx.event.EventHandler;
+
 /**
  * Sample application that demonstrates the use of JavaFX Canvas for a Game.
  * This class is intentionally not structured very well. This is just a starting
@@ -292,6 +295,8 @@ public class GameConstructor extends Application {
 
 		}
 	}
+	
+	
 
 	public void startGame() {
 		this.start(gameStage);
@@ -321,6 +326,14 @@ public class GameConstructor extends Application {
 		drawGame();
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+		//Close the game properly when they click the "X" in the corner
+		
+		primaryStage.setOnCloseRequest(e ->  {
+			primaryStage.close();
+			tickTimeline.stop();
+			
+		});
 	}
 
 	private Image loadImage(int pictureNumber) {
@@ -640,7 +653,7 @@ public class GameConstructor extends Application {
 			
 			this.tickTimeline.stop();
 			this.hasWon = true;
-
+			
 			drawGame();
 		} else if (gameStatus == "lost") {
 			// this.currentLeaderboard.run(this.currentUser.getName(),
@@ -1010,6 +1023,7 @@ public class GameConstructor extends Application {
 					for (int i = QUIT_GAME_BUTTON_X + currentLevel.getOffsetX(); i < (QUIT_GAME_BUTTON_X + currentLevel.getOffsetX() + QUIT_GAME_BUTTON_WIDTH); i++) {
 						if (x == i && y == QUIT_GAME_BUTTON_Y + currentLevel.getOffsetY()) {
 							// method for button click for quit;
+							tickTimeline.stop();
 							gameStage.close();
 						}
 					}

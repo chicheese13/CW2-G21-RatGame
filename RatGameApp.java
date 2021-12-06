@@ -21,6 +21,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
@@ -82,46 +83,48 @@ public class RatGameApp extends Application {
     private Line line;
 
     public static void deleteProfile() {
-    	 readUserFile(userFile);
-         if (profiles.isEmpty()) {
-             Alert alert = new Alert(AlertType.WARNING);
-             alert.setContentText("No users currently exist, please create a user before trying to proceed");
-             alert.show();
-         } else {
-             ChoiceDialog<Profile> cd = new ChoiceDialog<>(activeUser, profiles);
-             cd.showAndWait();
-             Profile deleteProfile;
-             deleteProfile = cd.getSelectedItem();
-             cd.hide();
-             
-             //delete the profile from the text file here, where user id is active profile id
-             for (int i = 0; i < profiles.size(); i++) {
-            	 if (profiles.get(i).getIdentifier() == deleteProfile.getIdentifier()) {
-            		 profiles.remove(i);
-            	 }
-             }
-             
+        readUserFile(userFile);
+        if (profiles.isEmpty()) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setContentText("No users currently exist, please create a user before trying to proceed");
+            alert.show();
+        } else {
+            ChoiceDialog<Profile> cd = new ChoiceDialog<>(activeUser, profiles);
+            cd.showAndWait();
+            Profile deleteProfile;
+            deleteProfile = cd.getResult();
+            cd.hide();
+
+            // delete the profile from the text file here, where user id is active profile
+            // id
+            for (int i = 0; i < profiles.size(); i++) {
+                if (profiles.get(i).getIdentifier() == deleteProfile.getIdentifier()) {
+                    profiles.remove(i);
+                }
+            }
+
             PrintWriter userWrite;
-     		try {
-     			userWrite = new PrintWriter("src/users.txt");
-     			for (int i = 0; i < profiles.size(); i++) {
-     				//System.out.println(profiles.get(i).getName() + " " + profiles.get(i).getLevels() + " " + profiles.get(i).getIdentifier());
-     				userWrite.println(profiles.get(i).getName() + " " + profiles.get(i).getLevels() + " " + profiles.get(i).getIdentifier());
-     				//userWrite.println(profiles.get(i).toString());
-     			}
-     			
-     			userWrite.close();
-     			
-     			//delete the folder
-     			deleteSaveFolder(new File("src/saves/" + deleteProfile.getIdentifier() + "/"));
-     				
-     			
-     			System.out.println("src/saves/" + activeUser.getIdentifier() + "/");
-     			
-     		} catch (Exception e) {
-     			
-     		}
-         }
+            try {
+                userWrite = new PrintWriter("src/users.txt");
+                for (int i = 0; i < profiles.size(); i++) {
+                    // System.out.println(profiles.get(i).getName() + " " +
+                    // profiles.get(i).getLevels() + " " + profiles.get(i).getIdentifier());
+                    userWrite.println(profiles.get(i).getName() + " " + profiles.get(i).getLevels() + " "
+                            + profiles.get(i).getIdentifier());
+                    // userWrite.println(profiles.get(i).toString());
+                }
+
+                userWrite.close();
+
+                // delete the folder
+                deleteSaveFolder(new File("src/saves/" + deleteProfile.getIdentifier() + "/"));
+
+                System.out.println("src/saves/" + activeUser.getIdentifier() + "/");
+
+            } catch (Exception e) {
+
+            }
+        }
     }
 
     public static void fetchSaves() {
@@ -148,7 +151,7 @@ public class RatGameApp extends Application {
                     ChoiceDialog<String> cd = new ChoiceDialog<>("Select Save", saveFiles);
                     cd.showAndWait();
                     cd.hide();
-                    currentSave = cd.getSelectedItem();
+                    currentSave = cd.getResult();
                 } catch (Exception e) {
                     Alert alert = new Alert(AlertType.WARNING);
                     alert.setContentText("No Save files found for this account.");
@@ -184,22 +187,21 @@ public class RatGameApp extends Application {
         }
 
     }
-    
-    
+
     public static void deleteSaveFolder(File saveFolder) {
-    	//gets the list of files in the directory.
+        // gets the list of files in the directory.
         File[] saveFolderContent = saveFolder.listFiles();
-        
-        //checks if the file is null, if not then loop through and remove the contents recursively
+
+        // checks if the file is null, if not then loop through and remove the contents
+        // recursively
         if (!(saveFolderContent == null)) {
-        	//goes through the contents of each child and call the method to delete them.
-        	for (int i = 0; i < saveFolderContent.length; i++) {
-        		deleteSaveFolder(saveFolderContent[i]);
-        	}
+            // goes through the contents of each child and call the method to delete them.
+            for (int i = 0; i < saveFolderContent.length; i++) {
+                deleteSaveFolder(saveFolderContent[i]);
+            }
         }
         saveFolder.delete();
     }
-    	  
 
     /**
      * createContent is the method that populates the menu screen and begins the
@@ -357,7 +359,7 @@ public class RatGameApp extends Application {
         } else {
             ChoiceDialog<Profile> cd = new ChoiceDialog<>(activeUser, profiles);
             cd.showAndWait();
-            activeUser = cd.getSelectedItem();
+            activeUser = cd.getResult();
             cd.hide();
         }
 
@@ -404,14 +406,21 @@ public class RatGameApp extends Application {
             for (int i = 1; i <= activeUser.getLevels(); i++) {
                 possibleLevels.add(i);
             }
-            ChoiceDialog<Integer> cd = new ChoiceDialog<>(1, possibleLevels);
+            ChoiceDialog<Integer> cd = new ChoiceDialog<>(0, possibleLevels);
+
             cd.showAndWait();
-            selectedLevel = cd.getSelectedItem();
+            selectedLevel = cd.getResult();
             cd.hide();
             // launch game.
-            System.out.println("Start the game here");
-            playGame = new GameConstructor(selectedLevel, activeUser, "");
-            playGame.startGame();	
+            System.out.println("selected level: " + selectedLevel);
+            if (selectedLevel != null) {
+                System.out.println("Start the game here");
+                playGame = new GameConstructor(selectedLevel, activeUser, "");
+                playGame.startGame();
+            } else {
+                System.out.println("Game start cancelled");
+            }
+
         }
     }
 
@@ -496,10 +505,10 @@ public class RatGameApp extends Application {
     public static void main(String[] args) {
         readUserFile(userFile);
         launch(args);
-        
+
         activeUser = new Profile("newUser", 0, 6);
-        
+
         activeUser.overwriteLevel(3);
-        
+
     }
 }
