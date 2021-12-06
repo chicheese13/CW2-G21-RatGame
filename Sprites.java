@@ -3,18 +3,19 @@ import javafx.scene.image.Image;
 
 /**
  * Hash table that takes in a string and gives back an image
+ * 
  * @author Dylan Lewis
  * @version 1.0
  */
 public class Sprites {
 	// All Rats
-	protected final static Image BABY_RAT_SPRITE_EAST = new Image(
+	protected static final Image BABY_RAT_SPRITE_EAST = new Image(
 			"TestTextures/rat-model-east.png");
-	protected final static Image BABY_RAT_SPRITE_NORTH = new Image(
+	protected static final Image BABY_RAT_SPRITE_NORTH = new Image(
 			"TestTextures/rat-model-north.png");
-	protected final static Image BABY_RAT_SPRITE_SOUTH = new Image(
+	protected static final Image BABY_RAT_SPRITE_SOUTH = new Image(
 			"TestTextures/rat-model-south.png");
-	protected final static Image BABY_RAT_SPRITE_WEST = new Image(
+	protected static final Image BABY_RAT_SPRITE_WEST = new Image(
 			"TestTextures/rat-model-west.png");
 
 	protected final Image COOLDOWN_SPRITE_FEMALE_NORTH = new Image(
@@ -64,7 +65,7 @@ public class Sprites {
 
 	protected final Image BOMB_SPRITE = new Image("/items/bomb.png");
 
-	static Hashtable<String, Image> sprites = new Hashtable<String, Image>();
+	static Hashtable<String, Image> sprites = new Hashtable<>();
 
 	/**
 	 * Constructor. Sets the value for all the sprites in the hash table
