@@ -1,3 +1,4 @@
+
 /**
  * MOTDGetter2.java
  *
@@ -25,8 +26,9 @@ public class MOTDGetter {
     }
 
     // declaring and initialising variables
-    static Character[] ALPHABET_ARRAY = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
-            'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+    static Character[] ALPHABET_ARRAY = { 'a', 'b', 'c', 'd', 'e', 'f', 'g',
+            'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+            'u', 'v', 'w', 'x', 'y', 'z' };
     static int ALPHABET_LENGTH = 26;
 
     /**
@@ -34,14 +36,17 @@ public class MOTDGetter {
      * @return String
      * @throws Exception
      */
-    // function which returns a String which was taken from a GET request of a web
+    // function which returns a String which was taken from a GET request of a
+    // web
     // page.
     public static String getRequest(String URL) throws Exception {
         try {
             URL FETCH_URL = new URL(URL);
-            HttpURLConnection connection = (HttpURLConnection) FETCH_URL.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) FETCH_URL
+                    .openConnection();
             connection.setRequestMethod("GET");
-            InputStreamReader reader = new InputStreamReader(connection.getInputStream());
+            InputStreamReader reader = new InputStreamReader(
+                    connection.getInputStream());
             BufferedReader bReader = new BufferedReader(reader);
             return bReader.readLine();
         } catch (Exception e) {
@@ -56,16 +61,20 @@ public class MOTDGetter {
     public static String MOTDGetter() throws Exception {
         // need to make a HTTP request to get the puzzle string
         try {
-            char[] puzzleCharacters = getRequest("http://cswebcat.swansea.ac.uk/puzzle").toCharArray();
+            char[] puzzleCharacters = getRequest(
+                    "http://cswebcat.swansea.ac.uk/puzzle").toCharArray();
             // char[] puzzleCharacters = {'C', 'A', 'B'};
             int alphabetIndex = -1;
-            // go through each character, plus or minusing the letters based on odd and even
+            // go through each character, plus or minusing the letters based on
+            // odd and even
             // indexes.
             for (int i = 0; i < puzzleCharacters.length; i++) {
-                // get the current index of the alphabet which the current letter is in the
+                // get the current index of the alphabet which the current
+                // letter is in the
                 // string.
                 for (int i2 = 0; i2 < ALPHABET_ARRAY.length; i2++) {
-                    if (Character.toUpperCase(ALPHABET_ARRAY[i2]) == Character.toUpperCase(puzzleCharacters[i])) {
+                    if (Character.toUpperCase(ALPHABET_ARRAY[i2]) == Character
+                            .toUpperCase(puzzleCharacters[i])) {
                         alphabetIndex = i2;
                         i2 = ALPHABET_ARRAY.length;
                     }
@@ -87,7 +96,8 @@ public class MOTDGetter {
                 }
 
                 // re put the character back into the string.
-                puzzleCharacters[i] = Character.toUpperCase(ALPHABET_ARRAY[alphabetIndex]);
+                puzzleCharacters[i] = Character
+                        .toUpperCase(ALPHABET_ARRAY[alphabetIndex]);
             }
             // combine the characters into a string with CS-230 text
             String finalText = new String(puzzleCharacters) + "CS-230";
@@ -97,11 +107,11 @@ public class MOTDGetter {
             finalText = textLength + finalText;
 
             // request motd with the solution
-            return getRequest("http://cswebcat.swansea.ac.uk/message?solution=" + finalText);
+            return getRequest("http://cswebcat.swansea.ac.uk/message?solution="
+                    + finalText);
         } catch (Exception e) {
             throw new Exception("Failed to establish connection with server.");
         }
     }
 
 }
-
