@@ -55,7 +55,7 @@ public class ConvertLayoutToTiles {
 					isPath = true;
 				}
 				
-				//checks if the current tile is tunnel or Path, if so we can check the surroudning tiles.
+				//checks if the current tile is tunnel or Path, if so we can check the surrounding tiles.
 				if (tileArray[y][x] == 'P') {
 					//check top
 					if (y > 1) {
