@@ -74,6 +74,8 @@ public class Sterilisation extends RenderObject {
 	 * Method for destroying this item, if is in bomb explosion radius
 	 */
 	public void collision(Object collidedObject) {
-		//
+		if (collidedObject instanceof NormalRat) {
+			((NormalRat) collidedObject).becomeSterile();
+		}
 	}
 }
